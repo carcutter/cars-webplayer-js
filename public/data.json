@@ -1,0 +1,333 @@
+[
+  {
+    "category": "exterior",
+    "title": "Exterior",
+    "items": [
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/237e58fd1a-WDDHF5KB6GB293985-0_CC.jpg.jpg",
+        "hotspots": [
+          {
+            "feature": "WINDOW STICKER",
+            "position": {
+              "x": 0.10500000000000001,
+              "y": 0.895
+            },
+            "description": {
+              "short": "PDF",
+              "long": "https://s3-us-west-2.amazonaws.com/devx5pdf/12394/1743555.pdf"
+            }
+          },
+          {
+            "feature": "CARFAX",
+            "position": {
+              "x": 0.10500000000000001,
+              "y": 0.10500000000000001
+            },
+            "description": {
+              "short": "CARFAX Report",
+              "long": "https://www.carfax.com/VehicleHistory/p/Report.cfx?vin=WDDHF5KB6GB293985&partner=AND_A"
+            }
+          }
+        ]
+      },
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/583fa6c36b-WDDHF5KB6GB293985-1_CC.jpg.jpg",
+        "hotspots": [
+          {
+            "feature": "ENGINE",
+            "position": {
+              "x": 0.5093855857849121,
+              "y": 0.44265010952949524
+            },
+            "description": {
+              "short": "Engine: 3.5L Dohc V6 Direct Injection"
+            }
+          },
+          {
+            "feature": "UNKNOWN EXTERIOR",
+            "position": {
+              "x": 0.5007962584495544,
+              "y": 0.19843280792236329
+            },
+            "description": {
+              "short": "18 Split 5-Spoke Alloy -Inc: Tires: P24540R18 All Season",
+              "long": "Wheels: 18 Split 5-Spoke Alloy -Inc: Tires: P24540R18 All Season"
+            }
+          },
+          {
+            "feature": "SERVICE WIPERS FRONT",
+            "position": {
+              "x": 0.49715501070022583,
+              "y": 0.3649206832051277
+            },
+            "description": {
+              "short": "All New: Wiper Blades Beam (Front Pair)",
+              "long": "All New: Wiper Blades Beam (Front Pair)"
+            }
+          }
+        ]
+      },
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/eafd620f6d-WDDHF5KB6GB293985-2_CC.jpg.jpg",
+        "hotspots": [
+          {
+            "feature": "ENGINE",
+            "position": {
+              "x": 0.6327527165412903,
+              "y": 0.4785919785499573
+            },
+            "description": {
+              "short": "Engine: 3.5L Dohc V6 Direct Injection (Std)",
+              "long": "Engine: 3.5L Dohc V6 Direct Injection (Std)"
+            }
+          },
+          {
+            "feature": "SERVICE WHEEL",
+            "position": {
+              "x": 0.4722690284252167,
+              "y": 0.7260051369667053
+            },
+            "description": {
+              "short": "All New: Includes All New Tires",
+              "long": "All New: Includes All New Tires"
+            }
+          }
+        ]
+      },
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/aacf759089-WDDHF5KB6GB293985-3_CC.jpg.jpg",
+        "hotspots": [
+          {
+            "feature": "UNKNOWN EXTERIOR",
+            "position": {
+              "x": 0.49739396572113037,
+              "y": 0.4685300636291504
+            },
+            "description": {
+              "short": "Tires: P24545R17 As (Std)",
+              "long": "Tires: P24545R17 As (Std)"
+            }
+          },
+          {
+            "feature": "WHEELS",
+            "position": {
+              "x": 0.8149163126945496,
+              "y": 0.7428695559501648
+            },
+            "description": {
+              "short": "Tires: P24545R17 As"
+            },
+            "detail": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/58f8efa7fb-WDDHF5KB6GB293985-22_CC.jpg.jpg"
+          }
+        ]
+      },
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/7404482d1f-WDDHF5KB6GB293985-4_CC.jpg.jpg",
+        "hotspots": [
+          {
+            "feature": "FUEL CAP",
+            "position": {
+              "x": 0.5962795615196228,
+              "y": 0.49442529678344727
+            },
+            "description": {
+              "short": "Gasoline Fuel",
+              "long": "Gasoline Fuel"
+            }
+          }
+        ]
+      },
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/59c13d97ad-WDDHF5KB6GB293985-6_CC.jpg.jpg",
+        "hotspots": [
+          {
+            "feature": "EXTERIOR PAINT",
+            "position": {
+              "x": 0.49939000606536865,
+              "y": 0.13473695993423462
+            },
+            "description": {
+              "short": "EXTERIOR PAINT: Black",
+              "long": "EXTERIOR PAINT: Black"
+            }
+          }
+        ]
+      },
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/351f8acc88-WDDHF5KB6GB293985-7_CC.jpg.jpg",
+        "hotspots": [
+          {
+            "feature": "DRIVETYPE REAR",
+            "position": {
+              "x": 0.4551551938056946,
+              "y": 0.7334866523742676
+            },
+            "description": {
+              "short": "Rear Wheel Drive",
+              "long": "Rear Wheel Drive"
+            }
+          },
+          {
+            "feature": "WHEELS",
+            "position": {
+              "x": 0.11016897112131119,
+              "y": 0.6243448257446289
+            },
+            "description": {
+              "short": "Wheel Locks (Pio)",
+              "long": "Wheel Locks (Pio)"
+            },
+            "detail": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/58f8efa7fb-WDDHF5KB6GB293985-22_CC.jpg.jpg"
+          }
+        ]
+      },
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/7d25aeeb8e-WDDHF5KB6GB293985-8_CC.jpg.jpg",
+        "hotspots": [
+          {
+            "feature": "WHEELS",
+            "position": {
+              "x": 0.18473808467388153,
+              "y": 0.7206665873527527
+            },
+            "description": {
+              "short": "18 Split 5-Spoke Alloy",
+              "long": "-Inc: Tires: P24540R18 All Season"
+            },
+            "detail": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/58f8efa7fb-WDDHF5KB6GB293985-22_CC.jpg.jpg"
+          },
+          {
+            "feature": "SUNROOF",
+            "position": {
+              "x": 0.49653375148773193,
+              "y": 0.4554542350769043
+            },
+            "description": {
+              "short": "Vehicle Includes SunMoonroof",
+              "long": "SunMoonroof"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "interior",
+    "title": "Interior",
+    "items": [
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/7fdc376a79-WDDHF5KB6GB293985-5_CC.jpg.jpg",
+        "hotspots": []
+      },
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/fc23acb8f0-WDDHF5KB6GB293985-9_CC.jpg.jpg",
+        "hotspots": [
+          {
+            "feature": "DASHBOARD",
+            "position": {
+              "x": 0.381659597158432,
+              "y": 0.16443519294261932
+            },
+            "description": {
+              "short": "Burl Walnut Wood Trim",
+              "long": "Burl Walnut Wood Trim"
+            }
+          }
+        ]
+      },
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/f701676ec7-WDDHF5KB6GB293985-10_CC.jpg.jpg",
+        "hotspots": [
+          {
+            "feature": "DASHBOARD",
+            "position": {
+              "x": 0.5,
+              "y": 0.485274076461792
+            },
+            "description": {
+              "short": "Mileage: 29996",
+              "long": "Mileage: 29996"
+            }
+          }
+        ]
+      },
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/f1ac31b551-WDDHF5KB6GB293985-11_CC.jpg.jpg",
+        "hotspots": []
+      },
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/f21edae69c-WDDHF5KB6GB293985-12_CC.jpg.jpg",
+        "hotspots": []
+      },
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/1ed7cb6d46-WDDHF5KB6GB293985-13_CC.jpg.jpg",
+        "hotspots": []
+      },
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/015ad0c027-WDDHF5KB6GB293985-14_CC.jpg.jpg",
+        "hotspots": [
+          {
+            "feature": "SEAT CONFIG",
+            "position": {
+              "x": 0.39355456829071045,
+              "y": 0.7203627228736877
+            },
+            "description": {
+              "short": "Black, Mb-Tex Upholstery"
+            }
+          }
+        ]
+      },
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/6cd69642be-WDDHF5KB6GB293985-15_CC.jpg.jpg",
+        "hotspots": [
+          {
+            "feature": "SEAT CONFIG",
+            "position": {
+              "x": 0.7893791198730469,
+              "y": 0.6237891316413879
+            },
+            "description": {
+              "short": " Mb-Tex Upholstery",
+              "long": " Mb-Tex Upholstery"
+            }
+          }
+        ]
+      },
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/e91c889141-WDDHF5KB6GB293985-16_CC.jpg.jpg",
+        "hotspots": []
+      },
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/04c454c8a5-WDDHF5KB6GB293985-17_CC.jpg.jpg",
+        "hotspots": []
+      },
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/300a78aa1a-WDDHF5KB6GB293985-18_CC.jpg.jpg",
+        "hotspots": []
+      },
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/c86d1cb0ef-WDDHF5KB6GB293985-19_CC.jpg.jpg",
+        "hotspots": []
+      },
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/d458aea998-WDDHF5KB6GB293985-20_CC.jpg.jpg",
+        "hotspots": []
+      },
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/442b2637df-WDDHF5KB6GB293985-21_CC.jpg.jpg",
+        "hotspots": []
+      }
+    ]
+  },
+  {
+    "category": "other",
+    "title": "Other",
+    "items": [
+      {
+        "image": "https://cdn.car-cutter.com/gallery/autonation/WDDHF5KB6GB293985/ad085f4be1-WDDHF5KB6GB293985-23_CC.jpg.jpg",
+        "hotspots": []
+      }
+    ]
+  }
+]

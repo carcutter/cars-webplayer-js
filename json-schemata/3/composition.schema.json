@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "$id": "https://cdn.car-cutter.com/libs/json-schema/web-player/3/composition.schema.json",
+  "type": "object",
+  "required": ["title", "categories"],
+  "description": "A web player description.",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "The title of the web player."
+    },
+    "categories": {
+      "type": "array",
+      "minItems": 1,
+      "description": "The categories of the web player.",
+      "items": {
+        "type": "object",
+        "required": ["title", "visuals"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the category."
+          },
+          "visuals": {
+            "type": "array",
+            "minItems": 1,
+            "description": "The visuals of the category.",
+            "items": {
+              "type": "object",
+              "required": ["type", "images"],
+              "description": "A visual, part of the web player that visualizes images.",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "description": "The title of the visual."
+                },
+                "type": {
+                  "type": "string",
+                  "enum": ["slideshow", "spin"],
+                  "description": "The type of the visual."
+                },
+                "images": {
+                  "type": "array",
+                  "minItems": 1,
+                  "description": "The list of images that belong to this visual.",
+                  "items": {
+                    "type": "object",
+                    "required": ["url"],
+                    "description": "An image, part of an item.",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "description": "The URL to the image."
+                      },
+                      "hotspots": {
+                        "type": "array",
+                        "description": "The list of hotspots that belong to this image.",
+                        "items": [
+                          {
+                            "type": "object",
+                            "description": "A hotspot, part of an image.",
+                            "required": ["feature", "position"],
+                            "properties": {
+                              "feature": {
+                                "type": "string",
+                                "description": "The internally used identifier of a known feature."
+                              },
+                              "position": {
+                                "type": "object",
+                                "required": ["x", "y"],
+                                "description": "A position, part of a hotspot.",
+                                "properties": {
+                                  "x": {
+                                    "type": "number",
+                                    "description": "The normalized position of the hotspot along the x-axis.",
+                                    "minimum": 0.0,
+                                    "maximum": 1.0
+                                  },
+                                  "y": {
+                                    "type": "number",
+                                    "description": "The normalized position of the hotspot along the y-axis.",
+                                    "minimum": 0.0,
+                                    "maximum": 1.0
+                                  }
+                                }
+                              },
+                              "description": {
+                                "type": "object",
+                                "required": [],
+                                "description": "A description, part of a hotspot.",
+                                "properties": {
+                                  "short": {
+                                    "type": "string",
+                                    "description": "The short description of the feature used as a title."
+                                  },
+                                  "long": {
+                                    "type": "string",
+                                    "description": "The long description of the feature."
+                                  }
+                                }
+                              },
+                              "detail": {
+                                "type": "object",
+                                "required": ["type", "url"],
+                                "description": "A detail, part of a hotspot.",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "enum": ["image", "show-file", "link"],
+                                    "description": "The type of detail."
+                                  },
+                                  "url": {
+                                    "type": "string",
+                                    "description": "The URL of the detail."
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
