@@ -1,0 +1,58 @@
+import { PositionY } from "@/types/position";
+import { positionXToClassName, positionYToClassName } from "@/utils/style";
+import Button from "@/components/ui/Button";
+
+type Props = {
+  currentIndex: number;
+  length: number;
+  onPrev: () => void;
+  onNext: () => void;
+  position?: PositionY;
+};
+
+const NextPrevButtons: React.FC<Props> = ({
+  currentIndex,
+  length,
+  onPrev,
+  onNext,
+  position = "middle",
+}) => {
+  const positionYClassName = positionYToClassName(position);
+
+  return (
+    <>
+      <Button
+        shape="icon"
+        color="neutral"
+        className={`absolute ${positionYClassName} ${positionXToClassName(
+          "left"
+        )}`}
+        onClick={onPrev}
+        disabled={currentIndex === 0}
+      >
+        <img
+          className="size-full rotate-180"
+          src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/arrow_forward.svg"
+          alt="Previous"
+        />
+      </Button>
+      <Button
+        shape="icon"
+        color="neutral"
+        className={`absolute ${positionYClassName} ${positionXToClassName(
+          "right"
+        )}`}
+        onClick={onNext}
+        disabled={currentIndex === length - 1}
+      >
+        <img
+          className="size-full"
+          src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/arrow_forward.svg"
+          alt="Next"
+        />
+      </Button>
+    </>
+  );
+};
+
+export default NextPrevButtons;

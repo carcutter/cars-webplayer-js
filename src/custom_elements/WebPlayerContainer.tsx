@@ -1,18 +1,20 @@
-import { useState } from "react";
-
 import { useComposition } from "@/hooks/useComposition";
 import { Composition } from "@/types/composition";
-import CategorySelect from "./CategorySelect";
-import NextPrevButtons from "./NextPrevButtons";
+import OptionsBar from "./OptionsBar";
+import GalleryButton from "./GalleryButton";
+import WebPlayerElement from "@/components/molecules/WebPlayerElement";
+import { useGlobalContext } from "@/providers/GlobalContext";
+import ScrollableSlider from "@/components/organisms/ScrollableSlider";
+import { useState } from "react";
 
 type WebPlayerContentProps = { data: Composition };
 
 const WebPlayerContent: React.FC<
   React.PropsWithChildren<WebPlayerContentProps>
 > = ({ data }) => {
-  const [displayedCategory, setDisplayedCategory] = useState(data[0].category);
+  const { aspectRatioClass } = useGlobalContext();
 
-  const [imageIndex, setImageIndex] = useState(0);
+  const [displayedCategory, setDisplayedCategory] = useState(data[0].category);
 
   const currrentCategoryRoot = data.find(
     ({ category }) => category === displayedCategory
@@ -25,42 +27,24 @@ const WebPlayerContent: React.FC<
 
   const handleChangeCategory = (category: string) => {
     setDisplayedCategory(category);
-    setImageIndex(0);
-  };
-
-  const prevImage = () => {
-    if (imageIndex <= 0) {
-      return;
-    }
-    setImageIndex((v) => v - 1);
-  };
-
-  const nextImage = () => {
-    if (imageIndex >= items.length - 1) {
-      return;
-    }
-    setImageIndex((v) => v + 1);
   };
 
   return (
-    <div className="relative size-full overflow-hidden aspect-[4/3]">
-      <div
-        className="h-full flex transition-transform"
-        style={{ transform: `translateX(${-imageIndex * 100}%)` }}
-      >
-        {items.map(({ image }) => (
-          <img key={image} className="h-full" src={image} alt="" />
-        ))}
-      </div>
+    <div className={`relative size-full ${aspectRatioClass}`}>
+      <ScrollableSlider
+        data={items}
+        renderItem={(item, index) => (
+          <WebPlayerElement key={index} item={item} />
+        )}
+      />
 
-      <CategorySelect
+      {/* Options layer */}
+      <OptionsBar
         composition={data}
         selectedCategory={displayedCategory}
         onChangeSelectedCategory={handleChangeCategory}
       />
-
-      {/* Previous/Next buttons */}
-      <NextPrevButtons onPrev={prevImage} onNext={nextImage} />
+      <GalleryButton />
     </div>
   );
 };

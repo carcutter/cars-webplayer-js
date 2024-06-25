@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import WebPlayerContainer from "./WebPlayerContainer";
+import GlobalContextProvider from "@/providers/GlobalContext";
 
 const queryClient = new QueryClient();
 
@@ -15,9 +16,13 @@ const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   return (
     // Provide the client to your App
     <QueryClientProvider client={queryClient}>
-      <div className={`relative size-full overflow-hidden ${aspectRatioClass}`}>
-        <WebPlayerContainer>{children}</WebPlayerContainer>
-      </div>
+      <GlobalContextProvider aspectRatioClass={aspectRatioClass}>
+        <div
+          className={`relative size-full overflow-hidden ${aspectRatioClass}`}
+        >
+          <WebPlayerContainer>{children}</WebPlayerContainer>
+        </div>
+      </GlobalContextProvider>
     </QueryClientProvider>
   );
 };

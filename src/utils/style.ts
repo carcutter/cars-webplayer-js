@@ -8,9 +8,9 @@ import {
 export function positionXToClassName(positionX: PositionX): string {
   switch (positionX) {
     case "left":
-      return "left-0";
+      return "left-2";
     case "right":
-      return "right-0";
+      return "right-2";
     case "center":
       return "left-1/2 -translate-x-1/2";
   }
@@ -19,9 +19,9 @@ export function positionXToClassName(positionX: PositionX): string {
 export function positionYToClassName(positionY: PositionY): string {
   switch (positionY) {
     case "top":
-      return "top-0";
+      return "top-2";
     case "bottom":
-      return "bottom-0";
+      return "bottom-2";
     case "middle":
       return "top-1/2 -translate-y-1/2";
   }
