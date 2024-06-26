@@ -1,12 +1,15 @@
 import { Item } from "@/types/composition";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ImageElement from "./ImageElement";
+import { preloadImage } from "@/utils/web";
 
-type Props = { item: Extract<Item, { type: "360" }> };
+const STEP_PX = 10;
 
-const STEP = 10;
+type ThreeSixtyElementProps = { item: Extract<Item, { type: "360" }> };
 
-const ThreeSixtyElement: React.FC<Props> = ({ item: { images, hotspots } }) => {
+const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
+  item: { images, hotspots },
+}) => {
   const container = useRef<HTMLDivElement>(null);
   const isDown = useRef(false);
   const startX = useRef<number | null>(null);
@@ -68,7 +71,7 @@ const ThreeSixtyElement: React.FC<Props> = ({ item: { images, hotspots } }) => {
 
       const walk = e.clientX - startX.current;
 
-      if (Math.abs(walk) < STEP) {
+      if (Math.abs(walk) < STEP_PX) {
         return;
       }
 
@@ -96,6 +99,14 @@ const ThreeSixtyElement: React.FC<Props> = ({ item: { images, hotspots } }) => {
 
   return (
     <div ref={container} className="cursor-ew-resize">
+      <div className="hidden">
+        {/* Take the 2 prev & 2 next images and insert them on the DOM to ensure preload */}
+        {[-2, -1, 1, 2].map((offset) => {
+          const index = (imageIndex + offset + length) % length;
+          return <img key={index} src={images[index]} alt="" />;
+        })}
+      </div>
+
       <ImageElement
         item={{
           type: "image",
@@ -105,6 +116,70 @@ const ThreeSixtyElement: React.FC<Props> = ({ item: { images, hotspots } }) => {
       />
     </div>
   );
+};
+
+type ThreeSixtyElementPlaceholderProps = {
+  imageSrc: string;
+  loadingProgress: number | null;
+  onClick: () => void;
+};
+
+const ThreeSixtyElementPlaceholder: React.FC<
+  ThreeSixtyElementPlaceholderProps
+> = ({ imageSrc, loadingProgress, onClick }) => {
+  return (
+    <div className="relative size-full">
+      <img className="size-full" src={imageSrc} alt="" />
+      <div
+        className="absolute flex flex-col justify-center items-center gap-y-4 inset-0 bg-foreground/35 cursor-pointer"
+        onClick={onClick}
+      >
+        <div className="text-background">PLAY 360</div>
+        {loadingProgress !== null && (
+          <div className="w-3/5 rounded-full h-1 bg-primary">
+            <div
+              className="h-full bg-primary/25"
+              style={{ width: `${loadingProgress}%` }}
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = ({ item }) => {
+  const [loadingProgress, setLoadingProgress] = useState<number | null>(null);
+
+  const fetchImages = useCallback(async () => {
+    setLoadingProgress(0);
+    const imagePromises = item.images.map((imageSrc) =>
+      preloadImage(imageSrc).then(() =>
+        setLoadingProgress(
+          (prev) => (prev as number) + 100 / item.images.length
+        )
+      )
+    );
+
+    try {
+      await Promise.all(imagePromises);
+      setLoadingProgress(100);
+    } catch (e) {
+      console.error(e);
+    }
+  }, [item.images]);
+
+  if (loadingProgress !== 100) {
+    return (
+      <ThreeSixtyElementPlaceholder
+        imageSrc={item.images[0]}
+        loadingProgress={loadingProgress}
+        onClick={fetchImages}
+      />
+    );
+  }
+
+  return <ThreeSixtyElementInteractive item={item} />;
 };
 
 export default ThreeSixtyElement;
