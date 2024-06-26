@@ -33,8 +33,12 @@ const WebPlayerContent: React.FC<
     <div className={`relative size-full ${aspectRatioClass}`}>
       <ScrollableSlider
         data={items}
-        renderItem={(item, index) => (
-          <WebPlayerElement key={index} item={item} />
+        renderItem={(item, index, currentIndex) => (
+          <WebPlayerElement
+            key={index}
+            item={item}
+            lazy={Math.abs(index - currentIndex) > 1}
+          />
         )}
       />
 

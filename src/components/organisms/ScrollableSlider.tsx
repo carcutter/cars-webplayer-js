@@ -5,7 +5,7 @@ import { positionToClassName } from "@/utils/style";
 
 type Props<T extends object> = {
   data: T[];
-  renderItem: (item: T, index: number) => React.ReactNode;
+  renderItem: (item: T, index: number, currentIndex: number) => React.ReactNode;
 };
 
 const ScrollableSlider = <T extends object>({
@@ -211,9 +211,9 @@ const ScrollableSlider = <T extends object>({
     <>
       <div
         ref={slider}
-        className="h-full flex overflow-auto no-scrollbar transition-transform *:snap-start"
+        className="h-full flex overflow-auto no-scrollbar transition-transform *:snap-start *:snap-mandatory"
       >
-        {data.map((item, index) => renderItem(item, index))}
+        {data.map((item, index) => renderItem(item, index, itemIndex))}
       </div>
 
       {slidable && (
