@@ -1,5 +1,18 @@
-/** @type {import('tailwindcss').Config} */
-export default {
+import type { Config } from "tailwindcss";
+import type { PluginCreator } from "tailwindcss/types/config";
+
+const noScrollbarPlugin: PluginCreator = ({ addUtilities }) =>
+  addUtilities({
+    ".no-scrollbar": {
+      scrollbarWidth: "none",
+      "-ms-overflow-style": "none",
+      "&::-webkit-scrollbar": {
+        display: "none",
+      },
+    },
+  });
+
+const config = {
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
   theme: {
     colors: {
@@ -17,5 +30,7 @@ export default {
       },
     },
   },
-  plugins: [],
-};
+  plugins: [noScrollbarPlugin],
+} satisfies Config;
+
+export default config;
