@@ -37,6 +37,18 @@ const ScrollableSlider = <T extends object>({
     slider.current.style.scrollBehavior = behavior;
   }, []);
 
+  const setSnapState = useCallback((activated: boolean) => {
+    if (!slider.current) {
+      throw new Error("[setSnapBehavior] slider.current is null");
+    }
+
+    if (activated) {
+      slider.current.style.scrollSnapType = "x mandatory";
+    } else {
+      slider.current.style.scrollSnapType = "none";
+    }
+  }, []);
+
   const getContainerWidth = useCallback(() => {
     if (!slider.current) {
       throw new Error("[getContainerWidth] slider.current is null");
@@ -56,8 +68,6 @@ const ScrollableSlider = <T extends object>({
       }
 
       slider.current.scrollLeft = index * getContainerWidth();
-
-      setItemIndex(index);
     },
     [getContainerWidth, length]
   );
@@ -66,6 +76,7 @@ const ScrollableSlider = <T extends object>({
   useEffect(() => {
     setScrollBehavior("auto");
     scrollToIndex(0);
+    setItemIndex(0);
     setScrollBehavior("smooth");
   }, [data, scrollToIndex, setScrollBehavior]);
 
@@ -88,10 +99,13 @@ const ScrollableSlider = <T extends object>({
       return;
     }
 
-    setCursor("grab");
-
     const sliderRef = slider.current;
 
+    setCursor("grab");
+    setScrollBehavior("smooth");
+    setSnapState(true);
+
+    // Take "measures" when the user clicks on the slider
     const onMouseDown = (e: MouseEvent) => {
       if (!slider?.current) {
         throw new Error("[onMouseDown] slider.current is null");
@@ -103,10 +117,13 @@ const ScrollableSlider = <T extends object>({
       startX.current = e.pageX - sliderRef.offsetLeft;
       scrollLeft.current = sliderRef.scrollLeft;
 
-      slider.current.style.cursor = "grabbing";
+      // Set CSS
+      setCursor("grabbing");
       setScrollBehavior("auto");
+      setSnapState(false);
     };
 
+    // Reset CSS & snap to the closest image when the user releases the slider
     const onMouseEnd = () => {
       if (!slider?.current) {
         throw new Error("[onMouseEnd] slider.current is null");
@@ -115,14 +132,19 @@ const ScrollableSlider = <T extends object>({
       isDown.current = false;
 
       // Reset CSS
-      slider.current.style.cursor = "grab";
+      setCursor("grab");
       setScrollBehavior("smooth");
+      setTimeout(() => {
+        // SetTimeout to avoid flickering
+        setSnapState(true);
+      }, 300);
 
       // Snap to the closest image
       const closestIndex = computeClosestIndex();
       scrollToIndex(closestIndex);
     };
 
+    // Scroll according the user's dragging movement
     const onMouseMove = (e: MouseEvent) => {
       if (!isDown.current) {
         return;
@@ -139,22 +161,31 @@ const ScrollableSlider = <T extends object>({
       sliderRef.scrollLeft = scrollLeft.current - walk;
     };
 
+    // Update the index when the user scrolls with "standard" scrolling
+    const onScroll = () => {
+      const closestIndex = computeClosestIndex();
+      setItemIndex(closestIndex);
+    };
+
     sliderRef.addEventListener("mousedown", onMouseDown);
     sliderRef.addEventListener("mouseleave", onMouseEnd);
     sliderRef.addEventListener("mouseup", onMouseEnd);
     sliderRef.addEventListener("mousemove", onMouseMove);
+    sliderRef.addEventListener("scroll", onScroll);
 
     return () => {
       sliderRef.removeEventListener("mousedown", onMouseDown);
       sliderRef.removeEventListener("mouseleave", onMouseEnd);
       sliderRef.removeEventListener("mouseup", onMouseEnd);
       sliderRef.removeEventListener("mousemove", onMouseMove);
+      sliderRef.removeEventListener("scroll", onScroll);
     };
   }, [
     computeClosestIndex,
     scrollToIndex,
     setCursor,
     setScrollBehavior,
+    setSnapState,
     slidable,
   ]);
 
@@ -180,7 +211,7 @@ const ScrollableSlider = <T extends object>({
     <>
       <div
         ref={slider}
-        className="h-full flex overflow-x-hidden transition-transform"
+        className="h-full flex overflow-auto no-scrollbar transition-transform *:snap-start"
       >
         {data.map((item, index) => renderItem(item, index))}
       </div>
