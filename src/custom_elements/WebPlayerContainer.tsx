@@ -38,13 +38,12 @@ const WebPlayerContent: React.FC<
         )}
       />
 
-      {/* Options layer */}
       <OptionsBar
         composition={data}
         selectedCategory={displayedCategory}
         onChangeSelectedCategory={handleChangeCategory}
       />
-      <GalleryButton />
+      <GalleryButton data={items} />
     </div>
   );
 };
