@@ -5,8 +5,8 @@ import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <div className="h-screen flex items-center justify-center p-10">
-      <div className="max-h-full w-4/5 aspect-[4/3]">
+    <div className="h-screen flex items-center justify-center p-4 lg:p-10">
+      <div className="max-h-full w-full aspect-[4/3] lg:w-4/5">
         <WebPlayer />
       </div>
     </div>
