@@ -218,7 +218,7 @@ const ScrollableSlider = <T extends object>({
 
       {slidable && (
         <>
-          <div className={`absolute ${positionToClassName("top-right")}`}>
+          <div className={`absolute ${positionToClassName("bottom-right")}`}>
             <IndexIndicator currentIndex={itemIndex} length={length} />
           </div>
 
