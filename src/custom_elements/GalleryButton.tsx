@@ -8,6 +8,7 @@ type Props = {
   position?: Extract<PositionY, "top" | "bottom">;
 };
 
+// TODO: Implement the behavior
 const GalleryButton: React.FC<Props> = ({ data, position = "bottom" }) => {
   if (data.length < 2) {
     return null;
