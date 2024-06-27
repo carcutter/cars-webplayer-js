@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import Button from "@/components/ui/Button";
 import { Item } from "@/types/composition";
+import { positionToClassName } from "@/utils/style";
 import { preloadImage } from "@/utils/web";
 
 import ImageElement from "./ImageElement";
@@ -8,17 +10,23 @@ import ImageElement from "./ImageElement";
 const DRAG_STEP_PX = 10;
 const SCROLL_STEP_PX = 20;
 
+const ZOOM_STEP = 0.5;
+const MAX_ZOOM = 2.5;
+
 type ThreeSixtyElementProps = { item: Extract<Item, { type: "360" }> };
 
 const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   item: { images, hotspots },
 }) => {
+  // -- Refs
   const container = useRef<HTMLDivElement>(null);
-  const isDown = useRef(false);
-  const startX = useRef<number | null>(null);
+  const isMouseDown = useRef(false);
+  const mouseStartXY = useRef<{ x: number; y: number } | null>(null);
 
+  const zoomArea = useRef<HTMLDivElement>(null);
   const scroller = useRef<HTMLDivElement>(null);
 
+  // -- Image Index
   const [imageIndex, setImageIndex] = useState(0);
   const length = images.length;
 
@@ -29,56 +37,96 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     setImageIndex(currentIndex => (currentIndex + 1) % length);
   }, [length]);
 
+  // -- Zoom
+  const [zoom, setZoom] = useState<number | null>(null);
+
+  const increaseZoom = useCallback(() => {
+    setZoom(prev => {
+      if (prev === null) {
+        return 1 + ZOOM_STEP;
+      }
+
+      return Math.min(prev + ZOOM_STEP, MAX_ZOOM);
+    });
+  }, []);
+  const decreaseZoom = useCallback(() => {
+    setZoom(prev => {
+      if (prev === null) {
+        return null;
+      }
+
+      const newValue = prev - ZOOM_STEP;
+      return newValue > 1 ? newValue : null;
+    });
+  }, []);
+
+  // -- Handle Click & Drag events
   useEffect(() => {
-    if (!container?.current) {
+    if (!container.current) {
       return;
     }
 
     const containerRef = container.current;
 
     const onMouseDown = (e: MouseEvent) => {
-      if (!container?.current) {
+      if (!container.current) {
         throw new Error("[onMouseDown] slider.current is null");
       }
 
       e.preventDefault();
 
-      isDown.current = true;
-      startX.current = e.clientX;
+      isMouseDown.current = true;
+      mouseStartXY.current = {
+        x: e.clientX,
+        y: e.clientY,
+      };
     };
 
     const onMouseEnd = () => {
-      if (!container?.current) {
-        throw new Error("[onMouseEnd] slider.current is null");
+      if (!container.current) {
+        throw new Error("[onMouseEnd] container.current is null");
       }
 
-      isDown.current = false;
+      isMouseDown.current = false;
     };
 
     const onMouseMove = (e: MouseEvent) => {
-      if (!isDown.current) {
+      if (!isMouseDown.current) {
         return;
       }
 
-      if (startX.current === null) {
-        throw new Error("startX or scrollLeft is null");
+      if (!mouseStartXY.current) {
+        throw new Error("[onMouseMove] mouseStartXY.current is null");
+      }
+
+      if (!zoomArea.current) {
+        throw new Error("zoomArea.current is null");
       }
 
       e.preventDefault();
 
-      const walk = e.clientX - startX.current;
+      const walkX = e.clientX - mouseStartXY.current.x;
+      const walkY = e.clientY - mouseStartXY.current.y;
 
-      if (Math.abs(walk) < DRAG_STEP_PX) {
-        return;
-      }
+      if (!zoom) {
+        if (Math.abs(walkX) < DRAG_STEP_PX) {
+          return;
+        }
 
-      if (walk < 0) {
-        displayNextImage();
+        if (walkX < 0) {
+          displayNextImage();
+        } else {
+          displayPreviousImage();
+        }
       } else {
-        displayPreviousImage();
+        zoomArea.current.scrollLeft -= walkX;
+        zoomArea.current.scrollTop -= walkY;
       }
 
-      startX.current = e.clientX;
+      mouseStartXY.current = {
+        x: e.clientX,
+        y: e.clientY,
+      };
     };
 
     containerRef.addEventListener("mousedown", onMouseDown);
@@ -92,10 +140,16 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       containerRef.removeEventListener("mouseup", onMouseEnd);
       containerRef.removeEventListener("mousemove", onMouseMove);
     };
-  }, [displayNextImage, displayPreviousImage]);
+  }, [displayNextImage, displayPreviousImage, zoom]);
 
+  // -- Handle "invisible scroller" events to control 360.
+  // -- Not needed when zoomed because we use the native scrolling
   useEffect(() => {
-    if (!scroller?.current) {
+    if (zoom) {
+      return;
+    }
+
+    if (!scroller.current) {
       return;
     }
 
@@ -133,10 +187,14 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     return () => {
       scrollerRef.removeEventListener("scroll", onScroll);
     };
-  }, [displayNextImage, displayPreviousImage]);
+  }, [
+    displayNextImage,
+    displayPreviousImage,
+    zoom, // Zoom is needed because is make the scroller appear/disappear
+  ]);
 
   return (
-    <div ref={container} className="cursor-ew-resize">
+    <div ref={container} className={!zoom ? "cursor-ew-resize" : "cursor-move"}>
       <div className="hidden">
         {/* Take the 2 prev & 2 next images and insert them on the DOM to ensure preload */}
         {[-2, -1, 1, 2].map(offset => {
@@ -145,20 +203,51 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
         })}
       </div>
 
-      <ImageElement
-        item={{
-          type: "image",
-          src: images[imageIndex],
-          hotspots: hotspots[imageIndex],
-        }}
-      />
+      <div ref={zoomArea} className="overflow-auto no-scrollbar">
+        <div
+          className="transition-transform"
+          style={!zoom ? {} : { transform: `scale(${zoom})` }}
+        >
+          <ImageElement
+            item={{
+              type: "image",
+              src: images[imageIndex],
+              hotspots: hotspots[imageIndex],
+            }}
+          />
+        </div>
+      </div>
 
       {/* Scroller is an invisible element in front of the image to capture scroll event */}
+      {!zoom && (
+        <div
+          ref={scroller}
+          className="absolute inset-0 overflow-auto no-scrollbar"
+        >
+          <div className="size-full scale-110"></div>
+        </div>
+      )}
+
+      {/* Zoom Buttons */}
       <div
-        ref={scroller}
-        className="absolute inset-0 overflow-auto no-scrollbar"
+        className={`absolute ${positionToClassName("middle-right")} flex flex-col gap-y-2`}
       >
-        <div className="h-full w-[200%]"></div>
+        <Button
+          color="neutral"
+          shape="icon"
+          disabled={zoom === MAX_ZOOM}
+          onClick={increaseZoom}
+        >
+          +
+        </Button>
+        <Button
+          color="neutral"
+          shape="icon"
+          disabled={!zoom || zoom === 1}
+          onClick={decreaseZoom}
+        >
+          -
+        </Button>
       </div>
     </div>
   );
