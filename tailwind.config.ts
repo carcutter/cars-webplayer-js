@@ -4,8 +4,9 @@ import type { PluginCreator } from "tailwindcss/types/config";
 const noScrollbarPlugin: PluginCreator = ({ addUtilities }) =>
   addUtilities({
     ".no-scrollbar": {
-      scrollbarWidth: "none",
-      "-ms-overflow-style": "none",
+      scrollbarWidth: "none", // Firefox
+      "-ms-overflow-style": "none", // IE and Edge
+      // Webkit (Chrome, Safari and Opera)
       "&::-webkit-scrollbar": {
         display: "none",
       },
@@ -22,6 +23,10 @@ const config = {
       neutral: "hsl(var(--neutral))",
     },
     extend: {
+      aspectRatio: {
+        "4/3": "4 / 3",
+        "16/9": "16 / 9",
+      },
       borderRadius: {
         sm: "calc(var(--radius) - 2px)",
         DEFAULT: "var(--radius)",

@@ -210,10 +210,10 @@ const ScrollableSlider = <T extends object>({
   };
 
   return (
-    <>
+    <div className="relative size-full">
       <div
         ref={slider}
-        className="flex h-full overflow-auto transition-transform no-scrollbar *:snap-mandatory *:snap-start"
+        className="flex size-full overflow-x-auto transition-transform no-scrollbar *:snap-mandatory *:snap-start"
       >
         {data.map((item, index) => renderItem(item, index, itemIndex))}
       </div>
@@ -232,7 +232,7 @@ const ScrollableSlider = <T extends object>({
           />
         </>
       )}
-    </>
+    </div>
   );
 };
 

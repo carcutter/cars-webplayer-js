@@ -32,7 +32,8 @@ const WebPlayerContent: React.FC<
   };
 
   return (
-    <div className={`relative size-full ${aspectRatioClass}`}>
+    // TODO: Implement multiple items shown
+    <div className={`relative w-full ${aspectRatioClass}`}>
       <ScrollableSlider
         data={items}
         renderItem={(item, index, currentIndex) => (
@@ -60,10 +61,12 @@ const WebPlayerContainer: React.FC<React.PropsWithChildren> = ({
   const { data, isSuccess, isError } = useComposition("/data.json");
 
   if (isError) {
+    // TODO
     return <div>Error</div>;
   }
 
   if (!isSuccess) {
+    // TODO
     return <div>Loading...</div>;
   }
 

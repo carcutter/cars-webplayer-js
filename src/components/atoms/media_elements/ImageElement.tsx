@@ -5,22 +5,21 @@ type Props = { item: Extract<Item, { type: "image" }> };
 
 const ImageElement: React.FC<Props> = ({ item: { src, hotspots } }) => {
   return (
-    <>
+    <div className="relative size-full">
       <img key={src} className="size-full" src={src} alt="" />
       {hotspots?.map((hotspot, index) => (
         <div
           key={index}
-          className="absolute"
+          className="absolute -translate-x-1/2 -translate-y-1/2"
           style={{
             top: `${100 * hotspot.position.y}%`,
             left: `${100 * hotspot.position.x}%`,
-            transform: "translate(-50%, -50%)",
           }}
         >
           <Hotspot hotspot={hotspot} />
         </div>
       ))}
-    </>
+    </div>
   );
 };
 

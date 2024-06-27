@@ -1,6 +1,10 @@
 import { createContext, useContext, useState } from "react";
 
-type ContextType = {
+import { WebPlayerProps } from "@/types/props";
+
+type ContextType = Required<
+  Pick<WebPlayerProps, "flatten" | "maxItemsShown">
+> & {
   aspectRatioClass: string;
 
   showHotspots: boolean;
@@ -21,18 +25,20 @@ export const useGlobalContext = () => {
   return ctx;
 };
 
-type ProviderProps = {
-  aspectRatioClass: string;
-};
+type ProviderProps = Required<WebPlayerProps>;
 
 const GlobalContextProvider: React.FC<
   React.PropsWithChildren<ProviderProps>
-> = ({ aspectRatioClass, children }) => {
+> = ({ aspectRatio, children, ...props }) => {
+  const aspectRatioClass = aspectRatio === "4:3" ? "aspect-4/3" : "aspect-16/9";
+
   const [showHotspots, setShowHotspots] = useState(true);
 
   return (
     <GlobalContext.Provider
       value={{
+        ...props,
+
         aspectRatioClass,
 
         showHotspots,
