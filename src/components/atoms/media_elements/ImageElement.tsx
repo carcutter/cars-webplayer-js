@@ -1,5 +1,5 @@
+import Hotspot from "@/components/molecules/Hotspot";
 import { Item } from "@/types/composition";
-import Hotspot from "../../molecules/Hotspot";
 
 type Props = { item: Extract<Item, { type: "image" }> };
 

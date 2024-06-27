@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import IndexIndicator from "../atoms/IndexIndicator";
-import NextPrevButtons from "../../custom_elements/NextPrevButtons";
+
+import IndexIndicator from "@/components/atoms/IndexIndicator";
 import { positionToClassName } from "@/utils/style";
+
+import NextPrevButtons from "../../custom_elements/NextPrevButtons";
 
 type Props<T extends object> = {
   data: T[];
@@ -211,7 +213,7 @@ const ScrollableSlider = <T extends object>({
     <>
       <div
         ref={slider}
-        className="h-full flex overflow-auto no-scrollbar transition-transform *:snap-start *:snap-mandatory"
+        className="flex h-full overflow-auto transition-transform no-scrollbar *:snap-mandatory *:snap-start"
       >
         {data.map((item, index) => renderItem(item, index, itemIndex))}
       </div>

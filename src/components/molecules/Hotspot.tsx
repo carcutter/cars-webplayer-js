@@ -1,6 +1,6 @@
+import HotspotIcon from "@/components/atoms/HotspotIcon";
+import Button from "@/components/ui/Button";
 import { Hotspot as HotspotType } from "@/types/composition";
-import Button from "../ui/Button";
-import HotspotIcon from "../atoms/HotspotIcon";
 
 type Props = { hotspot: HotspotType };
 

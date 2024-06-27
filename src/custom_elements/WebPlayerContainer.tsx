@@ -1,11 +1,13 @@
-import { useComposition } from "@/hooks/useComposition";
-import { Composition } from "@/types/composition";
-import OptionsBar from "./OptionsBar";
-import GalleryButton from "./GalleryButton";
-import WebPlayerElement from "@/components/molecules/WebPlayerElement";
-import { useGlobalContext } from "@/providers/GlobalContext";
-import ScrollableSlider from "@/components/organisms/ScrollableSlider";
 import { useState } from "react";
+
+import WebPlayerElement from "@/components/molecules/WebPlayerElement";
+import ScrollableSlider from "@/components/organisms/ScrollableSlider";
+import { useComposition } from "@/hooks/useComposition";
+import { useGlobalContext } from "@/providers/GlobalContext";
+import { Composition } from "@/types/composition";
+
+import GalleryButton from "./GalleryButton";
+import OptionsBar from "./OptionsBar";
 
 type WebPlayerContentProps = { data: Composition };
 

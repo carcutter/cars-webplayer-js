@@ -36,7 +36,7 @@ const Button: React.FC<React.PropsWithChildren<Props>> = ({
 
   return (
     <button
-      className={`${variantClassName} ${shapeClassName} text-sm flex justify-center items-center transition disabled:opacity-60 ${className}`}
+      className={`${variantClassName} ${shapeClassName} flex items-center justify-center text-sm transition disabled:opacity-60 ${className}`}
       {...props}
     >
       {children}

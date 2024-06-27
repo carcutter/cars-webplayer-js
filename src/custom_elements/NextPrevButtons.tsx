@@ -1,6 +1,6 @@
+import Button from "@/components/ui/Button";
 import { PositionY } from "@/types/position";
 import { positionXToClassName, positionYToClassName } from "@/utils/style";
-import Button from "@/components/ui/Button";
 
 type Props = {
   currentIndex: number;
@@ -24,9 +24,7 @@ const NextPrevButtons: React.FC<Props> = ({
       <Button
         shape="icon"
         color="neutral"
-        className={`absolute ${positionYClassName} ${positionXToClassName(
-          "left"
-        )}`}
+        className={`absolute ${positionYClassName} ${positionXToClassName("left")}`}
         onClick={onPrev}
         disabled={currentIndex === 0}
       >
@@ -39,9 +37,7 @@ const NextPrevButtons: React.FC<Props> = ({
       <Button
         shape="icon"
         color="neutral"
-        className={`absolute ${positionYClassName} ${positionXToClassName(
-          "right"
-        )}`}
+        className={`absolute ${positionYClassName} ${positionXToClassName("right")}`}
         onClick={onNext}
         disabled={currentIndex === length - 1}
       >

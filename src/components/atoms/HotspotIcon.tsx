@@ -6,7 +6,7 @@ const HotspotIcon: React.FC<React.PropsWithChildren<Props>> = ({
   children,
 }) => {
   return (
-    <div className="size-6 flex justify-center items-center bg-primary text-background rounded-full">
+    <div className="flex size-6 items-center justify-center rounded-full bg-primary text-background">
       {children}
     </div>
   );

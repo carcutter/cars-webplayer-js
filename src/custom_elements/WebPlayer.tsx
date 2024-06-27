@@ -1,6 +1,8 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import WebPlayerContainer from "./WebPlayerContainer";
+
 import GlobalContextProvider from "@/providers/GlobalContext";
+
+import WebPlayerContainer from "./WebPlayerContainer";
 
 const queryClient = new QueryClient();
 

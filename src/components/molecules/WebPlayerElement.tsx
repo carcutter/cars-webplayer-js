@@ -1,9 +1,9 @@
-import { Item } from "@/types/composition";
+import ImageElement from "@/components/atoms/media_elements/ImageElement";
+import OmniDirectionElement from "@/components/atoms/media_elements/OmniDirectionElement";
+import ThreeSixtyElement from "@/components/atoms/media_elements/ThreeSixtyElement";
+import VideoElement from "@/components/atoms/media_elements/VideoElement";
 import { useGlobalContext } from "@/providers/GlobalContext";
-import ImageElement from "../atoms/media_elements/ImageElement";
-import VideoElement from "../atoms/media_elements/VideoElement";
-import ThreeSixtyElement from "../atoms/media_elements/ThreeSixtyElement";
-import OmniDirectionElement from "../atoms/media_elements/OmniDirectionElement";
+import { Item } from "@/types/composition";
 
 type Props = { item: Item; lazy?: boolean };
 

@@ -1,7 +1,7 @@
-import { PositionY } from "@/types/position";
-import Button from "../components/ui/Button";
-import { positionXToClassName, positionYToClassName } from "@/utils/style";
+import Button from "@/components/ui/Button";
 import { Item } from "@/types/composition";
+import { PositionY } from "@/types/position";
+import { positionXToClassName, positionYToClassName } from "@/utils/style";
 
 type Props = {
   data: Item[];

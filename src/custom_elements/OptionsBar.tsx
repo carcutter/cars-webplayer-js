@@ -1,9 +1,9 @@
-import { Composition } from "@/types/composition";
-import { positionXToClassName, positionYToClassName } from "@/utils/style";
-import { PositionY } from "@/types/position";
-import Separator from "../components/ui/Separator";
-import Button from "../components/ui/Button";
+import Button from "@/components/ui/Button";
+import Separator from "@/components/ui/Separator";
 import { useGlobalContext } from "@/providers/GlobalContext";
+import { Composition } from "@/types/composition";
+import { PositionY } from "@/types/position";
+import { positionXToClassName, positionYToClassName } from "@/utils/style";
 
 type OptionBarProps = {
   composition: Composition;
@@ -31,7 +31,7 @@ const OptionsBar: React.FC<OptionBarProps> = ({
   };
 
   const handleHotspotsClick = () => {
-    setShowHotspots((v) => !v);
+    setShowHotspots(v => !v);
   };
 
   const handleExtendClick = () => {
@@ -40,7 +40,7 @@ const OptionsBar: React.FC<OptionBarProps> = ({
 
   return (
     <div
-      className={`absolute ${positionYClassName} ${positionXClassName} bg-background p-2 rounded flex gap-x-2`}
+      className={`absolute ${positionYClassName} ${positionXClassName} flex gap-x-2 rounded bg-background p-2`}
     >
       {/* Category selection */}
       <div className="flex gap-x-2">

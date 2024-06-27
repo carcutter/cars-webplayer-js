@@ -1,7 +1,9 @@
-import { Item } from "@/types/composition";
 import { useCallback, useEffect, useRef, useState } from "react";
-import ImageElement from "./ImageElement";
+
+import { Item } from "@/types/composition";
 import { preloadImage } from "@/utils/web";
+
+import ImageElement from "./ImageElement";
 
 const STEP_PX = 10;
 
@@ -26,10 +28,10 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   }, []);
 
   const displayPreviousImage = useCallback(() => {
-    setImageIndex((currentIndex) => (currentIndex - 1 + length) % length);
+    setImageIndex(currentIndex => (currentIndex - 1 + length) % length);
   }, [length]);
   const displayNextImage = useCallback(() => {
-    setImageIndex((currentIndex) => (currentIndex + 1) % length);
+    setImageIndex(currentIndex => (currentIndex + 1) % length);
   }, [length]);
 
   useEffect(() => {
@@ -101,7 +103,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     <div ref={container} className="cursor-ew-resize">
       <div className="hidden">
         {/* Take the 2 prev & 2 next images and insert them on the DOM to ensure preload */}
-        {[-2, -1, 1, 2].map((offset) => {
+        {[-2, -1, 1, 2].map(offset => {
           const index = (imageIndex + offset + length) % length;
           return <img key={index} src={images[index]} alt="" />;
         })}
@@ -131,12 +133,12 @@ const ThreeSixtyElementPlaceholder: React.FC<
     <div className="relative size-full">
       <img className="size-full" src={imageSrc} alt="" />
       <div
-        className="absolute flex flex-col justify-center items-center gap-y-4 inset-0 bg-foreground/35 cursor-pointer"
+        className="absolute inset-0 flex cursor-pointer flex-col items-center justify-center gap-y-4 bg-foreground/35"
         onClick={onClick}
       >
         <div className="text-background">PLAY 360</div>
         {loadingProgress !== null && (
-          <div className="w-3/5 rounded-full h-1 bg-primary">
+          <div className="h-1 w-3/5 rounded-full bg-primary">
             <div
               className="h-full bg-primary/25"
               style={{ width: `${loadingProgress}%` }}
@@ -153,11 +155,9 @@ const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = ({ item }) => {
 
   const fetchImages = useCallback(async () => {
     setLoadingProgress(0);
-    const imagePromises = item.images.map((imageSrc) =>
+    const imagePromises = item.images.map(imageSrc =>
       preloadImage(imageSrc).then(() =>
-        setLoadingProgress(
-          (prev) => (prev as number) + 100 / item.images.length
-        )
+        setLoadingProgress(prev => (prev as number) + 100 / item.images.length)
       )
     );
 
@@ -165,6 +165,8 @@ const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = ({ item }) => {
       await Promise.all(imagePromises);
       setLoadingProgress(100);
     } catch (e) {
+      // TODO
+      // eslint-disable-next-line no-console
       console.error(e);
     }
   }, [item.images]);
