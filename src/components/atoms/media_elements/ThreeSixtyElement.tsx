@@ -5,7 +5,8 @@ import { preloadImage } from "@/utils/web";
 
 import ImageElement from "./ImageElement";
 
-const STEP_PX = 10;
+const DRAG_STEP_PX = 10;
+const SCROLL_STEP_PX = 20;
 
 type ThreeSixtyElementProps = { item: Extract<Item, { type: "360" }> };
 
@@ -16,16 +17,10 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   const isDown = useRef(false);
   const startX = useRef<number | null>(null);
 
+  const scroller = useRef<HTMLDivElement>(null);
+
   const [imageIndex, setImageIndex] = useState(0);
   const length = images.length;
-
-  const getContainerWidth = useCallback(() => {
-    if (!container.current) {
-      throw new Error("[getContainerWidth] slider.current is null");
-    }
-
-    return container.current.getBoundingClientRect().width;
-  }, []);
 
   const displayPreviousImage = useCallback(() => {
     setImageIndex(currentIndex => (currentIndex - 1 + length) % length);
@@ -73,7 +68,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
       const walk = e.clientX - startX.current;
 
-      if (Math.abs(walk) < STEP_PX) {
+      if (Math.abs(walk) < DRAG_STEP_PX) {
         return;
       }
 
@@ -97,7 +92,48 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       containerRef.removeEventListener("mouseup", onMouseEnd);
       containerRef.removeEventListener("mousemove", onMouseMove);
     };
-  }, [displayNextImage, displayPreviousImage, getContainerWidth]);
+  }, [displayNextImage, displayPreviousImage]);
+
+  useEffect(() => {
+    if (!scroller?.current) {
+      return;
+    }
+
+    const scrollerRef = scroller.current;
+
+    const getSliderWidth = () => scrollerRef.getBoundingClientRect().width;
+
+    const sliderCenterPosition =
+      scrollerRef.scrollWidth / 2 - getSliderWidth() / 2;
+
+    const centerScrollElement = () => {
+      scrollerRef.scrollLeft = sliderCenterPosition;
+    };
+
+    centerScrollElement();
+
+    const onScroll = () => {
+      const walk = scrollerRef.scrollLeft - sliderCenterPosition;
+
+      if (Math.abs(walk) < SCROLL_STEP_PX) {
+        return;
+      }
+
+      if (walk > 0) {
+        displayNextImage();
+      } else {
+        displayPreviousImage();
+      }
+
+      centerScrollElement();
+    };
+
+    scrollerRef.addEventListener("scroll", onScroll);
+
+    return () => {
+      scrollerRef.removeEventListener("scroll", onScroll);
+    };
+  }, [displayNextImage, displayPreviousImage]);
 
   return (
     <div ref={container} className="cursor-ew-resize">
@@ -116,6 +152,14 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
           hotspots: hotspots[imageIndex],
         }}
       />
+
+      {/* Scroller is an invisible element in front of the image to capture scroll event */}
+      <div
+        ref={scroller}
+        className="absolute inset-0 overflow-auto no-scrollbar"
+      >
+        <div className="h-full w-[200%]"></div>
+      </div>
     </div>
   );
 };
