@@ -32,4 +32,5 @@ const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   );
 };
 
+// TODO: Add HOC with zod validation
 export default WebPlayer;

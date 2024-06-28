@@ -735,27 +735,6 @@
     ]
   },
   {
-    "category": "video",
-    "title": "Video",
-    "items": [
-      {
-        "type": "video",
-        "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/c/c0/Big_Buck_Bunny_4K.webm/Big_Buck_Bunny_4K.webm.480p.vp9.webm",
-        "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Big_Buck_Bunny_4K.webm/310px-seek%3D116-Big_Buck_Bunny_4K.webm.jpg"
-      }
-    ]
-  },
-  {
-    "category": "omni_directional",
-    "title": "360i",
-    "items": [
-      {
-        "type": "omni_directional",
-        "src": "https://res.insta360.com/dynamic/store/4c0459792a4dd56d490a89974d936c96/1767_0dd0a96a-c2a3-4d96-9fad-a872d0ac0787.jpg"
-      }
-    ]
-  },
-  {
     "category": "exterior",
     "title": "Exterior",
     "items": [
@@ -829,6 +808,17 @@
       {
         "type": "image",
         "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_08_front_72b68eef587a5cb6c07257dbb4c8032d616ed261_a.jpg"
+      }
+    ]
+  },
+  {
+    "category": "video",
+    "title": "Video",
+    "items": [
+      {
+        "type": "video",
+        "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/c/c0/Big_Buck_Bunny_4K.webm/Big_Buck_Bunny_4K.webm.480p.vp9.webm",
+        "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Big_Buck_Bunny_4K.webm/310px-seek%3D116-Big_Buck_Bunny_4K.webm.jpg"
       }
     ]
   },
@@ -1660,6 +1650,16 @@
       {
         "type": "image",
         "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_02_side-right_69eb5d9332f6d54fe94dfab669de42df031492fa_a.jpg"
+      }
+    ]
+  },
+  {
+    "category": "omni_directional",
+    "title": "360i",
+    "items": [
+      {
+        "type": "omni_directional",
+        "src": "https://res.insta360.com/dynamic/store/4c0459792a4dd56d490a89974d936c96/1767_0dd0a96a-c2a3-4d96-9fad-a872d0ac0787.jpg"
       }
     ]
   }

@@ -1,63 +1,31 @@
 import Button from "@/components/ui/Button";
 import Separator from "@/components/ui/Separator";
 import { useGlobalContext } from "@/providers/GlobalContext";
-import { Composition } from "@/types/composition";
-import { PositionY } from "@/types/position";
-import { positionXToClassName, positionYToClassName } from "@/utils/style";
+import { Position } from "@/types/position";
+import { positionToClassName } from "@/utils/style";
 
 type OptionBarProps = {
-  composition: Composition;
-  selectedCategory: string;
-  onChangeSelectedCategory: (category: string) => void;
-  position?: Extract<PositionY, "top" | "bottom">;
+  position?: Position;
 };
 
 // TODO: Split category selection into a separate component
-const OptionsBar: React.FC<OptionBarProps> = ({
-  composition,
-  selectedCategory,
-  onChangeSelectedCategory,
-  position = "top",
-}) => {
-  const positionYClassName = positionYToClassName(position);
-  const positionXClassName = positionXToClassName("center");
+const OptionsBar: React.FC<OptionBarProps> = ({ position = "top-right" }) => {
+  const positionClassName = positionToClassName(position);
 
   const { showHotspots, setShowHotspots } = useGlobalContext();
-
-  const handleCategoryClick = (category: string) => {
-    if (category === selectedCategory) {
-      return;
-    }
-    onChangeSelectedCategory(category);
-  };
 
   const handleHotspotsClick = () => {
     setShowHotspots(v => !v);
   };
 
   const handleExtendClick = () => {
-    //
+    // TODO
   };
 
   return (
     <div
-      className={`absolute ${positionYClassName} ${positionXClassName} flex gap-x-2 rounded bg-background p-2`}
+      className={`absolute ${positionClassName} flex gap-x-2 rounded bg-background p-2`}
     >
-      {/* Category selection */}
-      <div className="flex gap-x-2">
-        {composition.map(({ category, title }) => (
-          <Button
-            key={category}
-            variant={category === selectedCategory ? "fill" : "ghost"}
-            onClick={() => handleCategoryClick(category)}
-          >
-            {title}
-          </Button>
-        ))}
-      </div>
-
-      <Separator orientation="vertical" />
-
       {/* Hotspot button */}
       <Button
         variant={showHotspots ? "fill" : "ghost"}

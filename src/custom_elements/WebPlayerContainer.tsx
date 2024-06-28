@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import WebPlayerElement from "@/components/molecules/WebPlayerElement";
 import ScrollableSlider from "@/components/organisms/ScrollableSlider";
 import { useComposition } from "@/hooks/useComposition";
 import { useGlobalContext } from "@/providers/GlobalContext";
-import { Composition } from "@/types/composition";
+import { Composition, Item } from "@/types/composition";
 
+import CategoryBar from "./CategoryBar";
 import GalleryButton from "./GalleryButton";
 import OptionsBar from "./OptionsBar";
 
@@ -14,18 +15,24 @@ type WebPlayerContentProps = { data: Composition };
 const WebPlayerContent: React.FC<
   React.PropsWithChildren<WebPlayerContentProps>
 > = ({ data }) => {
-  const { maxItemsShown } = useGlobalContext();
+  const { flatten, maxItemsShown } = useGlobalContext();
 
   const [displayedCategory, setDisplayedCategory] = useState(data[0].category);
 
-  const currrentCategoryRoot = data.find(
-    ({ category }) => category === displayedCategory
-  );
-  if (!currrentCategoryRoot) {
-    throw new Error(`Category ${displayedCategory} not found`);
-  }
+  const items: Item[] = useMemo(() => {
+    if (!flatten) {
+      const currrentCategoryRoot = data.find(
+        ({ category }) => category === displayedCategory
+      );
+      if (!currrentCategoryRoot) {
+        throw new Error(`Category ${displayedCategory} not found`);
+      }
 
-  const { items } = currrentCategoryRoot;
+      return currrentCategoryRoot.items;
+    }
+
+    return data.flatMap(({ items }) => items);
+  }, [flatten, data, displayedCategory]);
 
   const handleChangeCategory = (category: string) => {
     setDisplayedCategory(category);
@@ -45,11 +52,15 @@ const WebPlayerContent: React.FC<
         )}
       />
 
-      <OptionsBar
-        composition={data}
-        selectedCategory={displayedCategory}
-        onChangeSelectedCategory={handleChangeCategory}
-      />
+      {/* Options overlay */}
+      {!flatten && (
+        <CategoryBar
+          composition={data}
+          selectedCategory={displayedCategory}
+          onChangeSelectedCategory={handleChangeCategory}
+        />
+      )}
+      <OptionsBar />
       <GalleryButton data={items} />
     </div>
   );

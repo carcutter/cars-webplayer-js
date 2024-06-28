@@ -73,7 +73,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
         throw new Error("[onMouseDown] slider.current is null");
       }
 
-      e.preventDefault();
+      e.preventDefault(); // Prevents native image dragging
 
       isMouseDown.current = true;
       mouseStartXY.current = {
@@ -103,7 +103,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
         throw new Error("zoomArea.current is null");
       }
 
-      e.preventDefault();
+      e.stopPropagation(); // Prevents slider from moving when rotating 360
 
       const walkX = e.clientX - mouseStartXY.current.x;
       const walkY = e.clientY - mouseStartXY.current.y;
@@ -265,11 +265,10 @@ const ThreeSixtyElementPlaceholder: React.FC<
   return (
     <div className="relative size-full">
       <img className="size-full" src={imageSrc} alt="" />
-      <div
-        className="absolute inset-0 flex cursor-pointer flex-col items-center justify-center gap-y-4 bg-foreground/35"
-        onClick={onClick}
-      >
-        <div className="text-background">PLAY 360</div>
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
+        <Button className="text-background" onClick={onClick}>
+          PLAY 360
+        </Button>
         {loadingProgress !== null && (
           <div className="h-1 w-3/5 rounded-full bg-primary">
             <div

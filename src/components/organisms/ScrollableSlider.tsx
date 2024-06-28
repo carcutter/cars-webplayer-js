@@ -36,6 +36,10 @@ const ScrollableSlider = <T extends object>({
   const length = data.length;
   const slidable = length > 1;
   const indexes = useMemo(() => {
+    if (length <= maxItemsShown) {
+      return [0];
+    }
+
     const maxLeftIndexInt = length - Math.ceil(maxItemsShown);
 
     const indexes = Array.from({ length: maxLeftIndexInt + 1 }, (_, i) => i);
@@ -66,12 +70,12 @@ const ScrollableSlider = <T extends object>({
     slider.current.style.scrollBehavior = behavior;
   }, []);
 
-  const setSnapState = useCallback((activated: boolean) => {
+  const setSnapState = useCallback((type: "mandatory" | "none") => {
     if (!slider.current) {
       throw new Error("[setSnapBehavior] slider.current is null");
     }
 
-    if (activated) {
+    if (type === "mandatory") {
       slider.current.style.scrollSnapType = "x mandatory";
     } else {
       slider.current.style.scrollSnapType = "none";
@@ -97,7 +101,7 @@ const ScrollableSlider = <T extends object>({
       }
 
       if (!indexes.includes(index)) {
-        throw new Error("Unexpected index value");
+        throw new Error(`[scrollLeftToIndex] Unexpected index value: ${index}`);
       }
 
       slider.current.scrollLeft = index * getElementWidth();
@@ -137,6 +141,7 @@ const ScrollableSlider = <T extends object>({
       return;
     }
 
+    // DOM not ready
     if (!slider.current) {
       return;
     }
@@ -145,15 +150,15 @@ const ScrollableSlider = <T extends object>({
 
     setCursor("grab");
     setScrollBehavior("smooth");
-    setSnapState(true);
+    setSnapState("mandatory");
 
-    // Take "measures" when the user clicks on the slider
+    // Handle when the user just clicked on the slider
     const onMouseDown = (e: MouseEvent) => {
       if (!slider.current) {
         throw new Error("[onMouseDown] slider.current is null");
       }
 
-      e.preventDefault();
+      e.preventDefault(); // Prevents native image dragging
 
       isDown.current = true;
       startX.current = e.pageX - sliderRef.offsetLeft;
@@ -162,7 +167,7 @@ const ScrollableSlider = <T extends object>({
       // Set CSS
       setCursor("grabbing");
       setScrollBehavior("auto");
-      setSnapState(false);
+      setSnapState("none");
     };
 
     // Reset CSS & snap to the closest image when the user releases the slider
@@ -177,14 +182,16 @@ const ScrollableSlider = <T extends object>({
       setCursor("grab");
       setScrollBehavior("smooth");
       setTimeout(() => {
-        // SetTimeout to avoid flickering
-        setSnapState(true);
+        // setTimeout to avoid flickering, but we have to handle the case where the user clicks again on the slider
+        if (isDown.current) {
+          return;
+        }
+        setSnapState("mandatory");
       }, 500);
 
-      // Snap to the closest image
-      const closestIndex = computeLeftClosestIndex();
-
-      scrollLeftToIndex(closestIndex);
+      // Snap scrolling
+      const closestLeftIndex = computeLeftClosestIndex();
+      scrollLeftToIndex(closestLeftIndex);
     };
 
     // Scroll according the user's dragging movement
@@ -194,10 +201,10 @@ const ScrollableSlider = <T extends object>({
       }
 
       if (startX.current === null || scrollLeft.current === null) {
-        throw new Error("startX or scrollLeft is null");
+        throw new Error("[onMouseMove] startX or scrollLeft is null");
       }
 
-      e.preventDefault();
+      e.preventDefault(); // Prevents native dragging
 
       const x = e.pageX - sliderRef.offsetLeft;
       const walk = x - startX.current;
