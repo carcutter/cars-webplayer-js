@@ -29,7 +29,7 @@ const CategoryBar: React.FC<CategoryBarProps> = ({
 
   return (
     <div
-      className={`absolute ${positionYClassName} ${positionXClassName} flex gap-x-2 rounded bg-background p-2`}
+      className={`absolute ${positionYClassName} ${positionXClassName} flex gap-x-2 rounded bg-background p-2 shadow`}
     >
       {/* Category selection */}
       <div className="flex gap-x-2">

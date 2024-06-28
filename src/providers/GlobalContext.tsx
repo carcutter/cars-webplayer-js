@@ -2,7 +2,11 @@ import { createContext, useContext, useState } from "react";
 
 import { WebPlayerProps } from "@/types/props";
 
-type ContextType = Required<WebPlayerProps> & {
+type ProviderProps = Required<WebPlayerProps> & {
+  itemsShown: number;
+};
+
+type ContextType = ProviderProps & {
   aspectRatioClass: string;
 
   showHotspots: boolean;
@@ -22,8 +26,6 @@ export const useGlobalContext = () => {
 
   return ctx;
 };
-
-type ProviderProps = Required<WebPlayerProps>;
 
 const GlobalContextProvider: React.FC<
   React.PropsWithChildren<ProviderProps>

@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useEffect, useRef, useState } from "react";
 
 import GlobalContextProvider from "@/providers/GlobalContext";
 import { WebPlayerProps } from "@/types/props";
@@ -13,9 +14,39 @@ const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   aspectRatio = "4:3",
   flatten = false,
   maxItemsShown = 1,
+  breakpoint = 768,
 
   children,
 }) => {
+  const wrapper = useRef<HTMLDivElement>(null);
+  const [itemsShown, setItemsShown] = useState(maxItemsShown);
+
+  // Handle resizing
+  useEffect(() => {
+    if (maxItemsShown === 1) {
+      return;
+    }
+
+    if (!wrapper.current) {
+      return;
+    }
+
+    const wrapperRef = wrapper.current;
+
+    const updateShownItems = () => {
+      const playerWidth = wrapperRef.clientWidth;
+      setItemsShown(playerWidth < breakpoint ? 1 : maxItemsShown);
+    };
+
+    updateShownItems();
+
+    addEventListener("resize", updateShownItems);
+
+    return () => {
+      removeEventListener("resize", updateShownItems);
+    };
+  }, [breakpoint, maxItemsShown]);
+
   return (
     <>
       <style>{styles}</style>
@@ -26,9 +57,12 @@ const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
             aspectRatio,
             flatten,
             maxItemsShown,
+            breakpoint,
+
+            itemsShown,
           }}
         >
-          <div className="relative size-full overflow-hidden">
+          <div ref={wrapper} className="relative size-full overflow-hidden">
             <WebPlayerContainer>{children}</WebPlayerContainer>
           </div>
         </GlobalContextProvider>

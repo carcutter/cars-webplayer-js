@@ -4,4 +4,5 @@ export type WebPlayerProps = {
   aspectRatio?: AspectRatio;
   flatten?: boolean;
   maxItemsShown?: number;
+  breakpoint?: number;
 };

@@ -270,10 +270,10 @@ const ThreeSixtyElementPlaceholder: React.FC<
           PLAY 360
         </Button>
         {loadingProgress !== null && (
-          <div className="h-1 w-3/5 rounded-full bg-primary">
+          <div className="relative h-1 w-3/5 overflow-hidden rounded-full bg-background">
             <div
-              className="h-full bg-primary/25"
-              style={{ width: `${loadingProgress}%` }}
+              className="absolute inset-0 bg-primary transition-[right]"
+              style={{ right: `${100 - loadingProgress}%` }}
             />
           </div>
         )}
@@ -287,7 +287,6 @@ const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = ({ item }) => {
 
   const fetchImages = useCallback(async () => {
     setLoadingProgress(0);
-    // TODO: Fix this
     const imagePromises = item.images.map(imageSrc =>
       preloadImage(imageSrc).then(() =>
         setLoadingProgress(prev => (prev as number) + 100 / item.images.length)
@@ -295,10 +294,9 @@ const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = ({ item }) => {
     );
 
     try {
-      await Promise.all(imagePromises);
+      await Promise.allSettled(imagePromises);
       setLoadingProgress(100);
     } catch (e) {
-      // TODO
       // eslint-disable-next-line no-console
       console.error(e);
     }

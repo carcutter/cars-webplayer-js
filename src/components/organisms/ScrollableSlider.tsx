@@ -16,6 +16,8 @@ type Props<ItemT extends object> = {
   keyExtractor?: (item: ItemT, index: number) => string;
 };
 
+const ONE_ITEM_DRAG_MULTIPLIER = 1.5;
+
 const defaultKeyExtractor = (_item: unknown, index: number) => index.toString();
 
 const ScrollableSlider = <T extends object>({
@@ -23,8 +25,8 @@ const ScrollableSlider = <T extends object>({
   renderItem,
   keyExtractor = defaultKeyExtractor,
 }: Props<T>): ReturnType<React.FC> => {
-  const { aspectRatio, maxItemsShown } = useGlobalContext();
-  const showOneItem = maxItemsShown === 1; // TODO: Should also be for smaller screens
+  const { aspectRatio, itemsShown } = useGlobalContext();
+  const showOneItem = itemsShown === 1;
 
   // - Refs
   const slider = useRef<HTMLDivElement>(null);
@@ -34,23 +36,23 @@ const ScrollableSlider = <T extends object>({
 
   // - Indexing
   const length = data.length;
-  const slidable = length > 1;
+  const slidable = length > itemsShown;
   const indexes = useMemo(() => {
-    if (length <= maxItemsShown) {
+    if (!slidable) {
       return [0];
     }
 
-    const maxLeftIndexInt = length - Math.ceil(maxItemsShown);
+    const maxLeftIndexInt = length - Math.ceil(itemsShown);
 
     const indexes = Array.from({ length: maxLeftIndexInt + 1 }, (_, i) => i);
 
-    const fractionnalIndex = maxItemsShown % 1;
+    const fractionnalIndex = itemsShown % 1;
     if (fractionnalIndex !== 0) {
       indexes.push(maxLeftIndexInt + fractionnalIndex);
     }
 
     return indexes;
-  }, [length, maxItemsShown]);
+  }, [itemsShown, length, slidable]);
   const [currentActiveIndex, setCurrentActiveIndex] = useState(0); // NOTE: Used only by the fixed index indicator
 
   // - Style functions
@@ -91,8 +93,8 @@ const ScrollableSlider = <T extends object>({
   }, []);
 
   const getElementWidth = useCallback(() => {
-    return getContainerWidth() / maxItemsShown;
-  }, [getContainerWidth, maxItemsShown]);
+    return getContainerWidth() / itemsShown;
+  }, [getContainerWidth, itemsShown]);
 
   const scrollLeftToIndex = useCallback(
     (index: number) => {
@@ -206,9 +208,10 @@ const ScrollableSlider = <T extends object>({
 
       e.preventDefault(); // Prevents native dragging
 
+      const scrollMultiplier = showOneItem ? ONE_ITEM_DRAG_MULTIPLIER : 1;
       const x = e.pageX - sliderRef.offsetLeft;
       const walk = x - startX.current;
-      sliderRef.scrollLeft = scrollLeft.current - walk;
+      sliderRef.scrollLeft = scrollLeft.current - walk * scrollMultiplier;
     };
 
     // Update the index when the user scrolls with "standard" scrolling
@@ -236,6 +239,7 @@ const ScrollableSlider = <T extends object>({
     setCursor,
     setScrollBehavior,
     setSnapState,
+    showOneItem,
     slidable,
   ]);
 
@@ -261,12 +265,12 @@ const ScrollableSlider = <T extends object>({
     <div
       className="relative w-full"
       style={{
-        aspectRatio: aspectRatioStyle(aspectRatio, maxItemsShown),
+        aspectRatio: aspectRatioStyle(aspectRatio, itemsShown),
       }}
     >
       <div
         ref={slider}
-        className="flex size-full overflow-x-auto transition-transform no-scrollbar *:snap-mandatory *:snap-start"
+        className={`flex size-full ${slidable ? "overflow-x-auto transition-transform no-scrollbar *:snap-mandatory *:snap-start" : "justify-center"}`}
       >
         {data.map((item, index) => {
           const Item = renderItem(item, index, currentActiveIndex);
@@ -275,7 +279,7 @@ const ScrollableSlider = <T extends object>({
           return (
             <div key={key} className="relative">
               {Item}
-              {!showOneItem && (
+              {slidable && !showOneItem && (
                 <div
                   className={`absolute ${positionToClassName("bottom-right")}`}
                 >
@@ -300,7 +304,7 @@ const ScrollableSlider = <T extends object>({
 
           <NextPrevButtons
             currentIndex={currentActiveIndex}
-            maxIndex={length - maxItemsShown}
+            maxIndex={length - itemsShown}
             onPrev={prevImage}
             onNext={nextImage}
           />

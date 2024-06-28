@@ -24,7 +24,7 @@ const OptionsBar: React.FC<OptionBarProps> = ({ position = "top-right" }) => {
 
   return (
     <div
-      className={`absolute ${positionClassName} flex gap-x-2 rounded bg-background p-2`}
+      className={`absolute ${positionClassName} flex gap-x-2 rounded bg-background p-2 shadow`}
     >
       {/* Hotspot button */}
       <Button
