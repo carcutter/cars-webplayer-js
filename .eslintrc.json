@@ -24,6 +24,7 @@
   "rules": {
     "no-console": "error",
     "react/react-in-jsx-scope": "off", // Do not need to import React in JSX files
+    "react/display-name": "off",
 
     "import/order": [
       "error",

@@ -1,8 +1,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 
+import withZodSchema from "@/components/hoc/withZodSchema";
 import GlobalContextProvider from "@/providers/GlobalContext";
-import { WebPlayerProps } from "@/types/props";
+import { WebPlayerProps, WebPlayerPropsSchema } from "@/types/props";
 
 import styles from "../index.css?inline";
 
@@ -71,5 +72,4 @@ const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   );
 };
 
-// TODO: Add HOC with zod validation
-export default WebPlayer;
+export default withZodSchema(WebPlayer, WebPlayerPropsSchema);

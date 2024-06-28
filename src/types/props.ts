@@ -1,8 +1,14 @@
-export type AspectRatio = "4:3" | "16:9";
+import { z } from "zod";
 
-export type WebPlayerProps = {
-  aspectRatio?: AspectRatio;
-  flatten?: boolean;
-  maxItemsShown?: number;
-  breakpoint?: number;
-};
+export const AspectRatioSchema = z.union([z.literal("4:3"), z.literal("16:9")]);
+
+export const WebPlayerPropsSchema = z.object({
+  aspectRatio: AspectRatioSchema.optional(),
+  flatten: z.boolean().optional(),
+  maxItemsShown: z.number().min(1).optional(),
+  breakpoint: z.number().min(0).optional(),
+});
+
+export type AspectRatio = z.infer<typeof AspectRatioSchema>;
+
+export type WebPlayerProps = z.infer<typeof WebPlayerPropsSchema>;
