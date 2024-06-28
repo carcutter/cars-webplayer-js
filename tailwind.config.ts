@@ -14,7 +14,7 @@ const noScrollbarPlugin: PluginCreator = ({ addUtilities }) =>
   });
 
 const config = {
-  content: ["./index.html", "./src/**/*.{ts,tsx}"],
+  content: ["./src/*/**/*.{ts,tsx}"],
   theme: {
     colors: {
       background: "hsl(var(--background))",

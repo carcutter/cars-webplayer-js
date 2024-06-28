@@ -287,6 +287,7 @@ const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = ({ item }) => {
 
   const fetchImages = useCallback(async () => {
     setLoadingProgress(0);
+    // TODO: Fix this
     const imagePromises = item.images.map(imageSrc =>
       preloadImage(imageSrc).then(() =>
         setLoadingProgress(prev => (prev as number) + 100 / item.images.length)

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import apiService from "../apiService";
+import apiService from "@/utils/apiService";
 
 export const useComposition = (url: string) => {
   return useQuery({

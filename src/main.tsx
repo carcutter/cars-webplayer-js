@@ -2,16 +2,29 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 import WebPlayer from "./custom_elements/WebPlayer.tsx";
-import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <div className="flex h-screen min-h-[512px] items-center justify-center p-4 lg:p-10">
+    <div>
       {/* TODO: Add some stuff to make it appear like a real app */}
 
-      <div className="size-full lg:w-4/5">
-        <WebPlayer aspectRatio="4:3" />
+      <div
+        style={{
+          padding: "1rem",
+          marginBottom: "1rem",
+          borderBottom: "1px solid #000",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: "1.5rem",
+          }}
+        >
+          Carcutter Demo React
+        </h2>
       </div>
+
+      <WebPlayer aspectRatio="4:3" maxItemsShown={2.5} flatten />
     </div>
   </React.StrictMode>
 );
