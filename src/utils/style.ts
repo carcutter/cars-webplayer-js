@@ -4,6 +4,7 @@ import {
   Position,
   extractPosition,
 } from "@/types/position";
+import { AspectRatio } from "@/types/props";
 
 export function positionXToClassName(positionX: PositionX): string {
   switch (positionX) {
@@ -38,4 +39,9 @@ export function positionToClassName(position: Position): string {
   }
 
   return className;
+}
+
+export function aspectRatioStyle(aspectRatio: AspectRatio, multiplier = 1) {
+  const [w, h] = aspectRatio.split(":").map(v => parseInt(v));
+  return `${w * multiplier} / ${h}`;
 }

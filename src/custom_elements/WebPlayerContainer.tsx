@@ -14,7 +14,7 @@ type WebPlayerContentProps = { data: Composition };
 const WebPlayerContent: React.FC<
   React.PropsWithChildren<WebPlayerContentProps>
 > = ({ data }) => {
-  const { aspectRatioClass } = useGlobalContext();
+  const { maxItemsShown } = useGlobalContext();
 
   const [displayedCategory, setDisplayedCategory] = useState(data[0].category);
 
@@ -32,15 +32,15 @@ const WebPlayerContent: React.FC<
   };
 
   return (
-    // TODO: Implement multiple items shown
-    <div className={`relative w-full ${aspectRatioClass}`}>
+    <div className="relative size-full">
       <ScrollableSlider
         data={items}
-        renderItem={(item, index, currentIndex) => (
+        renderItem={(item, index, currentActiveIndex) => (
           <WebPlayerElement
-            key={index}
             item={item}
-            lazy={Math.abs(index - currentIndex) > 1}
+            lazy={
+              Math.abs(index - currentActiveIndex) > Math.ceil(maxItemsShown)
+            }
           />
         )}
       />

@@ -1,5 +1,7 @@
+export type AspectRatio = "4:3" | "16:9";
+
 export type WebPlayerProps = {
-  aspectRatio?: "4:3" | "16:9";
+  aspectRatio?: AspectRatio;
   flatten?: boolean;
   maxItemsShown?: number;
 };

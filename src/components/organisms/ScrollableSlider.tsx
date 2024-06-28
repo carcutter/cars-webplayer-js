@@ -1,28 +1,55 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import IndexIndicator from "@/components/atoms/IndexIndicator";
-import { positionToClassName } from "@/utils/style";
+import { useGlobalContext } from "@/providers/GlobalContext";
+import { aspectRatioStyle, positionToClassName } from "@/utils/style";
 
 import NextPrevButtons from "../../custom_elements/NextPrevButtons";
 
-type Props<T extends object> = {
-  data: T[];
-  renderItem: (item: T, index: number, currentIndex: number) => React.ReactNode;
+type Props<ItemT extends object> = {
+  data: ItemT[];
+  renderItem: (
+    item: ItemT,
+    index: number,
+    currentActiveIndex: number
+  ) => React.ReactNode;
+  keyExtractor?: (item: ItemT, index: number) => string;
 };
+
+const defaultKeyExtractor = (_item: unknown, index: number) => index.toString();
 
 const ScrollableSlider = <T extends object>({
   data,
   renderItem,
+  keyExtractor = defaultKeyExtractor,
 }: Props<T>): ReturnType<React.FC> => {
+  const { aspectRatio, maxItemsShown } = useGlobalContext();
+  const showOneItem = maxItemsShown === 1; // TODO: Should also be for smaller screens
+
+  // - Refs
   const slider = useRef<HTMLDivElement>(null);
   const isDown = useRef(false);
   const startX = useRef<number | null>(null);
   const scrollLeft = useRef<number | null>(null);
 
-  const [itemIndex, setItemIndex] = useState(0);
+  // - Indexing
   const length = data.length;
   const slidable = length > 1;
+  const indexes = useMemo(() => {
+    const maxLeftIndexInt = length - Math.ceil(maxItemsShown);
 
+    const indexes = Array.from({ length: maxLeftIndexInt + 1 }, (_, i) => i);
+
+    const fractionnalIndex = maxItemsShown % 1;
+    if (fractionnalIndex !== 0) {
+      indexes.push(maxLeftIndexInt + fractionnalIndex);
+    }
+
+    return indexes;
+  }, [length, maxItemsShown]);
+  const [currentActiveIndex, setCurrentActiveIndex] = useState(0); // NOTE: Used only by the fixed index indicator
+
+  // - Style functions
   const setCursor = useCallback((cursor: "auto" | "grab" | "grabbing") => {
     if (!slider.current) {
       throw new Error("[setAutoScroll] slider.current is null");
@@ -59,37 +86,50 @@ const ScrollableSlider = <T extends object>({
     return slider.current.getBoundingClientRect().width;
   }, []);
 
-  const scrollToIndex = useCallback(
+  const getElementWidth = useCallback(() => {
+    return getContainerWidth() / maxItemsShown;
+  }, [getContainerWidth, maxItemsShown]);
+
+  const scrollLeftToIndex = useCallback(
     (index: number) => {
       if (!slider.current) {
         throw new Error("[scrollToIndex] slider.current is null");
       }
 
-      if (index < 0 || index >= length) {
-        throw new Error("Out of bounds index");
+      if (!indexes.includes(index)) {
+        throw new Error("Unexpected index value");
       }
 
-      slider.current.scrollLeft = index * getContainerWidth();
+      slider.current.scrollLeft = index * getElementWidth();
     },
-    [getContainerWidth, length]
+    [getElementWidth, indexes]
   );
 
-  // Reset the index when the data changes
-  useEffect(() => {
-    setScrollBehavior("auto");
-    scrollToIndex(0);
-    setItemIndex(0);
-    setScrollBehavior("smooth");
-  }, [data, scrollToIndex, setScrollBehavior]);
-
-  const computeClosestIndex = useCallback(() => {
+  const computeLeftClosestIndex = useCallback(() => {
     if (!slider.current) {
       throw new Error("[computeClosestIndex] slider.current is null");
     }
 
-    return Math.round(slider.current.scrollLeft / getContainerWidth());
-  }, [getContainerWidth]);
+    const decimalIndex = slider.current.scrollLeft / getElementWidth();
 
+    return indexes.reduce(
+      (prev, curr) =>
+        Math.abs(curr - decimalIndex) < Math.abs(prev - decimalIndex)
+          ? curr
+          : prev,
+      Infinity
+    );
+  }, [getElementWidth, indexes]);
+
+  // - Reset the index when the data changes
+  useEffect(() => {
+    setScrollBehavior("auto");
+    scrollLeftToIndex(0);
+    setCurrentActiveIndex(0);
+    setScrollBehavior("smooth");
+  }, [data, scrollLeftToIndex, setScrollBehavior]);
+
+  // - Event listeners
   useEffect(() => {
     // Does not allow sliding if there is only one item
     if (!slidable) {
@@ -97,7 +137,7 @@ const ScrollableSlider = <T extends object>({
       return;
     }
 
-    if (!slider?.current) {
+    if (!slider.current) {
       return;
     }
 
@@ -109,7 +149,7 @@ const ScrollableSlider = <T extends object>({
 
     // Take "measures" when the user clicks on the slider
     const onMouseDown = (e: MouseEvent) => {
-      if (!slider?.current) {
+      if (!slider.current) {
         throw new Error("[onMouseDown] slider.current is null");
       }
 
@@ -127,7 +167,7 @@ const ScrollableSlider = <T extends object>({
 
     // Reset CSS & snap to the closest image when the user releases the slider
     const onMouseEnd = () => {
-      if (!slider?.current) {
+      if (!slider.current) {
         throw new Error("[onMouseEnd] slider.current is null");
       }
 
@@ -139,11 +179,12 @@ const ScrollableSlider = <T extends object>({
       setTimeout(() => {
         // SetTimeout to avoid flickering
         setSnapState(true);
-      }, 300);
+      }, 500);
 
       // Snap to the closest image
-      const closestIndex = computeClosestIndex();
-      scrollToIndex(closestIndex);
+      const closestIndex = computeLeftClosestIndex();
+
+      scrollLeftToIndex(closestIndex);
     };
 
     // Scroll according the user's dragging movement
@@ -165,8 +206,8 @@ const ScrollableSlider = <T extends object>({
 
     // Update the index when the user scrolls with "standard" scrolling
     const onScroll = () => {
-      const closestIndex = computeClosestIndex();
-      setItemIndex(closestIndex);
+      const closestLeftIndex = computeLeftClosestIndex();
+      setCurrentActiveIndex(closestLeftIndex);
     };
 
     sliderRef.addEventListener("mousedown", onMouseDown);
@@ -183,8 +224,8 @@ const ScrollableSlider = <T extends object>({
       sliderRef.removeEventListener("scroll", onScroll);
     };
   }, [
-    computeClosestIndex,
-    scrollToIndex,
+    computeLeftClosestIndex,
+    scrollLeftToIndex,
     setCursor,
     setScrollBehavior,
     setSnapState,
@@ -196,9 +237,9 @@ const ScrollableSlider = <T extends object>({
       throw new Error("[scrollOffsetIndex] slider.current is null");
     }
 
-    const currentIndex = computeClosestIndex();
+    const currentIndex = computeLeftClosestIndex();
 
-    scrollToIndex(currentIndex + offset);
+    scrollLeftToIndex(currentIndex + offset);
   };
 
   const prevImage = () => {
@@ -210,23 +251,49 @@ const ScrollableSlider = <T extends object>({
   };
 
   return (
-    <div className="relative size-full">
+    <div
+      className="relative w-full"
+      style={{
+        aspectRatio: aspectRatioStyle(aspectRatio, maxItemsShown),
+      }}
+    >
       <div
         ref={slider}
         className="flex size-full overflow-x-auto transition-transform no-scrollbar *:snap-mandatory *:snap-start"
       >
-        {data.map((item, index) => renderItem(item, index, itemIndex))}
+        {data.map((item, index) => {
+          const Item = renderItem(item, index, currentActiveIndex);
+          const key = keyExtractor(item, index);
+
+          return (
+            <div key={key} className="relative">
+              {Item}
+              {!showOneItem && (
+                <div
+                  className={`absolute ${positionToClassName("bottom-right")}`}
+                >
+                  <IndexIndicator currentIndex={index} length={length} />
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {slidable && (
         <>
-          <div className={`absolute ${positionToClassName("bottom-right")}`}>
-            <IndexIndicator currentIndex={itemIndex} length={length} />
-          </div>
+          {showOneItem && (
+            <div className={`absolute ${positionToClassName("bottom-right")}`}>
+              <IndexIndicator
+                currentIndex={currentActiveIndex}
+                length={length}
+              />
+            </div>
+          )}
 
           <NextPrevButtons
-            currentIndex={itemIndex}
-            length={length}
+            currentIndex={currentActiveIndex}
+            maxIndex={length - maxItemsShown}
             onPrev={prevImage}
             onNext={nextImage}
           />

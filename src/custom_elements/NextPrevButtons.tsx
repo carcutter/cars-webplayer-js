@@ -4,7 +4,7 @@ import { positionXToClassName, positionYToClassName } from "@/utils/style";
 
 type Props = {
   currentIndex: number;
-  length: number;
+  maxIndex: number;
   onPrev: () => void;
   onNext: () => void;
   position?: PositionY;
@@ -12,7 +12,7 @@ type Props = {
 
 const NextPrevButtons: React.FC<Props> = ({
   currentIndex,
-  length,
+  maxIndex,
   onPrev,
   onNext,
   position = "middle",
@@ -26,7 +26,7 @@ const NextPrevButtons: React.FC<Props> = ({
         color="neutral"
         className={`absolute ${positionYClassName} ${positionXToClassName("left")}`}
         onClick={onPrev}
-        disabled={currentIndex === 0}
+        disabled={currentIndex <= 0}
       >
         <img
           className="size-full rotate-180"
@@ -39,7 +39,7 @@ const NextPrevButtons: React.FC<Props> = ({
         color="neutral"
         className={`absolute ${positionYClassName} ${positionXToClassName("right")}`}
         onClick={onNext}
-        disabled={currentIndex === length - 1}
+        disabled={currentIndex >= maxIndex}
       >
         <img
           className="size-full"
