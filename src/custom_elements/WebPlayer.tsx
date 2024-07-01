@@ -11,7 +11,7 @@ import styles from "../index.css?inline";
 
 const queryClient = new QueryClient();
 
-const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
+const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   compositionUrl,
 
   aspectRatio = "4:3",
@@ -75,7 +75,7 @@ const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
             >
               <WebPlayerContainer compositionUrl={compositionUrl} />
             </div>
-            {customizationChildren}
+            {customizationChildren ?? <slot />}
           </CustomizationContextProvider>
         </GlobalContextProvider>
       </QueryClientProvider>
@@ -84,6 +84,6 @@ const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
 };
 
 // NOTE: if it keeps blocking HMR, just embed the schema directly in the component logic
-const WebPlayerWithSchema = withZodSchema(WebPlayer, WebPlayerPropsSchema);
+const WebPlayer = withZodSchema(WebPlayerTS, WebPlayerPropsSchema);
 
-export default WebPlayerWithSchema;
+export default WebPlayer;
