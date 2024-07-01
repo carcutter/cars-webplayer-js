@@ -16,3 +16,9 @@ Run `yarn dev` to start the app in dev'
 ## Linting
 
 Run `yarn lint`
+
+## Test production
+
+- Build `yarn build`
+- Run the Vite server `yarn dev` to serve the `data.json` file
+- Open `index-build.html` direclty on your brother (! NOT THE ONE SERVED BY VITE BECAUSE IT WON'T USE PROD CONFIGURATION !)

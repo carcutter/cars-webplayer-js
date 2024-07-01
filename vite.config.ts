@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   resolve: {
     alias: {
       "@/components": path.resolve(__dirname, "./src/components"),
@@ -19,11 +19,10 @@ export default defineConfig({
   // BUILD
   define: {
     "process.env": {
-      NODE_ENV: "production",
+      NODE_ENV: command === "build" ? "production" : "development",
     },
   },
-  // TODO: exclude data.json
-  // TODO: Find a way to build in watch mode
+  // TODO: Find a way to build in watch mode. The simple script "watch": "vite build --watch" does not work because it does not rebuild the TS.
   build: {
     lib: {
       entry: "./src/index.tsx",
@@ -31,5 +30,6 @@ export default defineConfig({
       fileName: format => `cc-web-player.${format}.js`,
     },
     target: "esnext",
+    copyPublicDir: false, // The only public file is mock data
   },
-});
+}));
