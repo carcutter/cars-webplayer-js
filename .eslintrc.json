@@ -15,9 +15,13 @@
     "prettier" // Last to keep priority: https://github.com/prettier/eslint-config-prettier?tab=readme-ov-file#installation
   ],
 
-  "plugins": ["import", "unused-imports"],
+  "plugins": ["react-refresh", "import", "unused-imports"],
 
   "settings": {
+    "react": {
+      "version": "detect"
+    },
+
     "import/internal-regex": "^@/"
   },
 
@@ -25,6 +29,8 @@
     "no-console": "error",
     "react/react-in-jsx-scope": "off", // Do not need to import React in JSX files
     "react/display-name": "off",
+
+    "react-refresh/only-export-components": "warn",
 
     "import/order": [
       "error",

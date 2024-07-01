@@ -83,4 +83,7 @@ const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   );
 };
 
-export default withZodSchema(WebPlayer, WebPlayerPropsSchema);
+// NOTE: if it keeps blocking HMR, just embed the schema directly in the component logic
+const WebPlayerWithSchema = withZodSchema(WebPlayer, WebPlayerPropsSchema);
+
+export default WebPlayerWithSchema;
