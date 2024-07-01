@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  :root,
+  #cc-webplayer-wrapper {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
     --primary: 216 100% 52%;
@@ -14,7 +15,8 @@
 }
 
 @layer base {
-  body {
+  body,
+  #cc-webplayer-wrapper {
     @apply bg-background text-foreground;
   }
 }

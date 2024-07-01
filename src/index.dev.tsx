@@ -25,7 +25,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </h2>
       </div>
 
-      <WebPlayer aspectRatio="4:3" maxItemsShown={2.5} flatten>
+      <WebPlayer
+        compositionUrl="/data.json"
+        aspectRatio="4:3"
+        maxItemsShown={2.5}
+        flatten
+      >
         <WebPlayerIcon feature="DRIVER ASSIST" color="#ffa000">
           <svg
             style={{ color: "white" }}

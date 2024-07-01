@@ -2,9 +2,9 @@ import { useEffect } from "react";
 
 import { useCustomizationContext } from "@/providers/CustomizationContext";
 
-type Props = { feature: string; color?: string };
+export type WebPlayerIconProps = { feature: string; color?: string };
 
-const WebPlayerIcon: React.FC<React.PropsWithChildren<Props>> = ({
+const WebPlayerIcon: React.FC<React.PropsWithChildren<WebPlayerIconProps>> = ({
   feature,
   color,
   children,

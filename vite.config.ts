@@ -15,4 +15,19 @@ export default defineConfig({
     },
   },
   plugins: [react()],
+
+  // BUILD
+  define: {
+    "process.env": {
+      NODE_ENV: "production",
+    },
+  },
+  build: {
+    lib: {
+      entry: "./src/index.tsx",
+      name: "cc-web-player",
+      fileName: format => `cc-web-player.${format}.js`,
+    },
+    target: "esnext",
+  },
 });
