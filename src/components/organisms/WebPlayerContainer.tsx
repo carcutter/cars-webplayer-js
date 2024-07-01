@@ -65,8 +65,14 @@ const WebPlayerContent: React.FC<
   );
 };
 
-const WebPlayerContainer: React.FC = () => {
-  const { data, isSuccess, isError } = useComposition("/data.json");
+type WebPlayerContainerProps = {
+  compositionUrl: string;
+};
+
+const WebPlayerContainer: React.FC<WebPlayerContainerProps> = ({
+  compositionUrl,
+}) => {
+  const { data, isSuccess, isError } = useComposition(compositionUrl);
 
   if (isError) {
     // TODO

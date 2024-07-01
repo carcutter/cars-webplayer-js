@@ -12,6 +12,8 @@ import styles from "../index.css?inline";
 const queryClient = new QueryClient();
 
 const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
+  compositionUrl,
+
   aspectRatio = "4:3",
   flatten = false,
   maxItemsShown = 1,
@@ -55,6 +57,8 @@ const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
       <QueryClientProvider client={queryClient}>
         <GlobalContextProvider
           {...{
+            compositionUrl,
+
             aspectRatio,
             flatten,
             maxItemsShown,
@@ -64,8 +68,12 @@ const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
           }}
         >
           <CustomizationContextProvider>
-            <div ref={wrapper} className="relative size-full overflow-hidden">
-              <WebPlayerContainer />
+            <div
+              id="cc-webplayer-wrapper"
+              ref={wrapper}
+              className="relative size-full overflow-hidden"
+            >
+              <WebPlayerContainer compositionUrl={compositionUrl} />
             </div>
             {customizationChildren}
           </CustomizationContextProvider>
