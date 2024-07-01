@@ -75,7 +75,7 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
             >
               <WebPlayerContainer compositionUrl={compositionUrl} />
             </div>
-            {customizationChildren ?? <slot />}
+            {customizationChildren}
           </CustomizationContextProvider>
         </GlobalContextProvider>
       </QueryClientProvider>

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { useCustomizationContext } from "@/providers/CustomizationContext";
+import { useCustomizationContextSafe } from "@/providers/CustomizationContext";
 
 export type WebPlayerIconProps = { feature: string; color?: string };
 
@@ -9,20 +9,25 @@ const WebPlayerIcon: React.FC<React.PropsWithChildren<WebPlayerIconProps>> = ({
   color,
   children,
 }) => {
-  const { setHotspotConfig } = useCustomizationContext();
+  const setHotspotConfigWithCtx =
+    useCustomizationContextSafe()?.setHotspotConfig;
 
   useEffect(() => {
-    if (!children) {
+    if (!setHotspotConfigWithCtx) {
       return;
     }
 
-    setHotspotConfig(feature, {
+    if (!children && !color) {
+      return;
+    }
+
+    setHotspotConfigWithCtx(feature, {
       Icon: children,
       color: color,
     });
-  }, [children, color, feature, setHotspotConfig]);
+  }, [children, color, feature, setHotspotConfigWithCtx]);
 
-  return null;
+  return <slot />;
 };
 
 export default WebPlayerIcon;

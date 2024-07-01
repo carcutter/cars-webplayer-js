@@ -14,8 +14,12 @@ type ContextType = {
 
 const CustomizationContext = createContext<ContextType | null>(null);
 
+export const useCustomizationContextSafe = () => {
+  return useContext(CustomizationContext);
+};
+
 export const useCustomizationContext = () => {
-  const ctx = useContext(CustomizationContext);
+  const ctx = useCustomizationContextSafe();
 
   if (!ctx) {
     throw new Error(
@@ -38,7 +42,29 @@ const CustomizationContextProvider: React.FC<
   );
 
   const getHotspotConfig = useCallback(
-    (key: string) => hotspotConfigMap.get(key),
+    (key: string) => {
+      const ctxConfig = hotspotConfigMap.get(key);
+      if (ctxConfig) {
+        return ctxConfig;
+      }
+
+      const domElement = document.querySelector(
+        `cc-web-player-icon[feature="${key}"]`
+      );
+
+      if (!domElement) {
+        return;
+      }
+
+      const color = domElement.getAttribute("color") ?? undefined;
+      const Icon = domElement.nodeValue ?? undefined;
+
+      if (!color && !Icon) {
+        return;
+      }
+
+      return { Icon, color };
+    },
     [hotspotConfigMap]
   );
   const setHotspotConfig = useCallback(
