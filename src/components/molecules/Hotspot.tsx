@@ -41,7 +41,7 @@ const Hotspot: React.FC<HotspotProps> = ({
 
   let Content: React.ReactNode;
 
-  // TODO: Add more cases / Open the detail link
+  // TODO: Add more cases
   switch (feature) {
     case "WINDOW STICKER":
       Content = <Button>WINDOW STICKER</Button>;
@@ -64,11 +64,18 @@ const Hotspot: React.FC<HotspotProps> = ({
   }
 
   const handleOnClick = () => {
-    if (!detail) {
+    let link: string | undefined;
+    if (longDescriptionIsLink) {
+      link = descriptionLong as string;
+    } else if (detail) {
+      link = detail;
+    }
+
+    if (!link) {
       return;
     }
 
-    window.open(detail, "_blank");
+    window.open(link, "_blank");
   };
 
   return (

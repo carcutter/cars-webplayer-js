@@ -7,7 +7,7 @@ import WebPlayerIcon from "./custom_elements/WebPlayerIcon.tsx";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <div>
-      {/* TODO: Add some stuff to make it appear like a real app */}
+      {/* FUTURE: Add some stuff to make it appear like a real app */}
 
       <div
         style={{

@@ -21,18 +21,18 @@ export function isPosition(str: string): str is Position {
   );
 }
 
-export function extractPosition(
+export function extractPositions(
   position: Position
-): [PositionY, PositionX] | [PositionY, null] | [null, PositionX] {
+): [PositionY, PositionX] | [PositionY, undefined] | [undefined, PositionX] {
   if (!isPosition(position)) {
     throw new Error(`Invalid position: ${position}`);
   }
 
   if (isPositionY(position)) {
-    return [position, null];
+    return [position, undefined];
   }
   if (isPositionX(position)) {
-    return [null, position];
+    return [undefined, position];
   }
   return position.split("-") as [PositionY, PositionX];
 }

@@ -2,7 +2,9 @@ import { createContext, useContext, useState } from "react";
 
 import { WebPlayerProps } from "@/types/props";
 
-type ProviderProps = Required<WebPlayerProps> & {
+type ProviderProps = Required<
+  Pick<WebPlayerProps, "aspectRatio" | "flatten" | "maxItemsShown">
+> & {
   itemsShown: number;
 };
 
@@ -11,6 +13,12 @@ type ContextType = ProviderProps & {
 
   showHotspots: boolean;
   setShowHotspots: React.Dispatch<React.SetStateAction<boolean>>;
+
+  fullScreen: boolean;
+  setFullScreen: React.Dispatch<React.SetStateAction<boolean>>;
+
+  showGallery: boolean;
+  setShowGallery: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const GlobalContext = createContext<ContextType | null>(null);
@@ -34,6 +42,8 @@ const GlobalContextProvider: React.FC<
     props.aspectRatio === "4:3" ? "aspect-4/3" : "aspect-16/9";
 
   const [showHotspots, setShowHotspots] = useState(true);
+  const [fullScreen, setFullScreen] = useState(false);
+  const [showGallery, setShowGallery] = useState(false);
 
   return (
     <GlobalContext.Provider
@@ -44,6 +54,12 @@ const GlobalContextProvider: React.FC<
 
         showHotspots,
         setShowHotspots,
+
+        fullScreen,
+        setFullScreen,
+
+        showGallery,
+        setShowGallery,
       }}
     >
       {children}

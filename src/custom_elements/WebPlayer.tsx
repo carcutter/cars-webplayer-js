@@ -57,12 +57,9 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
       <QueryClientProvider client={queryClient}>
         <GlobalContextProvider
           {...{
-            compositionUrl,
-
             aspectRatio,
             flatten,
             maxItemsShown,
-            breakpoint,
 
             itemsShown,
           }}

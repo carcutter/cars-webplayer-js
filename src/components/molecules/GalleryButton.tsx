@@ -1,26 +1,35 @@
 import Button from "@/components/ui/Button";
+import { useGlobalContext } from "@/providers/GlobalContext";
 import { Item } from "@/types/composition";
 import { PositionY } from "@/types/position";
-import { positionXToClassName, positionYToClassName } from "@/utils/style";
+import { positionsToClassName } from "@/utils/style";
 
 type Props = {
   data: Item[];
-  position?: Extract<PositionY, "top" | "bottom">;
+  positionY?: Extract<PositionY, "top" | "bottom">;
 };
 
-// TODO: Implement the behavior
-const GalleryButton: React.FC<Props> = ({ data, position = "bottom" }) => {
+const GalleryButton: React.FC<Props> = ({ data, positionY = "bottom" }) => {
+  const { setShowGallery } = useGlobalContext();
+
   if (data.length < 2) {
     return null;
   }
 
-  const positionYClassName = positionYToClassName(position);
-  const positionXClassName = positionXToClassName("center");
+  const positionClassName = positionsToClassName({
+    positionY,
+    positionX: "center",
+  });
+
+  const handleClick = () => {
+    setShowGallery(v => !v);
+  };
 
   return (
     <Button
       color="neutral"
-      className={`absolute ${positionYClassName} ${positionXClassName}`}
+      className={`absolute ${positionClassName}`}
+      onClick={handleClick}
     >
       Gallerie
     </Button>

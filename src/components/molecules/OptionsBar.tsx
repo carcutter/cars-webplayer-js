@@ -8,18 +8,17 @@ type OptionBarProps = {
   position?: Position;
 };
 
-// TODO: Split category selection into a separate component
 const OptionsBar: React.FC<OptionBarProps> = ({ position = "top-right" }) => {
   const positionClassName = positionToClassName(position);
 
-  const { showHotspots, setShowHotspots } = useGlobalContext();
+  const { showHotspots, setShowHotspots, setFullScreen } = useGlobalContext();
 
   const handleHotspotsClick = () => {
     setShowHotspots(v => !v);
   };
 
   const handleExtendClick = () => {
-    // TODO
+    setFullScreen(true);
   };
 
   return (

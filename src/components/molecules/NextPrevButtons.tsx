@@ -7,7 +7,7 @@ type Props = {
   maxIndex: number;
   onPrev: () => void;
   onNext: () => void;
-  position?: PositionY;
+  positionY?: PositionY;
 };
 
 const NextPrevButtons: React.FC<Props> = ({
@@ -15,9 +15,9 @@ const NextPrevButtons: React.FC<Props> = ({
   maxIndex,
   onPrev,
   onNext,
-  position = "middle",
+  positionY = "middle",
 }) => {
-  const positionYClassName = positionYToClassName(position);
+  const positionYClassName = positionYToClassName(positionY);
 
   return (
     <>

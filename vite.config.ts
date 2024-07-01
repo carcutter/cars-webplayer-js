@@ -22,6 +22,8 @@ export default defineConfig({
       NODE_ENV: "production",
     },
   },
+  // TODO: exclude data.json
+  // TODO: Find a way to build in watch mode
   build: {
     lib: {
       entry: "./src/index.tsx",

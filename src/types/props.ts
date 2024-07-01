@@ -6,7 +6,9 @@ export const WebPlayerPropsSchema = z.object({
   compositionUrl: z.string(),
 
   aspectRatio: AspectRatioSchema.optional(),
+
   flatten: z.boolean().optional(),
+
   maxItemsShown: z.number().min(1).optional(),
   breakpoint: z.number().min(0).optional(),
 });

@@ -1,23 +1,25 @@
 import Button from "@/components/ui/Button";
 import { Composition } from "@/types/composition";
 import { PositionY } from "@/types/position";
-import { positionXToClassName, positionYToClassName } from "@/utils/style";
+import { positionsToClassName } from "@/utils/style";
 
 type CategoryBarProps = {
   composition: Composition;
   selectedCategory: string;
   onChangeSelectedCategory: (category: string) => void;
-  position?: Extract<PositionY, "top" | "bottom">;
+  positionY?: Extract<PositionY, "top" | "bottom">;
 };
 
 const CategoryBar: React.FC<CategoryBarProps> = ({
   composition,
   selectedCategory,
   onChangeSelectedCategory,
-  position = "top",
+  positionY = "top",
 }) => {
-  const positionYClassName = positionYToClassName(position);
-  const positionXClassName = positionXToClassName("center");
+  const positionClassName = positionsToClassName({
+    positionY,
+    positionX: "center",
+  });
 
   const handleCategoryClick = (category: string) => {
     if (category === selectedCategory) {
@@ -28,7 +30,7 @@ const CategoryBar: React.FC<CategoryBarProps> = ({
 
   return (
     <div
-      className={`absolute ${positionYClassName} ${positionXClassName} flex gap-x-2 rounded bg-background p-2 shadow`}
+      className={`absolute ${positionClassName} flex gap-x-2 rounded bg-background p-2 shadow`}
     >
       {/* Category selection */}
       <div className="flex gap-x-2">

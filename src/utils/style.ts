@@ -2,7 +2,7 @@ import {
   PositionX,
   PositionY,
   Position,
-  extractPosition,
+  extractPositions,
 } from "@/types/position";
 import { AspectRatio } from "@/types/props";
 
@@ -28,17 +28,28 @@ export function positionYToClassName(positionY: PositionY): string {
   }
 }
 
-export function positionToClassName(position: Position): string {
-  const [positionY, positionX] = extractPosition(position);
-  let className = "";
-  if (positionY) {
-    className += positionYToClassName(positionY);
-  }
+export function positionsToClassName({
+  positionX,
+  positionY,
+}: {
+  positionX?: PositionX;
+  positionY?: PositionY;
+}): string {
+  const arr = new Array<string>();
   if (positionX) {
-    className += ` ${positionXToClassName(positionX)}`;
+    arr.push(positionXToClassName(positionX));
+  }
+  if (positionY) {
+    arr.push(positionYToClassName(positionY));
   }
 
-  return className;
+  return arr.join(" ");
+}
+
+export function positionToClassName(position: Position): string {
+  const [positionY, positionX] = extractPositions(position);
+
+  return positionsToClassName({ positionX, positionY });
 }
 
 export function aspectRatioStyle(aspectRatio: AspectRatio, multiplier = 1) {

@@ -9,6 +9,8 @@ import { useComposition } from "@/hooks/useComposition";
 import { useGlobalContext } from "@/providers/GlobalContext";
 import { Composition, Item } from "@/types/composition";
 
+import ErrorTemplate from "../template/ErrorTemplate";
+
 type WebPlayerContentProps = { data: Composition };
 
 const WebPlayerContent: React.FC<
@@ -72,16 +74,19 @@ type WebPlayerContainerProps = {
 const WebPlayerContainer: React.FC<WebPlayerContainerProps> = ({
   compositionUrl,
 }) => {
-  const { data, isSuccess, isError } = useComposition(compositionUrl);
+  const { data, isSuccess, error } = useComposition(compositionUrl);
 
-  if (isError) {
-    // TODO
-    return <div>Error</div>;
+  if (error) {
+    return <ErrorTemplate title="Failed to fetch data" error={error} />;
   }
 
   if (!isSuccess) {
     // TODO
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center">
+        Loading WebPlayer...
+      </div>
+    );
   }
 
   return <WebPlayerContent data={data} />;
