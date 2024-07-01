@@ -2,12 +2,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 
 import withZodSchema from "@/components/hoc/withZodSchema";
+import WebPlayerContainer from "@/components/organisms/WebPlayerContainer";
+import CustomizationContextProvider from "@/providers/CustomizationContext";
 import GlobalContextProvider from "@/providers/GlobalContext";
 import { WebPlayerProps, WebPlayerPropsSchema } from "@/types/props";
 
 import styles from "../index.css?inline";
-
-import WebPlayerContainer from "./WebPlayerContainer";
 
 const queryClient = new QueryClient();
 
@@ -17,7 +17,7 @@ const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   maxItemsShown = 1,
   breakpoint = 768,
 
-  children,
+  children: customizationChildren, // NOTE: use to customize the player, not to display the content
 }) => {
   const wrapper = useRef<HTMLDivElement>(null);
   const [itemsShown, setItemsShown] = useState(maxItemsShown);
@@ -63,9 +63,12 @@ const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
             itemsShown,
           }}
         >
-          <div ref={wrapper} className="relative size-full overflow-hidden">
-            <WebPlayerContainer>{children}</WebPlayerContainer>
-          </div>
+          <CustomizationContextProvider>
+            <div ref={wrapper} className="relative size-full overflow-hidden">
+              <WebPlayerContainer />
+            </div>
+            {customizationChildren}
+          </CustomizationContextProvider>
         </GlobalContextProvider>
       </QueryClientProvider>
     </>

@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import IndexIndicator from "@/components/atoms/IndexIndicator";
+import NextPrevButtons from "@/components/molecules/NextPrevButtons";
 import { useGlobalContext } from "@/providers/GlobalContext";
 import { aspectRatioStyle, positionToClassName } from "@/utils/style";
-
-import NextPrevButtons from "../../custom_elements/NextPrevButtons";
 
 type Props<ItemT extends object> = {
   data: ItemT[];

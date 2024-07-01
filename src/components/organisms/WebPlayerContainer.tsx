@@ -1,14 +1,13 @@
 import { useMemo, useState } from "react";
 
+import CategoryBar from "@/components/molecules/CategoryBar";
+import GalleryButton from "@/components/molecules/GalleryButton";
+import OptionsBar from "@/components/molecules/OptionsBar";
 import WebPlayerElement from "@/components/molecules/WebPlayerElement";
 import ScrollableSlider from "@/components/organisms/ScrollableSlider";
 import { useComposition } from "@/hooks/useComposition";
 import { useGlobalContext } from "@/providers/GlobalContext";
 import { Composition, Item } from "@/types/composition";
-
-import CategoryBar from "./CategoryBar";
-import GalleryButton from "./GalleryButton";
-import OptionsBar from "./OptionsBar";
 
 type WebPlayerContentProps = { data: Composition };
 
@@ -66,9 +65,7 @@ const WebPlayerContent: React.FC<
   );
 };
 
-const WebPlayerContainer: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => {
+const WebPlayerContainer: React.FC = () => {
   const { data, isSuccess, isError } = useComposition("/data.json");
 
   if (isError) {
@@ -81,7 +78,7 @@ const WebPlayerContainer: React.FC<React.PropsWithChildren> = ({
     return <div>Loading...</div>;
   }
 
-  return <WebPlayerContent data={data}>{children}</WebPlayerContent>;
+  return <WebPlayerContent data={data} />;
 };
 
 export default WebPlayerContainer;

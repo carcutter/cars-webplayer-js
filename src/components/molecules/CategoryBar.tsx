@@ -10,7 +10,6 @@ type CategoryBarProps = {
   position?: Extract<PositionY, "top" | "bottom">;
 };
 
-// TODO: Split category selection into a separate component
 const CategoryBar: React.FC<CategoryBarProps> = ({
   composition,
   selectedCategory,

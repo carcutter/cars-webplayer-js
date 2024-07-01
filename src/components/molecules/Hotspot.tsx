@@ -1,12 +1,30 @@
 import { useState } from "react";
 
-import HotspotIcon from "@/components/atoms/HotspotIcon";
 import Button from "@/components/ui/Button";
+import { useCustomizationContext } from "@/providers/CustomizationContext";
 import { Hotspot as HotspotType } from "@/types/composition";
 
-type Props = { hotspot: HotspotType };
+type HotspotIconProps = {
+  colorCss?: string;
+};
 
-const Hotspot: React.FC<Props> = ({
+const HotspotIcon: React.FC<React.PropsWithChildren<HotspotIconProps>> = ({
+  colorCss,
+  children,
+}) => {
+  return (
+    <div
+      className="flex size-6 items-center justify-center rounded-full bg-primary text-background"
+      style={{ backgroundColor: colorCss }}
+    >
+      {children}
+    </div>
+  );
+};
+
+type HotspotProps = { hotspot: HotspotType };
+
+const Hotspot: React.FC<HotspotProps> = ({
   hotspot: {
     feature,
     position,
@@ -14,6 +32,9 @@ const Hotspot: React.FC<Props> = ({
     detail,
   },
 }) => {
+  const { getHotspotConfig } = useCustomizationContext();
+  const hotspotConfig = getHotspotConfig(feature);
+
   const longDescriptionIsLink = !!descriptionLong?.startsWith("http");
 
   const [showDetails, setShowDetails] = useState(false);
@@ -30,12 +51,14 @@ const Hotspot: React.FC<Props> = ({
       break;
     default:
       Content = (
-        <HotspotIcon>
-          <img
-            className="size-full invert"
-            src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/add.svg"
-            alt="Plus"
-          />
+        <HotspotIcon colorCss={hotspotConfig?.color}>
+          {hotspotConfig?.Icon ?? (
+            <img
+              className="size-full invert"
+              src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/add.svg"
+              alt="Plus"
+            />
+          )}
         </HotspotIcon>
       );
   }

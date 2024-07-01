@@ -1,10 +1,10 @@
 import { ZodSchema } from "zod";
 
-function withZodSchema<T extends object>(
-  WrappedComponent: React.FC<T>,
+function withZodSchema<T extends object, P extends React.PropsWithChildren<T>>(
+  WrappedComponent: React.FC<P>,
   schema: ZodSchema<T>
 ) {
-  return (props: T) => {
+  return (props: P) => {
     const result = schema.safeParse(props);
 
     if (!result.success) {
