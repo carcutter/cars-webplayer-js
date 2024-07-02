@@ -4,6 +4,8 @@ import ReactDOM from "react-dom/client";
 import WebPlayer from "./custom_elements/WebPlayer.tsx";
 import WebPlayerIcon from "./custom_elements/WebPlayerIcon.tsx";
 
+import "./index.dev.css";
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <div>
@@ -31,7 +33,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         maxItemsShown={2.5}
         flatten
       >
-        <WebPlayerIcon feature="DRIVER ASSIST" color="#ffa000">
+        <WebPlayerIcon feature="DRIVER ASSIST" color="#ff00ff">
           <svg
             style={{ color: "white" }}
             xmlns="http://www.w3.org/2000/svg"
