@@ -3,7 +3,7 @@ import { createContext, useContext, useState } from "react";
 import { WebPlayerProps } from "@/types/props";
 
 type ProviderProps = Required<
-  Pick<WebPlayerProps, "aspectRatio" | "flatten" | "maxItemsShown">
+  Pick<WebPlayerProps, "aspectRatio" | "flatten" | "imageWidths">
 > & {
   itemsShown: number;
 };

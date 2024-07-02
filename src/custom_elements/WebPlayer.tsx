@@ -15,9 +15,13 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   compositionUrl,
 
   aspectRatio = "4:3",
+
   flatten = false,
+
   maxItemsShown = 1,
-  breakpoint = 768,
+  itemsShownBreakpoint = 768,
+
+  imageWidths = "HD|1024|768|640|512|300|100",
 
   children: customizationChildren, // NOTE: use to customize the player, not to display the content
 }) => {
@@ -38,7 +42,7 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
 
     const updateShownItems = () => {
       const playerWidth = wrapperRef.clientWidth;
-      setItemsShown(playerWidth < breakpoint ? 1 : maxItemsShown);
+      setItemsShown(playerWidth < itemsShownBreakpoint ? 1 : maxItemsShown);
     };
 
     updateShownItems();
@@ -48,7 +52,7 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
     return () => {
       removeEventListener("resize", updateShownItems);
     };
-  }, [breakpoint, maxItemsShown]);
+  }, [itemsShownBreakpoint, maxItemsShown]);
 
   return (
     <>
@@ -59,9 +63,9 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
           {...{
             aspectRatio,
             flatten,
-            maxItemsShown,
 
             itemsShown,
+            imageWidths,
           }}
         >
           <CustomizationContextProvider>

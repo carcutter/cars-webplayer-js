@@ -16,7 +16,7 @@ type WebPlayerContentProps = { data: Composition };
 const WebPlayerContent: React.FC<
   React.PropsWithChildren<WebPlayerContentProps>
 > = ({ data }) => {
-  const { flatten, maxItemsShown } = useGlobalContext();
+  const { flatten, itemsShown } = useGlobalContext();
 
   const [displayedCategory, setDisplayedCategory] = useState(data[0].category);
 
@@ -46,9 +46,7 @@ const WebPlayerContent: React.FC<
         renderItem={(item, index, currentActiveIndex) => (
           <WebPlayerElement
             item={item}
-            lazy={
-              Math.abs(index - currentActiveIndex) > Math.ceil(maxItemsShown)
-            }
+            lazy={Math.abs(index - currentActiveIndex) > Math.ceil(itemsShown)}
           />
         )}
       />

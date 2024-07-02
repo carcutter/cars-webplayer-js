@@ -17,7 +17,7 @@ const WebPlayerElement: React.FC<Props> = ({ item, lazy }) => {
   if (!lazy) {
     switch (type) {
       case "image":
-        Comp = <ImageElement item={item} />;
+        Comp = <ImageElement item={item} withSrcSet />;
         break;
       case "video":
         Comp = <VideoElement item={item} />;
