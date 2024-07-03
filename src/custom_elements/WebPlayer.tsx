@@ -9,12 +9,11 @@ import {
   DEFAULT_ASPECT_RATIO,
   DEFAULT_EVENT_ID,
   DEFAULT_FLATTEN,
-  DEFAULT_IMAGE_WIDTHS,
   DEFAULT_ITEMS_SHOWN_BREAKPOINT,
   DEFAULT_MAX_ITEMS_SHOWN,
   WebPlayerProps,
   WebPlayerPropsSchema,
-} from "@/types/props";
+} from "@/types/webPlayerProps";
 
 import styles from "../index.css?inline";
 
@@ -27,7 +26,6 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   flatten = DEFAULT_FLATTEN,
   maxItemsShown = DEFAULT_MAX_ITEMS_SHOWN,
   itemsShownBreakpoint = DEFAULT_ITEMS_SHOWN_BREAKPOINT,
-  imageWidths = DEFAULT_IMAGE_WIDTHS,
   eventId = DEFAULT_EVENT_ID,
 
   children: customizationChildren, // NOTE: use to customize the player, not to display the content
@@ -70,7 +68,6 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
           {...{
             aspectRatio,
             flatten,
-            imageWidths,
             eventId,
 
             itemsShown,

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import WebPlayer from "./custom_elements/WebPlayer.tsx";
 import WebPlayerIcon from "./custom_elements/WebPlayerIcon.tsx";
-import { DEFAULT_EVENT_ID } from "./types/props.ts";
+import { DEFAULT_EVENT_ID } from "./types/webPlayerProps.ts";
 
 const DevApp: React.FC = () => {
   useEffect(() => {

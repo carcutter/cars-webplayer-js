@@ -1,14 +1,11 @@
+import { useMemo } from "react";
+
 import Hotspot from "@/components/molecules/Hotspot";
+import { useCompositionContext } from "@/providers/CompositionContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
-import { Item } from "@/types/composition";
-import { HD_WIDTH } from "@/types/props";
+import { ImageWidth, Item } from "@/types/composition";
 
-// NOTE : we can do better for width typing
-function urlForWidth(src: string, width: string): string {
-  if (width === HD_WIDTH) {
-    return src;
-  }
-
+function urlForWidth(src: string, width: ImageWidth): string {
   // Extract the file name
   const split = src.split("/");
   const fileName = split.pop();
@@ -19,44 +16,32 @@ function urlForWidth(src: string, width: string): string {
 
 type Props = { item: Extract<Item, { type: "image" }>; withSrcSet?: boolean };
 
+// TODO: Add a way to use a max width
 const ImageElement: React.FC<Props> = ({
   item: { src, hotspots },
   withSrcSet,
 }) => {
-  const { imageWidths, showHotspots } = useGlobalContext();
-
-  const getUrlForWidth = (width: string) => urlForWidth(src, width);
-
-  // Extract used widths
-  const imageWidthList = (withSrcSet ? imageWidths : HD_WIDTH)
-    .split("|")
-    .sort((widthA, widthB) => {
-      if (widthA === HD_WIDTH) {
-        return 1;
-      } else if (widthB === HD_WIDTH) {
-        return -1;
-      } else {
-        return parseInt(widthA) - parseInt(widthB);
-      }
-    });
-  const higherWidth = imageWidthList.pop()!;
+  const { showHotspots } = useGlobalContext();
+  const { imageWidths } = useCompositionContext();
 
   // Genereate srcSet
-  const srcSet = imageWidthList
-    .map(width => {
-      const url = getUrlForWidth(width);
-      return `${url} ${width}w`;
-    })
-    .join(", ");
+  const srcSet = useMemo(() => {
+    if (!withSrcSet) {
+      return;
+    }
+
+    const getUrlForWidth = (width: ImageWidth) => urlForWidth(src, width);
+    return imageWidths
+      .map(width => {
+        const url = getUrlForWidth(width);
+        return `${url} ${width}w`;
+      })
+      .join(", ");
+  }, [imageWidths, src, withSrcSet]);
 
   return (
     <div className="relative size-full">
-      <img
-        className="size-full"
-        src={getUrlForWidth(higherWidth)}
-        srcSet={srcSet}
-        alt=""
-      />
+      <img className="size-full" src={src} srcSet={srcSet} alt="" />
       {showHotspots &&
         hotspots?.map((hotspot, index) => (
           <div

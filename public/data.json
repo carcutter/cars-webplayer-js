@@ -1,1666 +1,1669 @@
-[
-  {
-    "category": "360",
-    "title": "360",
-    "items": [
-      {
-        "type": "360",
-        "images": [
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-023-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-024-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-025-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-026-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-027-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-028-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-029-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-030-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-031-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-032-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-033-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-034-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-035-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-000-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-001-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-002-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-003-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-004-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-005-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-006-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-007-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-008-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-009-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-010-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-011-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-012-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-013-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-014-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-015-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-016-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-017-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-018-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-019-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-020-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-021-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-022-036.jpg"
-        ],
-        "hotspots": [
-          [
+{
+  "imageWidths": [100, 300, 512, 640, 768, 1024],
+  "elements": [
+    {
+      "category": "360",
+      "title": "360",
+      "items": [
+        {
+          "type": "360",
+          "images": [
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-023-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-024-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-025-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-026-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-027-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-028-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-029-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-030-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-031-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-032-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-033-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-034-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-035-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-000-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-001-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-002-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-003-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-004-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-005-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-006-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-007-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-008-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-009-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-010-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-011-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-012-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-013-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-014-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-015-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-016-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-017-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-018-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-019-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-020-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-021-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-022-036.jpg"
+          ],
+          "hotspots": [
+            [
+              {
+                "feature": "GASOLINESPIN",
+                "position": {
+                  "x": 0.75259820284208762,
+                  "y": 0.5000296400181725
+                },
+                "description": {
+                  "short": "Gasoline",
+                  "long": "Gasoline"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
+              },
+              {
+                "feature": "TIRESPIN",
+                "position": {
+                  "x": 0.2539082604181384,
+                  "y": 0.6009267268543984
+                },
+                "description": {
+                  "short": "19″ AMG rim",
+                  "long": "19″ AMG rim"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "GASOLINESPIN",
+                "position": {
+                  "x": 0.7227405130774929,
+                  "y": 0.5098933890770891
+                },
+                "description": {
+                  "short": "Gasoline",
+                  "long": "Gasoline"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
+              },
+              {
+                "feature": "TIRESPIN",
+                "position": {
+                  "x": 0.2531610226472198,
+                  "y": 0.5779935758638945
+                },
+                "description": {
+                  "short": "19″ AMG rim",
+                  "long": "19″ AMG rim"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "GASOLINESPIN",
+                "position": {
+                  "x": 0.6890386011847915,
+                  "y": 0.51806266073554516
+                },
+                "description": {
+                  "short": "Gasoline",
+                  "long": "Gasoline"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
+              },
+              {
+                "feature": "TIRESPIN",
+                "position": {
+                  "x": 0.259582295726974,
+                  "y": 0.56899917272276156
+                },
+                "description": {
+                  "short": "19″ AMG rim",
+                  "long": "19″ AMG rim"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
+              }
+            ],
+            [],
+            [],
+            [],
+            [
+              {
+                "feature": "TRUNKSPIN",
+                "position": {
+                  "x": 0.6580729747996517,
+                  "y": 0.6053278281202616
+                },
+                "description": {
+                  "short": "410l trunk",
+                  "long": "410l trunk"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "TRUNKSPIN",
+                "position": {
+                  "x": 0.5759174864431257,
+                  "y": 0.6221700763889745
+                },
+                "description": {
+                  "short": "410l trunk",
+                  "long": "410l trunk"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "TRUNKSPIN",
+                "position": {
+                  "x": 0.5059309360890251,
+                  "y": 0.636347715492106
+                },
+                "description": {
+                  "short": "410l trunk",
+                  "long": "410l trunk"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "TRUNKSPIN",
+                "position": {
+                  "x": 0.45600130566490455,
+                  "y": 0.6160050872301864
+                },
+                "description": {
+                  "short": "410l trunk",
+                  "long": "410l trunk"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "TRUNKSPIN",
+                "position": {
+                  "x": 0.37255456317502245,
+                  "y": 0.6199437983894086
+                },
+                "description": {
+                  "short": "410l trunk",
+                  "long": "410l trunk"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "TRUNKSPIN",
+                "position": {
+                  "x": 0.3012532015347848,
+                  "y": 0.6116837998426709
+                },
+                "description": {
+                  "short": "410l trunk",
+                  "long": "410l trunk"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
+              }
+            ],
+            [],
+            [
+              {
+                "feature": "REARROWSPIN",
+                "position": {
+                  "x": 0.50953691558792964,
+                  "y": 0.51043319361303805
+                },
+                "description": {
+                  "short": "Enter rear row",
+                  "long": "Enter rear row"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
+              },
+              {
+                "feature": "SIDEMIRRORSPIN",
+                "position": {
+                  "x": 0.67242889140637739,
+                  "y": 0.4578944256749712
+                },
+                "description": {
+                  "short": "Side mirror",
+                  "long": "Side mirror"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "REARROWSPIN",
+                "position": {
+                  "x": 0.45981212564584248,
+                  "y": 0.516959134799083
+                },
+                "description": {
+                  "short": "Enter rear row",
+                  "long": "Enter rear row"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
+              },
+              {
+                "feature": "SIDEMIRRORSPIN",
+                "position": {
+                  "x": 0.66360755118507314,
+                  "y": 0.45374967080858243
+                },
+                "description": {
+                  "short": "Side mirror",
+                  "long": "Side mirror"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "REARROWSPIN",
+                "position": {
+                  "x": 0.41195979293770256,
+                  "y": 0.5176462722176002
+                },
+                "description": {
+                  "short": "Enter rear row",
+                  "long": "Enter rear row"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
+              },
+              {
+                "feature": "SIDEMIRRORSPIN",
+                "position": {
+                  "x": 0.66264599082616608,
+                  "y": 0.4647221516530369
+                },
+                "description": {
+                  "short": "Side mirror",
+                  "long": "Side mirror"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "REARROWSPIN",
+                "position": {
+                  "x": 0.3810077532856377,
+                  "y": 0.5005220205155529
+                },
+                "description": {
+                  "short": "Enter rear row",
+                  "long": "Enter rear row"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
+              },
+              {
+                "feature": "SIDEMIRRORSPIN",
+                "position": {
+                  "x": 0.64391680647044315,
+                  "y": 0.47978121698332434
+                },
+                "description": {
+                  "short": "Side mirror",
+                  "long": "Side mirror"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "REARROWSPIN",
+                "position": {
+                  "x": 0.3521977100911737,
+                  "y": 0.4951780130024845
+                },
+                "description": {
+                  "short": "Enter rear row",
+                  "long": "Enter rear row"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
+              },
+              {
+                "feature": "SIDEMIRRORSPIN",
+                "position": {
+                  "x": 0.6207504465293249,
+                  "y": 0.472209325769414
+                },
+                "description": {
+                  "short": "Side mirror",
+                  "long": "Side mirror"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "REARROWSPIN",
+                "position": {
+                  "x": 0.33430465779377315,
+                  "y": 0.4951196717539829
+                },
+                "description": {
+                  "short": "Enter rear row",
+                  "long": "Enter rear row"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
+              },
+              {
+                "feature": "SIDEMIRRORSPIN",
+                "position": {
+                  "x": 0.5864660073683409,
+                  "y": 0.4747304829954453
+                },
+                "description": {
+                  "short": "Side mirror",
+                  "long": "Side mirror"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "REARROWSPIN",
+                "position": {
+                  "x": 0.31636832818537394,
+                  "y": 0.4924274590644448
+                },
+                "description": {
+                  "short": "Enter rear row",
+                  "long": "Enter rear row"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
+              },
+              {
+                "feature": "SIDEMIRRORSPIN",
+                "position": {
+                  "x": 0.5503842763078304,
+                  "y": 0.47130752288710054
+                },
+                "description": {
+                  "short": "Side mirror",
+                  "long": "Side mirror"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "REARROWSPIN",
+                "position": {
+                  "x": 0.3140393092198996,
+                  "y": 0.486254867624526
+                },
+                "description": {
+                  "short": "Enter rear row",
+                  "long": "Enter rear row"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
+              },
+              {
+                "feature": "SIDEMIRRORSPIN",
+                "position": {
+                  "x": 0.5051354259772865,
+                  "y": 0.472798857335752
+                },
+                "description": {
+                  "short": "Side mirror",
+                  "long": "Side mirror"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "REARROWSPIN",
+                "position": {
+                  "x": 0.32397316040144234,
+                  "y": 0.4770284721566936
+                },
+                "description": {
+                  "short": "Enter rear row",
+                  "long": "Enter rear row"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
+              },
+              {
+                "feature": "SIDEMIRRORSPIN",
+                "position": {
+                  "x": 0.47383474075405073,
+                  "y": 0.47288926164314945
+                },
+                "description": {
+                  "short": "Side mirror",
+                  "long": "Side mirror"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "REARROWSPIN",
+                "position": {
+                  "x": 0.32693536818886365,
+                  "y": 0.4775125376669681
+                },
+                "description": {
+                  "short": "Enter rear row",
+                  "long": "Enter rear row"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
+              },
+              {
+                "feature": "SIDEMIRRORSPIN",
+                "position": {
+                  "x": 0.42745963345143694,
+                  "y": 0.4738951407000627
+                },
+                "description": {
+                  "short": "Side mirror",
+                  "long": "Side mirror"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
+              }
+            ],
+            [],
+            [
+              {
+                "feature": "ENGINESPIN",
+                "position": {
+                  "x": 0.5787418399244995,
+                  "y": 0.48018863023945544
+                },
+                "description": {
+                  "short": "165 PS",
+                  "long": "165 PS"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
+              },
+              {
+                "feature": "STARMERCSPIN",
+                "position": {
+                  "x": 0.7004364422825286,
+                  "y": 0.6447576126703283
+                },
+                "description": {
+                  "short": "AMG line",
+                  "long": "AMG line"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "ENGINESPIN",
+                "position": {
+                  "x": 0.5370759242431327,
+                  "y": 0.48257593475412695
+                },
+                "description": {
+                  "short": "165 PS",
+                  "long": "165 PS"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
+              },
+              {
+                "feature": "STARMERCSPIN",
+                "position": {
+                  "x": 0.6173786827634946,
+                  "y": 0.6606816375211942
+                },
+                "description": {
+                  "short": "AMG line",
+                  "long": "AMG line"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "ENGINESPIN",
+                "position": {
+                  "x": 0.5211285083247776,
+                  "y": 0.4849646543922921
+                },
+                "description": {
+                  "short": "165 PS",
+                  "long": "165 PS"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
+              },
+              {
+                "feature": "STARMERCSPIN",
+                "position": {
+                  "x": 0.5290617638538977,
+                  "y": 0.6802513918462856
+                },
+                "description": {
+                  "short": "AMG line",
+                  "long": "AMG line"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "ENGINESPIN",
+                "position": {
+                  "x": 0.503926328146444,
+                  "y": 0.48814231843009735
+                },
+                "description": {
+                  "short": "165 PS",
+                  "long": "165 PS"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
+              },
+              {
+                "feature": "STARMERCSPIN",
+                "position": {
+                  "x": 0.4656423880947305,
+                  "y": 0.6840785074155662
+                },
+                "description": {
+                  "short": "AMG line",
+                  "long": "AMG line"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "ENGINESPIN",
+                "position": {
+                  "x": 0.45468897730833555,
+                  "y": 0.4847316596321313
+                },
+                "description": {},
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
+              },
+              {
+                "feature": "STARMERCSPIN",
+                "position": {
+                  "x": 0.39256339456631843,
+                  "y": 0.6808676379554848
+                },
+                "description": {
+                  "short": "AMG line",
+                  "long": "AMG line"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "ENGINESPIN",
+                "position": {
+                  "x": 0.43132157011719116,
+                  "y": 0.4982269114303713
+                },
+                "description": {
+                  "short": "165 PS",
+                  "long": "165 PS"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
+              },
+              {
+                "feature": "STARMERCSPIN",
+                "position": {
+                  "x": 0.3230628258588608,
+                  "y": 0.6578038961878582
+                },
+                "description": {
+                  "short": "AMG line",
+                  "long": "AMG line"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
+              }
+            ],
+            [],
+            [],
+            [
+              {
+                "feature": "GASOLINESPIN",
+                "position": {
+                  "x": 0.73449804030698452,
+                  "y": 0.4704222900092791
+                },
+                "description": {
+                  "short": "Gasoline",
+                  "long": "Gasoline"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
+              },
+              {
+                "feature": "TIRESPIN",
+                "position": {
+                  "x": 0.4011190372636868,
+                  "y": 0.6828804498923265
+                },
+                "description": {
+                  "short": "19″ AMG rim",
+                  "long": "19″ AMG rim"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "GASOLINESPIN",
+                "position": {
+                  "x": 0.7469801054650279,
+                  "y": 0.4764224684141696
+                },
+                "description": {
+                  "short": "Gasoline",
+                  "long": "Gasoline"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
+              },
+              {
+                "feature": "TIRESPIN",
+                "position": {
+                  "x": 0.344766572661195,
+                  "y": 0.6600463527840323
+                },
+                "description": {
+                  "short": "19″ AMG rim",
+                  "long": "19″ AMG rim"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "GASOLINESPIN",
+                "position": {
+                  "x": 0.7740855613228812,
+                  "y": 0.4826371777998957
+                },
+                "description": {
+                  "short": "Gasoline",
+                  "long": "Gasoline"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
+              },
+              {
+                "feature": "TIRESPIN",
+                "position": {
+                  "x": 0.30117532361754434,
+                  "y": 0.6236645096643904
+                },
+                "description": {
+                  "short": "19″ AMG rim",
+                  "long": "19″ AMG rim"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "GASOLINESPIN",
+                "position": {
+                  "x": 0.7755949341492718,
+                  "y": 0.4909288338903908
+                },
+                "description": {
+                  "short": "Gasoline",
+                  "long": "Gasoline"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
+              },
+              {
+                "feature": "TIRESPIN",
+                "position": {
+                  "x": 0.2695196020510047,
+                  "y": 0.6262530041061902
+                },
+                "description": {
+                  "short": "19″ AMG rim",
+                  "long": "19″ AMG rim"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "category": "exterior",
+      "title": "Exterior",
+      "items": [
+        {
+          "type": "image",
+          "src": "https://cdn.car-cutter.com/gallery/autonation/W1N4M4GB6LW035205/81e25cec1a-W1N4M4GB6LW035205-0_CC.jpg.jpg",
+          "hotspots": [
             {
-              "feature": "GASOLINESPIN",
+              "feature": "DRIVER ASSIST",
               "position": {
-                "x": 0.75259820284208762,
-                "y": 0.5000296400181725
+                "x": 0.24637892842292786,
+                "y": 0.6906564235687256
               },
               "description": {
-                "short": "Gasoline",
-                "long": "Gasoline"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
+                "short": "Blind Spot Assist -Inc: Exit Warning Assist",
+                "long": "Blind Spot Assist -Inc: Exit Warning Assist"
+              }
             },
             {
-              "feature": "TIRESPIN",
+              "feature": "WINDOW STICKER",
               "position": {
-                "x": 0.2539082604181384,
-                "y": 0.6009267268543984
+                "x": 0.10500000000000001,
+                "y": 0.895
               },
               "description": {
-                "short": "19″ AMG rim",
-                "long": "19″ AMG rim"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "GASOLINESPIN",
-              "position": {
-                "x": 0.7227405130774929,
-                "y": 0.5098933890770891
-              },
-              "description": {
-                "short": "Gasoline",
-                "long": "Gasoline"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
+                "short": "PDF",
+                "long": "https://s3-us-west-2.amazonaws.com/devx5pdf/12394/5391126.pdf"
+              }
             },
             {
-              "feature": "TIRESPIN",
+              "feature": "CARFAX",
               "position": {
-                "x": 0.2531610226472198,
-                "y": 0.5779935758638945
+                "x": 0.10500000000000001,
+                "y": 0.10500000000000001
               },
               "description": {
-                "short": "19″ AMG rim",
-                "long": "19″ AMG rim"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "GASOLINESPIN",
-              "position": {
-                "x": 0.6890386011847915,
-                "y": 0.51806266073554516
-              },
-              "description": {
-                "short": "Gasoline",
-                "long": "Gasoline"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
-            },
-            {
-              "feature": "TIRESPIN",
-              "position": {
-                "x": 0.259582295726974,
-                "y": 0.56899917272276156
-              },
-              "description": {
-                "short": "19″ AMG rim",
-                "long": "19″ AMG rim"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
-            }
-          ],
-          [],
-          [],
-          [],
-          [
-            {
-              "feature": "TRUNKSPIN",
-              "position": {
-                "x": 0.6580729747996517,
-                "y": 0.6053278281202616
-              },
-              "description": {
-                "short": "410l trunk",
-                "long": "410l trunk"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "TRUNKSPIN",
-              "position": {
-                "x": 0.5759174864431257,
-                "y": 0.6221700763889745
-              },
-              "description": {
-                "short": "410l trunk",
-                "long": "410l trunk"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "TRUNKSPIN",
-              "position": {
-                "x": 0.5059309360890251,
-                "y": 0.636347715492106
-              },
-              "description": {
-                "short": "410l trunk",
-                "long": "410l trunk"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "TRUNKSPIN",
-              "position": {
-                "x": 0.45600130566490455,
-                "y": 0.6160050872301864
-              },
-              "description": {
-                "short": "410l trunk",
-                "long": "410l trunk"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "TRUNKSPIN",
-              "position": {
-                "x": 0.37255456317502245,
-                "y": 0.6199437983894086
-              },
-              "description": {
-                "short": "410l trunk",
-                "long": "410l trunk"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "TRUNKSPIN",
-              "position": {
-                "x": 0.3012532015347848,
-                "y": 0.6116837998426709
-              },
-              "description": {
-                "short": "410l trunk",
-                "long": "410l trunk"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
-            }
-          ],
-          [],
-          [
-            {
-              "feature": "REARROWSPIN",
-              "position": {
-                "x": 0.50953691558792964,
-                "y": 0.51043319361303805
-              },
-              "description": {
-                "short": "Enter rear row",
-                "long": "Enter rear row"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
-            },
-            {
-              "feature": "SIDEMIRRORSPIN",
-              "position": {
-                "x": 0.67242889140637739,
-                "y": 0.4578944256749712
-              },
-              "description": {
-                "short": "Side mirror",
-                "long": "Side mirror"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "REARROWSPIN",
-              "position": {
-                "x": 0.45981212564584248,
-                "y": 0.516959134799083
-              },
-              "description": {
-                "short": "Enter rear row",
-                "long": "Enter rear row"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
-            },
-            {
-              "feature": "SIDEMIRRORSPIN",
-              "position": {
-                "x": 0.66360755118507314,
-                "y": 0.45374967080858243
-              },
-              "description": {
-                "short": "Side mirror",
-                "long": "Side mirror"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "REARROWSPIN",
-              "position": {
-                "x": 0.41195979293770256,
-                "y": 0.5176462722176002
-              },
-              "description": {
-                "short": "Enter rear row",
-                "long": "Enter rear row"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
-            },
-            {
-              "feature": "SIDEMIRRORSPIN",
-              "position": {
-                "x": 0.66264599082616608,
-                "y": 0.4647221516530369
-              },
-              "description": {
-                "short": "Side mirror",
-                "long": "Side mirror"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "REARROWSPIN",
-              "position": {
-                "x": 0.3810077532856377,
-                "y": 0.5005220205155529
-              },
-              "description": {
-                "short": "Enter rear row",
-                "long": "Enter rear row"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
-            },
-            {
-              "feature": "SIDEMIRRORSPIN",
-              "position": {
-                "x": 0.64391680647044315,
-                "y": 0.47978121698332434
-              },
-              "description": {
-                "short": "Side mirror",
-                "long": "Side mirror"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "REARROWSPIN",
-              "position": {
-                "x": 0.3521977100911737,
-                "y": 0.4951780130024845
-              },
-              "description": {
-                "short": "Enter rear row",
-                "long": "Enter rear row"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
-            },
-            {
-              "feature": "SIDEMIRRORSPIN",
-              "position": {
-                "x": 0.6207504465293249,
-                "y": 0.472209325769414
-              },
-              "description": {
-                "short": "Side mirror",
-                "long": "Side mirror"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "REARROWSPIN",
-              "position": {
-                "x": 0.33430465779377315,
-                "y": 0.4951196717539829
-              },
-              "description": {
-                "short": "Enter rear row",
-                "long": "Enter rear row"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
-            },
-            {
-              "feature": "SIDEMIRRORSPIN",
-              "position": {
-                "x": 0.5864660073683409,
-                "y": 0.4747304829954453
-              },
-              "description": {
-                "short": "Side mirror",
-                "long": "Side mirror"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "REARROWSPIN",
-              "position": {
-                "x": 0.31636832818537394,
-                "y": 0.4924274590644448
-              },
-              "description": {
-                "short": "Enter rear row",
-                "long": "Enter rear row"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
-            },
-            {
-              "feature": "SIDEMIRRORSPIN",
-              "position": {
-                "x": 0.5503842763078304,
-                "y": 0.47130752288710054
-              },
-              "description": {
-                "short": "Side mirror",
-                "long": "Side mirror"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "REARROWSPIN",
-              "position": {
-                "x": 0.3140393092198996,
-                "y": 0.486254867624526
-              },
-              "description": {
-                "short": "Enter rear row",
-                "long": "Enter rear row"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
-            },
-            {
-              "feature": "SIDEMIRRORSPIN",
-              "position": {
-                "x": 0.5051354259772865,
-                "y": 0.472798857335752
-              },
-              "description": {
-                "short": "Side mirror",
-                "long": "Side mirror"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "REARROWSPIN",
-              "position": {
-                "x": 0.32397316040144234,
-                "y": 0.4770284721566936
-              },
-              "description": {
-                "short": "Enter rear row",
-                "long": "Enter rear row"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
-            },
-            {
-              "feature": "SIDEMIRRORSPIN",
-              "position": {
-                "x": 0.47383474075405073,
-                "y": 0.47288926164314945
-              },
-              "description": {
-                "short": "Side mirror",
-                "long": "Side mirror"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "REARROWSPIN",
-              "position": {
-                "x": 0.32693536818886365,
-                "y": 0.4775125376669681
-              },
-              "description": {
-                "short": "Enter rear row",
-                "long": "Enter rear row"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
-            },
-            {
-              "feature": "SIDEMIRRORSPIN",
-              "position": {
-                "x": 0.42745963345143694,
-                "y": 0.4738951407000627
-              },
-              "description": {
-                "short": "Side mirror",
-                "long": "Side mirror"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
-            }
-          ],
-          [],
-          [
-            {
-              "feature": "ENGINESPIN",
-              "position": {
-                "x": 0.5787418399244995,
-                "y": 0.48018863023945544
-              },
-              "description": {
-                "short": "165 PS",
-                "long": "165 PS"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
-            },
-            {
-              "feature": "STARMERCSPIN",
-              "position": {
-                "x": 0.7004364422825286,
-                "y": 0.6447576126703283
-              },
-              "description": {
-                "short": "AMG line",
-                "long": "AMG line"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "ENGINESPIN",
-              "position": {
-                "x": 0.5370759242431327,
-                "y": 0.48257593475412695
-              },
-              "description": {
-                "short": "165 PS",
-                "long": "165 PS"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
-            },
-            {
-              "feature": "STARMERCSPIN",
-              "position": {
-                "x": 0.6173786827634946,
-                "y": 0.6606816375211942
-              },
-              "description": {
-                "short": "AMG line",
-                "long": "AMG line"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "ENGINESPIN",
-              "position": {
-                "x": 0.5211285083247776,
-                "y": 0.4849646543922921
-              },
-              "description": {
-                "short": "165 PS",
-                "long": "165 PS"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
-            },
-            {
-              "feature": "STARMERCSPIN",
-              "position": {
-                "x": 0.5290617638538977,
-                "y": 0.6802513918462856
-              },
-              "description": {
-                "short": "AMG line",
-                "long": "AMG line"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "ENGINESPIN",
-              "position": {
-                "x": 0.503926328146444,
-                "y": 0.48814231843009735
-              },
-              "description": {
-                "short": "165 PS",
-                "long": "165 PS"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
-            },
-            {
-              "feature": "STARMERCSPIN",
-              "position": {
-                "x": 0.4656423880947305,
-                "y": 0.6840785074155662
-              },
-              "description": {
-                "short": "AMG line",
-                "long": "AMG line"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "ENGINESPIN",
-              "position": {
-                "x": 0.45468897730833555,
-                "y": 0.4847316596321313
-              },
-              "description": {},
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
-            },
-            {
-              "feature": "STARMERCSPIN",
-              "position": {
-                "x": 0.39256339456631843,
-                "y": 0.6808676379554848
-              },
-              "description": {
-                "short": "AMG line",
-                "long": "AMG line"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "ENGINESPIN",
-              "position": {
-                "x": 0.43132157011719116,
-                "y": 0.4982269114303713
-              },
-              "description": {
-                "short": "165 PS",
-                "long": "165 PS"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
-            },
-            {
-              "feature": "STARMERCSPIN",
-              "position": {
-                "x": 0.3230628258588608,
-                "y": 0.6578038961878582
-              },
-              "description": {
-                "short": "AMG line",
-                "long": "AMG line"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
-            }
-          ],
-          [],
-          [],
-          [
-            {
-              "feature": "GASOLINESPIN",
-              "position": {
-                "x": 0.73449804030698452,
-                "y": 0.4704222900092791
-              },
-              "description": {
-                "short": "Gasoline",
-                "long": "Gasoline"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
-            },
-            {
-              "feature": "TIRESPIN",
-              "position": {
-                "x": 0.4011190372636868,
-                "y": 0.6828804498923265
-              },
-              "description": {
-                "short": "19″ AMG rim",
-                "long": "19″ AMG rim"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "GASOLINESPIN",
-              "position": {
-                "x": 0.7469801054650279,
-                "y": 0.4764224684141696
-              },
-              "description": {
-                "short": "Gasoline",
-                "long": "Gasoline"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
-            },
-            {
-              "feature": "TIRESPIN",
-              "position": {
-                "x": 0.344766572661195,
-                "y": 0.6600463527840323
-              },
-              "description": {
-                "short": "19″ AMG rim",
-                "long": "19″ AMG rim"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "GASOLINESPIN",
-              "position": {
-                "x": 0.7740855613228812,
-                "y": 0.4826371777998957
-              },
-              "description": {
-                "short": "Gasoline",
-                "long": "Gasoline"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
-            },
-            {
-              "feature": "TIRESPIN",
-              "position": {
-                "x": 0.30117532361754434,
-                "y": 0.6236645096643904
-              },
-              "description": {
-                "short": "19″ AMG rim",
-                "long": "19″ AMG rim"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "GASOLINESPIN",
-              "position": {
-                "x": 0.7755949341492718,
-                "y": 0.4909288338903908
-              },
-              "description": {
-                "short": "Gasoline",
-                "long": "Gasoline"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
-            },
-            {
-              "feature": "TIRESPIN",
-              "position": {
-                "x": 0.2695196020510047,
-                "y": 0.6262530041061902
-              },
-              "description": {
-                "short": "19″ AMG rim",
-                "long": "19″ AMG rim"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
+                "short": "CARFAX Report",
+                "long": "https://www.carfax.com/VehicleHistory/p/Report.cfx?vin=W1N4M4GB6LW035205&partner=AND_A"
+              }
             }
           ]
-        ]
-      }
-    ]
-  },
-  {
-    "category": "exterior",
-    "title": "Exterior",
-    "items": [
-      {
-        "type": "image",
-        "src": "https://cdn.car-cutter.com/gallery/autonation/W1N4M4GB6LW035205/81e25cec1a-W1N4M4GB6LW035205-0_CC.jpg.jpg",
-        "hotspots": [
-          {
-            "feature": "DRIVER ASSIST",
-            "position": {
-              "x": 0.24637892842292786,
-              "y": 0.6906564235687256
-            },
-            "description": {
-              "short": "Blind Spot Assist -Inc: Exit Warning Assist",
-              "long": "Blind Spot Assist -Inc: Exit Warning Assist"
-            }
-          },
-          {
-            "feature": "WINDOW STICKER",
-            "position": {
-              "x": 0.10500000000000001,
-              "y": 0.895
-            },
-            "description": {
-              "short": "PDF",
-              "long": "https://s3-us-west-2.amazonaws.com/devx5pdf/12394/5391126.pdf"
-            }
-          },
-          {
-            "feature": "CARFAX",
-            "position": {
-              "x": 0.10500000000000001,
-              "y": 0.10500000000000001
-            },
-            "description": {
-              "short": "CARFAX Report",
-              "long": "https://www.carfax.com/VehicleHistory/p/Report.cfx?vin=W1N4M4GB6LW035205&partner=AND_A"
-            }
-          }
-        ]
-      },
-      {
-        "type": "image",
-        "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_01_front-right_d580dc4f434aeb39535230fd1d3acdec7eb6d273_a.jpg"
-      },
-      {
-        "type": "image",
-        "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_02_side-right_69eb5d9332f6d54fe94dfab669de42df031492fa_a.jpg"
-      },
-      {
-        "type": "image",
-        "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_03_rear-right_843f84c3212213a3976dfa70e7a41ea0ab58431e_a.jpg"
-      },
-      {
-        "type": "image",
-        "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_04_rear_92ee9fe85a69541f01f62132d19dd4006e400337_a.jpg"
-      },
-      {
-        "type": "image",
-        "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_05_rear-left_c2f0b9df4abcc0e444a77dfe3fe60db8388d4f41_a.jpg"
-      },
-      {
-        "type": "image",
-        "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_06_side-left_c4fca92abd2527739d71e02ecd309090a19ed811_a.jpg"
-      },
-      {
-        "type": "image",
-        "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_07_front-left_dbe1cf56e61609e1c737cdce7185d994ca8c7508_a.jpg"
-      },
-      {
-        "type": "image",
-        "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_08_front_72b68eef587a5cb6c07257dbb4c8032d616ed261_a.jpg"
-      }
-    ]
-  },
-  {
-    "category": "video",
-    "title": "Video",
-    "items": [
-      {
-        "type": "video",
-        "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/c/c0/Big_Buck_Bunny_4K.webm/Big_Buck_Bunny_4K.webm.480p.vp9.webm",
-        "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Big_Buck_Bunny_4K.webm/310px-seek%3D116-Big_Buck_Bunny_4K.webm.jpg"
-      }
-    ]
-  },
-  {
-    "category": "interior",
-    "title": "Interior",
-    "items": [
-      {
-        "type": "image",
-        "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_17_enter-driver-codriver_50691ddb01b08754ad7acff794523d3cb6dc3ec1_a.jpg"
-      },
-      {
-        "type": "image",
-        "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_18_enter-codriver-driver_3df660c4dc5b1c9f5f24bb79eb9c93c502078ff3_a.jpg"
-      },
-      {
-        "type": "image",
-        "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_19_rear-row-driver_69bae187d4606caad5fc49abbef314568b2c7534_a.jpg"
-      },
-      {
-        "type": "image",
-        "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_20_steering-wheel-driver_a18d23e1900a1e12557e35613934e1ff01d28e0f_a.jpg"
-      },
-      {
-        "type": "image",
-        "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_21_front-panel-passenger_10cb8fa835af8af9219cbb5137e31d520f9e4bbc_a.jpg"
-      },
-      {
-        "type": "image",
-        "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_22_center-console-down_aec8f5ce562329f429194bc9e2b0acb7607c74b8_a.jpg"
-      }
-    ]
-  },
-  {
-    "category": "detail",
-    "title": "Detail",
-    "items": [
-      {
-        "type": "image",
-        "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_09_trunk-straight_51b5e7692e4251268fcfab92665232f9deb21d58_a.jpg"
-      },
-      {
-        "type": "image",
-        "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_15_rim-rear-left_c9c85fd88fc9e9d0aa55c17953061be0ed391095_a.jpg"
-      }
-    ]
-  },
-  {
-    "category": "other",
-    "title": "Other",
-    "items": [
-      {
-        "type": "360",
-        "images": [
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-023-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-024-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-025-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-026-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-027-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-028-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-029-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-030-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-031-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-032-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-033-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-034-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-035-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-000-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-001-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-002-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-003-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-004-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-005-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-006-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-007-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-008-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-009-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-010-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-011-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-012-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-013-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-014-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-015-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-016-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-017-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-018-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-019-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-020-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-021-036.jpg",
-          "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-022-036.jpg"
-        ],
-        "hotspots": [
-          [
-            {
-              "feature": "GASOLINESPIN",
-              "position": {
-                "x": 0.75259820284208762,
-                "y": 0.5000296400181725
-              },
-              "description": {
-                "short": "Gasoline",
-                "long": "Gasoline"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
-            },
-            {
-              "feature": "TIRESPIN",
-              "position": {
-                "x": 0.2539082604181384,
-                "y": 0.6009267268543984
-              },
-              "description": {
-                "short": "19″ AMG rim",
-                "long": "19″ AMG rim"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
-            }
+        },
+        {
+          "type": "image",
+          "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_01_front-right_d580dc4f434aeb39535230fd1d3acdec7eb6d273_a.jpg"
+        },
+        {
+          "type": "image",
+          "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_02_side-right_69eb5d9332f6d54fe94dfab669de42df031492fa_a.jpg"
+        },
+        {
+          "type": "image",
+          "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_03_rear-right_843f84c3212213a3976dfa70e7a41ea0ab58431e_a.jpg"
+        },
+        {
+          "type": "image",
+          "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_04_rear_92ee9fe85a69541f01f62132d19dd4006e400337_a.jpg"
+        },
+        {
+          "type": "image",
+          "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_05_rear-left_c2f0b9df4abcc0e444a77dfe3fe60db8388d4f41_a.jpg"
+        },
+        {
+          "type": "image",
+          "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_06_side-left_c4fca92abd2527739d71e02ecd309090a19ed811_a.jpg"
+        },
+        {
+          "type": "image",
+          "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_07_front-left_dbe1cf56e61609e1c737cdce7185d994ca8c7508_a.jpg"
+        },
+        {
+          "type": "image",
+          "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_08_front_72b68eef587a5cb6c07257dbb4c8032d616ed261_a.jpg"
+        }
+      ]
+    },
+    {
+      "category": "video",
+      "title": "Video",
+      "items": [
+        {
+          "type": "video",
+          "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/c/c0/Big_Buck_Bunny_4K.webm/Big_Buck_Bunny_4K.webm.480p.vp9.webm",
+          "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Big_Buck_Bunny_4K.webm/310px-seek%3D116-Big_Buck_Bunny_4K.webm.jpg"
+        }
+      ]
+    },
+    {
+      "category": "interior",
+      "title": "Interior",
+      "items": [
+        {
+          "type": "image",
+          "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_17_enter-driver-codriver_50691ddb01b08754ad7acff794523d3cb6dc3ec1_a.jpg"
+        },
+        {
+          "type": "image",
+          "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_18_enter-codriver-driver_3df660c4dc5b1c9f5f24bb79eb9c93c502078ff3_a.jpg"
+        },
+        {
+          "type": "image",
+          "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_19_rear-row-driver_69bae187d4606caad5fc49abbef314568b2c7534_a.jpg"
+        },
+        {
+          "type": "image",
+          "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_20_steering-wheel-driver_a18d23e1900a1e12557e35613934e1ff01d28e0f_a.jpg"
+        },
+        {
+          "type": "image",
+          "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_21_front-panel-passenger_10cb8fa835af8af9219cbb5137e31d520f9e4bbc_a.jpg"
+        },
+        {
+          "type": "image",
+          "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_22_center-console-down_aec8f5ce562329f429194bc9e2b0acb7607c74b8_a.jpg"
+        }
+      ]
+    },
+    {
+      "category": "detail",
+      "title": "Detail",
+      "items": [
+        {
+          "type": "image",
+          "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_09_trunk-straight_51b5e7692e4251268fcfab92665232f9deb21d58_a.jpg"
+        },
+        {
+          "type": "image",
+          "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_15_rim-rear-left_c9c85fd88fc9e9d0aa55c17953061be0ed391095_a.jpg"
+        }
+      ]
+    },
+    {
+      "category": "other",
+      "title": "Other",
+      "items": [
+        {
+          "type": "360",
+          "images": [
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-023-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-024-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-025-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-026-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-027-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-028-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-029-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-030-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-031-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-032-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-033-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-034-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-035-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-000-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-001-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-002-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-003-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-004-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-005-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-006-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-007-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-008-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-009-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-010-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-011-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-012-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-013-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-014-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-015-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-016-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-017-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-018-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-019-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-020-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-021-036.jpg",
+            "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_00_spin-0-360-022-036.jpg"
           ],
-          [
+          "hotspots": [
+            [
+              {
+                "feature": "GASOLINESPIN",
+                "position": {
+                  "x": 0.75259820284208762,
+                  "y": 0.5000296400181725
+                },
+                "description": {
+                  "short": "Gasoline",
+                  "long": "Gasoline"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
+              },
+              {
+                "feature": "TIRESPIN",
+                "position": {
+                  "x": 0.2539082604181384,
+                  "y": 0.6009267268543984
+                },
+                "description": {
+                  "short": "19″ AMG rim",
+                  "long": "19″ AMG rim"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "GASOLINESPIN",
+                "position": {
+                  "x": 0.7227405130774929,
+                  "y": 0.5098933890770891
+                },
+                "description": {
+                  "short": "Gasoline",
+                  "long": "Gasoline"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
+              },
+              {
+                "feature": "TIRESPIN",
+                "position": {
+                  "x": 0.2531610226472198,
+                  "y": 0.5779935758638945
+                },
+                "description": {
+                  "short": "19″ AMG rim",
+                  "long": "19″ AMG rim"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "GASOLINESPIN",
+                "position": {
+                  "x": 0.6890386011847915,
+                  "y": 0.51806266073554516
+                },
+                "description": {
+                  "short": "Gasoline",
+                  "long": "Gasoline"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
+              },
+              {
+                "feature": "TIRESPIN",
+                "position": {
+                  "x": 0.259582295726974,
+                  "y": 0.56899917272276156
+                },
+                "description": {
+                  "short": "19″ AMG rim",
+                  "long": "19″ AMG rim"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
+              }
+            ],
+            [],
+            [],
+            [],
+            [
+              {
+                "feature": "TRUNKSPIN",
+                "position": {
+                  "x": 0.6580729747996517,
+                  "y": 0.6053278281202616
+                },
+                "description": {
+                  "short": "410l trunk",
+                  "long": "410l trunk"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "TRUNKSPIN",
+                "position": {
+                  "x": 0.5759174864431257,
+                  "y": 0.6221700763889745
+                },
+                "description": {
+                  "short": "410l trunk",
+                  "long": "410l trunk"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "TRUNKSPIN",
+                "position": {
+                  "x": 0.5059309360890251,
+                  "y": 0.636347715492106
+                },
+                "description": {
+                  "short": "410l trunk",
+                  "long": "410l trunk"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "TRUNKSPIN",
+                "position": {
+                  "x": 0.45600130566490455,
+                  "y": 0.6160050872301864
+                },
+                "description": {
+                  "short": "410l trunk",
+                  "long": "410l trunk"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "TRUNKSPIN",
+                "position": {
+                  "x": 0.37255456317502245,
+                  "y": 0.6199437983894086
+                },
+                "description": {
+                  "short": "410l trunk",
+                  "long": "410l trunk"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "TRUNKSPIN",
+                "position": {
+                  "x": 0.3012532015347848,
+                  "y": 0.6116837998426709
+                },
+                "description": {
+                  "short": "410l trunk",
+                  "long": "410l trunk"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
+              }
+            ],
+            [],
+            [
+              {
+                "feature": "REARROWSPIN",
+                "position": {
+                  "x": 0.50953691558792964,
+                  "y": 0.51043319361303805
+                },
+                "description": {
+                  "short": "Enter rear row",
+                  "long": "Enter rear row"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
+              },
+              {
+                "feature": "SIDEMIRRORSPIN",
+                "position": {
+                  "x": 0.67242889140637739,
+                  "y": 0.4578944256749712
+                },
+                "description": {
+                  "short": "Side mirror",
+                  "long": "Side mirror"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "REARROWSPIN",
+                "position": {
+                  "x": 0.45981212564584248,
+                  "y": 0.516959134799083
+                },
+                "description": {
+                  "short": "Enter rear row",
+                  "long": "Enter rear row"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
+              },
+              {
+                "feature": "SIDEMIRRORSPIN",
+                "position": {
+                  "x": 0.66360755118507314,
+                  "y": 0.45374967080858243
+                },
+                "description": {
+                  "short": "Side mirror",
+                  "long": "Side mirror"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "REARROWSPIN",
+                "position": {
+                  "x": 0.41195979293770256,
+                  "y": 0.5176462722176002
+                },
+                "description": {
+                  "short": "Enter rear row",
+                  "long": "Enter rear row"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
+              },
+              {
+                "feature": "SIDEMIRRORSPIN",
+                "position": {
+                  "x": 0.66264599082616608,
+                  "y": 0.4647221516530369
+                },
+                "description": {
+                  "short": "Side mirror",
+                  "long": "Side mirror"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "REARROWSPIN",
+                "position": {
+                  "x": 0.3810077532856377,
+                  "y": 0.5005220205155529
+                },
+                "description": {
+                  "short": "Enter rear row",
+                  "long": "Enter rear row"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
+              },
+              {
+                "feature": "SIDEMIRRORSPIN",
+                "position": {
+                  "x": 0.64391680647044315,
+                  "y": 0.47978121698332434
+                },
+                "description": {
+                  "short": "Side mirror",
+                  "long": "Side mirror"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "REARROWSPIN",
+                "position": {
+                  "x": 0.3521977100911737,
+                  "y": 0.4951780130024845
+                },
+                "description": {
+                  "short": "Enter rear row",
+                  "long": "Enter rear row"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
+              },
+              {
+                "feature": "SIDEMIRRORSPIN",
+                "position": {
+                  "x": 0.6207504465293249,
+                  "y": 0.472209325769414
+                },
+                "description": {
+                  "short": "Side mirror",
+                  "long": "Side mirror"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "REARROWSPIN",
+                "position": {
+                  "x": 0.33430465779377315,
+                  "y": 0.4951196717539829
+                },
+                "description": {
+                  "short": "Enter rear row",
+                  "long": "Enter rear row"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
+              },
+              {
+                "feature": "SIDEMIRRORSPIN",
+                "position": {
+                  "x": 0.5864660073683409,
+                  "y": 0.4747304829954453
+                },
+                "description": {
+                  "short": "Side mirror",
+                  "long": "Side mirror"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "REARROWSPIN",
+                "position": {
+                  "x": 0.31636832818537394,
+                  "y": 0.4924274590644448
+                },
+                "description": {
+                  "short": "Enter rear row",
+                  "long": "Enter rear row"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
+              },
+              {
+                "feature": "SIDEMIRRORSPIN",
+                "position": {
+                  "x": 0.5503842763078304,
+                  "y": 0.47130752288710054
+                },
+                "description": {
+                  "short": "Side mirror",
+                  "long": "Side mirror"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "REARROWSPIN",
+                "position": {
+                  "x": 0.3140393092198996,
+                  "y": 0.486254867624526
+                },
+                "description": {
+                  "short": "Enter rear row",
+                  "long": "Enter rear row"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
+              },
+              {
+                "feature": "SIDEMIRRORSPIN",
+                "position": {
+                  "x": 0.5051354259772865,
+                  "y": 0.472798857335752
+                },
+                "description": {
+                  "short": "Side mirror",
+                  "long": "Side mirror"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "REARROWSPIN",
+                "position": {
+                  "x": 0.32397316040144234,
+                  "y": 0.4770284721566936
+                },
+                "description": {
+                  "short": "Enter rear row",
+                  "long": "Enter rear row"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
+              },
+              {
+                "feature": "SIDEMIRRORSPIN",
+                "position": {
+                  "x": 0.47383474075405073,
+                  "y": 0.47288926164314945
+                },
+                "description": {
+                  "short": "Side mirror",
+                  "long": "Side mirror"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "REARROWSPIN",
+                "position": {
+                  "x": 0.32693536818886365,
+                  "y": 0.4775125376669681
+                },
+                "description": {
+                  "short": "Enter rear row",
+                  "long": "Enter rear row"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
+              },
+              {
+                "feature": "SIDEMIRRORSPIN",
+                "position": {
+                  "x": 0.42745963345143694,
+                  "y": 0.4738951407000627
+                },
+                "description": {
+                  "short": "Side mirror",
+                  "long": "Side mirror"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
+              }
+            ],
+            [],
+            [
+              {
+                "feature": "ENGINESPIN",
+                "position": {
+                  "x": 0.5787418399244995,
+                  "y": 0.48018863023945544
+                },
+                "description": {
+                  "short": "165 PS",
+                  "long": "165 PS"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
+              },
+              {
+                "feature": "STARMERCSPIN",
+                "position": {
+                  "x": 0.7004364422825286,
+                  "y": 0.6447576126703283
+                },
+                "description": {
+                  "short": "AMG line",
+                  "long": "AMG line"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "ENGINESPIN",
+                "position": {
+                  "x": 0.5370759242431327,
+                  "y": 0.48257593475412695
+                },
+                "description": {
+                  "short": "165 PS",
+                  "long": "165 PS"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
+              },
+              {
+                "feature": "STARMERCSPIN",
+                "position": {
+                  "x": 0.6173786827634946,
+                  "y": 0.6606816375211942
+                },
+                "description": {
+                  "short": "AMG line",
+                  "long": "AMG line"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "ENGINESPIN",
+                "position": {
+                  "x": 0.5211285083247776,
+                  "y": 0.4849646543922921
+                },
+                "description": {
+                  "short": "165 PS",
+                  "long": "165 PS"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
+              },
+              {
+                "feature": "STARMERCSPIN",
+                "position": {
+                  "x": 0.5290617638538977,
+                  "y": 0.6802513918462856
+                },
+                "description": {
+                  "short": "AMG line",
+                  "long": "AMG line"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "ENGINESPIN",
+                "position": {
+                  "x": 0.503926328146444,
+                  "y": 0.48814231843009735
+                },
+                "description": {
+                  "short": "165 PS",
+                  "long": "165 PS"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
+              },
+              {
+                "feature": "STARMERCSPIN",
+                "position": {
+                  "x": 0.4656423880947305,
+                  "y": 0.6840785074155662
+                },
+                "description": {
+                  "short": "AMG line",
+                  "long": "AMG line"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "ENGINESPIN",
+                "position": {
+                  "x": 0.45468897730833555,
+                  "y": 0.4847316596321313
+                },
+                "description": {},
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
+              },
+              {
+                "feature": "STARMERCSPIN",
+                "position": {
+                  "x": 0.39256339456631843,
+                  "y": 0.6808676379554848
+                },
+                "description": {
+                  "short": "AMG line",
+                  "long": "AMG line"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "ENGINESPIN",
+                "position": {
+                  "x": 0.43132157011719116,
+                  "y": 0.4982269114303713
+                },
+                "description": {
+                  "short": "165 PS",
+                  "long": "165 PS"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
+              },
+              {
+                "feature": "STARMERCSPIN",
+                "position": {
+                  "x": 0.3230628258588608,
+                  "y": 0.6578038961878582
+                },
+                "description": {
+                  "short": "AMG line",
+                  "long": "AMG line"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
+              }
+            ],
+            [],
+            [],
+            [
+              {
+                "feature": "GASOLINESPIN",
+                "position": {
+                  "x": 0.73449804030698452,
+                  "y": 0.4704222900092791
+                },
+                "description": {
+                  "short": "Gasoline",
+                  "long": "Gasoline"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
+              },
+              {
+                "feature": "TIRESPIN",
+                "position": {
+                  "x": 0.4011190372636868,
+                  "y": 0.6828804498923265
+                },
+                "description": {
+                  "short": "19″ AMG rim",
+                  "long": "19″ AMG rim"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "GASOLINESPIN",
+                "position": {
+                  "x": 0.7469801054650279,
+                  "y": 0.4764224684141696
+                },
+                "description": {
+                  "short": "Gasoline",
+                  "long": "Gasoline"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
+              },
+              {
+                "feature": "TIRESPIN",
+                "position": {
+                  "x": 0.344766572661195,
+                  "y": 0.6600463527840323
+                },
+                "description": {
+                  "short": "19″ AMG rim",
+                  "long": "19″ AMG rim"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "GASOLINESPIN",
+                "position": {
+                  "x": 0.7740855613228812,
+                  "y": 0.4826371777998957
+                },
+                "description": {
+                  "short": "Gasoline",
+                  "long": "Gasoline"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
+              },
+              {
+                "feature": "TIRESPIN",
+                "position": {
+                  "x": 0.30117532361754434,
+                  "y": 0.6236645096643904
+                },
+                "description": {
+                  "short": "19″ AMG rim",
+                  "long": "19″ AMG rim"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
+              }
+            ],
+            [
+              {
+                "feature": "GASOLINESPIN",
+                "position": {
+                  "x": 0.7755949341492718,
+                  "y": 0.4909288338903908
+                },
+                "description": {
+                  "short": "Gasoline",
+                  "long": "Gasoline"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
+              },
+              {
+                "feature": "TIRESPIN",
+                "position": {
+                  "x": 0.2695196020510047,
+                  "y": 0.6262530041061902
+                },
+                "description": {
+                  "short": "19″ AMG rim",
+                  "long": "19″ AMG rim"
+                },
+                "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
+              }
+            ]
+          ]
+        },
+        {
+          "type": "video",
+          "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/c/c0/Big_Buck_Bunny_4K.webm/Big_Buck_Bunny_4K.webm.480p.vp9.webm",
+          "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Big_Buck_Bunny_4K.webm/310px-seek%3D116-Big_Buck_Bunny_4K.webm.jpg"
+        },
+        {
+          "type": "image",
+          "src": "https://cdn.car-cutter.com/gallery/autonation/W1N4M4GB6LW035205/81e25cec1a-W1N4M4GB6LW035205-0_CC.jpg.jpg",
+          "hotspots": [
             {
-              "feature": "GASOLINESPIN",
+              "feature": "DRIVER ASSIST",
               "position": {
-                "x": 0.7227405130774929,
-                "y": 0.5098933890770891
+                "x": 0.24637892842292786,
+                "y": 0.6906564235687256
               },
               "description": {
-                "short": "Gasoline",
-                "long": "Gasoline"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
-            },
-            {
-              "feature": "TIRESPIN",
-              "position": {
-                "x": 0.2531610226472198,
-                "y": 0.5779935758638945
-              },
-              "description": {
-                "short": "19″ AMG rim",
-                "long": "19″ AMG rim"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "GASOLINESPIN",
-              "position": {
-                "x": 0.6890386011847915,
-                "y": 0.51806266073554516
-              },
-              "description": {
-                "short": "Gasoline",
-                "long": "Gasoline"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
-            },
-            {
-              "feature": "TIRESPIN",
-              "position": {
-                "x": 0.259582295726974,
-                "y": 0.56899917272276156
-              },
-              "description": {
-                "short": "19″ AMG rim",
-                "long": "19″ AMG rim"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
-            }
-          ],
-          [],
-          [],
-          [],
-          [
-            {
-              "feature": "TRUNKSPIN",
-              "position": {
-                "x": 0.6580729747996517,
-                "y": 0.6053278281202616
-              },
-              "description": {
-                "short": "410l trunk",
-                "long": "410l trunk"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "TRUNKSPIN",
-              "position": {
-                "x": 0.5759174864431257,
-                "y": 0.6221700763889745
-              },
-              "description": {
-                "short": "410l trunk",
-                "long": "410l trunk"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "TRUNKSPIN",
-              "position": {
-                "x": 0.5059309360890251,
-                "y": 0.636347715492106
-              },
-              "description": {
-                "short": "410l trunk",
-                "long": "410l trunk"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "TRUNKSPIN",
-              "position": {
-                "x": 0.45600130566490455,
-                "y": 0.6160050872301864
-              },
-              "description": {
-                "short": "410l trunk",
-                "long": "410l trunk"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "TRUNKSPIN",
-              "position": {
-                "x": 0.37255456317502245,
-                "y": 0.6199437983894086
-              },
-              "description": {
-                "short": "410l trunk",
-                "long": "410l trunk"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "TRUNKSPIN",
-              "position": {
-                "x": 0.3012532015347848,
-                "y": 0.6116837998426709
-              },
-              "description": {
-                "short": "410l trunk",
-                "long": "410l trunk"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_05_trunk-straight.jpg"
-            }
-          ],
-          [],
-          [
-            {
-              "feature": "REARROWSPIN",
-              "position": {
-                "x": 0.50953691558792964,
-                "y": 0.51043319361303805
-              },
-              "description": {
-                "short": "Enter rear row",
-                "long": "Enter rear row"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
-            },
-            {
-              "feature": "SIDEMIRRORSPIN",
-              "position": {
-                "x": 0.67242889140637739,
-                "y": 0.4578944256749712
-              },
-              "description": {
-                "short": "Side mirror",
-                "long": "Side mirror"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "REARROWSPIN",
-              "position": {
-                "x": 0.45981212564584248,
-                "y": 0.516959134799083
-              },
-              "description": {
-                "short": "Enter rear row",
-                "long": "Enter rear row"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
-            },
-            {
-              "feature": "SIDEMIRRORSPIN",
-              "position": {
-                "x": 0.66360755118507314,
-                "y": 0.45374967080858243
-              },
-              "description": {
-                "short": "Side mirror",
-                "long": "Side mirror"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "REARROWSPIN",
-              "position": {
-                "x": 0.41195979293770256,
-                "y": 0.5176462722176002
-              },
-              "description": {
-                "short": "Enter rear row",
-                "long": "Enter rear row"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
-            },
-            {
-              "feature": "SIDEMIRRORSPIN",
-              "position": {
-                "x": 0.66264599082616608,
-                "y": 0.4647221516530369
-              },
-              "description": {
-                "short": "Side mirror",
-                "long": "Side mirror"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "REARROWSPIN",
-              "position": {
-                "x": 0.3810077532856377,
-                "y": 0.5005220205155529
-              },
-              "description": {
-                "short": "Enter rear row",
-                "long": "Enter rear row"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
-            },
-            {
-              "feature": "SIDEMIRRORSPIN",
-              "position": {
-                "x": 0.64391680647044315,
-                "y": 0.47978121698332434
-              },
-              "description": {
-                "short": "Side mirror",
-                "long": "Side mirror"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "REARROWSPIN",
-              "position": {
-                "x": 0.3521977100911737,
-                "y": 0.4951780130024845
-              },
-              "description": {
-                "short": "Enter rear row",
-                "long": "Enter rear row"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
-            },
-            {
-              "feature": "SIDEMIRRORSPIN",
-              "position": {
-                "x": 0.6207504465293249,
-                "y": 0.472209325769414
-              },
-              "description": {
-                "short": "Side mirror",
-                "long": "Side mirror"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "REARROWSPIN",
-              "position": {
-                "x": 0.33430465779377315,
-                "y": 0.4951196717539829
-              },
-              "description": {
-                "short": "Enter rear row",
-                "long": "Enter rear row"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
-            },
-            {
-              "feature": "SIDEMIRRORSPIN",
-              "position": {
-                "x": 0.5864660073683409,
-                "y": 0.4747304829954453
-              },
-              "description": {
-                "short": "Side mirror",
-                "long": "Side mirror"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "REARROWSPIN",
-              "position": {
-                "x": 0.31636832818537394,
-                "y": 0.4924274590644448
-              },
-              "description": {
-                "short": "Enter rear row",
-                "long": "Enter rear row"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
-            },
-            {
-              "feature": "SIDEMIRRORSPIN",
-              "position": {
-                "x": 0.5503842763078304,
-                "y": 0.47130752288710054
-              },
-              "description": {
-                "short": "Side mirror",
-                "long": "Side mirror"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "REARROWSPIN",
-              "position": {
-                "x": 0.3140393092198996,
-                "y": 0.486254867624526
-              },
-              "description": {
-                "short": "Enter rear row",
-                "long": "Enter rear row"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
-            },
-            {
-              "feature": "SIDEMIRRORSPIN",
-              "position": {
-                "x": 0.5051354259772865,
-                "y": 0.472798857335752
-              },
-              "description": {
-                "short": "Side mirror",
-                "long": "Side mirror"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "REARROWSPIN",
-              "position": {
-                "x": 0.32397316040144234,
-                "y": 0.4770284721566936
-              },
-              "description": {
-                "short": "Enter rear row",
-                "long": "Enter rear row"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
-            },
-            {
-              "feature": "SIDEMIRRORSPIN",
-              "position": {
-                "x": 0.47383474075405073,
-                "y": 0.47288926164314945
-              },
-              "description": {
-                "short": "Side mirror",
-                "long": "Side mirror"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "REARROWSPIN",
-              "position": {
-                "x": 0.32693536818886365,
-                "y": 0.4775125376669681
-              },
-              "description": {
-                "short": "Enter rear row",
-                "long": "Enter rear row"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_52_rear-row-right.jpg"
-            },
-            {
-              "feature": "SIDEMIRRORSPIN",
-              "position": {
-                "x": 0.42745963345143694,
-                "y": 0.4738951407000627
-              },
-              "description": {
-                "short": "Side mirror",
-                "long": "Side mirror"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_57_side-mirror-right.jpg"
-            }
-          ],
-          [],
-          [
-            {
-              "feature": "ENGINESPIN",
-              "position": {
-                "x": 0.5787418399244995,
-                "y": 0.48018863023945544
-              },
-              "description": {
-                "short": "165 PS",
-                "long": "165 PS"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
-            },
-            {
-              "feature": "STARMERCSPIN",
-              "position": {
-                "x": 0.7004364422825286,
-                "y": 0.6447576126703283
-              },
-              "description": {
-                "short": "AMG line",
-                "long": "AMG line"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "ENGINESPIN",
-              "position": {
-                "x": 0.5370759242431327,
-                "y": 0.48257593475412695
-              },
-              "description": {
-                "short": "165 PS",
-                "long": "165 PS"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
-            },
-            {
-              "feature": "STARMERCSPIN",
-              "position": {
-                "x": 0.6173786827634946,
-                "y": 0.6606816375211942
-              },
-              "description": {
-                "short": "AMG line",
-                "long": "AMG line"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "ENGINESPIN",
-              "position": {
-                "x": 0.5211285083247776,
-                "y": 0.4849646543922921
-              },
-              "description": {
-                "short": "165 PS",
-                "long": "165 PS"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
-            },
-            {
-              "feature": "STARMERCSPIN",
-              "position": {
-                "x": 0.5290617638538977,
-                "y": 0.6802513918462856
-              },
-              "description": {
-                "short": "AMG line",
-                "long": "AMG line"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "ENGINESPIN",
-              "position": {
-                "x": 0.503926328146444,
-                "y": 0.48814231843009735
-              },
-              "description": {
-                "short": "165 PS",
-                "long": "165 PS"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
-            },
-            {
-              "feature": "STARMERCSPIN",
-              "position": {
-                "x": 0.4656423880947305,
-                "y": 0.6840785074155662
-              },
-              "description": {
-                "short": "AMG line",
-                "long": "AMG line"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "ENGINESPIN",
-              "position": {
-                "x": 0.45468897730833555,
-                "y": 0.4847316596321313
-              },
-              "description": {},
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
-            },
-            {
-              "feature": "STARMERCSPIN",
-              "position": {
-                "x": 0.39256339456631843,
-                "y": 0.6808676379554848
-              },
-              "description": {
-                "short": "AMG line",
-                "long": "AMG line"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "ENGINESPIN",
-              "position": {
-                "x": 0.43132157011719116,
-                "y": 0.4982269114303713
-              },
-              "description": {
-                "short": "165 PS",
-                "long": "165 PS"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_04_engine-compartment.jpg"
-            },
-            {
-              "feature": "STARMERCSPIN",
-              "position": {
-                "x": 0.3230628258588608,
-                "y": 0.6578038961878582
-              },
-              "description": {
-                "short": "AMG line",
-                "long": "AMG line"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_54_custom.jpg"
-            }
-          ],
-          [],
-          [],
-          [
-            {
-              "feature": "GASOLINESPIN",
-              "position": {
-                "x": 0.73449804030698452,
-                "y": 0.4704222900092791
-              },
-              "description": {
-                "short": "Gasoline",
-                "long": "Gasoline"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
-            },
-            {
-              "feature": "TIRESPIN",
-              "position": {
-                "x": 0.4011190372636868,
-                "y": 0.6828804498923265
-              },
-              "description": {
-                "short": "19″ AMG rim",
-                "long": "19″ AMG rim"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "GASOLINESPIN",
-              "position": {
-                "x": 0.7469801054650279,
-                "y": 0.4764224684141696
-              },
-              "description": {
-                "short": "Gasoline",
-                "long": "Gasoline"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
-            },
-            {
-              "feature": "TIRESPIN",
-              "position": {
-                "x": 0.344766572661195,
-                "y": 0.6600463527840323
-              },
-              "description": {
-                "short": "19″ AMG rim",
-                "long": "19″ AMG rim"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "GASOLINESPIN",
-              "position": {
-                "x": 0.7740855613228812,
-                "y": 0.4826371777998957
-              },
-              "description": {
-                "short": "Gasoline",
-                "long": "Gasoline"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
-            },
-            {
-              "feature": "TIRESPIN",
-              "position": {
-                "x": 0.30117532361754434,
-                "y": 0.6236645096643904
-              },
-              "description": {
-                "short": "19″ AMG rim",
-                "long": "19″ AMG rim"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
-            }
-          ],
-          [
-            {
-              "feature": "GASOLINESPIN",
-              "position": {
-                "x": 0.7755949341492718,
-                "y": 0.4909288338903908
-              },
-              "description": {
-                "short": "Gasoline",
-                "long": "Gasoline"
-              },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_58_trunk-left.jpg"
+                "short": "Blind Spot Assist -Inc: Exit Warning Assist",
+                "long": "Blind Spot Assist -Inc: Exit Warning Assist"
+              }
             },
             {
-              "feature": "TIRESPIN",
+              "feature": "WINDOW STICKER",
               "position": {
-                "x": 0.2695196020510047,
-                "y": 0.6262530041061902
+                "x": 0.10500000000000001,
+                "y": 0.895
               },
               "description": {
-                "short": "19″ AMG rim",
-                "long": "19″ AMG rim"
+                "short": "PDF",
+                "long": "https://s3-us-west-2.amazonaws.com/devx5pdf/12394/5391126.pdf"
+              }
+            },
+            {
+              "feature": "CARFAX",
+              "position": {
+                "x": 0.10500000000000001,
+                "y": 0.10500000000000001
               },
-              "detail": "https://cdn.car-cutter.com/gallery/91eefe6a799c7bbe6e7fa333387fa4e4c798ed1b681ee38df8246af3dbbffa25/SPAAAAAA/SPAAAAAA_03_rim-front-right.jpg"
+              "description": {
+                "short": "CARFAX Report",
+                "long": "https://www.carfax.com/VehicleHistory/p/Report.cfx?vin=W1N4M4GB6LW035205&partner=AND_A"
+              }
             }
           ]
-        ]
-      },
-      {
-        "type": "video",
-        "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/c/c0/Big_Buck_Bunny_4K.webm/Big_Buck_Bunny_4K.webm.480p.vp9.webm",
-        "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Big_Buck_Bunny_4K.webm/310px-seek%3D116-Big_Buck_Bunny_4K.webm.jpg"
-      },
-      {
-        "type": "image",
-        "src": "https://cdn.car-cutter.com/gallery/autonation/W1N4M4GB6LW035205/81e25cec1a-W1N4M4GB6LW035205-0_CC.jpg.jpg",
-        "hotspots": [
-          {
-            "feature": "DRIVER ASSIST",
-            "position": {
-              "x": 0.24637892842292786,
-              "y": 0.6906564235687256
-            },
-            "description": {
-              "short": "Blind Spot Assist -Inc: Exit Warning Assist",
-              "long": "Blind Spot Assist -Inc: Exit Warning Assist"
-            }
-          },
-          {
-            "feature": "WINDOW STICKER",
-            "position": {
-              "x": 0.10500000000000001,
-              "y": 0.895
-            },
-            "description": {
-              "short": "PDF",
-              "long": "https://s3-us-west-2.amazonaws.com/devx5pdf/12394/5391126.pdf"
-            }
-          },
-          {
-            "feature": "CARFAX",
-            "position": {
-              "x": 0.10500000000000001,
-              "y": 0.10500000000000001
-            },
-            "description": {
-              "short": "CARFAX Report",
-              "long": "https://www.carfax.com/VehicleHistory/p/Report.cfx?vin=W1N4M4GB6LW035205&partner=AND_A"
-            }
-          }
-        ]
-      },
-      {
-        "type": "image",
-        "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_01_front-right_d580dc4f434aeb39535230fd1d3acdec7eb6d273_a.jpg"
-      },
-      {
-        "type": "image",
-        "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_02_side-right_69eb5d9332f6d54fe94dfab669de42df031492fa_a.jpg"
-      }
-    ]
-  },
-  {
-    "category": "omni_directional",
-    "title": "360i",
-    "items": [
-      {
-        "type": "omni_directional",
-        "src": "https://res.insta360.com/dynamic/store/4c0459792a4dd56d490a89974d936c96/1767_0dd0a96a-c2a3-4d96-9fad-a872d0ac0787.jpg"
-      }
-    ]
-  }
-]
+        },
+        {
+          "type": "image",
+          "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_01_front-right_d580dc4f434aeb39535230fd1d3acdec7eb6d273_a.jpg"
+        },
+        {
+          "type": "image",
+          "src": "https://cdn.car-cutter.com/gallery/6f84db82c293027de51b6dc23a425dde032f7b5827dcc2b2163608ab86f802f3/1FT8W3BT8NED34507/1FT8W3BT8NED34507_02_side-right_69eb5d9332f6d54fe94dfab669de42df031492fa_a.jpg"
+        }
+      ]
+    },
+    {
+      "category": "omni_directional",
+      "title": "360i",
+      "items": [
+        {
+          "type": "omni_directional",
+          "src": "https://res.insta360.com/dynamic/store/4c0459792a4dd56d490a89974d936c96/1767_0dd0a96a-c2a3-4d96-9fad-a872d0ac0787.jpg"
+        }
+      ]
+    }
+  ]
+}

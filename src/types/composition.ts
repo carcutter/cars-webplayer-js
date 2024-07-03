@@ -1,41 +1,58 @@
-export type Hotspot = {
-  feature: string;
-  position: {
-    x: number;
-    y: number;
-  };
-  description: {
-    short: string;
-    long?: string;
-  };
-  detail?: string;
-};
+import { z } from "zod";
 
-export type Item =
-  | {
-      type: "image";
-      src: string;
-      hotspots?: Hotspot[];
-    }
-  | {
-      type: "video";
-      src: string;
-      poster: string;
-    }
-  | {
-      type: "360";
-      images: string[];
-      hotspots: Hotspot[][];
-    }
-  | {
-      type: "omni_directional";
-      src: string;
-    };
+const HotspotSchema = z.object({
+  feature: z.string(),
+  position: z.object({
+    x: z.number(),
+    y: z.number(),
+  }),
+  description: z.object({
+    short: z.string().optional(),
+    long: z.string().optional(),
+  }),
+  detail: z.string().optional(),
+});
 
-type Element = {
-  category: string;
-  title: string;
-  items: Item[];
-};
+export type Hotspot = z.infer<typeof HotspotSchema>;
 
-export type Composition = Array<Element>;
+const ItemSchema = z.discriminatedUnion("type", [
+  z.object({
+    type: z.literal("image"),
+    src: z.string(),
+    hotspots: z.array(HotspotSchema).optional(),
+  }),
+  z.object({
+    type: z.literal("video"),
+    src: z.string(),
+    poster: z.string(),
+  }),
+  z.object({
+    type: z.literal("360"),
+    images: z.array(z.string()),
+    hotspots: z.array(z.array(HotspotSchema)),
+  }),
+  z.object({
+    type: z.literal("omni_directional"),
+    src: z.string(),
+  }),
+]);
+
+export type Item = z.infer<typeof ItemSchema>;
+
+const ElementSchema = z.object({
+  category: z.string(),
+  title: z.string(),
+  items: z.array(ItemSchema),
+});
+
+// type Element = z.infer<typeof ElementSchema>;
+
+const ImageWidthSchema = z.number().min(24).max(1920);
+export type ImageWidth = z.infer<typeof ImageWidthSchema>;
+
+export const CompositionSchema = z.object({
+  imageWidths: z.array(ImageWidthSchema),
+  elements: z.array(ElementSchema),
+});
+
+export type Composition = z.infer<typeof CompositionSchema>;

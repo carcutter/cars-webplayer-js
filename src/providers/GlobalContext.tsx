@@ -1,9 +1,9 @@
 import { createContext, useCallback, useContext, useState } from "react";
 
-import { WebPlayerProps } from "@/types/props";
+import { WebPlayerProps } from "@/types/webPlayerProps";
 
 type ProviderProps = Required<
-  Pick<WebPlayerProps, "aspectRatio" | "flatten" | "imageWidths" | "eventId">
+  Pick<WebPlayerProps, "aspectRatio" | "flatten" | "eventId">
 > & {
   itemsShown: number;
 };
