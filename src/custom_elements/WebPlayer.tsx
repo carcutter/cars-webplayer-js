@@ -5,7 +5,16 @@ import withZodSchema from "@/components/hoc/withZodSchema";
 import WebPlayerContainer from "@/components/organisms/WebPlayerContainer";
 import CustomizationContextProvider from "@/providers/CustomizationContext";
 import GlobalContextProvider from "@/providers/GlobalContext";
-import { WebPlayerProps, WebPlayerPropsSchema } from "@/types/props";
+import {
+  DEFAULT_ASPECT_RATIO,
+  DEFAULT_EVENT_ID,
+  DEFAULT_FLATTEN,
+  DEFAULT_IMAGE_WIDTHS,
+  DEFAULT_ITEMS_SHOWN_BREAKPOINT,
+  DEFAULT_MAX_ITEMS_SHOWN,
+  WebPlayerProps,
+  WebPlayerPropsSchema,
+} from "@/types/props";
 
 import styles from "../index.css?inline";
 
@@ -14,14 +23,12 @@ const queryClient = new QueryClient();
 const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   compositionUrl,
 
-  aspectRatio = "4:3",
-
-  flatten = false,
-
-  maxItemsShown = 1,
-  itemsShownBreakpoint = 768,
-
-  imageWidths = "HD|1024|768|640|512|300|100",
+  aspectRatio = DEFAULT_ASPECT_RATIO,
+  flatten = DEFAULT_FLATTEN,
+  maxItemsShown = DEFAULT_MAX_ITEMS_SHOWN,
+  itemsShownBreakpoint = DEFAULT_ITEMS_SHOWN_BREAKPOINT,
+  imageWidths = DEFAULT_IMAGE_WIDTHS,
+  eventId = DEFAULT_EVENT_ID,
 
   children: customizationChildren, // NOTE: use to customize the player, not to display the content
 }) => {
@@ -63,9 +70,10 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
           {...{
             aspectRatio,
             flatten,
+            imageWidths,
+            eventId,
 
             itemsShown,
-            imageWidths,
           }}
         >
           <CustomizationContextProvider>

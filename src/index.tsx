@@ -11,7 +11,9 @@ const WebPlayerWebComponent = r2wc(WebPlayer, {
     aspectRatio: "string",
     flatten: "boolean",
     maxItemsShown: "number",
-    breakpoint: "number",
+    itemsShownBreakpoint: "number",
+    imageWidths: "string",
+    eventId: "string",
   },
 });
 

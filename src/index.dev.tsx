@@ -1,13 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 
 import WebPlayer from "./custom_elements/WebPlayer.tsx";
 import WebPlayerIcon from "./custom_elements/WebPlayerIcon.tsx";
+import { DEFAULT_EVENT_ID } from "./types/props.ts";
 
 import "./index.dev.css";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+const DevApp: React.FC = () => {
+  useEffect(() => {
+    const onEvent = (e: Event) => {
+      const { detail } = e as CustomEvent;
+
+      // eslint-disable-next-line no-console
+      console.log("Event received:", detail);
+    };
+
+    // Listen for the custom event
+    document.addEventListener(DEFAULT_EVENT_ID, onEvent);
+
+    return () => {
+      document.removeEventListener(DEFAULT_EVENT_ID, onEvent);
+    };
+  }, []);
+
+  return (
     <div>
       {/* FUTURE: Add some stuff to make it appear like a real app */}
 
@@ -49,5 +66,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </WebPlayerIcon>
       </WebPlayer>
     </div>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <DevApp />
   </React.StrictMode>
 );

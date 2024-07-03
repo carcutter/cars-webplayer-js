@@ -11,14 +11,15 @@ type OptionBarProps = {
 const OptionsBar: React.FC<OptionBarProps> = ({ position = "top-right" }) => {
   const positionClassName = positionToClassName(position);
 
-  const { showHotspots, setShowHotspots, setFullScreen } = useGlobalContext();
+  const { showHotspots, setShowHotspots, enableExtendMode } =
+    useGlobalContext();
 
   const handleHotspotsClick = () => {
     setShowHotspots(v => !v);
   };
 
   const handleExtendClick = () => {
-    setFullScreen(true);
+    enableExtendMode();
   };
 
   return (

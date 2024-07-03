@@ -1,9 +1,9 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 
 import { WebPlayerProps } from "@/types/props";
 
 type ProviderProps = Required<
-  Pick<WebPlayerProps, "aspectRatio" | "flatten" | "imageWidths">
+  Pick<WebPlayerProps, "aspectRatio" | "flatten" | "imageWidths" | "eventId">
 > & {
   itemsShown: number;
 };
@@ -14,8 +14,9 @@ type ContextType = ProviderProps & {
   showHotspots: boolean;
   setShowHotspots: React.Dispatch<React.SetStateAction<boolean>>;
 
-  fullScreen: boolean;
-  setFullScreen: React.Dispatch<React.SetStateAction<boolean>>;
+  extendMode: boolean;
+  enableExtendMode: () => void;
+  disableExtendMode: () => void;
 
   showGallery: boolean;
   setShowGallery: React.Dispatch<React.SetStateAction<boolean>>;
@@ -38,12 +39,27 @@ export const useGlobalContext = () => {
 const GlobalContextProvider: React.FC<
   React.PropsWithChildren<ProviderProps>
 > = ({ children, ...props }) => {
-  const aspectRatioClass =
-    props.aspectRatio === "4:3" ? "aspect-4/3" : "aspect-16/9";
+  const { aspectRatio, eventId } = props;
+
+  const aspectRatioClass = aspectRatio === "4:3" ? "aspect-4/3" : "aspect-16/9";
 
   const [showHotspots, setShowHotspots] = useState(true);
-  const [fullScreen, setFullScreen] = useState(false);
+  const [extendMode, setExtendMode] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
+
+  const enableExtendMode = useCallback(() => {
+    setExtendMode(true);
+    // Dispath an event
+    document.dispatchEvent(
+      new CustomEvent(eventId, { detail: "extendmode-on" })
+    );
+  }, [eventId]);
+
+  const disableExtendMode = useCallback(() => {
+    setExtendMode(false);
+    // Dispath an event
+    new CustomEvent(eventId, { detail: "extendmode-off" });
+  }, [eventId]);
 
   return (
     <GlobalContext.Provider
@@ -55,8 +71,9 @@ const GlobalContextProvider: React.FC<
         showHotspots,
         setShowHotspots,
 
-        fullScreen,
-        setFullScreen,
+        extendMode,
+        enableExtendMode,
+        disableExtendMode,
 
         showGallery,
         setShowGallery,
