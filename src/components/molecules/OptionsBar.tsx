@@ -42,7 +42,7 @@ const OptionsBar: React.FC<OptionBarProps> = ({
 
   return (
     <div
-      className={`absolute ${positionClassName} flex gap-x-2 rounded bg-background p-2 shadow`}
+      className={`absolute ${positionClassName} flex gap-x-1 rounded bg-background p-1 shadow sm:gap-x-2 sm:p-2`}
     >
       {/* Hotspot button */}
       <Button
@@ -94,7 +94,7 @@ const OptionsBar: React.FC<OptionBarProps> = ({
         ) : (
           <img
             className="size-full"
-            src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/close.svg"
+            src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/close_fullscreen.svg"
             alt="Extend icon"
           />
         )}
