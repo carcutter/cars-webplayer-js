@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 
 import CategoryBar from "@/components/molecules/CategoryBar";
-import GalleryButton from "@/components/molecules/GalleryButton";
 import OptionsBar from "@/components/molecules/OptionsBar";
 import WebPlayerElement from "@/components/molecules/WebPlayerElement";
 import ScrollableSlider from "@/components/organisms/ScrollableSlider";
@@ -59,8 +58,7 @@ const WebPlayerContent: React.FC<
           onChangeSelectedCategory={handleChangeCategory}
         />
       )}
-      <OptionsBar />
-      <GalleryButton data={items} />
+      <OptionsBar length={items.length} />
     </div>
   );
 };

@@ -31,7 +31,7 @@ const NextPrevButtons: React.FC<Props> = ({
         <img
           className="size-full rotate-180"
           src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/arrow_forward.svg"
-          alt="Previous"
+          alt="Previous icon"
         />
       </Button>
       <Button
@@ -44,7 +44,7 @@ const NextPrevButtons: React.FC<Props> = ({
         <img
           className="size-full"
           src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/arrow_forward.svg"
-          alt="Next"
+          alt="Next icon"
         />
       </Button>
     </>
