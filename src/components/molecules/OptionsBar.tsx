@@ -15,19 +15,29 @@ const OptionsBar: React.FC<OptionBarProps> = ({
 }) => {
   const positionClassName = positionToClassName(position);
 
-  const { showHotspots, setShowHotspots, setShowGallery, enableExtendMode } =
-    useGlobalContext();
+  const {
+    showHotspots,
+    setShowHotspots,
+    toggleGallery,
+    extendMode,
+    enableExtendMode,
+    disableExtendMode,
+  } = useGlobalContext();
 
   const handleHotspotsClick = () => {
     setShowHotspots(v => !v);
   };
 
   const handleShowGalleryClick = () => {
-    setShowGallery(v => !v);
+    toggleGallery();
   };
 
   const handleExtendClick = () => {
     enableExtendMode();
+  };
+
+  const handleCloseClick = () => {
+    disableExtendMode();
   };
 
   return (
@@ -63,18 +73,26 @@ const OptionsBar: React.FC<OptionBarProps> = ({
 
       <Separator orientation="vertical" />
 
-      {/* Extend button */}
+      {/* Extend/Close button */}
       <Button
         variant="ghost"
         color="neutral"
         shape="icon"
-        onClick={handleExtendClick}
+        onClick={!extendMode ? handleExtendClick : handleCloseClick}
       >
-        <img
-          className="size-full"
-          src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/fullscreen.svg"
-          alt="Extend icon"
-        />
+        {!extendMode ? (
+          <img
+            className="size-full"
+            src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/fullscreen.svg"
+            alt="Extend icon"
+          />
+        ) : (
+          <img
+            className="size-full"
+            src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/close.svg"
+            alt="Extend icon"
+          />
+        )}
       </Button>
     </div>
   );
