@@ -1,30 +1,13 @@
 import { useState } from "react";
 
-import Button from "@/components/ui/Button";
 import { useCustomizationContext } from "@/providers/CustomizationContext";
 import { Hotspot as HotspotType } from "@/types/composition";
 
-type HotspotIconProps = {
-  colorCss?: string;
+type IconHotspotProps = {
+  hotspot: HotspotType;
 };
 
-const HotspotIcon: React.FC<React.PropsWithChildren<HotspotIconProps>> = ({
-  colorCss,
-  children,
-}) => {
-  return (
-    <div
-      className="flex size-6 items-center justify-center rounded-full bg-primary text-background"
-      style={{ backgroundColor: colorCss }}
-    >
-      {children}
-    </div>
-  );
-};
-
-type HotspotProps = { hotspot: HotspotType };
-
-const Hotspot: React.FC<HotspotProps> = ({
+const IconHotspot: React.FC<IconHotspotProps> = ({
   hotspot: {
     feature,
     position,
@@ -34,34 +17,11 @@ const Hotspot: React.FC<HotspotProps> = ({
 }) => {
   const { getHotspotConfig } = useCustomizationContext();
   const hotspotConfig = getHotspotConfig(feature);
+  const colorCss = hotspotConfig?.color;
 
   const longDescriptionIsLink = !!descriptionLong?.startsWith("http");
 
   const [showDetails, setShowDetails] = useState(false);
-
-  let Content: React.ReactNode;
-
-  // TODO: Add more cases
-  switch (feature) {
-    case "WINDOW STICKER":
-      Content = <Button>WINDOW STICKER</Button>;
-      break;
-    case "CARFAX":
-      Content = <Button>CARFAX</Button>;
-      break;
-    default:
-      Content = (
-        <HotspotIcon colorCss={hotspotConfig?.color}>
-          {hotspotConfig?.Icon ?? (
-            <img
-              className="size-full invert"
-              src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/add.svg"
-              alt="Plus"
-            />
-          )}
-        </HotspotIcon>
-      );
-  }
 
   const handleOnClick = () => {
     let link: string | undefined;
@@ -85,7 +45,18 @@ const Hotspot: React.FC<HotspotProps> = ({
       onMouseEnter={() => setShowDetails(true)}
       onMouseLeave={() => setShowDetails(false)}
     >
-      {Content}
+      <div
+        className="flex size-6 items-center justify-center rounded-full bg-primary text-background"
+        style={{ backgroundColor: colorCss }}
+      >
+        {hotspotConfig?.Icon ?? (
+          <img
+            className="size-full invert"
+            src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/add.svg"
+            alt="Plus"
+          />
+        )}
+      </div>
       {showDetails && (
         <div
           className={`absolute top-1/3 ${position.x < 0.7 ? "left-full" : "right-full"} mx-2 w-max max-w-48 rounded bg-background px-2 py-1`}
@@ -98,6 +69,41 @@ const Hotspot: React.FC<HotspotProps> = ({
       )}
     </div>
   );
+};
+
+type HotspotProps = { hotspot: HotspotType };
+
+const Hotspot: React.FC<HotspotProps> = ({ hotspot }) => {
+  const {
+    feature,
+    description: { long: descriptionLong },
+  } = hotspot;
+
+  // TODO: Add more cases
+  switch (feature) {
+    case "WINDOW STICKER":
+      return (
+        <a href={descriptionLong} target="_blank" rel="noreferrer">
+          <img
+            className="h-10"
+            src="https://cdn.car-cutter.com/libs/web-player/v2/assets/images/customers/autonation/window_sticker.png"
+            alt="Window sticker"
+          />
+        </a>
+      );
+    case "CARFAX":
+      return (
+        <a href={descriptionLong} target="_blank" rel="noreferrer">
+          <img
+            className="h-10"
+            src="https://cdn.car-cutter.com/libs/web-player/v2/assets/images/customers/autonation/carfax.png"
+            alt="Carfax"
+          />
+        </a>
+      );
+    default:
+      return <IconHotspot hotspot={hotspot} />;
+  }
 };
 
 export default Hotspot;

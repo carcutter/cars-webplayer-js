@@ -40,7 +40,7 @@ const ImageElement: React.FC<Props> = ({
   }, [imageWidths, src, withSrcSet]);
 
   return (
-    <div className="relative size-full">
+    <div className="relative size-full overflow-hidden">
       <img className="size-full" src={src} srcSet={srcSet} alt="" />
       {showHotspots &&
         hotspots?.map((hotspot, index) => (
