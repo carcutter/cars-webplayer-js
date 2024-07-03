@@ -34,7 +34,7 @@ const CategoryBar: React.FC<CategoryBarProps> = ({
     >
       {/* Category selection */}
       <div className="flex gap-x-2">
-        {composition.map(({ category, title }) => (
+        {composition.elements.map(({ category, title }) => (
           <Button
             key={category}
             variant={category === selectedCategory ? "fill" : "ghost"}

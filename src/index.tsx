@@ -16,7 +16,6 @@ const WebPlayerWebComponent = r2wc(WebPlayer, {
     flatten: "boolean",
     maxItemsShown: "number",
     itemsShownBreakpoint: "number",
-    imageWidths: "string",
     eventId: "string",
   },
 });

@@ -11,7 +11,10 @@ function withZodSchema<T extends object, P extends React.PropsWithChildren<T>>(
 
     if (!result.success) {
       return (
-        <ErrorTemplate title="Prop validation failed" error={result.error} />
+        <ErrorTemplate
+          title="Prop validation failed"
+          error={result.error.issues}
+        />
       );
     }
 

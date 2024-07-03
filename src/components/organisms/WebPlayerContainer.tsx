@@ -4,12 +4,11 @@ import CategoryBar from "@/components/molecules/CategoryBar";
 import OptionsBar from "@/components/molecules/OptionsBar";
 import WebPlayerElement from "@/components/molecules/WebPlayerElement";
 import ScrollableSlider from "@/components/organisms/ScrollableSlider";
+import ErrorTemplate from "@/components/template/ErrorTemplate";
 import { useComposition } from "@/hooks/useComposition";
 import CompositionContextProvider from "@/providers/CompositionContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
 import { Composition, Item } from "@/types/composition";
-
-import ErrorTemplate from "../template/ErrorTemplate";
 
 type WebPlayerContentProps = { composition: Composition };
 

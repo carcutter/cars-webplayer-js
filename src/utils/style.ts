@@ -4,7 +4,7 @@ import {
   Position,
   extractPositions,
 } from "@/types/position";
-import { AspectRatio } from "@/types/props";
+import { AspectRatio } from "@/types/webPlayerProps";
 
 export function positionXToClassName(positionX: PositionX): string {
   switch (positionX) {
