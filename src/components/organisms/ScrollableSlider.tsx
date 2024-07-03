@@ -3,28 +3,32 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import IndexIndicator from "@/components/atoms/IndexIndicator";
 import NextPrevButtons from "@/components/molecules/NextPrevButtons";
 import { useGlobalContext } from "@/providers/GlobalContext";
+import { Item } from "@/types/composition";
 import { aspectRatioStyle, positionToClassName } from "@/utils/style";
 
-type Props<ItemT extends object> = {
-  data: ItemT[];
+import Gallery from "./Gallery";
+
+type Props = {
+  items: Item[];
   renderItem: (
-    item: ItemT,
+    item: Item,
     index: number,
     currentActiveIndex: number
   ) => React.ReactNode;
-  keyExtractor?: (item: ItemT, index: number) => string;
+  keyExtractor?: (item: Item, index: number) => string;
 };
 
 const ONE_ITEM_DRAG_MULTIPLIER = 1.5;
 
 const defaultKeyExtractor = (_item: unknown, index: number) => index.toString();
 
-const ScrollableSlider = <T extends object>({
-  data,
+const ScrollableSlider: React.FC<Props> = ({
+  items,
   renderItem,
   keyExtractor = defaultKeyExtractor,
-}: Props<T>): ReturnType<React.FC> => {
-  const { aspectRatio, itemsShown } = useGlobalContext();
+}) => {
+  const { aspectRatio, itemsShown, showGallery, closeGallery } =
+    useGlobalContext();
   const showOneItem = itemsShown === 1;
 
   // - Refs
@@ -34,7 +38,7 @@ const ScrollableSlider = <T extends object>({
   const scrollLeft = useRef<number | null>(null);
 
   // - Indexing
-  const length = data.length;
+  const length = items.length;
   const slidable = length > itemsShown;
   const indexes = useMemo(() => {
     if (!slidable) {
@@ -126,13 +130,13 @@ const ScrollableSlider = <T extends object>({
     );
   }, [getElementWidth, indexes]);
 
-  // - Reset the index when the data changes
+  // - Reset the index when the items changes
   useEffect(() => {
     setScrollBehavior("auto");
     scrollLeftToIndex(0);
     setCurrentActiveIndex(0);
     setScrollBehavior("smooth");
-  }, [data, scrollLeftToIndex, setScrollBehavior]);
+  }, [items, scrollLeftToIndex, setScrollBehavior]);
 
   // - Event listeners
   useEffect(() => {
@@ -260,6 +264,11 @@ const ScrollableSlider = <T extends object>({
     scrollOffsetIndex(1);
   };
 
+  const handleOnGalleryItemClicked = (_item: Item, index: number) => {
+    closeGallery();
+    scrollLeftToIndex(index);
+  };
+
   return (
     <div
       className="relative w-full"
@@ -271,7 +280,7 @@ const ScrollableSlider = <T extends object>({
         ref={slider}
         className={`flex size-full ${slidable ? "overflow-x-auto transition-transform no-scrollbar *:snap-mandatory *:snap-start" : "justify-center"}`}
       >
-        {data.map((item, index) => {
+        {items.map((item, index) => {
           const Item = renderItem(item, index, currentActiveIndex);
           const key = keyExtractor(item, index);
 
@@ -308,6 +317,11 @@ const ScrollableSlider = <T extends object>({
             onNext={nextImage}
           />
         </>
+      )}
+
+      {/* Gallery */}
+      {showGallery && (
+        <Gallery items={items} onItemClicked={handleOnGalleryItemClicked} />
       )}
     </div>
   );

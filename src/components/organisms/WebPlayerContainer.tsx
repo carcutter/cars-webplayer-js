@@ -46,7 +46,7 @@ const WebPlayerContent: React.FC<
     <CompositionContextProvider composition={composition}>
       <div className="relative size-full">
         <ScrollableSlider
-          data={items}
+          items={items}
           renderItem={(item, index, currentActiveIndex) => (
             <WebPlayerElement
               item={item}

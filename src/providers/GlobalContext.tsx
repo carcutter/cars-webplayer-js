@@ -19,7 +19,8 @@ type ContextType = ProviderProps & {
   disableExtendMode: () => void;
 
   showGallery: boolean;
-  toggleGallery: () => void;
+  openGallery: () => void;
+  closeGallery: () => void;
 };
 
 const GlobalContext = createContext<ContextType | null>(null);
@@ -58,17 +59,19 @@ const GlobalContextProvider: React.FC<
     setExtendMode(true);
     emitEvent("extend-mode-on");
   }, [emitEvent]);
-
   const disableExtendMode = useCallback(() => {
     setExtendMode(false);
     emitEvent("extend-mode-off");
   }, [emitEvent]);
 
-  const toggleGallery = useCallback(() => {
-    const newValue = !showGallery;
-    setShowGallery(newValue);
-    emitEvent(newValue ? "gallery-open" : "gallery-close");
-  }, [emitEvent, showGallery]);
+  const openGallery = useCallback(() => {
+    setShowGallery(true);
+    emitEvent("gallery-open");
+  }, [emitEvent]);
+  const closeGallery = useCallback(() => {
+    setShowGallery(false);
+    emitEvent("gallery-close");
+  }, [emitEvent]);
 
   return (
     <GlobalContext.Provider
@@ -85,7 +88,8 @@ const GlobalContextProvider: React.FC<
         disableExtendMode,
 
         showGallery,
-        toggleGallery,
+        openGallery,
+        closeGallery,
       }}
     >
       {children}

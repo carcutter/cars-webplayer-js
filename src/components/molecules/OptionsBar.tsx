@@ -18,7 +18,7 @@ const OptionsBar: React.FC<OptionBarProps> = ({
   const {
     showHotspots,
     setShowHotspots,
-    toggleGallery,
+    openGallery,
     extendMode,
     enableExtendMode,
     disableExtendMode,
@@ -29,7 +29,7 @@ const OptionsBar: React.FC<OptionBarProps> = ({
   };
 
   const handleShowGalleryClick = () => {
-    toggleGallery();
+    openGallery();
   };
 
   const handleExtendClick = () => {
@@ -47,9 +47,14 @@ const OptionsBar: React.FC<OptionBarProps> = ({
       {/* Hotspot button */}
       <Button
         variant={showHotspots ? "fill" : "ghost"}
+        shape="icon"
         onClick={handleHotspotsClick}
       >
-        Hotspots
+        <img
+          className="size-full"
+          src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/info.svg"
+          alt="Hotspot icon"
+        />
       </Button>
 
       {length > 1 && (

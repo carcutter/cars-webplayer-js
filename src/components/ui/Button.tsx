@@ -1,10 +1,10 @@
-type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "fill" | "ghost";
   shape?: "button" | "icon";
   color?: "primary" | "neutral";
 };
 
-const Button: React.FC<React.PropsWithChildren<Props>> = ({
+const Button: React.FC<React.PropsWithChildren<ButtonProps>> = ({
   variant = "fill",
   shape = "button",
   color = "primary",
