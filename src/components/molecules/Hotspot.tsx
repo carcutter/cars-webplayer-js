@@ -25,17 +25,13 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
 
   const [showDescription, setShowDescription] = useState(false);
 
-  const handleOnClick = () => {
-    if (!detail) {
-      return;
-    }
-
-    onShowDetailImageClick(detail);
-  };
+  const handleOnClick = detail
+    ? () => onShowDetailImageClick(detail)
+    : undefined;
 
   return (
     <div
-      className={`absolute ${showDescription ? "z-20" : "z-10"} -translate-x-1/2 -translate-y-1/2 cursor-help`}
+      className={`absolute ${showDescription ? "z-20" : "z-10"} -translate-x-1/2 -translate-y-1/2 ${handleOnClick ? "cursor-pointer" : "cursor-help"}`}
       onClick={handleOnClick}
       onMouseEnter={() => setShowDescription(true)}
       onMouseLeave={() => setShowDescription(false)}
@@ -66,7 +62,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       </div>
       {showDescription && descriptionShort && (
         <div
-          className={`absolute top-1/3 ${position.x < 0.7 ? "left-full" : "right-full"} w-max max-w-48 px-2`}
+          className={`absolute ${position.y < 0.6 ? "top-1/3" : "bottom-1/3"} ${position.x < 0.7 ? "left-full" : "right-full"} w-max max-w-48 px-2`}
         >
           <div className="rounded bg-background px-2 py-1">
             <div className="text-sm">{descriptionShort}</div>
