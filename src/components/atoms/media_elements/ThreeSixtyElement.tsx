@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import Button from "@/components/ui/Button";
 import { Item } from "@/types/composition";
+import { Position } from "@/types/position";
 import { positionToClassName } from "@/utils/style";
 import { preloadImage } from "@/utils/web";
 
@@ -13,10 +14,14 @@ const SCROLL_STEP_PX = 20;
 const ZOOM_STEP = 0.5;
 const MAX_ZOOM = 2.5;
 
-type ThreeSixtyElementProps = { item: Extract<Item, { type: "360" }> };
+type ThreeSixtyElementProps = {
+  item: Extract<Item, { type: "360" }>;
+  zoomPosition?: Extract<Position, "middle-right" | "bottom-center">;
+};
 
 const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   item: { images, hotspots },
+  zoomPosition = "bottom-center",
 }) => {
   // -- Refs
   const container = useRef<HTMLDivElement>(null);
@@ -224,13 +229,16 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
           ref={scroller}
           className="absolute inset-0 overflow-auto no-scrollbar"
         >
-          <div className="size-full scale-110"></div>
+          <div
+            className="h-full"
+            style={{ width: `calc(100% + ${4 * SCROLL_STEP_PX}px` }}
+          />
         </div>
       )}
 
       {/* Zoom Buttons */}
       <div
-        className={`absolute ${positionToClassName("middle-right")} flex flex-col gap-y-2`}
+        className={`absolute ${positionToClassName(zoomPosition)} flex gap-2 ${zoomPosition === "middle-right" ? "flex-col" : "flex-row-reverse"}`}
       >
         <Button
           color="neutral"
