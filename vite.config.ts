@@ -8,6 +8,7 @@ export default defineConfig(({ command }) => ({
   resolve: {
     alias: {
       "@/components": path.resolve(__dirname, "./src/components"),
+      "@/const": path.resolve(__dirname, "./src/const"),
       "@/hooks": path.resolve(__dirname, "./src/hooks"),
       "@/providers": path.resolve(__dirname, "./src/providers"),
       "@/types": path.resolve(__dirname, "./src/types"),

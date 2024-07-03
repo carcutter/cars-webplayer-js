@@ -1,5 +1,9 @@
 import r2wc from "@r2wc/react-to-web-component";
 
+import {
+  WEB_PLAYER_CUSTOM_ELEMENTS_NAME,
+  WEB_PLAYER_ICON_CUSTOM_ELEMENTS_NAME,
+} from "./const/custom_elements";
 import WebPlayer from "./custom_elements/WebPlayer";
 import WebPlayerIcon from "./custom_elements/WebPlayerIcon";
 
@@ -25,5 +29,8 @@ const WebPlayerIconWebComponent = r2wc(WebPlayerIcon, {
   },
 });
 
-customElements.define("cc-web-player", WebPlayerWebComponent);
-customElements.define("cc-web-player-icon", WebPlayerIconWebComponent);
+customElements.define(WEB_PLAYER_CUSTOM_ELEMENTS_NAME, WebPlayerWebComponent);
+customElements.define(
+  WEB_PLAYER_ICON_CUSTOM_ELEMENTS_NAME,
+  WebPlayerIconWebComponent
+);
