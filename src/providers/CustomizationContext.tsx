@@ -1,5 +1,7 @@
 import { createContext, useCallback, useContext, useState } from "react";
 
+import { WEB_PLAYER_ICON_CUSTOM_ELEMENTS_NAME } from "@/const/custom_elements";
+
 type HotspotConfig = {
   Icon: React.ReactNode;
   color: string;
@@ -41,15 +43,18 @@ const CustomizationContextProvider: React.FC<
     new Map<string, PartialHotspotConfig>()
   );
 
+  // TODO: find a way to make it less hacky
   const getHotspotConfig = useCallback(
     (key: string) => {
+      // Check if the key is already in the map (CASE WHEN USING REACT)
       const ctxConfig = hotspotConfigMap.get(key);
       if (ctxConfig) {
         return ctxConfig;
       }
 
+      // Check if the key has been customized in the DOM (CASE WHEN USING WEB COMPONENTS)
       const domElement = document.querySelector(
-        `cc-web-player-icon[feature="${key}"]`
+        `${WEB_PLAYER_ICON_CUSTOM_ELEMENTS_NAME}[feature="${key}"]`
       );
 
       if (!domElement) {
@@ -57,7 +62,13 @@ const CustomizationContextProvider: React.FC<
       }
 
       const color = domElement.getAttribute("color") ?? undefined;
-      const Icon = domElement.nodeValue ?? undefined;
+      const svgHTML = domElement.innerHTML;
+      const Icon = svgHTML ? (
+        <div
+          className="size-full"
+          dangerouslySetInnerHTML={{ __html: svgHTML }}
+        />
+      ) : undefined;
 
       if (!color && !Icon) {
         return;
