@@ -274,8 +274,12 @@ const ThreeSixtyElementPlaceholder: React.FC<
     <div className="relative size-full">
       <img className="size-full" src={imageSrc} alt="" />
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
-        <Button className="text-background" onClick={onClick}>
-          PLAY 360
+        <Button color="neutral" shape="icon" onClick={onClick}>
+          <img
+            className="size-full"
+            src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/play.svg"
+            alt="Play"
+          />
         </Button>
         {loadingProgress !== null && (
           <div className="relative h-1 w-3/5 overflow-hidden rounded-full bg-background">

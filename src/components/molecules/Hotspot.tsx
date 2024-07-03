@@ -17,7 +17,6 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
 }) => {
   const { getHotspotConfig } = useCustomizationContext();
   const hotspotConfig = getHotspotConfig(feature);
-  const colorCss = hotspotConfig?.color;
 
   const longDescriptionIsLink = !!descriptionLong?.startsWith("http");
 
@@ -45,10 +44,15 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       onMouseEnter={() => setShowDetails(true)}
       onMouseLeave={() => setShowDetails(false)}
     >
+      {/* Hoverable icon */}
       <div
-        className="flex size-6 items-center justify-center rounded-full bg-primary text-background"
-        style={{ backgroundColor: colorCss }}
+        className="relative flex size-6 items-center justify-center rounded-full bg-primary text-background"
+        // Override the background color with the one from the config if available
+        style={{ backgroundColor: hotspotConfig?.color }}
       >
+        <div className="absolute inset-0 -z-10 animate-hotspot-ping rounded-full bg-inherit" />
+
+        {/* Use the icon from the config if available. Else, replace it if needed */}
         {hotspotConfig?.Icon ?? (
           <img
             className="size-full invert"

@@ -16,13 +16,13 @@ const noScrollbarPlugin: PluginCreator = ({ addUtilities }) =>
 const config = {
   content: ["./src/*/**/*.{ts,tsx}"],
   theme: {
-    colors: {
-      background: "hsl(var(--background))",
-      foreground: "hsl(var(--foreground))",
-      primary: "hsl(var(--primary))",
-      neutral: "hsl(var(--neutral))",
-    },
     extend: {
+      colors: {
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: "hsl(var(--primary))",
+        neutral: "hsl(var(--neutral))",
+      },
       aspectRatio: {
         "4/3": "4 / 3",
         "16/9": "16 / 9",
@@ -32,6 +32,16 @@ const config = {
         DEFAULT: "var(--radius)",
         md: "calc(var(--radius) + 2px)",
         lg: "calc(var(--radius) + 4px)",
+      },
+      // Animation
+      keyframes: {
+        "hotspot-ping": {
+          from: { opacity: "0.6" },
+          "75%, to": { transform: "scale(1.6)", opacity: "0" },
+        },
+      },
+      animation: {
+        "hotspot-ping": "hotspot-ping 3s cubic-bezier(0, 0, 0.2, 1) infinite;",
       },
     },
   },
