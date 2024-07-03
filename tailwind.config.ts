@@ -36,8 +36,8 @@ const config = {
       // Animation
       keyframes: {
         "hotspot-ping": {
-          from: { opacity: "0.6" },
-          "75%, to": { transform: "scale(1.6)", opacity: "0" },
+          from: { opacity: "0.75" },
+          "75%, to": { transform: "scale(1.75)", opacity: "0" },
         },
       },
       animation: {

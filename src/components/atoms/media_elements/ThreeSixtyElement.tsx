@@ -35,6 +35,8 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   const [imageIndex, setImageIndex] = useState(0);
   const length = images.length;
 
+  const [showingDetailImage, setShowingDetailImage] = useState(false);
+
   const displayPreviousImage = useCallback(() => {
     setImageIndex(currentIndex => (currentIndex - 1 + length) % length);
   }, [length]);
@@ -96,6 +98,11 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     };
 
     const onMouseMove = (e: MouseEvent) => {
+      // We don't want to rotate the 360 when showing a detail image, but we do not want to prevent the click event so that the parent slider can still work
+      if (showingDetailImage) {
+        return;
+      }
+
       if (!isMouseDown.current) {
         return;
       }
@@ -108,7 +115,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
         throw new Error("zoomArea.current is null");
       }
 
-      e.stopPropagation(); // Prevents slider from moving when rotating 360
+      e.stopPropagation(); // Prevents parent slider from moving when rotating 360
 
       const walkX = e.clientX - mouseStartXY.current.x;
       const walkY = e.clientY - mouseStartXY.current.y;
@@ -145,12 +152,12 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       containerRef.removeEventListener("mouseup", onMouseEnd);
       containerRef.removeEventListener("mousemove", onMouseMove);
     };
-  }, [displayNextImage, displayPreviousImage, zoom]);
+  }, [displayNextImage, displayPreviousImage, showingDetailImage, zoom]);
 
-  // -- Handle "invisible scroller" events to control 360.
-  // -- Not needed when zoomed because we use the native scrolling
+  // -- Handle "invisible scroller" events to rotate 360.
   useEffect(() => {
-    if (zoom) {
+    // We do not want to rotate while zooming or showing a detail image
+    if (zoom || showingDetailImage) {
       return;
     }
 
@@ -192,11 +199,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     return () => {
       scrollerRef.removeEventListener("scroll", onScroll);
     };
-  }, [
-    displayNextImage,
-    displayPreviousImage,
-    zoom, // Zoom is needed because is make the scroller appear/disappear
-  ]);
+  }, [displayNextImage, displayPreviousImage, showingDetailImage, zoom]);
 
   return (
     <div ref={container} className={!zoom ? "cursor-ew-resize" : "cursor-move"}>
@@ -219,12 +222,16 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
               src: images[imageIndex],
               hotspots: hotspots[imageIndex],
             }}
+            zoom={zoom}
+            onShownDetailImageChange={v => setShowingDetailImage(!!v)}
           />
         </div>
       </div>
 
       {/* Scroller is an invisible element in front of the image to capture scroll event */}
-      {!zoom && (
+      {/* Hotspots' z-index allow to keep them in front */}
+      {/* Scroll is disabled while zooming or while showing detail image */}
+      {!zoom && !showingDetailImage && (
         <div
           ref={scroller}
           className="absolute inset-0 overflow-auto no-scrollbar"
@@ -237,26 +244,28 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       )}
 
       {/* Zoom Buttons */}
-      <div
-        className={`absolute ${positionToClassName(zoomPosition)} flex gap-2 ${zoomPosition === "middle-right" ? "flex-col" : "flex-row-reverse"}`}
-      >
-        <Button
-          color="neutral"
-          shape="icon"
-          disabled={zoom === MAX_ZOOM}
-          onClick={increaseZoom}
+      {!showingDetailImage && (
+        <div
+          className={`absolute ${positionToClassName(zoomPosition)} flex gap-2 ${zoomPosition === "middle-right" ? "flex-col" : "flex-row-reverse"}`}
         >
-          +
-        </Button>
-        <Button
-          color="neutral"
-          shape="icon"
-          disabled={!zoom || zoom === 1}
-          onClick={decreaseZoom}
-        >
-          -
-        </Button>
-      </div>
+          <Button
+            color="neutral"
+            shape="icon"
+            disabled={zoom === MAX_ZOOM}
+            onClick={increaseZoom}
+          >
+            +
+          </Button>
+          <Button
+            color="neutral"
+            shape="icon"
+            disabled={!zoom || zoom === 1}
+            onClick={decreaseZoom}
+          >
+            -
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

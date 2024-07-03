@@ -3,54 +3,57 @@ import { useState } from "react";
 import { useCustomizationContext } from "@/providers/CustomizationContext";
 import { Hotspot as HotspotType } from "@/types/composition";
 
-type IconHotspotProps = {
+type HotspotProps = {
   hotspot: HotspotType;
+  onShowDetailImageClick: (shownDetailImage: string) => void;
 };
+type IconHotspotProps = HotspotProps;
 
 const IconHotspot: React.FC<IconHotspotProps> = ({
-  hotspot: {
+  hotspot,
+  onShowDetailImageClick,
+}) => {
+  const {
     feature,
     position,
     description: { short: descriptionShort, long: descriptionLong },
     detail,
-  },
-}) => {
+  } = hotspot;
+
   const { getHotspotConfig } = useCustomizationContext();
   const hotspotConfig = getHotspotConfig(feature);
 
-  const longDescriptionIsLink = !!descriptionLong?.startsWith("http");
-
-  const [showDetails, setShowDetails] = useState(false);
+  const [showDescription, setShowDescription] = useState(false);
 
   const handleOnClick = () => {
-    let link: string | undefined;
-    if (longDescriptionIsLink) {
-      link = descriptionLong as string;
-    } else if (detail) {
-      link = detail;
-    }
-
-    if (!link) {
+    if (!detail) {
       return;
     }
 
-    window.open(link, "_blank");
+    onShowDetailImageClick(detail);
   };
 
   return (
     <div
-      className="relative cursor-help"
+      className={`absolute ${showDescription ? "z-20" : "z-10"} -translate-x-1/2 -translate-y-1/2 cursor-help`}
       onClick={handleOnClick}
-      onMouseEnter={() => setShowDetails(true)}
-      onMouseLeave={() => setShowDetails(false)}
+      onMouseEnter={() => setShowDescription(true)}
+      onMouseLeave={() => setShowDescription(false)}
+      style={{
+        top: `${100 * hotspot.position.y}%`,
+        left: `${100 * hotspot.position.x}%`,
+      }}
     >
-      {/* Hoverable icon */}
       <div
+        // Hoverable icon
         className="relative flex size-6 items-center justify-center rounded-full bg-primary text-background"
         // Override the background color with the one from the config if available
         style={{ backgroundColor: hotspotConfig?.color }}
       >
-        <div className="absolute inset-0 -z-10 animate-hotspot-ping rounded-full bg-inherit" />
+        <div
+          // Ping animation
+          className="absolute inset-0 -z-10 animate-hotspot-ping rounded-full bg-inherit"
+        />
 
         {/* Use the icon from the config if available. Else, replace it if needed */}
         {hotspotConfig?.Icon ?? (
@@ -61,27 +64,29 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
           />
         )}
       </div>
-      {showDetails && (
+      {showDescription && descriptionShort && (
         <div
-          className={`absolute top-1/3 ${position.x < 0.7 ? "left-full" : "right-full"} mx-2 w-max max-w-48 rounded bg-background px-2 py-1`}
+          className={`absolute top-1/3 ${position.x < 0.7 ? "left-full" : "right-full"} w-max max-w-48 px-2`}
         >
-          <div className="text-sm">{descriptionShort}</div>
-          {descriptionLong && !longDescriptionIsLink && (
-            <div className="text-xs">{descriptionLong}</div>
-          )}
+          <div className="rounded bg-background px-2 py-1">
+            <div className="text-sm">{descriptionShort}</div>
+            {descriptionLong && (
+              <div className="text-xs">{descriptionLong}</div>
+            )}
+          </div>
         </div>
       )}
     </div>
   );
 };
 
-type HotspotProps = { hotspot: HotspotType };
-
-const Hotspot: React.FC<HotspotProps> = ({ hotspot }) => {
+const Hotspot: React.FC<HotspotProps> = props => {
   const {
-    feature,
-    description: { long: descriptionLong },
-  } = hotspot;
+    hotspot: {
+      feature,
+      description: { long: descriptionLong },
+    },
+  } = props;
 
   // TODO: Add more cases
   switch (feature) {
@@ -106,7 +111,7 @@ const Hotspot: React.FC<HotspotProps> = ({ hotspot }) => {
         </a>
       );
     default:
-      return <IconHotspot hotspot={hotspot} />;
+      return <IconHotspot {...props} />;
   }
 };
 
