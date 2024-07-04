@@ -1,6 +1,7 @@
 import { createContext, useContext } from "react";
 
-import { Composition, ImageWidth } from "@/types/composition";
+import { Composition } from "@/types/composition";
+import { ImageWidth } from "@/types/misc";
 
 type ContextType = {
   imageWidths: ImageWidth[];

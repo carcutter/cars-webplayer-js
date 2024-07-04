@@ -29,6 +29,8 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   eventId = DEFAULT_EVENT_ID,
 
   children: customizationChildren, // NOTE: use to customize the player, not to display the content
+
+  ...props
 }) => {
   const wrapper = useRef<HTMLDivElement>(null);
   const [itemsShown, setItemsShown] = useState(maxItemsShown);
@@ -66,6 +68,7 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
       <QueryClientProvider client={queryClient}>
         <GlobalContextProvider
           {...{
+            ...props,
             aspectRatio,
             flatten,
             eventId,

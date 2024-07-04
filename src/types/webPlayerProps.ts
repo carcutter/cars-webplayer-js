@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { ImageWidthSchema } from "./misc";
+
 export const AspectRatioSchema = z.union([z.literal("4:3"), z.literal("16:9")]);
 export type AspectRatio = z.infer<typeof AspectRatioSchema>;
 
@@ -13,6 +15,9 @@ export const WebPlayerPropsSchema = z.object({
   compositionUrl: z.string(),
 
   aspectRatio: AspectRatioSchema.optional(),
+
+  minImageWidth: ImageWidthSchema.optional(),
+  maxImageWidth: ImageWidthSchema.optional(),
 
   flatten: z.boolean().optional(),
 

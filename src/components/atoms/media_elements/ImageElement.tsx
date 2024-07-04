@@ -4,7 +4,8 @@ import CloseButton from "@/components/atoms/CloseButton";
 import Hotspot from "@/components/molecules/Hotspot";
 import { useCompositionContext } from "@/providers/CompositionContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
-import { ImageWidth, Item } from "@/types/composition";
+import { Item } from "@/types/composition";
+import { ImageWidth } from "@/types/misc";
 
 function urlForWidth(src: string, width: ImageWidth): string {
   // Extract the file name
@@ -22,14 +23,14 @@ type Props = {
   onShownDetailImageChange?: (shownDetailImage: string | null) => void;
 };
 
-// TODO: Add a way to use a max width
 const ImageElement: React.FC<Props> = ({
   item: { src, hotspots },
   zoom,
   withSrcSet,
   onShownDetailImageChange,
 }) => {
-  const { showHotspots } = useGlobalContext();
+  const { minImageWidth, maxImageWidth, itemsShown, showHotspots } =
+    useGlobalContext();
   const { imageWidths } = useCompositionContext();
 
   const [detailImageShown, setDetailImageShown] = useState<string | null>(null);
@@ -44,23 +45,52 @@ const ImageElement: React.FC<Props> = ({
   };
 
   // Genereate srcSet
-  const srcSet = useMemo(() => {
-    if (!withSrcSet) {
-      return;
+  const [srcSet, sizes] = useMemo(() => {
+    const usedImageWidths = imageWidths.filter(width => {
+      if (minImageWidth && width < minImageWidth) {
+        return false;
+      }
+      if (maxImageWidth && width > maxImageWidth) {
+        return false;
+      }
+      return true;
+    });
+
+    if (!withSrcSet || usedImageWidths.length === 0) {
+      return [undefined, undefined];
     }
 
+    // Ensure the widths are sorted
+    usedImageWidths.sort((a, b) => a - b);
+
     const getUrlForWidth = (width: ImageWidth) => urlForWidth(src, width);
-    return imageWidths
-      .map(width => {
-        const url = getUrlForWidth(width);
-        return `${url} ${width}w`;
-      })
-      .join(", ");
-  }, [imageWidths, src, withSrcSet]);
+    const srcSetList = usedImageWidths.map(width => {
+      const url = getUrlForWidth(width);
+      return `${url} ${width}w`;
+    });
+
+    const sizesList = usedImageWidths.map(
+      width => `(max-width: ${0.1 * itemsShown * width}px) ${width}px`
+    );
+
+    if (!maxImageWidth) {
+      const hdWidth = 1600; // TODO: Use the actual width of the original image
+      srcSetList.push(`${src} ${hdWidth}w`);
+      sizesList.push(`${hdWidth}px`);
+    }
+
+    return [srcSetList.join(", "), sizesList.join(", ")];
+  }, [imageWidths, itemsShown, maxImageWidth, minImageWidth, src, withSrcSet]);
 
   return (
     <div className="relative size-full overflow-hidden">
-      <img className="size-full" src={src} srcSet={srcSet} alt="" />
+      <img
+        className="size-full"
+        src={src}
+        srcSet={srcSet}
+        sizes={sizes}
+        alt=""
+      />
       {showHotspots &&
         !zoom && // Hotspots are not shown when zoomed in to avoid hiding anything
         !detailImageShown && // Hotspots have a z-index to stay over the scrollArea, but we don't want them to be clickable when the detail image is shown

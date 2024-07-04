@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { ImageWidthSchema } from "./misc";
+
 const HotspotSchema = z.object({
   feature: z.string(),
   position: z.object({
@@ -46,9 +48,6 @@ const ElementSchema = z.object({
 });
 
 // type Element = z.infer<typeof ElementSchema>;
-
-const ImageWidthSchema = z.number().min(24).max(1920);
-export type ImageWidth = z.infer<typeof ImageWidthSchema>;
 
 export const CompositionSchema = z.object({
   imageWidths: z.array(ImageWidthSchema),

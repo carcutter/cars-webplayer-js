@@ -4,9 +4,10 @@ import { WebPlayerProps } from "@/types/webPlayerProps";
 
 type ProviderProps = Required<
   Pick<WebPlayerProps, "aspectRatio" | "flatten" | "eventId">
-> & {
-  itemsShown: number;
-};
+> &
+  Pick<WebPlayerProps, "minImageWidth" | "maxImageWidth"> & {
+    itemsShown: number;
+  };
 
 type ContextType = ProviderProps & {
   aspectRatioClass: string;
