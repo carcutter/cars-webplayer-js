@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
+import CloseButton from "@/components/atoms/CloseButton";
 import CategoryBar from "@/components/molecules/CategoryBar";
 import OptionsBar from "@/components/molecules/OptionsBar";
 import WebPlayerElement from "@/components/molecules/WebPlayerElement";
@@ -17,7 +18,23 @@ const WebPlayerContent: React.FC<
 > = ({ composition }) => {
   const { elements: compositionElements } = composition;
 
-  const { flatten, itemsShown } = useGlobalContext();
+  const { extendMode, disableExtendMode, flatten, itemsShown } =
+    useGlobalContext();
+
+  // Handle escape key to disable extend mode
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        disableExtendMode();
+      }
+    };
+
+    addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      removeEventListener("keydown", handleKeyDown);
+    };
+  }, [disableExtendMode]);
 
   const [displayedCategory, setDisplayedCategory] = useState(
     compositionElements[0].category
@@ -42,30 +59,44 @@ const WebPlayerContent: React.FC<
     setDisplayedCategory(category);
   };
 
+  const ExtendWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
+    if (!extendMode) {
+      return children;
+    }
+
+    return (
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-foreground/85">
+        {children}
+        <CloseButton onClick={disableExtendMode} />
+      </div>
+    );
+  };
   return (
     <CompositionContextProvider composition={composition}>
-      <div className="relative size-full">
-        <ScrollableSlider
-          items={items}
-          renderItem={(item, index, currentActiveIndex) => (
-            <WebPlayerElement
-              item={item}
-              lazy={
-                Math.abs(index - currentActiveIndex) > Math.ceil(itemsShown)
-              }
+      <ExtendWrapper>
+        <div className="relative h-fit">
+          <ScrollableSlider
+            items={items}
+            renderItem={(item, index, currentActiveIndex) => (
+              <WebPlayerElement
+                item={item}
+                lazy={
+                  Math.abs(index - currentActiveIndex) > Math.ceil(itemsShown)
+                }
+              />
+            )}
+          />
+          {/* Options overlay */}
+          {!flatten && (
+            <CategoryBar
+              composition={composition}
+              selectedCategory={displayedCategory}
+              onChangeSelectedCategory={handleChangeCategory}
             />
           )}
-        />
-        {/* Options overlay */}
-        {!flatten && (
-          <CategoryBar
-            composition={composition}
-            selectedCategory={displayedCategory}
-            onChangeSelectedCategory={handleChangeCategory}
-          />
-        )}
-        <OptionsBar length={items.length} />
-      </div>
+          <OptionsBar length={items.length} />
+        </div>
+      </ExtendWrapper>
     </CompositionContextProvider>
   );
 };
