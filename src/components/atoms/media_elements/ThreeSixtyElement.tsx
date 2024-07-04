@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Button from "@/components/ui/Button";
 import { Item } from "@/types/composition";
 import { Position } from "@/types/position";
+import { clamp } from "@/utils/math";
 import { positionToClassName } from "@/utils/style";
 import { preloadImage } from "@/utils/web";
 
@@ -11,8 +12,8 @@ import ImageElement from "./ImageElement";
 const DRAG_STEP_PX = 10;
 const SCROLL_STEP_PX = 20;
 
-const ZOOM_STEP = 0.5;
-const MAX_ZOOM = 2.5;
+const ZOOM_STEP = 0.6;
+const MAX_ZOOM = 1 + ZOOM_STEP * 3;
 
 type ThreeSixtyElementProps = {
   item: Extract<Item, { type: "360" }>;
@@ -47,39 +48,52 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   // -- Zoom
   const [zoom, setZoom] = useState<number | null>(null);
 
+  const shiftZoom = useCallback(
+    (shift: number) => {
+      const zoomAreaRef = zoomArea.current;
+      if (!zoomAreaRef) {
+        throw new Error("zoomArea.current is null");
+      }
+
+      const currentZoomValue = zoom ?? 1;
+      const newZoomValue = clamp(currentZoomValue + shift, 1, MAX_ZOOM);
+
+      setZoom(newZoomValue !== 1 ? newZoomValue : null);
+
+      // -- When zoom just changed, we want to compensate the scroll position to keep the same point at the center
+      const w = zoomAreaRef.clientWidth;
+      const h = zoomAreaRef.clientHeight;
+      const centerX = zoomAreaRef.scrollLeft + w / 2;
+      const centerY = zoomAreaRef.scrollTop + h / 2;
+
+      const newCenterX = (centerX * newZoomValue) / currentZoomValue;
+      const newCenterY = (centerY * newZoomValue) / currentZoomValue;
+
+      // We need to wait for the DOM to update the scroll position
+      // because the element has not been resized yet and scroll position could be unreachable
+      requestAnimationFrame(() => {
+        zoomAreaRef.scrollLeft = newCenterX - w / 2;
+        zoomAreaRef.scrollTop = newCenterY - h / 2;
+      });
+    },
+    [zoom]
+  );
   const increaseZoom = useCallback(() => {
-    setZoom(prev => {
-      if (prev === null) {
-        return 1 + ZOOM_STEP;
-      }
-
-      return Math.min(prev + ZOOM_STEP, MAX_ZOOM);
-    });
-  }, []);
+    shiftZoom(ZOOM_STEP);
+  }, [shiftZoom]);
   const decreaseZoom = useCallback(() => {
-    setZoom(prev => {
-      if (prev === null) {
-        return null;
-      }
-
-      const newValue = prev - ZOOM_STEP;
-      return newValue > 1 ? newValue : null;
-    });
-  }, []);
+    shiftZoom(-ZOOM_STEP);
+  }, [shiftZoom]);
 
   // -- Handle Click & Drag events
   useEffect(() => {
-    if (!container.current) {
+    const containerRef = container.current;
+
+    if (!containerRef) {
       return;
     }
 
-    const containerRef = container.current;
-
     const onMouseDown = (e: MouseEvent) => {
-      if (!container.current) {
-        throw new Error("[onMouseDown] slider.current is null");
-      }
-
       e.preventDefault(); // Prevents native image dragging
 
       isMouseDown.current = true;
@@ -90,10 +104,6 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     };
 
     const onMouseEnd = () => {
-      if (!container.current) {
-        throw new Error("[onMouseEnd] container.current is null");
-      }
-
       isMouseDown.current = false;
     };
 
@@ -213,8 +223,15 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
       <div ref={zoomArea} className="overflow-auto no-scrollbar">
         <div
-          className="transition-transform"
-          style={!zoom ? {} : { transform: `scale(${zoom})` }}
+          key={zoom} // Key is used to force re-render when zoom changes (if not, the scrollbar size is not updated)
+          className="origin-top-left" // If not, will zoom at the center and crop the top-left part
+          style={
+            !zoom
+              ? {}
+              : {
+                  transform: `scale(${zoom})`,
+                }
+          }
         >
           <ImageElement
             item={{
