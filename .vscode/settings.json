@@ -1,0 +1,21 @@
+{
+  "editor.tabSize": 2,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+
+  "prettier.configPath": ".prettierrc",
+
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+
+  "importCost.smallPackageSize": 10,
+  "importCost.mediumPackageSize": 25,
+  "importCost.mediumPackageLightColor": "#d48340"
+}
