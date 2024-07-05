@@ -138,7 +138,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
         }
 
         // XOR operation to reverse the logic
-        if (walkX < 0 !== reverse360) {
+        if (walkX > 0 !== reverse360) {
           displayNextImage();
         } else {
           displayPreviousImage();
@@ -205,7 +205,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       }
 
       // XOR operation to reverse the logic
-      if (walk > 0 !== reverse360) {
+      if (walk < 0 !== reverse360) {
         displayNextImage();
       } else {
         displayPreviousImage();
