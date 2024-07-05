@@ -17,7 +17,7 @@ const OptionsBar: React.FC<OptionBarProps> = ({
 
   const {
     showHotspots,
-    setShowHotspots,
+    toggleHotspots,
     openGallery,
     extendMode,
     enableExtendMode,
@@ -25,7 +25,7 @@ const OptionsBar: React.FC<OptionBarProps> = ({
   } = useGlobalContext();
 
   const handleHotspotsClick = () => {
-    setShowHotspots(v => !v);
+    toggleHotspots();
   };
 
   const handleShowGalleryClick = () => {

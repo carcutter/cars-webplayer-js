@@ -13,7 +13,7 @@ type ContextType = ProviderProps & {
   aspectRatioClass: string;
 
   showHotspots: boolean;
-  setShowHotspots: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleHotspots: () => void;
 
   extendMode: boolean;
   enableExtendMode: () => void;
@@ -56,6 +56,12 @@ const GlobalContextProvider: React.FC<
     [eventId]
   );
 
+  const toggleHotspots = useCallback(() => {
+    const newValue = !showHotspots;
+    setShowHotspots(newValue);
+    emitEvent(`hotspots-${newValue ? "on" : "off"}`);
+  }, [emitEvent, showHotspots]);
+
   const enableExtendMode = useCallback(() => {
     setExtendMode(true);
     emitEvent("extend-mode-on");
@@ -82,7 +88,7 @@ const GlobalContextProvider: React.FC<
         aspectRatioClass,
 
         showHotspots,
-        setShowHotspots,
+        toggleHotspots,
 
         extendMode,
         enableExtendMode,
