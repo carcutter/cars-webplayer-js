@@ -14,6 +14,8 @@ const WebPlayerWebComponent = r2wc(WebPlayer, {
 
     aspectRatio: "string",
 
+    reverse360: "boolean",
+
     minImageWidth: "number",
     maxImageWidth: "number",
 

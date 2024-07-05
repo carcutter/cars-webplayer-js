@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import Button from "@/components/ui/Button";
+import { useGlobalContext } from "@/providers/GlobalContext";
 import { Item } from "@/types/composition";
 import { Position } from "@/types/position";
 import { clamp } from "@/utils/math";
@@ -23,6 +24,8 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   hotspots,
   zoomPosition = "bottom-center",
 }) => {
+  const { reverse360 } = useGlobalContext();
+
   // -- Refs
   const container = useRef<HTMLDivElement>(null);
   const isMouseDown = useRef(false);
@@ -134,7 +137,8 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
           return;
         }
 
-        if (walkX < 0) {
+        // XOR operation to reverse the logic
+        if (walkX < 0 !== reverse360) {
           displayNextImage();
         } else {
           displayPreviousImage();
@@ -161,7 +165,13 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       containerRef.removeEventListener("mouseup", onMouseEnd);
       containerRef.removeEventListener("mousemove", onMouseMove);
     };
-  }, [displayNextImage, displayPreviousImage, showingDetailImage, zoom]);
+  }, [
+    displayNextImage,
+    displayPreviousImage,
+    reverse360,
+    showingDetailImage,
+    zoom,
+  ]);
 
   // -- Handle "invisible scroller" events to rotate 360.
   useEffect(() => {
@@ -194,7 +204,8 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
         return;
       }
 
-      if (walk > 0) {
+      // XOR operation to reverse the logic
+      if (walk > 0 !== reverse360) {
         displayNextImage();
       } else {
         displayPreviousImage();
@@ -208,7 +219,13 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     return () => {
       scrollerRef.removeEventListener("scroll", onScroll);
     };
-  }, [displayNextImage, displayPreviousImage, showingDetailImage, zoom]);
+  }, [
+    displayNextImage,
+    displayPreviousImage,
+    reverse360,
+    showingDetailImage,
+    zoom,
+  ]);
 
   return (
     <div ref={container} className={!zoom ? "cursor-ew-resize" : "cursor-move"}>

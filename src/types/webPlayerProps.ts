@@ -6,6 +6,7 @@ export const AspectRatioSchema = z.union([z.literal("4:3"), z.literal("16:9")]);
 export type AspectRatio = z.infer<typeof AspectRatioSchema>;
 
 export const DEFAULT_ASPECT_RATIO = "4:3" satisfies AspectRatio;
+export const DEFAULT_REVERSE_360 = false;
 export const DEFAULT_FLATTEN = false;
 export const DEFAULT_MAX_ITEMS_SHOWN = 1;
 export const DEFAULT_ITEMS_SHOWN_BREAKPOINT = 768;
@@ -15,6 +16,8 @@ export const WebPlayerPropsSchema = z.object({
   compositionUrl: z.string(),
 
   aspectRatio: AspectRatioSchema.optional(),
+
+  reverse360: z.boolean().optional(),
 
   minImageWidth: ImageWidthSchema.optional(),
   maxImageWidth: ImageWidthSchema.optional(),
