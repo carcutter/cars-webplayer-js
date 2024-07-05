@@ -15,7 +15,12 @@ const VideoElement: React.FC<Props> = ({ item: { src, poster } }) => {
   if (!displayVideo) {
     return (
       <div className="relative size-full">
-        <img className="size-full" src={poster} alt="" />
+        <img
+          // TODO: use srcSet ?
+          className="size-full"
+          src={poster}
+          alt=""
+        />
         <div className="absolute inset-0 flex items-center justify-center bg-foreground/25">
           <Button color="neutral" shape="icon" onClick={handleOnClick}>
             <img

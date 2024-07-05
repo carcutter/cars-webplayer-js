@@ -5,7 +5,6 @@ import { Item } from "@/types/composition";
 import { Position } from "@/types/position";
 import { clamp } from "@/utils/math";
 import { positionToClassName } from "@/utils/style";
-import { preloadImage } from "@/utils/web";
 
 import ImageElement from "./ImageElement";
 
@@ -15,13 +14,13 @@ const SCROLL_STEP_PX = 20;
 const ZOOM_STEP = 0.6;
 const MAX_ZOOM = 1 + ZOOM_STEP * 3;
 
-type ThreeSixtyElementProps = {
-  item: Extract<Item, { type: "360" }>;
+type ThreeSixtyElementProps = Omit<Extract<Item, { type: "360" }>, "type"> & {
   zoomPosition?: Extract<Position, "middle-right" | "bottom-center">;
 };
 
 const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
-  item: { images, hotspots },
+  images,
+  hotspots,
   zoomPosition = "bottom-center",
 }) => {
   // -- Refs
@@ -217,7 +216,8 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
         {/* Take the 2 prev & 2 next images and insert them on the DOM to ensure preload */}
         {[-2, -1, 1, 2].map(offset => {
           const index = (imageIndex + offset + length) % length;
-          return <img key={index} src={images[index]} alt="" />;
+          const image = images[index];
+          return <ImageElement key={image} src={image} />;
         })}
       </div>
 
@@ -234,11 +234,8 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
           }
         >
           <ImageElement
-            item={{
-              type: "image",
-              src: images[imageIndex],
-              hotspots: hotspots[imageIndex],
-            }}
+            src={images[imageIndex]}
+            hotspots={hotspots[imageIndex]}
             zoom={zoom}
             onShownDetailImageChange={v => setShowingDetailImage(!!v)}
           />
@@ -288,19 +285,65 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 };
 
 type ThreeSixtyElementPlaceholderProps = {
-  imageSrc: string;
-  loadingProgress: number | null;
-  onClick: () => void;
+  images: string[];
+  onReady: () => void;
 };
 
 const ThreeSixtyElementPlaceholder: React.FC<
   ThreeSixtyElementPlaceholderProps
-> = ({ imageSrc, loadingProgress, onClick }) => {
+> = ({ images, onReady }) => {
+  const [loadingStatusMap, setLoadingStatusMap] = useState<Map<
+    string,
+    boolean
+  > | null>(null);
+
+  const loadingProgress = loadingStatusMap
+    ? ([...loadingStatusMap.values()].filter(loaded => loaded).length /
+        images.length) *
+      100
+    : null;
+
+  const fetchImages = useCallback(() => {
+    if (loadingProgress !== null) {
+      return;
+    }
+
+    setLoadingStatusMap(new Map(images.map(image => [image, false])));
+
+    // TODO: add a timeout ?
+  }, [images, loadingProgress]);
+
+  const onImageLoaded = useCallback((image: string) => {
+    setLoadingStatusMap(prev => {
+      const newStatusMap = new Map(prev);
+      newStatusMap.set(image, true);
+      return newStatusMap;
+    });
+  }, []);
+
+  useEffect(() => {
+    if (loadingProgress === 100) {
+      onReady();
+    }
+  }, [loadingProgress, onReady]);
+
   return (
     <div className="relative size-full">
-      <img className="size-full" src={imageSrc} alt="" />
+      {loadingProgress !== null && loadingProgress !== 100 && (
+        <div className="hidden">
+          {images.map(image => (
+            <ImageElement
+              key={image}
+              src={image}
+              onLoad={() => onImageLoaded(image)}
+            />
+          ))}
+        </div>
+      )}
+
+      <ImageElement src={images[0]} />
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
-        <Button color="neutral" shape="icon" onClick={onClick}>
+        <Button color="neutral" shape="icon" onClick={fetchImages}>
           <img
             className="size-full"
             src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/play.svg"
@@ -320,37 +363,19 @@ const ThreeSixtyElementPlaceholder: React.FC<
   );
 };
 
-const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = ({ item }) => {
-  const [loadingProgress, setLoadingProgress] = useState<number | null>(null);
+const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = props => {
+  const [isReady, setIsReady] = useState(false);
 
-  const fetchImages = useCallback(async () => {
-    setLoadingProgress(0);
-    const imagePromises = item.images.map(imageSrc =>
-      preloadImage(imageSrc).then(() =>
-        setLoadingProgress(prev => (prev as number) + 100 / item.images.length)
-      )
-    );
-
-    try {
-      await Promise.allSettled(imagePromises);
-      setLoadingProgress(100);
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
-    }
-  }, [item.images]);
-
-  if (loadingProgress !== 100) {
+  if (!isReady) {
     return (
       <ThreeSixtyElementPlaceholder
-        imageSrc={item.images[0]}
-        loadingProgress={loadingProgress}
-        onClick={fetchImages}
+        images={props.images}
+        onReady={() => setIsReady(true)}
       />
     );
   }
 
-  return <ThreeSixtyElementInteractive item={item} />;
+  return <ThreeSixtyElementInteractive {...props} />;
 };
 
 export default ThreeSixtyElement;

@@ -61,7 +61,7 @@ const ScrollableSlider: React.FC<Props> = ({
   // - Style functions
   const setCursor = useCallback((cursor: "auto" | "grab" | "grabbing") => {
     if (!slider.current) {
-      throw new Error("[setAutoScroll] slider.current is null");
+      throw new Error("[setCursor] slider.current is null");
     }
 
     slider.current.style.cursor = cursor;
@@ -77,7 +77,7 @@ const ScrollableSlider: React.FC<Props> = ({
 
   const setSnapState = useCallback((type: "mandatory" | "none") => {
     if (!slider.current) {
-      throw new Error("[setSnapBehavior] slider.current is null");
+      throw new Error("[setSnapState] slider.current is null");
     }
 
     if (type === "mandatory") {
@@ -102,7 +102,7 @@ const ScrollableSlider: React.FC<Props> = ({
   const scrollLeftToIndex = useCallback(
     (index: number) => {
       if (!slider.current) {
-        throw new Error("[scrollToIndex] slider.current is null");
+        throw new Error("[scrollLeftToIndex] slider.current is null");
       }
 
       if (!indexes.includes(index)) {
@@ -116,7 +116,7 @@ const ScrollableSlider: React.FC<Props> = ({
 
   const computeLeftClosestIndex = useCallback(() => {
     if (!slider.current) {
-      throw new Error("[computeClosestIndex] slider.current is null");
+      throw new Error("[computeLeftClosestIndex] slider.current is null");
     }
 
     const decimalIndex = slider.current.scrollLeft / getElementWidth();
@@ -140,14 +140,14 @@ const ScrollableSlider: React.FC<Props> = ({
 
   // - Event listeners
   useEffect(() => {
-    // Does not allow sliding if there is only one item
-    if (!slidable) {
-      setCursor("auto");
+    // DOM not ready
+    if (!slider.current) {
       return;
     }
 
-    // DOM not ready
-    if (!slider.current) {
+    // Does not allow sliding if there is only one item
+    if (!slidable) {
+      setCursor("auto");
       return;
     }
 
@@ -159,10 +159,6 @@ const ScrollableSlider: React.FC<Props> = ({
 
     // Handle when the user just clicked on the slider
     const onMouseDown = (e: MouseEvent) => {
-      if (!slider.current) {
-        throw new Error("[onMouseDown] slider.current is null");
-      }
-
       e.preventDefault(); // Prevents native image dragging
 
       isDown.current = true;
@@ -177,10 +173,6 @@ const ScrollableSlider: React.FC<Props> = ({
 
     // Reset CSS & snap to the closest image when the user releases the slider
     const onMouseEnd = () => {
-      if (!slider.current) {
-        throw new Error("[onMouseEnd] slider.current is null");
-      }
-
       isDown.current = false;
 
       // Reset CSS
@@ -247,10 +239,6 @@ const ScrollableSlider: React.FC<Props> = ({
   ]);
 
   const scrollOffsetIndex = (offset: number) => {
-    if (!slider.current) {
-      throw new Error("[scrollOffsetIndex] slider.current is null");
-    }
-
     const currentIndex = computeLeftClosestIndex();
 
     scrollLeftToIndex(currentIndex + offset);

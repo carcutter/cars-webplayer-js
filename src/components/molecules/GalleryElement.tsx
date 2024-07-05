@@ -2,6 +2,7 @@ import { Item } from "@/types/composition";
 
 type Props = { item: Item };
 
+// TODO: add responsive layout + srcSet ?
 const GalleryElement: React.FC<Props> = ({ item }) => {
   const { type } = item;
 

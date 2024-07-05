@@ -16,16 +16,18 @@ function urlForWidth(src: string, width: ImageWidth): string {
   return [directoryName, width, fileName].join("/");
 }
 
-type Props = {
-  item: Extract<Item, { type: "image" }>;
+type Props = Omit<Extract<Item, { type: "image" }>, "type"> & {
   zoom?: number | null;
   onShownDetailImageChange?: (shownDetailImage: string | null) => void;
+  onLoad?: () => void;
 };
 
 const ImageElement: React.FC<Props> = ({
-  item: { src, hotspots },
+  src,
+  hotspots,
   zoom,
   onShownDetailImageChange,
+  onLoad,
 }) => {
   const { minImageWidth, maxImageWidth, itemsShown, showHotspots } =
     useGlobalContext();
@@ -95,7 +97,7 @@ const ImageElement: React.FC<Props> = ({
         src={src}
         srcSet={srcSet}
         sizes={sizes}
-        alt=""
+        onLoad={onLoad}
       />
       {showHotspots &&
         !zoom && // Hotspots are not shown when zoomed in to avoid hiding anything
@@ -113,7 +115,12 @@ const ImageElement: React.FC<Props> = ({
           className="absolute inset-0 z-10 cursor-auto"
           onMouseDown={e => e.stopPropagation()}
         >
-          <img className="size-full" src={detailImageShown} alt="" />
+          <img
+            // TODO: Use srcSet ?
+            className="size-full"
+            src={detailImageShown}
+            alt=""
+          />
           <CloseButton onClick={handleCloseDetailImageClick} />
         </div>
       )}

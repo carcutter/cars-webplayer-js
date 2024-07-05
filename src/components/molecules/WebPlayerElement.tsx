@@ -17,13 +17,13 @@ const WebPlayerElement: React.FC<Props> = ({ item, lazy }) => {
   if (!lazy) {
     switch (type) {
       case "image":
-        Comp = <ImageElement item={item} />;
+        Comp = <ImageElement {...item} />;
         break;
       case "video":
         Comp = <VideoElement item={item} />;
         break;
       case "360":
-        Comp = <ThreeSixtyElement item={item} />;
+        Comp = <ThreeSixtyElement {...item} />;
         break;
       case "omni_directional":
         Comp = <OmniDirectionElement item={item} />;
