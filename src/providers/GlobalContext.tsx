@@ -8,7 +8,10 @@ type ProviderProps = Required<
     "aspectRatio" | "reverse360" | "imageLoadStrategy" | "flatten" | "eventId"
   >
 > &
-  Pick<WebPlayerProps, "minImageWidth" | "maxImageWidth"> & {
+  Pick<
+    WebPlayerProps,
+    "categoriesOrder" | "minImageWidth" | "maxImageWidth"
+  > & {
     itemsShown: number;
   };
 

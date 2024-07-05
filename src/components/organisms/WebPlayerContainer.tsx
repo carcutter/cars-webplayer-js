@@ -16,10 +16,37 @@ type WebPlayerContentProps = { composition: Composition };
 const WebPlayerContent: React.FC<
   React.PropsWithChildren<WebPlayerContentProps>
 > = ({ composition }) => {
-  const { elements: compositionElements } = composition;
+  const {
+    categoriesOrder,
+    flatten,
+    itemsShown,
+    extendMode,
+    disableExtendMode,
+  } = useGlobalContext();
 
-  const { extendMode, disableExtendMode, flatten, itemsShown } =
-    useGlobalContext();
+  const { elements: compositionUnsortedElements } = composition;
+
+  // Sort elements based on categoriesOrder
+  const compositionElements = useMemo(() => {
+    if (!categoriesOrder) {
+      return compositionUnsortedElements;
+    }
+
+    const categories = categoriesOrder.split("|");
+
+    return compositionUnsortedElements.sort((elemA, elemB) => {
+      const indexA = categories.findIndex(cat => cat === elemA.category);
+      const indexB = categories.findIndex(cat => cat === elemB.category);
+
+      if (indexA === -1 && indexB !== -1) {
+        return 1;
+      } else if (indexA !== -1 && indexB === -1) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+  }, [categoriesOrder, compositionUnsortedElements]);
 
   // Handle escape key to disable extend mode
   useEffect(() => {
