@@ -33,6 +33,9 @@ const config = {
         md: "calc(var(--radius) + 2px)",
         lg: "calc(var(--radius) + 4px)",
       },
+      zIndex: {
+        "9999": "9999",
+      },
       // Animation
       keyframes: {
         "hotspot-ping": {
