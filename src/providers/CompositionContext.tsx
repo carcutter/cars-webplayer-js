@@ -4,7 +4,8 @@ import { Composition } from "@/types/composition";
 import { ImageWidth } from "@/types/misc";
 
 type ContextType = {
-  imageWidths: ImageWidth[];
+  imageHdWidth: ImageWidth;
+  imageSubWidths: ImageWidth[];
 };
 
 const CompositionContext = createContext<ContextType | null>(null);
@@ -27,11 +28,12 @@ type ProviderProps = {
 
 const CompositionContextProvider: React.FC<
   React.PropsWithChildren<ProviderProps>
-> = ({ composition: { imageWidths }, children }) => {
+> = ({ composition: { imageHdWidth, imageSubWidths }, children }) => {
   return (
     <CompositionContext.Provider
       value={{
-        imageWidths,
+        imageHdWidth,
+        imageSubWidths,
       }}
     >
       {children}

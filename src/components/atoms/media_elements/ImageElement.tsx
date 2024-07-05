@@ -31,7 +31,7 @@ const ImageElement: React.FC<Props> = ({
 }) => {
   const { minImageWidth, maxImageWidth, itemsShown, showHotspots } =
     useGlobalContext();
-  const { imageWidths } = useCompositionContext();
+  const { imageHdWidth, imageSubWidths } = useCompositionContext();
 
   const [detailImageShown, setDetailImageShown] = useState<string | null>(null);
 
@@ -46,6 +46,13 @@ const ImageElement: React.FC<Props> = ({
 
   // Genereate srcSet
   const [srcSet, sizes] = useMemo(() => {
+    // TODO: The parameter withSrcSet should always be true (but for the moment, the mock data is erroned)
+    if (!withSrcSet) {
+      return [undefined, undefined];
+    }
+
+    const imageWidths = imageSubWidths.concat(imageHdWidth);
+
     const usedImageWidths = imageWidths.filter(width => {
       if (minImageWidth && width < minImageWidth) {
         return false;
@@ -56,31 +63,38 @@ const ImageElement: React.FC<Props> = ({
       return true;
     });
 
-    if (!withSrcSet || usedImageWidths.length === 0) {
-      return [undefined, undefined];
+    if (usedImageWidths.length === 0) {
+      throw new Error("No image widths available for the given constraints");
     }
 
     // Ensure the widths are sorted
     usedImageWidths.sort((a, b) => a - b);
 
-    const getUrlForWidth = (width: ImageWidth) => urlForWidth(src, width);
+    const getUrlForWidth = (width: ImageWidth) =>
+      width !== imageHdWidth ? urlForWidth(src, width) : src;
     const srcSetList = usedImageWidths.map(width => {
       const url = getUrlForWidth(width);
       return `${url} ${width}w`;
     });
 
+    const biggerWidth = usedImageWidths.pop();
+
     const sizesList = usedImageWidths.map(
-      width => `(max-width: ${0.1 * itemsShown * width}px) ${width}px`
+      width => `(max-width: ${itemsShown * width}px) ${width}px`
     );
 
-    if (!maxImageWidth) {
-      const hdWidth = 1600; // TODO: Use the actual width of the original image
-      srcSetList.push(`${src} ${hdWidth}w`);
-      sizesList.push(`${hdWidth}px`);
-    }
+    sizesList.push(`${biggerWidth}px`);
 
     return [srcSetList.join(", "), sizesList.join(", ")];
-  }, [imageWidths, itemsShown, maxImageWidth, minImageWidth, src, withSrcSet]);
+  }, [
+    imageHdWidth,
+    imageSubWidths,
+    itemsShown,
+    maxImageWidth,
+    minImageWidth,
+    src,
+    withSrcSet,
+  ]);
 
   return (
     <div className="relative size-full overflow-hidden">

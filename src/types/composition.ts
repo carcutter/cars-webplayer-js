@@ -50,7 +50,8 @@ const ElementSchema = z.object({
 // type Element = z.infer<typeof ElementSchema>;
 
 export const CompositionSchema = z.object({
-  imageWidths: z.array(ImageWidthSchema),
+  imageHdWidth: ImageWidthSchema,
+  imageSubWidths: z.array(ImageWidthSchema),
   elements: z.array(ElementSchema),
 });
 
