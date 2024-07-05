@@ -19,14 +19,12 @@ function urlForWidth(src: string, width: ImageWidth): string {
 type Props = {
   item: Extract<Item, { type: "image" }>;
   zoom?: number | null;
-  withSrcSet?: boolean;
   onShownDetailImageChange?: (shownDetailImage: string | null) => void;
 };
 
 const ImageElement: React.FC<Props> = ({
   item: { src, hotspots },
   zoom,
-  withSrcSet,
   onShownDetailImageChange,
 }) => {
   const { minImageWidth, maxImageWidth, itemsShown, showHotspots } =
@@ -46,11 +44,6 @@ const ImageElement: React.FC<Props> = ({
 
   // Genereate srcSet
   const [srcSet, sizes] = useMemo(() => {
-    // TODO: The parameter withSrcSet should always be true (but for the moment, the mock data is erroned)
-    if (!withSrcSet) {
-      return [undefined, undefined];
-    }
-
     const imageWidths = imageSubWidths.concat(imageHdWidth);
 
     const usedImageWidths = imageWidths.filter(width => {
@@ -93,7 +86,6 @@ const ImageElement: React.FC<Props> = ({
     maxImageWidth,
     minImageWidth,
     src,
-    withSrcSet,
   ]);
 
   return (
