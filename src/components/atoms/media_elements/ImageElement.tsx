@@ -29,8 +29,13 @@ const ImageElement: React.FC<Props> = ({
   onShownDetailImageChange,
   onLoad,
 }) => {
-  const { minImageWidth, maxImageWidth, itemsShown, showHotspots } =
-    useGlobalContext();
+  const {
+    minImageWidth,
+    maxImageWidth,
+    imageLoadStrategy,
+    itemsShown,
+    showHotspots,
+  } = useGlobalContext();
   const { imageHdWidth, imageSubWidths } = useCompositionContext();
 
   const [detailImageShown, setDetailImageShown] = useState<string | null>(null);
@@ -72,17 +77,30 @@ const ImageElement: React.FC<Props> = ({
       return `${url} ${width}w`;
     });
 
-    const biggerWidth = usedImageWidths.pop();
+    let sizesList: string[];
 
-    const sizesList = usedImageWidths.map(
-      width => `(max-width: ${itemsShown * width}px) ${width}px`
-    );
+    if (imageLoadStrategy === "quality") {
+      const biggerWidth = usedImageWidths.pop();
 
-    sizesList.push(`${biggerWidth}px`);
+      sizesList = usedImageWidths.map(
+        width => `(max-width: ${itemsShown * width}px) ${width}px`
+      );
+
+      sizesList.push(`${biggerWidth}px`);
+    } else {
+      const smallestWidth = usedImageWidths.shift();
+
+      sizesList = usedImageWidths
+        .reverse()
+        .map(width => `(min-width: ${itemsShown * width}px) ${width}px`);
+
+      sizesList.push(`${smallestWidth}px`);
+    }
 
     return [srcSetList.join(", "), sizesList.join(", ")];
   }, [
     imageHdWidth,
+    imageLoadStrategy,
     imageSubWidths,
     itemsShown,
     maxImageWidth,

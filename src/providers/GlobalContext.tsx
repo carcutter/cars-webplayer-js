@@ -3,7 +3,10 @@ import { createContext, useCallback, useContext, useState } from "react";
 import { WebPlayerProps } from "@/types/webPlayerProps";
 
 type ProviderProps = Required<
-  Pick<WebPlayerProps, "aspectRatio" | "reverse360" | "flatten" | "eventId">
+  Pick<
+    WebPlayerProps,
+    "aspectRatio" | "reverse360" | "imageLoadStrategy" | "flatten" | "eventId"
+  >
 > &
   Pick<WebPlayerProps, "minImageWidth" | "maxImageWidth"> & {
     itemsShown: number;

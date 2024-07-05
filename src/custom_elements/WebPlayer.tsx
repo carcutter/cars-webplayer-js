@@ -9,6 +9,7 @@ import {
   DEFAULT_ASPECT_RATIO,
   DEFAULT_EVENT_ID,
   DEFAULT_FLATTEN,
+  DEFAULT_IMAGE_LOAD_STRATEGY,
   DEFAULT_ITEMS_SHOWN_BREAKPOINT,
   DEFAULT_MAX_ITEMS_SHOWN,
   DEFAULT_REVERSE_360,
@@ -25,6 +26,7 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
 
   aspectRatio = DEFAULT_ASPECT_RATIO,
   reverse360 = DEFAULT_REVERSE_360,
+  imageLoadStrategy = DEFAULT_IMAGE_LOAD_STRATEGY,
   flatten = DEFAULT_FLATTEN,
   maxItemsShown = DEFAULT_MAX_ITEMS_SHOWN,
   itemsShownBreakpoint = DEFAULT_ITEMS_SHOWN_BREAKPOINT,
@@ -73,6 +75,7 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
             ...props,
             aspectRatio,
             reverse360,
+            imageLoadStrategy,
             flatten,
             eventId,
 
