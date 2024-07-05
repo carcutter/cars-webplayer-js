@@ -1,20 +1,10 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
+import CdnImage from "@/components/atoms/CdnImage";
 import CloseButton from "@/components/atoms/CloseButton";
 import Hotspot from "@/components/molecules/Hotspot";
-import { useCompositionContext } from "@/providers/CompositionContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
 import { Item } from "@/types/composition";
-import { ImageWidth } from "@/types/misc";
-
-function urlForWidth(src: string, width: ImageWidth): string {
-  // Extract the file name
-  const split = src.split("/");
-  const fileName = split.pop();
-  const directoryName = split.join("/");
-
-  return [directoryName, width, fileName].join("/");
-}
 
 type Props = Omit<Extract<Item, { type: "image" }>, "type"> & {
   zoom?: number | null;
@@ -29,14 +19,7 @@ const ImageElement: React.FC<Props> = ({
   onShownDetailImageChange,
   onLoad,
 }) => {
-  const {
-    minImageWidth,
-    maxImageWidth,
-    imageLoadStrategy,
-    itemsShown,
-    showHotspots,
-  } = useGlobalContext();
-  const { imageHdWidth, imageSubWidths } = useCompositionContext();
+  const { showHotspots } = useGlobalContext();
 
   const [detailImageShown, setDetailImageShown] = useState<string | null>(null);
 
@@ -49,74 +32,9 @@ const ImageElement: React.FC<Props> = ({
     onShownDetailImageChange?.(null);
   };
 
-  // Genereate srcSet
-  const [srcSet, sizes] = useMemo(() => {
-    const imageWidths = imageSubWidths.concat(imageHdWidth);
-
-    const usedImageWidths = imageWidths.filter(width => {
-      if (minImageWidth && width < minImageWidth) {
-        return false;
-      }
-      if (maxImageWidth && width > maxImageWidth) {
-        return false;
-      }
-      return true;
-    });
-
-    if (usedImageWidths.length === 0) {
-      throw new Error("No image widths available for the given constraints");
-    }
-
-    // Ensure the widths are sorted
-    usedImageWidths.sort((a, b) => a - b);
-
-    const getUrlForWidth = (width: ImageWidth) =>
-      width !== imageHdWidth ? urlForWidth(src, width) : src;
-    const srcSetList = usedImageWidths.map(width => {
-      const url = getUrlForWidth(width);
-      return `${url} ${width}w`;
-    });
-
-    let sizesList: string[];
-
-    if (imageLoadStrategy === "quality") {
-      const biggerWidth = usedImageWidths.pop();
-
-      sizesList = usedImageWidths.map(
-        width => `(max-width: ${itemsShown * width}px) ${width}px`
-      );
-
-      sizesList.push(`${biggerWidth}px`);
-    } else {
-      const smallestWidth = usedImageWidths.shift();
-
-      sizesList = usedImageWidths
-        .reverse()
-        .map(width => `(min-width: ${itemsShown * width}px) ${width}px`);
-
-      sizesList.push(`${smallestWidth}px`);
-    }
-
-    return [srcSetList.join(", "), sizesList.join(", ")];
-  }, [
-    imageHdWidth,
-    imageLoadStrategy,
-    imageSubWidths,
-    itemsShown,
-    maxImageWidth,
-    minImageWidth,
-    src,
-  ]);
-
   return (
     <div className="relative size-full overflow-hidden">
-      <img
-        className="size-full"
-        src={src}
-        srcSet={srcSet}
-        sizes={sizes}
-        onLoad={onLoad}
-      />
+      <CdnImage className="size-full" src={src} onLoad={onLoad} />
       {showHotspots &&
         !zoom && // Hotspots are not shown when zoomed in to avoid hiding anything
         !detailImageShown && // Hotspots have a z-index to stay over the scrollArea, but we don't want them to be clickable when the detail image is shown
@@ -133,12 +51,7 @@ const ImageElement: React.FC<Props> = ({
           className="absolute inset-0 z-10 cursor-auto"
           onMouseDown={e => e.stopPropagation()}
         >
-          <img
-            // TODO: Use srcSet ?
-            className="size-full"
-            src={detailImageShown}
-            alt=""
-          />
+          <CdnImage className="size-full" src={detailImageShown} />
           <CloseButton onClick={handleCloseDetailImageClick} />
         </div>
       )}
