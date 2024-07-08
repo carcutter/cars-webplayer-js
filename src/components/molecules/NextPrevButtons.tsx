@@ -1,6 +1,6 @@
 import CustomizableIcon from "@/components/atoms/CustomizableIcon";
 import Button from "@/components/ui/Button";
-import { PositionY } from "@/types/position";
+import { useGlobalContext } from "@/providers/GlobalContext";
 import { positionXToClassName, positionYToClassName } from "@/utils/style";
 
 type Props = {
@@ -8,7 +8,6 @@ type Props = {
   maxIndex: number;
   onPrev: () => void;
   onNext: () => void;
-  positionY?: PositionY;
 };
 
 const NextPrevButtons: React.FC<Props> = ({
@@ -16,8 +15,9 @@ const NextPrevButtons: React.FC<Props> = ({
   maxIndex,
   onPrev,
   onNext,
-  positionY = "middle",
 }) => {
+  const { nextPrevPosition: positionY } = useGlobalContext();
+
   const positionYClassName = positionYToClassName(positionY);
 
   return (

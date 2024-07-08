@@ -7,12 +7,16 @@ import CustomizationContextProvider from "@/providers/CustomizationContext";
 import GlobalContextProvider from "@/providers/GlobalContext";
 import {
   DEFAULT_ASPECT_RATIO,
+  DEFAULT_CATEGORY_POSITION,
   DEFAULT_EVENT_ID,
   DEFAULT_FLATTEN,
   DEFAULT_IMAGE_LOAD_STRATEGY,
   DEFAULT_ITEMS_SHOWN_BREAKPOINT,
   DEFAULT_MAX_ITEMS_SHOWN,
+  DEFAULT_NEXT_PREV_POSITION,
+  DEFAULT_OPTIONS_POSITION,
   DEFAULT_REVERSE_360,
+  DEFAULT_ZOOM_POSITION,
   WebPlayerProps,
   WebPlayerPropsSchema,
 } from "@/types/webPlayerProps";
@@ -31,6 +35,10 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   maxItemsShown = DEFAULT_MAX_ITEMS_SHOWN,
   itemsShownBreakpoint = DEFAULT_ITEMS_SHOWN_BREAKPOINT,
   eventId = DEFAULT_EVENT_ID,
+  categoryPosition = DEFAULT_CATEGORY_POSITION,
+  optionsPosition = DEFAULT_OPTIONS_POSITION,
+  nextPrevPosition = DEFAULT_NEXT_PREV_POSITION,
+  zoomPosition = DEFAULT_ZOOM_POSITION,
 
   children: customizationChildren, // NOTE: use to customize the player, not to display the content
 
@@ -78,6 +86,10 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
             imageLoadStrategy,
             flatten,
             eventId,
+            categoryPosition,
+            optionsPosition,
+            nextPrevPosition,
+            zoomPosition,
 
             itemsShown,
           }}

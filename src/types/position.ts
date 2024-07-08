@@ -1,24 +1,57 @@
-export type PositionX = "left" | "center" | "right";
-export type PositionY = "top" | "middle" | "bottom";
+import { z } from "zod";
 
-export type Position = PositionX | PositionY | `${PositionY}-${PositionX}`;
+const positionXlist = ["left", "center", "right"] as const;
+export const PositionXschema = z.enum(positionXlist);
+export type PositionX = z.infer<typeof PositionXschema>;
+
+const positionYlist = ["top", "middle", "bottom"] as const;
+export const PositionYschema = z.enum(positionYlist);
+export type PositionY = z.infer<typeof PositionYschema>;
+
+export const PositionSchema = z.enum([
+  ...positionXlist,
+
+  ...positionYlist,
+
+  "top-left",
+  "top-center",
+  "top-right",
+  "middle-left",
+  "middle-center",
+  "middle-right",
+  "bottom-left",
+  "bottom-center",
+  "bottom-right",
+]);
+
+// -- Could do this way but cannot use the ".extract" method anymore
+// export const PositionSchema = z.custom<
+//   PositionX | PositionY | `${PositionY}-${PositionX}`
+// >(data => {
+//   if (isPositionX(data) || isPositionY(data)) {
+//     return data;
+//   }
+
+//   const [y, x] = data.split("-") as [PositionY, PositionX];
+//   if (!isPositionX(x) || !isPositionY(y)) {
+//     throw new Error(`Invalid position: ${data}`);
+//   }
+
+//   return data as `${PositionY}-${PositionX}`;
+// });
+
+export type Position = z.infer<typeof PositionSchema>;
 
 export function isPositionX(str: string): str is PositionX {
-  return ["left", "center", "right"].includes(str);
+  return PositionXschema.safeParse(str).success;
 }
 
 export function isPositionY(str: string): str is PositionY {
-  return ["top", "middle", "bottom"].includes(str);
+  return PositionYschema.safeParse(str).success;
 }
 
 export function isPosition(str: string): str is Position {
-  return (
-    isPositionX(str) ||
-    isPositionY(str) ||
-    (str.includes("-") &&
-      isPositionY(str.split("-")[0]) &&
-      isPositionX(str.split("-")[1]))
-  );
+  return PositionSchema.safeParse(str).success;
 }
 
 export function extractPositions(

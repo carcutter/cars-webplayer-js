@@ -1,21 +1,21 @@
 import Button from "@/components/ui/Button";
+import { useGlobalContext } from "@/providers/GlobalContext";
 import { Composition } from "@/types/composition";
-import { PositionY } from "@/types/position";
 import { positionsToClassName } from "@/utils/style";
 
 type CategoryBarProps = {
   composition: Composition;
   selectedCategory: string;
   onChangeSelectedCategory: (category: string) => void;
-  positionY?: Extract<PositionY, "top" | "bottom">;
 };
 
 const CategoryBar: React.FC<CategoryBarProps> = ({
   composition,
   selectedCategory,
   onChangeSelectedCategory,
-  positionY = "top",
 }) => {
+  const { categoryPosition: positionY } = useGlobalContext();
+
   const positionClassName = positionsToClassName({
     positionY,
     positionX: "center",

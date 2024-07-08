@@ -2,21 +2,16 @@ import CustomizableIcon from "@/components/atoms/CustomizableIcon";
 import Button from "@/components/ui/Button";
 import Separator from "@/components/ui/Separator";
 import { useGlobalContext } from "@/providers/GlobalContext";
-import { Position } from "@/types/position";
 import { positionToClassName } from "@/utils/style";
 
 type OptionBarProps = {
-  length: number;
-  position?: Position;
+  dataLength: number;
 };
 
-const OptionsBar: React.FC<OptionBarProps> = ({
-  length,
-  position = "top-right",
-}) => {
-  const positionClassName = positionToClassName(position);
-
+const OptionsBar: React.FC<OptionBarProps> = ({ dataLength }) => {
   const {
+    optionsPosition: position,
+
     showHotspots,
     toggleHotspots,
     openGallery,
@@ -24,6 +19,8 @@ const OptionsBar: React.FC<OptionBarProps> = ({
     enableExtendMode,
     disableExtendMode,
   } = useGlobalContext();
+
+  const positionClassName = positionToClassName(position);
 
   const handleHotspotsClick = () => {
     toggleHotspots();
@@ -60,7 +57,7 @@ const OptionsBar: React.FC<OptionBarProps> = ({
         </CustomizableIcon>
       </Button>
 
-      {length > 1 && (
+      {dataLength > 1 && (
         <>
           <Separator orientation="vertical" />
 

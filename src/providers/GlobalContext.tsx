@@ -5,7 +5,15 @@ import { WebPlayerProps } from "@/types/webPlayerProps";
 type ProviderProps = Required<
   Pick<
     WebPlayerProps,
-    "aspectRatio" | "reverse360" | "imageLoadStrategy" | "flatten" | "eventId"
+    | "aspectRatio"
+    | "reverse360"
+    | "imageLoadStrategy"
+    | "flatten"
+    | "eventId"
+    | "categoryPosition"
+    | "optionsPosition"
+    | "nextPrevPosition"
+    | "zoomPosition"
   >
 > &
   Pick<

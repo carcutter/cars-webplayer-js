@@ -27,6 +27,11 @@ const WebPlayerWebComponent = r2wc(WebPlayer, {
     itemsShownBreakpoint: "number",
 
     eventId: "string",
+
+    categoryPosition: "string",
+    optionsPosition: "string",
+    nextPrevPosition: "string",
+    zoomPosition: "string",
   },
 });
 

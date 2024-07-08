@@ -53,6 +53,7 @@ const DevApp: React.FC = () => {
         maxItemsShown={2.5}
         itemsShownBreakpoint={960}
         // eventId="cc-event"
+        // optionsPosition="top-left"
       >
         <WebPlayerIcon icon="DRIVER ASSIST" color="#ff00ff">
           <svg

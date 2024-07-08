@@ -3,7 +3,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Button from "@/components/ui/Button";
 import { useGlobalContext } from "@/providers/GlobalContext";
 import { Item } from "@/types/composition";
-import { Position } from "@/types/position";
 import { clamp } from "@/utils/math";
 import { positionToClassName } from "@/utils/style";
 
@@ -15,16 +14,13 @@ const SCROLL_STEP_PX = 20;
 const ZOOM_STEP = 0.6;
 const MAX_ZOOM = 1 + ZOOM_STEP * 3;
 
-type ThreeSixtyElementProps = Omit<Extract<Item, { type: "360" }>, "type"> & {
-  zoomPosition?: Extract<Position, "middle-right" | "bottom-center">;
-};
+type ThreeSixtyElementProps = Omit<Extract<Item, { type: "360" }>, "type">;
 
 const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   images,
   hotspots,
-  zoomPosition = "bottom-center",
 }) => {
-  const { reverse360 } = useGlobalContext();
+  const { reverse360, zoomPosition } = useGlobalContext();
 
   // -- Refs
   const container = useRef<HTMLDivElement>(null);

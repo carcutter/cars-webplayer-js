@@ -121,7 +121,7 @@ const WebPlayerContent: React.FC<
               onChangeSelectedCategory={handleChangeCategory}
             />
           )}
-          <OptionsBar length={items.length} />
+          <OptionsBar dataLength={items.length} />
         </div>
       </ExtendWrapper>
     </CompositionContextProvider>
