@@ -9,7 +9,7 @@ It uses React.js with Vite.
 2. Install Yarn v1 : `brew install yarn`.
 3. Install the node modules with the command `yarn`.
 
-## Running
+## Running Dev'
 
 Run `yarn dev` to start the app in dev'
 
@@ -20,11 +20,10 @@ Run `yarn lint`
 ## Test production
 
 - Build `yarn build`
-- Run the Vite server `yarn dev` to serve the `data.json` file
-- Open `index-build.html` direclty on your brother (! NOT THE ONE SERVED BY VITE BECAUSE IT WON'T USE PROD CONFIGURATION !)
+- Open hte file `index-build.html` directly on your brother (! NOT THE ONE SERVED BY VITE BECAUSE IT WON'T USE PROD CONFIGURATION !)
 
 ### Analyze bundle size
 
-Simply run `npx vite-bundle-visualizer`
+Simply run `npx vite-bundle-visualizer --sourcemap false` (the sourcemap seems to interfer with size calculation [GitHub issue](https://github.com/KusStar/vite-bundle-visualizer/issues/8))
 
 More infos [here](https://www.npmjs.com/package/vite-bundle-visualizer)
