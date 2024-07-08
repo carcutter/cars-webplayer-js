@@ -47,10 +47,7 @@ const ImageElement: React.FC<Props> = ({
         ))}
 
       {detailImageShown && (
-        <div
-          className="absolute inset-0 z-10 cursor-auto"
-          onMouseDown={e => e.stopPropagation()}
-        >
+        <div className="absolute inset-0 z-10 cursor-auto">
           <CdnImage className="size-full" src={detailImageShown} />
           <CloseButton onClick={handleCloseDetailImageClick} />
         </div>

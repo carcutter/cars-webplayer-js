@@ -175,6 +175,10 @@ const ScrollableSlider: React.FC<Props> = ({
 
     // Reset CSS & snap to the closest image when the user releases the slider
     const onMouseEnd = () => {
+      if (!isDown.current) {
+        return;
+      }
+
       isDown.current = false;
 
       // Reset CSS
@@ -202,8 +206,6 @@ const ScrollableSlider: React.FC<Props> = ({
       if (startX.current === null || scrollLeft.current === null) {
         throw new Error("[onMouseMove] startX or scrollLeft is null");
       }
-
-      e.preventDefault(); // Prevents native dragging
 
       const scrollMultiplier = showOneItem ? ONE_ITEM_DRAG_MULTIPLIER : 1;
       const x = e.pageX - sliderRef.offsetLeft;
