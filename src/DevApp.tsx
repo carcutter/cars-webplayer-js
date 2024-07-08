@@ -54,7 +54,7 @@ const DevApp: React.FC = () => {
         itemsShownBreakpoint={960}
         // eventId="cc-event"
       >
-        <WebPlayerIcon feature="DRIVER ASSIST" color="#ff00ff">
+        <WebPlayerIcon icon="DRIVER ASSIST" color="#ff00ff">
           <svg
             style={{ color: "white" }}
             xmlns="http://www.w3.org/2000/svg"

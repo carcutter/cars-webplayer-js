@@ -33,7 +33,7 @@ const WebPlayerWebComponent = r2wc(WebPlayer, {
 const WebPlayerIconWebComponent = r2wc(WebPlayerIcon, {
   shadow: "closed",
   props: {
-    feature: "string",
+    icon: "string",
     color: "string",
   },
 });

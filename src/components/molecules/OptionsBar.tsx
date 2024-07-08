@@ -1,3 +1,4 @@
+import CustomizableIcon from "@/components/atoms/CustomizableIcon";
 import Button from "@/components/ui/Button";
 import Separator from "@/components/ui/Separator";
 import { useGlobalContext } from "@/providers/GlobalContext";
@@ -50,11 +51,13 @@ const OptionsBar: React.FC<OptionBarProps> = ({
         shape="icon"
         onClick={handleHotspotsClick}
       >
-        <img
-          className="size-full"
-          src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/info.svg"
-          alt="Hotspot icon"
-        />
+        <CustomizableIcon customizationKey="CONTROLS_HOTSPOTS">
+          <img
+            className="size-full"
+            src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/info.svg"
+            alt="Hotspot icon"
+          />
+        </CustomizableIcon>
       </Button>
 
       {length > 1 && (
@@ -67,11 +70,13 @@ const OptionsBar: React.FC<OptionBarProps> = ({
             shape="icon"
             onClick={handleShowGalleryClick}
           >
-            <img
-              className="size-full"
-              src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/motion.svg"
-              alt="Gallery icon"
-            />
+            <CustomizableIcon customizationKey="CONTROLS_GALLERY">
+              <img
+                className="size-full"
+                src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/motion.svg"
+                alt="Gallery icon"
+              />
+            </CustomizableIcon>
           </Button>
         </>
       )}
@@ -86,17 +91,21 @@ const OptionsBar: React.FC<OptionBarProps> = ({
         onClick={!extendMode ? handleExtendClick : handleCloseClick}
       >
         {!extendMode ? (
-          <img
-            className="size-full"
-            src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/fullscreen.svg"
-            alt="Extend icon"
-          />
+          <CustomizableIcon customizationKey="CONTROLS_EXTEND">
+            <img
+              className="size-full"
+              src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/fullscreen.svg"
+              alt="Extend icon"
+            />
+          </CustomizableIcon>
         ) : (
-          <img
-            className="size-full"
-            src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/close_fullscreen.svg"
-            alt="Extend icon"
-          />
+          <CustomizableIcon customizationKey="CONTROLS_REDUCE">
+            <img
+              className="size-full"
+              src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/close_fullscreen.svg"
+              alt="Extend icon"
+            />
+          </CustomizableIcon>
         )}
       </Button>
     </div>

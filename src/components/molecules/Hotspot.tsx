@@ -20,8 +20,8 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     detail,
   } = hotspot;
 
-  const { getHotspotConfig } = useCustomizationContext();
-  const hotspotConfig = getHotspotConfig(feature);
+  const { getIconConfig } = useCustomizationContext();
+  const hotspotConfig = getIconConfig(feature);
 
   const [showDescription, setShowDescription] = useState(false);
 

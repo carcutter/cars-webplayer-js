@@ -1,32 +1,46 @@
 import { useEffect } from "react";
 
-import { useCustomizationContextSafe } from "@/providers/CustomizationContext";
+import {
+  useCustomizationContext,
+  useCustomizationContextSafe,
+} from "@/providers/CustomizationContext";
 
-export type WebPlayerIconProps = { feature: string; color?: string };
+export type WebPlayerIconProps = { icon: string; color?: string };
 
-const WebPlayerIcon: React.FC<React.PropsWithChildren<WebPlayerIconProps>> = ({
-  feature,
-  color,
-  children,
-}) => {
-  const setHotspotConfigWithCtx =
-    useCustomizationContextSafe()?.setHotspotConfig;
+const WebPlayerIconReact: React.FC<
+  React.PropsWithChildren<WebPlayerIconProps>
+> = ({ icon, color, children: Icon }) => {
+  const { setIconConfig, resetIconConfig } = useCustomizationContext();
 
   useEffect(() => {
-    if (!setHotspotConfigWithCtx) {
+    if (!Icon && !color) {
       return;
     }
 
-    if (!children && !color) {
-      return;
-    }
-
-    setHotspotConfigWithCtx(feature, {
-      Icon: children,
-      color: color,
+    setIconConfig(icon, {
+      Icon,
+      color,
     });
-  }, [children, color, feature, setHotspotConfigWithCtx]);
 
+    return () => {
+      resetIconConfig(icon);
+    };
+  }, [Icon, color, icon, resetIconConfig, setIconConfig]);
+
+  return null;
+};
+
+const WebPlayerIcon: React.FC<
+  React.PropsWithChildren<WebPlayerIconProps>
+> = props => {
+  const customizationCtx = useCustomizationContextSafe();
+
+  // If the context is available, we are using the React version
+  if (customizationCtx) {
+    return <WebPlayerIconReact {...props} />;
+  }
+
+  // If not, we are using the Web Component version
   return <slot />;
 };
 

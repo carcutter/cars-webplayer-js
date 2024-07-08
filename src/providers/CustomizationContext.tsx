@@ -2,16 +2,17 @@ import { createContext, useCallback, useContext, useState } from "react";
 
 import { WEB_PLAYER_ICON_CUSTOM_ELEMENTS_NAME } from "@/const/custom_elements";
 
-type HotspotConfig = {
+type IconConfig = {
   Icon: React.ReactNode;
   color: string;
 };
 
-type PartialHotspotConfig = Partial<HotspotConfig>;
+type PartialIconConfig = Partial<IconConfig>;
 
 type ContextType = {
-  getHotspotConfig: (key: string) => PartialHotspotConfig | undefined;
-  setHotspotConfig: (key: string, iconConfig: PartialHotspotConfig) => void;
+  getIconConfig: (key: string) => PartialIconConfig | undefined;
+  setIconConfig: (key: string, iconConfig: PartialIconConfig) => void;
+  resetIconConfig: (key: string) => void;
 };
 
 const CustomizationContext = createContext<ContextType | null>(null);
@@ -39,22 +40,22 @@ type ProviderProps = {
 const CustomizationContextProvider: React.FC<
   React.PropsWithChildren<ProviderProps>
 > = ({ children }) => {
-  const [hotspotConfigMap, setHotspotConfigMap] = useState(
-    new Map<string, PartialHotspotConfig>()
+  const [iconConfigMap, setIconConfigMap] = useState(
+    new Map<string, PartialIconConfig>()
   );
 
   // TODO: find a way to make it less hacky
-  const getHotspotConfig = useCallback(
+  const getIconConfig = useCallback(
     (key: string) => {
       // Check if the key is already in the map (CASE WHEN USING REACT)
-      const ctxConfig = hotspotConfigMap.get(key);
+      const ctxConfig = iconConfigMap.get(key);
       if (ctxConfig) {
         return ctxConfig;
       }
 
       // Check if the key has been customized in the DOM (CASE WHEN USING WEB COMPONENTS)
       const domElement = document.querySelector(
-        `${WEB_PLAYER_ICON_CUSTOM_ELEMENTS_NAME}[feature="${key}"]`
+        `${WEB_PLAYER_ICON_CUSTOM_ELEMENTS_NAME}[icon="${key}"]`
       );
 
       if (!domElement) {
@@ -76,22 +77,27 @@ const CustomizationContextProvider: React.FC<
 
       return { Icon, color };
     },
-    [hotspotConfigMap]
+    [iconConfigMap]
   );
-  const setHotspotConfig = useCallback(
-    (key: string, iconConfig: PartialHotspotConfig) => {
-      setHotspotConfigMap(
-        currentMap => new Map(currentMap.set(key, iconConfig))
-      );
+  const setIconConfig = useCallback(
+    (key: string, iconConfig: PartialIconConfig) => {
+      setIconConfigMap(currentMap => new Map(currentMap.set(key, iconConfig)));
     },
     []
   );
+  const resetIconConfig = useCallback((key: string) => {
+    setIconConfigMap(currentMap => {
+      currentMap.delete(key);
+      return new Map(currentMap);
+    });
+  }, []);
 
   return (
     <CustomizationContext.Provider
       value={{
-        getHotspotConfig,
-        setHotspotConfig,
+        getIconConfig,
+        setIconConfig,
+        resetIconConfig,
       }}
     >
       {children}

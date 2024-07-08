@@ -1,3 +1,4 @@
+import CustomizableIcon from "@/components/atoms/CustomizableIcon";
 import Button from "@/components/ui/Button";
 import { PositionY } from "@/types/position";
 import { positionXToClassName, positionYToClassName } from "@/utils/style";
@@ -28,11 +29,13 @@ const NextPrevButtons: React.FC<Props> = ({
         onClick={onPrev}
         disabled={currentIndex <= 0}
       >
-        <img
-          className="size-full rotate-180"
-          src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/arrow_forward.svg"
-          alt="Previous icon"
-        />
+        <CustomizableIcon customizationKey="CONTROLS_ARROW_LEFT">
+          <img
+            className="size-full rotate-180"
+            src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/arrow_forward.svg"
+            alt="Previous icon"
+          />
+        </CustomizableIcon>
       </Button>
       <Button
         shape="icon"
@@ -41,11 +44,13 @@ const NextPrevButtons: React.FC<Props> = ({
         onClick={onNext}
         disabled={currentIndex >= maxIndex}
       >
-        <img
-          className="size-full"
-          src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/arrow_forward.svg"
-          alt="Next icon"
-        />
+        <CustomizableIcon customizationKey="CONTROLS_ARROW_RIGHT">
+          <img
+            className="size-full"
+            src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/arrow_forward.svg"
+            alt="Next icon"
+          />
+        </CustomizableIcon>
       </Button>
     </>
   );
