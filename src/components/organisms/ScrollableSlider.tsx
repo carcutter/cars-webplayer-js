@@ -40,23 +40,24 @@ const ScrollableSlider: React.FC<Props> = ({
   // - Indexing
   const length = items.length;
   const slidable = length > itemsShown;
-  const indexes = useMemo(() => {
+  const snapIndexes = useMemo(() => {
     if (!slidable) {
       return [0];
     }
 
-    const maxLeftIndexInt = length - Math.ceil(itemsShown);
+    const maxSnapIndexInt = length - Math.ceil(itemsShown);
 
-    const indexes = Array.from({ length: maxLeftIndexInt + 1 }, (_, i) => i);
+    const indexes = Array.from({ length: maxSnapIndexInt + 1 }, (_, i) => i);
 
+    // Add fractionnal index if displaying a fraction of an item
     const fractionnalIndex = itemsShown % 1;
     if (fractionnalIndex !== 0) {
-      indexes.push(maxLeftIndexInt + fractionnalIndex);
+      indexes.push(maxSnapIndexInt + fractionnalIndex);
     }
 
     return indexes;
   }, [itemsShown, length, slidable]);
-  const [currentActiveIndex, setCurrentActiveIndex] = useState(0); // NOTE: Used only by the fixed index indicator
+  const [currentSnapIndex, setCurrentSnapIndex] = useState(0); // NOTE: Used only by the fixed index indicator
 
   // - Style functions
   const setCursor = useCallback((cursor: "auto" | "grab" | "grabbing") => {
@@ -95,48 +96,49 @@ const ScrollableSlider: React.FC<Props> = ({
     return slider.current.getBoundingClientRect().width;
   }, []);
 
-  const getElementWidth = useCallback(() => {
-    return getContainerWidth() / itemsShown;
-  }, [getContainerWidth, itemsShown]);
+  const getElementWidth = useCallback(
+    () => getContainerWidth() / itemsShown,
+    [getContainerWidth, itemsShown]
+  );
 
-  const scrollLeftToIndex = useCallback(
+  const scrollToSnapIndex = useCallback(
     (index: number) => {
       if (!slider.current) {
-        throw new Error("[scrollLeftToIndex] slider.current is null");
+        throw new Error("[scrollToSnapIndex] slider.current is null");
       }
 
-      if (!indexes.includes(index)) {
-        throw new Error(`[scrollLeftToIndex] Unexpected index value: ${index}`);
+      if (!snapIndexes.includes(index)) {
+        throw new Error(`[scrollToSnapIndex] Unexpected index value: ${index}`);
       }
 
       slider.current.scrollLeft = index * getElementWidth();
     },
-    [getElementWidth, indexes]
+    [getElementWidth, snapIndexes]
   );
 
-  const computeLeftClosestIndex = useCallback(() => {
+  const computeClosestSnapIndex = useCallback(() => {
     if (!slider.current) {
-      throw new Error("[computeLeftClosestIndex] slider.current is null");
+      throw new Error("[computeClosestSnapIndex] slider.current is null");
     }
 
     const decimalIndex = slider.current.scrollLeft / getElementWidth();
 
-    return indexes.reduce(
-      (prev, curr) =>
-        Math.abs(curr - decimalIndex) < Math.abs(prev - decimalIndex)
+    return snapIndexes.reduce(
+      (prevClosest, curr) =>
+        Math.abs(curr - decimalIndex) < Math.abs(prevClosest - decimalIndex)
           ? curr
-          : prev,
+          : prevClosest,
       Infinity
     );
-  }, [getElementWidth, indexes]);
+  }, [getElementWidth, snapIndexes]);
 
   // - Reset the index when the items changes
   useEffect(() => {
     setScrollBehavior("auto");
-    scrollLeftToIndex(0);
-    setCurrentActiveIndex(0);
+    scrollToSnapIndex(0);
+    setCurrentSnapIndex(0);
     setScrollBehavior("smooth");
-  }, [items, scrollLeftToIndex, setScrollBehavior]);
+  }, [items, scrollToSnapIndex, setScrollBehavior]);
 
   // - Event listeners
   useEffect(() => {
@@ -187,8 +189,8 @@ const ScrollableSlider: React.FC<Props> = ({
       }, 500);
 
       // Snap scrolling
-      const closestLeftIndex = computeLeftClosestIndex();
-      scrollLeftToIndex(closestLeftIndex);
+      const closestSnapIndex = computeClosestSnapIndex();
+      scrollToSnapIndex(closestSnapIndex);
     };
 
     // Scroll according the user's dragging movement
@@ -211,8 +213,8 @@ const ScrollableSlider: React.FC<Props> = ({
 
     // Update the index when the user scrolls with "standard" scrolling
     const onScroll = () => {
-      const closestLeftIndex = computeLeftClosestIndex();
-      setCurrentActiveIndex(closestLeftIndex);
+      const closestSnapIndex = computeClosestSnapIndex();
+      setCurrentSnapIndex(closestSnapIndex);
     };
 
     sliderRef.addEventListener("mousedown", onMouseDown);
@@ -229,8 +231,8 @@ const ScrollableSlider: React.FC<Props> = ({
       sliderRef.removeEventListener("scroll", onScroll);
     };
   }, [
-    computeLeftClosestIndex,
-    scrollLeftToIndex,
+    computeClosestSnapIndex,
+    scrollToSnapIndex,
     setCursor,
     setScrollBehavior,
     setSnapState,
@@ -238,23 +240,28 @@ const ScrollableSlider: React.FC<Props> = ({
     slidable,
   ]);
 
-  const scrollOffsetIndex = (offset: number) => {
-    const currentIndex = computeLeftClosestIndex();
+  const scrollOffsetIndex = useCallback(
+    (offset: number) => {
+      const currentSnapIndex = computeClosestSnapIndex();
+      const newLeftIndex =
+        snapIndexes[snapIndexes.indexOf(currentSnapIndex) + offset];
 
-    scrollLeftToIndex(currentIndex + offset);
-  };
+      scrollToSnapIndex(newLeftIndex);
+    },
+    [computeClosestSnapIndex, scrollToSnapIndex, snapIndexes]
+  );
 
-  const prevImage = () => {
+  const prevImage = useCallback(() => {
     scrollOffsetIndex(-1);
-  };
+  }, [scrollOffsetIndex]);
 
-  const nextImage = () => {
+  const nextImage = useCallback(() => {
     scrollOffsetIndex(1);
-  };
+  }, [scrollOffsetIndex]);
 
   const handleOnGalleryItemClicked = (_item: Item, index: number) => {
     closeGallery();
-    scrollLeftToIndex(index);
+    scrollToSnapIndex(index);
   };
 
   return (
@@ -269,7 +276,7 @@ const ScrollableSlider: React.FC<Props> = ({
         className={`flex size-full ${slidable ? "overflow-x-auto transition-transform no-scrollbar *:snap-mandatory *:snap-start" : "justify-center"}`}
       >
         {items.map((item, index) => {
-          const Item = renderItem(item, index, currentActiveIndex);
+          const Item = renderItem(item, index, currentSnapIndex);
           const key = keyExtractor(item, index);
 
           return (
@@ -291,15 +298,12 @@ const ScrollableSlider: React.FC<Props> = ({
         <>
           {showOneItem && (
             <div className={`absolute ${positionToClassName("bottom-right")}`}>
-              <IndexIndicator
-                currentIndex={currentActiveIndex}
-                length={length}
-              />
+              <IndexIndicator currentIndex={currentSnapIndex} length={length} />
             </div>
           )}
 
           <NextPrevButtons
-            currentIndex={currentActiveIndex}
+            currentIndex={currentSnapIndex}
             maxIndex={length - itemsShown}
             onPrev={prevImage}
             onNext={nextImage}
