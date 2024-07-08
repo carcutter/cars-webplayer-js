@@ -5,11 +5,15 @@ import {
   useCustomizationContextSafe,
 } from "@/providers/CustomizationContext";
 
-export type WebPlayerIconProps = { icon: string; color?: string };
+export type WebPlayerIconProps = {
+  name: string;
+  color?: string;
+  override?: boolean;
+};
 
 const WebPlayerIconReact: React.FC<
   React.PropsWithChildren<WebPlayerIconProps>
-> = ({ icon, color, children: Icon }) => {
+> = ({ name, color, override, children: Icon }) => {
   const { setIconConfig, resetIconConfig } = useCustomizationContext();
 
   useEffect(() => {
@@ -17,15 +21,16 @@ const WebPlayerIconReact: React.FC<
       return;
     }
 
-    setIconConfig(icon, {
+    setIconConfig(name, {
       Icon,
       color,
+      override,
     });
 
     return () => {
-      resetIconConfig(icon);
+      resetIconConfig(name);
     };
-  }, [Icon, color, icon, resetIconConfig, setIconConfig]);
+  }, [Icon, color, name, override, resetIconConfig, setIconConfig]);
 
   return null;
 };

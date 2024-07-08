@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import Button from "@/components/ui/Button";
+import CustomizableButton from "@/components/molecules/CustomizableButton";
 import { useGlobalContext } from "@/providers/GlobalContext";
 import { Item } from "@/types/composition";
 import { clamp } from "@/utils/math";
@@ -275,22 +275,24 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
         <div
           className={`absolute ${positionToClassName(zoomPosition)} flex gap-2 ${zoomPosition === "middle-right" ? "flex-col" : "flex-row-reverse"}`}
         >
-          <Button
+          <CustomizableButton
+            customizationKey="CONTROLS_ZOOM_IN"
             color="neutral"
             shape="icon"
             disabled={zoom === MAX_ZOOM}
             onClick={increaseZoom}
           >
             +
-          </Button>
-          <Button
+          </CustomizableButton>
+          <CustomizableButton
+            customizationKey="CONTROLS_ZOOM_OUT"
             color="neutral"
             shape="icon"
             disabled={!zoom || zoom === 1}
             onClick={decreaseZoom}
           >
             -
-          </Button>
+          </CustomizableButton>
         </div>
       )}
     </div>
@@ -356,13 +358,18 @@ const ThreeSixtyElementPlaceholder: React.FC<
 
       <ImageElement src={images[0]} />
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
-        <Button color="neutral" shape="icon" onClick={fetchImages}>
+        <CustomizableButton
+          customizationKey="CONTROLS_PLAY_360"
+          color="neutral"
+          shape="icon"
+          onClick={fetchImages}
+        >
           <img
             className="size-full"
             src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/play.svg"
             alt="Play"
           />
-        </Button>
+        </CustomizableButton>
         {loadingProgress !== null && (
           <div className="relative h-1 w-3/5 overflow-hidden rounded-full bg-background">
             <div

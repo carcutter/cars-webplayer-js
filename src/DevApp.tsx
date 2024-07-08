@@ -55,7 +55,7 @@ const DevApp: React.FC = () => {
         // eventId="cc-event"
         // optionsPosition="top-left"
       >
-        <WebPlayerIcon icon="DRIVER ASSIST" color="#ff00ff">
+        <WebPlayerIcon name="DRIVER ASSIST" color="#ff00ff">
           <svg
             style={{ color: "white" }}
             xmlns="http://www.w3.org/2000/svg"

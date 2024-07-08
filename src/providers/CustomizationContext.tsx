@@ -5,6 +5,7 @@ import { WEB_PLAYER_ICON_CUSTOM_ELEMENTS_NAME } from "@/const/custom_elements";
 type IconConfig = {
   Icon: React.ReactNode;
   color: string;
+  override: boolean;
 };
 
 type PartialIconConfig = Partial<IconConfig>;
@@ -55,7 +56,7 @@ const CustomizationContextProvider: React.FC<
 
       // Check if the key has been customized in the DOM (CASE WHEN USING WEB COMPONENTS)
       const domElement = document.querySelector(
-        `${WEB_PLAYER_ICON_CUSTOM_ELEMENTS_NAME}[icon="${key}"]`
+        `${WEB_PLAYER_ICON_CUSTOM_ELEMENTS_NAME}[name="${key}"]`
       );
 
       if (!domElement) {
@@ -63,11 +64,13 @@ const CustomizationContextProvider: React.FC<
       }
 
       const color = domElement.getAttribute("color") ?? undefined;
-      const svgHTML = domElement.innerHTML;
-      const Icon = svgHTML ? (
+      const override =
+        (domElement.getAttribute("override") ?? undefined) === "true";
+      const iconHTML = domElement.innerHTML;
+      const Icon = iconHTML ? (
         <div
           className="size-full"
-          dangerouslySetInnerHTML={{ __html: svgHTML }}
+          dangerouslySetInnerHTML={{ __html: iconHTML }}
         />
       ) : undefined;
 
@@ -75,7 +78,7 @@ const CustomizationContextProvider: React.FC<
         return;
       }
 
-      return { Icon, color };
+      return { Icon, color, override };
     },
     [iconConfigMap]
   );
