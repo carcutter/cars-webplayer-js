@@ -19,13 +19,14 @@ const NextPrevButtons: React.FC<Props> = ({
   const { nextPrevPosition: positionY } = useGlobalContext();
 
   const positionYClassName = positionYToClassName(positionY);
+  const sharedClassName = `absolute z-navigation ${positionYClassName}`;
 
   return (
     <>
       <Button
         shape="icon"
         color="neutral"
-        className={`absolute ${positionYClassName} ${positionXToClassName("left")}`}
+        className={`${sharedClassName} ${positionXToClassName("left")}`}
         onClick={onPrev}
         disabled={currentIndex <= 0}
       >
@@ -40,7 +41,7 @@ const NextPrevButtons: React.FC<Props> = ({
       <Button
         shape="icon"
         color="neutral"
-        className={`absolute ${positionYClassName} ${positionXToClassName("right")}`}
+        className={`${sharedClassName} ${positionXToClassName("right")}`}
         onClick={onNext}
         disabled={currentIndex >= maxIndex}
       >

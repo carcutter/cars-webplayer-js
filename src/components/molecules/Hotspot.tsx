@@ -31,7 +31,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
 
   return (
     <div
-      className={`absolute ${showDescription ? "z-20" : "z-10"} -translate-x-1/2 -translate-y-1/2 ${handleOnClick ? "cursor-pointer" : "cursor-help"}`}
+      className={`absolute ${showDescription ? "z-hotspot-hover" : "z-hotspot"} -translate-x-1/2 -translate-y-1/2 ${handleOnClick ? "cursor-pointer" : "cursor-help"}`}
       onClick={handleOnClick}
       onMouseEnter={() => setShowDescription(true)}
       onMouseLeave={() => setShowDescription(false)}

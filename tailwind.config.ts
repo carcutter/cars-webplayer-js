@@ -34,7 +34,12 @@ const config = {
         lg: "calc(var(--radius) + 4px)",
       },
       zIndex: {
-        "9999": "9999",
+        hotspot: "10",
+        "hotspot-hover": "11",
+        detailImage: "20",
+        navigation: "30",
+        gallery: "40",
+        overlay: "999",
       },
       // Animation
       keyframes: {

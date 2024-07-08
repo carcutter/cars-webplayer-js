@@ -12,7 +12,7 @@ const Gallery: React.FC<Props> = ({ items, onItemClicked }) => {
   const { closeGallery } = useGlobalContext();
 
   return (
-    <div className="absolute inset-0 z-30 bg-slate-100">
+    <div className="absolute inset-0 z-gallery bg-slate-100">
       <div className="grid size-full auto-cols-fr grid-flow-col grid-rows-3">
         {items.map((item, index) => (
           <div
