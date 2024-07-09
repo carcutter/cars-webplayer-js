@@ -110,7 +110,7 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   );
 };
 
-// NOTE: if it keeps blocking HMR, just embed the schema directly in the component logic
+// NOTE: HMR could sounds like it's not working due to that, but it's actually due to the CSS inline
 const WebPlayer = withZodSchema(WebPlayerTS, WebPlayerPropsSchema);
 
 export default WebPlayer;

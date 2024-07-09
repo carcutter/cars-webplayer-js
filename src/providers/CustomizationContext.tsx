@@ -45,7 +45,7 @@ const CustomizationContextProvider: React.FC<
     new Map<string, PartialIconConfig>()
   );
 
-  // TODO: find a way to make it less hacky
+  // TODO: find a way to make it less hacky. Maybe with React Portals?
   const getIconConfig = useCallback(
     (key: string) => {
       // Check if the key is already in the map (CASE WHEN USING REACT)

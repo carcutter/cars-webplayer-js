@@ -16,7 +16,7 @@ const VideoElement: React.FC<Props> = ({ item: { src, poster } }) => {
     return (
       <div className="relative size-full">
         <img
-          // TODO: use srcSet ?
+          // FUTURE: use srcSet to optimize image loading
           className="size-full"
           src={poster}
           alt=""
