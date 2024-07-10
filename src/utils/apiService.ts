@@ -6,15 +6,9 @@ class ApiService {
     const res = await fetch(url);
     const data: unknown = await res.json();
 
-    const parsedData = CompositionSchema.safeParse(data);
+    const parsedData = CompositionSchema.parse(data);
 
-    if (!parsedData.success) {
-      // eslint-disable-next-line no-console
-      console.error(parsedData.error.issues);
-      throw new Error("Failed to parse composition data");
-    }
-
-    return parsedData.data;
+    return parsedData;
   }
 }
 

@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 type Props = { title: string; error: unknown };
 
 const ErrorTemplate: React.FC<React.PropsWithChildren<Props>> = ({
@@ -5,8 +7,10 @@ const ErrorTemplate: React.FC<React.PropsWithChildren<Props>> = ({
   error,
   children,
 }) => {
-  // eslint-disable-next-line no-console
-  console.error(title, error);
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.error(title, error);
+  }, [error, title]);
 
   return (
     <div className="space-y-2">

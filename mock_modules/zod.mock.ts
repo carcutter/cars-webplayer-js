@@ -22,4 +22,8 @@ const z = {
   parse: (data: unknown) => data,
 };
 
-export { z };
+class ZodError extends Error {
+  issues = [];
+}
+
+export { z, ZodError };

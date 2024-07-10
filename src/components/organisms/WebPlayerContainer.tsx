@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { ZodError } from "zod";
 
 import CloseButton from "@/components/atoms/CloseButton";
 import CategoryBar from "@/components/molecules/CategoryBar";
@@ -142,7 +143,12 @@ const WebPlayerContainer: React.FC<WebPlayerContainerProps> = ({
   } = useComposition(compositionUrl);
 
   if (error) {
-    return <ErrorTemplate title="Failed to fetch composition" error={error} />;
+    return (
+      <ErrorTemplate
+        title="Failed to fetch composition"
+        error={error instanceof ZodError ? error.issues : error}
+      />
+    );
   }
 
   if (!isSuccess) {
