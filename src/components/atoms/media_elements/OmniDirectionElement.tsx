@@ -1,4 +1,4 @@
-import { Item } from "@/types/composition";
+import type { Item } from "@/types/composition";
 
 type Props = { item: Extract<Item, { type: "omni_directional" }> };
 

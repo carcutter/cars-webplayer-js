@@ -3,7 +3,7 @@ import OmniDirectionElement from "@/components/atoms/media_elements/OmniDirectio
 import ThreeSixtyElement from "@/components/atoms/media_elements/ThreeSixtyElement";
 import VideoElement from "@/components/atoms/media_elements/VideoElement";
 import { useGlobalContext } from "@/providers/GlobalContext";
-import { Item } from "@/types/composition";
+import type { Item } from "@/types/composition";
 
 type Props = { item: Item; lazy?: boolean };
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { useCustomizationContext } from "@/providers/CustomizationContext";
-import { Hotspot as HotspotType } from "@/types/composition";
+import type { Hotspot as HotspotType } from "@/types/composition";
 
 type HotspotProps = {
   hotspot: HotspotType;

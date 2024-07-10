@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import Button from "@/components/ui/Button";
-import { Item } from "@/types/composition";
+import type { Item } from "@/types/composition";
 
 type Props = { item: Extract<Item, { type: "video" }> };
 

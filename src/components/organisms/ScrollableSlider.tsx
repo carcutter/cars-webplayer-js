@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import IndexIndicator from "@/components/atoms/IndexIndicator";
 import NextPrevButtons from "@/components/molecules/NextPrevButtons";
 import { useGlobalContext } from "@/providers/GlobalContext";
-import { Item } from "@/types/composition";
+import type { Item } from "@/types/composition";
 import { aspectRatioStyle, positionToClassName } from "@/utils/style";
 
 import Gallery from "./Gallery";

@@ -6,7 +6,7 @@ import {
 } from "@/const/custom_elements";
 import WebPlayer from "@/lib/WebPlayer";
 import WebPlayerIcon from "@/lib/WebPlayerIcon";
-import { WebPlayerProps } from "@/types/webPlayerProps";
+import type { WebPlayerProps } from "@/types/webPlayerProps";
 
 import styles from "./index.css?inline";
 

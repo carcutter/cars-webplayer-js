@@ -1,4 +1,5 @@
-import { Composition, CompositionSchema } from "@/types/composition";
+import type { Composition } from "@/types/composition";
+import { CompositionSchema } from "@/types/zod/composition";
 
 class ApiService {
   async getComposition(url: string): Promise<Composition> {

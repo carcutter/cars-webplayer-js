@@ -1,6 +1,6 @@
 import CustomizableIcon from "@/components/atoms/CustomizableIcon";
 import Button, { ButtonProps } from "@/components/ui/Button";
-import { Position } from "@/types/position";
+import type { Position } from "@/types/position";
 import { positionToClassName } from "@/utils/style";
 
 type Props = ButtonProps & { position?: Position };

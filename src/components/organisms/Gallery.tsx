@@ -1,7 +1,7 @@
 import CloseButton from "@/components/atoms/CloseButton";
 import GalleryElement from "@/components/molecules/GalleryElement";
 import { useGlobalContext } from "@/providers/GlobalContext";
-import { Item } from "@/types/composition";
+import type { Item } from "@/types/composition";
 
 type Props = {
   items: Item[];

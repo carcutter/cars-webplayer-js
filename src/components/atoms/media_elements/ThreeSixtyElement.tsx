@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import CustomizableButton from "@/components/molecules/CustomizableButton";
 import { useGlobalContext } from "@/providers/GlobalContext";
-import { Item } from "@/types/composition";
+import type { Item } from "@/types/composition";
 import { clamp } from "@/utils/math";
 import { positionToClassName } from "@/utils/style";
 

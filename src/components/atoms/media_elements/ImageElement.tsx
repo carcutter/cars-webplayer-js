@@ -4,7 +4,7 @@ import CdnImage from "@/components/atoms/CdnImage";
 import CloseButton from "@/components/atoms/CloseButton";
 import Hotspot from "@/components/molecules/Hotspot";
 import { useGlobalContext } from "@/providers/GlobalContext";
-import { Item } from "@/types/composition";
+import type { Item } from "@/types/composition";
 
 type Props = Omit<Extract<Item, { type: "image" }>, "type"> & {
   zoom?: number | null;

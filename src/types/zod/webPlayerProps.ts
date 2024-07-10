@@ -1,0 +1,48 @@
+import { z } from "zod";
+
+import { ImageWidthSchema } from "./misc";
+import { PositionSchema, PositionYschema } from "./position";
+
+export const AspectRatioSchema = z.union([z.literal("4:3"), z.literal("16:9")]);
+
+export const ImageLoadStrategySchema = z.union([
+  z.literal("quality"),
+  z.literal("speed"),
+]);
+
+export const WebPlayerPropsSchema = z.object({
+  compositionUrl: z.string(),
+
+  aspectRatio: AspectRatioSchema.optional(),
+
+  reverse360: z.boolean().optional(),
+
+  minImageWidth: ImageWidthSchema.optional(),
+  maxImageWidth: ImageWidthSchema.optional(),
+  imageLoadStrategy: ImageLoadStrategySchema.optional(),
+
+  // <CATEGORY>|<CATEGORY>
+  categoriesOrder: z.string().optional(),
+  flatten: z.boolean().optional(),
+
+  maxItemsShown: z.number().min(1).optional(),
+  itemsShownBreakpoint: z.number().min(0).optional(),
+
+  eventId: z.string().optional(),
+
+  categoryPosition: PositionYschema.extract(["top", "bottom"]).optional(),
+  optionsPosition: PositionSchema.extract([
+    "top-right",
+    "bottom-right",
+    "bottom-left",
+    "top-left",
+  ]).optional(),
+  nextPrevPosition: PositionYschema.optional(),
+  zoomPosition: PositionSchema.extract([
+    "middle-right",
+    "bottom-center",
+    "middle-left",
+  ]).optional(),
+});
+
+export type WebPlayerProps = z.infer<typeof WebPlayerPropsSchema>;

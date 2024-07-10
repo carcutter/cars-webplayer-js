@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useState } from "react";
 
-import { WebPlayerProps } from "@/types/webPlayerProps";
+import type { WebPlayerProps } from "@/types/webPlayerProps";
 
 type ProviderProps = Required<
   Pick<

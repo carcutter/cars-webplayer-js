@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 
+import { DEFAULT_EVENT_ID } from "@/const/default";
 import WebPlayer from "@/lib/WebPlayer.tsx";
 import WebPlayerIcon from "@/lib/WebPlayerIcon.tsx";
-import { DEFAULT_EVENT_ID } from "@/types/webPlayerProps.ts";
 
 import "./index.css";
 

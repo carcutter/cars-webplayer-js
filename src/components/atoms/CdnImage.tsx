@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 import { useCompositionContext } from "@/providers/CompositionContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
-import { ImageWidth } from "@/types/misc";
+import type { ImageWidth } from "@/types/misc";
 
 function addWidthToCdnUrl(src: string, width: ImageWidth): string {
   // Extract the file name

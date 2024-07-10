@@ -1,4 +1,5 @@
-import { z } from "zod";
+import type { z } from "zod";
 
-export const ImageWidthSchema = z.number().min(24).max(3840);
+import type { ImageWidthSchema } from "./zod/misc";
+
 export type ImageWidth = z.infer<typeof ImageWidthSchema>;

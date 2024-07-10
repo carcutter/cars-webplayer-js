@@ -1,6 +1,6 @@
 import Button from "@/components/ui/Button";
 import { useGlobalContext } from "@/providers/GlobalContext";
-import { Composition } from "@/types/composition";
+import type { Composition } from "@/types/composition";
 import { positionsToClassName } from "@/utils/style";
 
 type CategoryBarProps = {

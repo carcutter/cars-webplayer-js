@@ -9,7 +9,7 @@ import ErrorTemplate from "@/components/template/ErrorTemplate";
 import { useComposition } from "@/hooks/useComposition";
 import CompositionContextProvider from "@/providers/CompositionContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
-import { Composition, Item } from "@/types/composition";
+import type { Composition, Item } from "@/types/composition";
 
 type WebPlayerContentProps = { composition: Composition };
 

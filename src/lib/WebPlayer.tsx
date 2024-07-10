@@ -3,8 +3,6 @@ import { useEffect, useRef, useState } from "react";
 
 import withZodSchema from "@/components/hoc/withZodSchema";
 import WebPlayerContainer from "@/components/organisms/WebPlayerContainer";
-import CustomizationContextProvider from "@/providers/CustomizationContext";
-import GlobalContextProvider from "@/providers/GlobalContext";
 import {
   DEFAULT_ASPECT_RATIO,
   DEFAULT_CATEGORY_POSITION,
@@ -17,9 +15,11 @@ import {
   DEFAULT_OPTIONS_POSITION,
   DEFAULT_REVERSE_360,
   DEFAULT_ZOOM_POSITION,
-  WebPlayerProps,
-  WebPlayerPropsSchema,
-} from "@/types/webPlayerProps";
+} from "@/const/default";
+import CustomizationContextProvider from "@/providers/CustomizationContext";
+import GlobalContextProvider from "@/providers/GlobalContext";
+import type { WebPlayerProps } from "@/types/webPlayerProps";
+import { WebPlayerPropsSchema } from "@/types/zod/webPlayerProps";
 
 const queryClient = new QueryClient();
 
@@ -104,7 +104,6 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   );
 };
 
-// NOTE: HMR could sounds like it's not working due to that, but it's actually due to the CSS inline
 const WebPlayer = withZodSchema(WebPlayerTS, WebPlayerPropsSchema);
 
 export default WebPlayer;
