@@ -1,7 +1,18 @@
 import path from "path";
 
 import react from "@vitejs/plugin-react";
+import chalk from "chalk";
 import { defineConfig } from "vite";
+
+const logMock = (name: string, warn?: string) => {
+  let msg = `🎭 using ${chalk.blue(name)} mock`;
+  if (warn) {
+    msg += ` ${chalk.yellow(warn)}`;
+  }
+  // eslint-disable-next-line no-console
+  console.info(msg);
+};
+const pathToDir = (dir: string) => path.resolve(__dirname, dir);
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -28,7 +39,19 @@ export default defineConfig(({ command, mode }) => {
       throw new Error(`Unknown mode: ${mode}`);
   }
 
-  const pathToDir = (dir: string) => path.resolve(__dirname, dir);
+  const mocksAlias: Record<string, string> = {};
+  if (mockZod) {
+    logMock("Zod", "Be sure that types are in sync with the Backend");
+
+    mocksAlias["zod"] = pathToDir("./mock_modules/zod.mock.ts");
+  }
+  if (mockReactQuery) {
+    logMock("React-Query");
+
+    mocksAlias["@tanstack/react-query"] = pathToDir(
+      "./mock_modules/react-query.mock.tsx"
+    );
+  }
 
   return {
     resolve: {
@@ -41,14 +64,7 @@ export default defineConfig(({ command, mode }) => {
         "@/types": pathToDir("./src/types"),
         "@/utils": pathToDir("./src/utils"),
 
-        ...(mockZod && {
-          zod: pathToDir("./mock_modules/zod.mock.ts"),
-        }),
-        ...(mockReactQuery && {
-          "@tanstack/react-query": pathToDir(
-            "./mock_modules/react-query.mock.tsx"
-          ),
-        }),
+        ...mocksAlias,
       },
     },
     plugins: [react()],
