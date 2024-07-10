@@ -3,11 +3,23 @@ import r2wc from "@r2wc/react-to-web-component";
 import {
   WEB_PLAYER_CUSTOM_ELEMENTS_NAME,
   WEB_PLAYER_ICON_CUSTOM_ELEMENTS_NAME,
-} from "./const/custom_elements";
-import WebPlayer from "./custom_elements/WebPlayer";
-import WebPlayerIcon from "./custom_elements/WebPlayerIcon";
+} from "@/const/custom_elements";
+import WebPlayer from "@/lib/WebPlayer";
+import WebPlayerIcon from "@/lib/WebPlayerIcon";
+import { WebPlayerProps } from "@/types/webPlayerProps";
 
-const WebPlayerWebComponent = r2wc(WebPlayer, {
+import styles from "./index.css?inline";
+
+const WebPlayerWithInjectedCSS = (props: WebPlayerProps) => {
+  return (
+    <>
+      <style>{styles}</style>
+      <WebPlayer {...props} />
+    </>
+  );
+};
+
+const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedCSS, {
   shadow: "open",
   props: {
     compositionUrl: "string",

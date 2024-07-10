@@ -10,6 +10,7 @@ export default defineConfig(({ command }) => ({
       "@/components": path.resolve(__dirname, "./src/components"),
       "@/const": path.resolve(__dirname, "./src/const"),
       "@/hooks": path.resolve(__dirname, "./src/hooks"),
+      "@/lib": path.resolve(__dirname, "./src/lib"),
       "@/providers": path.resolve(__dirname, "./src/providers"),
       "@/types": path.resolve(__dirname, "./src/types"),
       "@/utils": path.resolve(__dirname, "./src/utils"),
@@ -26,7 +27,7 @@ export default defineConfig(({ command }) => ({
   // TODO: Find a way to build in watch mode. The simple script "watch": "vite build --watch" does not work because it does not rebuild the TS.
   build: {
     lib: {
-      entry: "./src/index.tsx",
+      entry: "./src/index.wc.tsx",
       name: "cc-web-player",
       fileName: format => `cc-web-player.${format}.js`,
     },

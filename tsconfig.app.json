@@ -28,6 +28,7 @@
       "@/components/*": ["./src/components/*"],
       "@/const/*": ["./src/const/*"],
       "@/hooks/*": ["./src/hooks/*"],
+      "@/lib/*": ["./src/lib/*"],
       "@/providers/*": ["./src/providers/*"],
       "@/types/*": ["./src/types/*"],
       "@/utils/*": ["./src/utils/*"]

@@ -21,8 +21,6 @@ import {
   WebPlayerPropsSchema,
 } from "@/types/webPlayerProps";
 
-import styles from "../index.css?inline";
-
 const queryClient = new QueryClient();
 
 const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
@@ -74,39 +72,35 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   }, [itemsShownBreakpoint, maxItemsShown]);
 
   return (
-    <>
-      <style>{styles}</style>
+    <QueryClientProvider client={queryClient}>
+      <GlobalContextProvider
+        {...{
+          ...props,
+          aspectRatio,
+          reverse360,
+          imageLoadStrategy,
+          flatten,
+          eventId,
+          categoryPosition,
+          optionsPosition,
+          nextPrevPosition,
+          zoomPosition,
 
-      <QueryClientProvider client={queryClient}>
-        <GlobalContextProvider
-          {...{
-            ...props,
-            aspectRatio,
-            reverse360,
-            imageLoadStrategy,
-            flatten,
-            eventId,
-            categoryPosition,
-            optionsPosition,
-            nextPrevPosition,
-            zoomPosition,
-
-            itemsShown,
-          }}
-        >
-          <CustomizationContextProvider>
-            <div
-              id="cc-webplayer-wrapper"
-              ref={wrapper}
-              className="relative size-full overflow-hidden"
-            >
-              <WebPlayerContainer compositionUrl={compositionUrl} />
-            </div>
-            {customizationChildren}
-          </CustomizationContextProvider>
-        </GlobalContextProvider>
-      </QueryClientProvider>
-    </>
+          itemsShown,
+        }}
+      >
+        <CustomizationContextProvider>
+          <div
+            id="cc-webplayer-wrapper"
+            ref={wrapper}
+            className="relative size-full overflow-hidden"
+          >
+            <WebPlayerContainer compositionUrl={compositionUrl} />
+          </div>
+          {customizationChildren}
+        </CustomizationContextProvider>
+      </GlobalContextProvider>
+    </QueryClientProvider>
   );
 };
 
