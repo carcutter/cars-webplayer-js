@@ -5,11 +5,15 @@ const z = {
   object: () => z,
   array: () => z,
 
-  optional: () => z,
-  enum: () => z,
-
-  discriminatedUnion: () => z,
   literal: () => z,
+
+  optional: () => z,
+
+  enum: () => z,
+  union: () => z,
+  discriminatedUnion: () => z,
+
+  extract: () => z,
 
   min: () => z,
   max: () => z,

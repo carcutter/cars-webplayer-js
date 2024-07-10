@@ -5,7 +5,28 @@ import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
-  const isLightMode = mode === "light";
+  const isBuild = command === "build";
+
+  let mockZod: boolean;
+  let mockReactQuery: boolean;
+
+  switch (mode) {
+    case "development":
+    case "safe":
+      mockZod = false;
+      mockReactQuery = false;
+      break;
+    case "light":
+      mockZod = true;
+      mockReactQuery = true;
+      break;
+    case "production":
+      mockZod = true;
+      mockReactQuery = false;
+      break;
+    default:
+      throw new Error(`Unknown mode: ${mode}`);
+  }
 
   const pathToDir = (dir: string) => path.resolve(__dirname, dir);
 
@@ -20,8 +41,13 @@ export default defineConfig(({ command, mode }) => {
         "@/types": pathToDir("./src/types"),
         "@/utils": pathToDir("./src/utils"),
 
-        ...(isLightMode && {
+        ...(mockZod && {
           zod: pathToDir("./mock_modules/zod.mock.ts"),
+        }),
+        ...(mockReactQuery && {
+          "@tanstack/react-query": pathToDir(
+            "./mock_modules/react-query.mock.tsx"
+          ),
         }),
       },
     },
@@ -30,7 +56,7 @@ export default defineConfig(({ command, mode }) => {
     // BUILD
     define: {
       "process.env": {
-        NODE_ENV: command === "build" ? "production" : "development",
+        NODE_ENV: isBuild ? "production" : "development",
       },
     },
     // TODO: Find a way to build in watch mode. The simple script "watch": "vite build --watch" does not work because it does not rebuild the TS.

@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "vite",
     "dev:light": "yarn dev --mode light",
+    "dev:prod": "yarn dev --mode production",
     "build": "tsc -b && vite build",
     "build:light": "yarn build --mode light",
+    "build:safe": "yarn build --mode safe",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
