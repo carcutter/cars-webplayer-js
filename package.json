@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:light": "yarn dev --mode light",
     "build": "tsc -b && vite build",
+    "build:light": "yarn build --mode light",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
