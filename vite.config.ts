@@ -83,7 +83,6 @@ export default defineConfig(({ command, mode }) => {
         fileName: format => `cc-web-player.${format}.js`,
       },
       target: "esnext",
-      chunkSizeWarningLimit: 150,
       copyPublicDir: false, // The only public file is mock data
     },
   };
