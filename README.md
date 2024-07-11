@@ -16,11 +16,14 @@ It uses React.js with Vite.
 
 To accommodate different needs, the WebPlayer offers various modes that allow excluding external libraries for a lighter bundle.
 
-| Modes       | React-Query (~30kB) | Zod (~60kB) |
-| ----------- | ------------------- | ----------- |
-| Production  | ✅                  | ❌          |
-| Light       | ❌                  | ❌          |
-| Safe / Dev' | ✅                  | ✅          |
+| Modes       | React-Query | Zod  |
+| ----------- | ----------- | ---- |
+| Size        | 30kB        | 60kB |
+| Size (gzip) | 8kB         | 14kB |
+|             |             |      |
+| Production  | ✅          | ❌   |
+| Light       | ❌          | ❌   |
+| Safe / Dev' | ✅          | ✅   |
 
 ## Development
 
@@ -66,6 +69,12 @@ If you want to make adjustments and test them, you can add the `--watch` flag to
 
 #### Analyze Bundle Size
 
-Run `npx vite-bundle-visualizer --sourcemap false` (the sourcemap seems to interfere with size calculation [GitHub issue](https://github.com/KusStar/vite-bundle-visualizer/issues/8)).
+Run `yarn analyze` to analyze the bundle.
 
-More info [here](https://www.npmjs.com/package/vite-bundle-visualizer).
+You can also specify the mode:
+
+- by adding `--mode MODE` to the command
+- `yarn analyze:safe` to use the safe mode
+- `yarn analyze:light` to use light mode
+
+NOTE : the sourcemap seems to interfere with size calculation [GitHub issue](https://github.com/KusStar/vite-bundle-visualizer/issues/8). More info [here](https://www.npmjs.com/package/vite-bundle-visualizer).
