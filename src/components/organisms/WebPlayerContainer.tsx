@@ -4,7 +4,6 @@ import { ZodError } from "zod";
 import CloseButton from "@/components/atoms/CloseButton";
 import CategoryBar from "@/components/molecules/CategoryBar";
 import OptionsBar from "@/components/molecules/OptionsBar";
-import WebPlayerElement from "@/components/molecules/WebPlayerElement";
 import ScrollableSlider from "@/components/organisms/ScrollableSlider";
 import ErrorTemplate from "@/components/template/ErrorTemplate";
 import { useComposition } from "@/hooks/useComposition";
@@ -17,13 +16,8 @@ type WebPlayerContentProps = { composition: Composition };
 const WebPlayerContent: React.FC<
   React.PropsWithChildren<WebPlayerContentProps>
 > = ({ composition }) => {
-  const {
-    categoriesOrder,
-    flatten,
-    itemsShown,
-    extendMode,
-    disableExtendMode,
-  } = useGlobalContext();
+  const { categoriesOrder, flatten, extendMode, disableExtendMode } =
+    useGlobalContext();
 
   const { elements: compositionUnsortedElements } = composition;
 
@@ -103,17 +97,7 @@ const WebPlayerContent: React.FC<
     <CompositionContextProvider composition={composition}>
       <ExtendWrapper>
         <div className="relative h-fit">
-          <ScrollableSlider
-            items={items}
-            renderItem={(item, index, currentActiveIndex) => (
-              <WebPlayerElement
-                item={item}
-                lazy={
-                  Math.abs(index - currentActiveIndex) > Math.ceil(itemsShown)
-                }
-              />
-            )}
-          />
+          <ScrollableSlider items={items} />
           {/* Options overlay */}
           {!flatten && (
             <CategoryBar

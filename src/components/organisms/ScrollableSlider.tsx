@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import IndexIndicator from "@/components/atoms/IndexIndicator";
 import NextPrevButtons from "@/components/molecules/NextPrevButtons";
+import WebPlayerElement from "@/components/molecules/WebPlayerElement";
 import { useGlobalContext } from "@/providers/GlobalContext";
 import type { Item } from "@/types/composition";
 import { aspectRatioStyle, positionToClassName } from "@/utils/style";
@@ -10,34 +11,32 @@ import Gallery from "./Gallery";
 
 type Props = {
   items: Item[];
-  renderItem: (
-    item: Item,
-    index: number,
-    currentActiveIndex: number
-  ) => React.ReactNode;
-  keyExtractor?: (item: Item, index: number) => string;
 };
 
 const ONE_ITEM_DRAG_MULTIPLIER = 1.5;
 
-const defaultKeyExtractor = (_item: unknown, index: number) => index.toString();
-
-const ScrollableSlider: React.FC<Props> = ({
-  items,
-  renderItem,
-  keyExtractor = defaultKeyExtractor,
-}) => {
+const ScrollableSlider: React.FC<Props> = ({ items }) => {
   const { aspectRatio, itemsShown, showGallery, closeGallery } =
     useGlobalContext();
   const showOneItem = itemsShown === 1;
 
-  // - Refs
-  const slider = useRef<HTMLDivElement>(null);
+  // -- Refs -- //
+  // - element refs
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const getSliderOrThrow = useCallback((origin?: string) => {
+    if (!sliderRef.current) {
+      throw new Error(`[${origin ?? "sliderOrThrow"}] slider.current is null`);
+    }
+
+    return sliderRef.current;
+  }, []);
+
+  // - value refs
   const isDown = useRef(false);
   const startX = useRef<number | null>(null);
-  const scrollLeft = useRef<number | null>(null);
+  const startScrollLeft = useRef<number | null>(null);
 
-  // - Indexing
+  // -- Snapping -- //
   const length = items.length;
   const slidable = length > itemsShown;
   const snapIndexes = useMemo(() => {
@@ -59,42 +58,11 @@ const ScrollableSlider: React.FC<Props> = ({
   }, [itemsShown, length, slidable]);
   const [currentSnapIndex, setCurrentSnapIndex] = useState(0); // NOTE: Used only by the fixed index indicator
 
-  // - Style functions
-  const setCursor = useCallback((cursor: "auto" | "grab" | "grabbing") => {
-    if (!slider.current) {
-      throw new Error("[setCursor] slider.current is null");
-    }
-
-    slider.current.style.cursor = cursor;
-  }, []);
-
-  const setScrollBehavior = useCallback((behavior: "auto" | "smooth") => {
-    if (!slider.current) {
-      throw new Error("[setScrollBehavior] slider.current is null");
-    }
-
-    slider.current.style.scrollBehavior = behavior;
-  }, []);
-
-  const setSnapState = useCallback((type: "mandatory" | "none") => {
-    if (!slider.current) {
-      throw new Error("[setSnapState] slider.current is null");
-    }
-
-    if (type === "mandatory") {
-      slider.current.style.scrollSnapType = "x mandatory";
-    } else {
-      slider.current.style.scrollSnapType = "none";
-    }
-  }, []);
-
   const getContainerWidth = useCallback(() => {
-    if (!slider.current) {
-      throw new Error("[getContainerWidth] slider.current is null");
-    }
+    const slider = getSliderOrThrow("getContainerWidth");
 
-    return slider.current.getBoundingClientRect().width;
-  }, []);
+    return slider.getBoundingClientRect().width;
+  }, [getSliderOrThrow]);
 
   const getElementWidth = useCallback(
     () => getContainerWidth() / itemsShown,
@@ -103,25 +71,23 @@ const ScrollableSlider: React.FC<Props> = ({
 
   const scrollToSnapIndex = useCallback(
     (index: number) => {
-      if (!slider.current) {
-        throw new Error("[scrollToSnapIndex] slider.current is null");
-      }
+      const slider = getSliderOrThrow("scrollToSnapIndex");
 
       if (!snapIndexes.includes(index)) {
         throw new Error(`[scrollToSnapIndex] Unexpected index value: ${index}`);
       }
 
-      slider.current.scrollLeft = index * getElementWidth();
+      requestAnimationFrame(() => {
+        slider.scrollLeft = index * getElementWidth();
+      });
     },
-    [getElementWidth, snapIndexes]
+    [getElementWidth, getSliderOrThrow, snapIndexes]
   );
 
   const computeClosestSnapIndex = useCallback(() => {
-    if (!slider.current) {
-      throw new Error("[computeClosestSnapIndex] slider.current is null");
-    }
+    const slider = getSliderOrThrow("computeClosestSnapIndex");
 
-    const decimalIndex = slider.current.scrollLeft / getElementWidth();
+    const decimalIndex = slider.scrollLeft / getElementWidth();
 
     return snapIndexes.reduce(
       (prevClosest, curr) =>
@@ -130,123 +96,13 @@ const ScrollableSlider: React.FC<Props> = ({
           : prevClosest,
       Infinity
     );
-  }, [getElementWidth, snapIndexes]);
-
-  // - Reset the index when the items changes
-  useEffect(() => {
-    setScrollBehavior("auto");
-    scrollToSnapIndex(0);
-    setCurrentSnapIndex(0);
-    setScrollBehavior("smooth");
-  }, [items, scrollToSnapIndex, setScrollBehavior]);
-
-  // - Event listeners
-  useEffect(() => {
-    // DOM not ready
-    if (!slider.current) {
-      return;
-    }
-
-    // Does not allow sliding if there is only one item
-    if (!slidable) {
-      setCursor("auto");
-      return;
-    }
-
-    const sliderRef = slider.current;
-
-    setCursor("grab");
-    setScrollBehavior("smooth");
-    setSnapState("mandatory");
-
-    // Handle when the user just clicked on the slider
-    const onMouseDown = (e: MouseEvent) => {
-      e.preventDefault(); // Prevents native image dragging
-
-      isDown.current = true;
-      startX.current = e.pageX - sliderRef.offsetLeft;
-      scrollLeft.current = sliderRef.scrollLeft;
-
-      // Set CSS
-      setCursor("grabbing");
-      setScrollBehavior("auto");
-      setSnapState("none");
-    };
-
-    // Reset CSS & snap to the closest image when the user releases the slider
-    const onMouseEnd = () => {
-      if (!isDown.current) {
-        return;
-      }
-
-      isDown.current = false;
-
-      // Reset CSS
-      setCursor("grab");
-      setScrollBehavior("smooth");
-      setTimeout(() => {
-        // setTimeout to avoid flickering, but we have to handle the case where the user clicks again on the slider
-        if (isDown.current) {
-          return;
-        }
-        setSnapState("mandatory");
-      }, 500);
-
-      // Snap scrolling
-      const closestSnapIndex = computeClosestSnapIndex();
-      scrollToSnapIndex(closestSnapIndex);
-    };
-
-    // Scroll according the user's dragging movement
-    const onMouseMove = (e: MouseEvent) => {
-      if (!isDown.current) {
-        return;
-      }
-
-      if (startX.current === null || scrollLeft.current === null) {
-        throw new Error("[onMouseMove] startX or scrollLeft is null");
-      }
-
-      const scrollMultiplier = showOneItem ? ONE_ITEM_DRAG_MULTIPLIER : 1;
-      const x = e.pageX - sliderRef.offsetLeft;
-      const walk = x - startX.current;
-      sliderRef.scrollLeft = scrollLeft.current - walk * scrollMultiplier;
-    };
-
-    // Update the index when the user scrolls with "standard" scrolling
-    const onScroll = () => {
-      const closestSnapIndex = computeClosestSnapIndex();
-      setCurrentSnapIndex(closestSnapIndex);
-    };
-
-    sliderRef.addEventListener("mousedown", onMouseDown);
-    sliderRef.addEventListener("mouseleave", onMouseEnd);
-    sliderRef.addEventListener("mouseup", onMouseEnd);
-    sliderRef.addEventListener("mousemove", onMouseMove);
-    sliderRef.addEventListener("scroll", onScroll);
-
-    return () => {
-      sliderRef.removeEventListener("mousedown", onMouseDown);
-      sliderRef.removeEventListener("mouseleave", onMouseEnd);
-      sliderRef.removeEventListener("mouseup", onMouseEnd);
-      sliderRef.removeEventListener("mousemove", onMouseMove);
-      sliderRef.removeEventListener("scroll", onScroll);
-    };
-  }, [
-    computeClosestSnapIndex,
-    scrollToSnapIndex,
-    setCursor,
-    setScrollBehavior,
-    setSnapState,
-    showOneItem,
-    slidable,
-  ]);
+  }, [getElementWidth, getSliderOrThrow, snapIndexes]);
 
   const scrollOffsetIndex = useCallback(
-    (offset: number) => {
+    (offsetIndex: number) => {
       const currentSnapIndex = computeClosestSnapIndex();
       const newLeftIndex =
-        snapIndexes[snapIndexes.indexOf(currentSnapIndex) + offset];
+        snapIndexes[snapIndexes.indexOf(currentSnapIndex) + offsetIndex];
 
       scrollToSnapIndex(newLeftIndex);
     },
@@ -261,6 +117,163 @@ const ScrollableSlider: React.FC<Props> = ({
     scrollOffsetIndex(1);
   }, [scrollOffsetIndex]);
 
+  // -- Update Style functions -- //
+  const setStyleCursor = useCallback(
+    (cursor: "auto" | "grab" | "grabbing") => {
+      const slider = getSliderOrThrow("setStyleCursor");
+
+      slider.style.cursor = cursor;
+    },
+    [getSliderOrThrow]
+  );
+
+  const setStyleScrollBehavior = useCallback(
+    (behavior: "auto" | "smooth") => {
+      const slider = getSliderOrThrow("setStyleScrollBehavior");
+
+      slider.style.scrollBehavior = behavior;
+    },
+    [getSliderOrThrow]
+  );
+
+  const setStyleSnapState = useCallback(
+    (type: "mandatory" | "none") => {
+      const slider = getSliderOrThrow("setStyleSnapState");
+
+      if (type === "mandatory") {
+        slider.style.scrollSnapType = "x mandatory";
+      } else {
+        slider.style.scrollSnapType = "none";
+      }
+    },
+    [getSliderOrThrow]
+  );
+
+  // - Reset the index when the items changes (typically when the user changes the category)
+  useEffect(() => {
+    setStyleScrollBehavior("auto");
+    scrollToSnapIndex(0);
+    setCurrentSnapIndex(0);
+    setStyleScrollBehavior("smooth");
+  }, [items, scrollToSnapIndex, setStyleScrollBehavior]);
+
+  // -- Event listeners to handle the slider -- //
+  useEffect(() => {
+    // Sliding is disabled when there is only one item
+    if (!slidable) {
+      setStyleCursor("auto");
+      return;
+    }
+
+    const slider = sliderRef.current;
+
+    // DOM not ready yet
+    if (!slider) {
+      return;
+    }
+
+    setStyleCursor("grab");
+    setStyleScrollBehavior("smooth");
+    setStyleSnapState("mandatory");
+
+    // - Handle when the user just clicked on the slider to start dragging
+    const onMouseDown = (e: MouseEvent) => {
+      e.preventDefault(); // Prevents native image dragging
+
+      // Take snapshot of the current state
+      // NOTE: Since we are using scroll-smooth, the scrollLeft may not be correct as the animation is still running
+      //       It's the reason why it can feel buggy when the user spams the click
+      isDown.current = true;
+      startX.current = e.pageX - slider.offsetLeft;
+      startScrollLeft.current = slider.scrollLeft;
+
+      // Set CSS
+      setStyleCursor("grabbing");
+      setStyleScrollBehavior("auto");
+      setStyleSnapState("none");
+    };
+
+    // - Handle when the user releases the slider or leaves the dragging area
+    const onMouseEnd = () => {
+      // Check if the user was actually dragging
+      if (!isDown.current) {
+        return;
+      }
+
+      isDown.current = false;
+
+      // Reset CSS
+      setStyleCursor("grab");
+      setStyleScrollBehavior("smooth");
+      setTimeout(() => {
+        // setTimeout to avoid flickering, but we have to handle the case where the user clicks again on the slider
+        if (isDown.current) {
+          return;
+        }
+        setStyleSnapState("mandatory");
+      }, 500);
+
+      // Snap scrolling
+      const closestSnapIndex = computeClosestSnapIndex();
+      scrollToSnapIndex(closestSnapIndex);
+    };
+
+    // Scroll according the user's dragging movement
+    const onMouseMove = (e: MouseEvent) => {
+      // Check if the user is actually dragging
+      if (!isDown.current) {
+        return;
+      }
+
+      if (startX.current === null) {
+        throw new Error("[onMouseMove] startX is null");
+      }
+
+      const x = e.pageX - slider.offsetLeft;
+      const walk = x - startX.current;
+
+      requestAnimationFrame(() => {
+        if (startScrollLeft.current === null) {
+          throw new Error("[onMouseMove] scrollLeft is null");
+        }
+
+        const scrollMultiplier = showOneItem ? ONE_ITEM_DRAG_MULTIPLIER : 1;
+
+        slider.scrollLeft = startScrollLeft.current - walk * scrollMultiplier;
+      });
+    };
+
+    // - Update the index when the user uses scrolling (and not dragging)
+    const onScroll = () => {
+      const closestSnapIndex = computeClosestSnapIndex();
+      setCurrentSnapIndex(closestSnapIndex);
+    };
+
+    slider.addEventListener("mousedown", onMouseDown);
+    slider.addEventListener("mouseleave", onMouseEnd);
+    slider.addEventListener("mouseup", onMouseEnd);
+    slider.addEventListener("mousemove", onMouseMove);
+    slider.addEventListener("scroll", onScroll);
+
+    return () => {
+      slider.removeEventListener("mousedown", onMouseDown);
+      slider.removeEventListener("mouseleave", onMouseEnd);
+      slider.removeEventListener("mouseup", onMouseEnd);
+      slider.removeEventListener("mousemove", onMouseMove);
+      slider.removeEventListener("scroll", onScroll);
+    };
+  }, [
+    computeClosestSnapIndex,
+    scrollToSnapIndex,
+    setStyleCursor,
+    setStyleScrollBehavior,
+    setStyleSnapState,
+    showOneItem,
+    slidable,
+  ]);
+
+  // - Misc
+
   const handleOnGalleryItemClicked = (_item: Item, index: number) => {
     closeGallery();
     scrollToSnapIndex(index);
@@ -274,16 +287,20 @@ const ScrollableSlider: React.FC<Props> = ({
       }}
     >
       <div
-        ref={slider}
+        ref={sliderRef}
         className={`flex size-full ${slidable ? "overflow-x-auto transition-transform no-scrollbar *:snap-mandatory *:snap-start" : "justify-center"}`}
       >
         {items.map((item, index) => {
-          const Item = renderItem(item, index, currentSnapIndex);
-          const key = keyExtractor(item, index);
+          const key = item.type === "360" ? item.images[0] : item.src;
 
           return (
             <div key={key} className="relative">
-              {Item}
+              <WebPlayerElement
+                item={item}
+                lazy={
+                  Math.abs(index - currentSnapIndex) > Math.ceil(itemsShown)
+                }
+              />
               {slidable && !showOneItem && (
                 <div
                   className={`absolute ${positionToClassName("bottom-right")}`}

@@ -22,19 +22,19 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 }) => {
   const { reverse360, zoomPosition } = useGlobalContext();
 
-  // -- Refs
-  const container = useRef<HTMLDivElement>(null);
+  // -- Refs -- //
+  // - element refs
+  const containerRef = useRef<HTMLDivElement>(null);
+  const zoomAreaRef = useRef<HTMLDivElement>(null);
+  const scrollerRef = useRef<HTMLDivElement>(null);
+
+  // - value refs
   const isMouseDown = useRef(false);
   const mouseStartXY = useRef<{ x: number; y: number } | null>(null);
 
-  const zoomArea = useRef<HTMLDivElement>(null);
-  const scroller = useRef<HTMLDivElement>(null);
-
-  // -- Image Index
+  // -- Image index & details -- //
   const [imageIndex, setImageIndex] = useState(0);
   const length = images.length;
-
-  const [showingDetailImage, setShowingDetailImage] = useState(false);
 
   const displayPreviousImage = useCallback(() => {
     setImageIndex(currentIndex => (currentIndex - 1 + length) % length);
@@ -43,13 +43,15 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     setImageIndex(currentIndex => (currentIndex + 1) % length);
   }, [length]);
 
-  // -- Zoom
+  const [showingDetailImage, setShowingDetailImage] = useState(false);
+
+  // -- Zoom -- //
   const [zoom, setZoom] = useState<number | null>(null);
 
   const shiftZoom = useCallback(
     (shift: number) => {
-      const zoomAreaRef = zoomArea.current;
-      if (!zoomAreaRef) {
+      const zoomArea = zoomAreaRef.current;
+      if (!zoomArea) {
         throw new Error("zoomArea.current is null");
       }
 
@@ -59,10 +61,10 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       setZoom(newZoomValue !== 1 ? newZoomValue : null);
 
       // -- When zoom just changed, we want to compensate the scroll position to keep the same point at the center
-      const w = zoomAreaRef.clientWidth;
-      const h = zoomAreaRef.clientHeight;
-      const centerX = zoomAreaRef.scrollLeft + w / 2;
-      const centerY = zoomAreaRef.scrollTop + h / 2;
+      const w = zoomArea.clientWidth;
+      const h = zoomArea.clientHeight;
+      const centerX = zoomArea.scrollLeft + w / 2;
+      const centerY = zoomArea.scrollTop + h / 2;
 
       const newCenterX = (centerX * newZoomValue) / currentZoomValue;
       const newCenterY = (centerY * newZoomValue) / currentZoomValue;
@@ -70,8 +72,8 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       // We need to wait for the DOM to update the scroll position
       // because the element has not been resized yet and scroll position could be unreachable
       requestAnimationFrame(() => {
-        zoomAreaRef.scrollLeft = newCenterX - w / 2;
-        zoomAreaRef.scrollTop = newCenterY - h / 2;
+        zoomArea.scrollLeft = newCenterX - w / 2;
+        zoomArea.scrollTop = newCenterY - h / 2;
       });
     },
     [zoom]
@@ -83,17 +85,20 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     shiftZoom(-ZOOM_STEP);
   }, [shiftZoom]);
 
-  // -- Handle Click & Drag events
+  // -- Event listeners to handle the spinning -- //
   useEffect(() => {
-    const containerRef = container.current;
+    const container = containerRef.current;
 
-    if (!containerRef) {
+    // DOM not ready yet
+    if (!container) {
       return;
     }
 
+    // - Handle when the user just clicked on the 360 to start spinning
     const onMouseDown = (e: MouseEvent) => {
       e.preventDefault(); // Prevents native image dragging
 
+      // Take snapshot of the current state
       isMouseDown.current = true;
       mouseStartXY.current = {
         x: e.clientX,
@@ -101,6 +106,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       };
     };
 
+    // - Handle when the user releases the 360 or leaves the spinning area
     const onMouseEnd = () => {
       isMouseDown.current = false;
     };
@@ -111,16 +117,13 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
         return;
       }
 
+      // Check if the user was actually spinning
       if (!isMouseDown.current) {
         return;
       }
 
       if (!mouseStartXY.current) {
-        throw new Error("[onMouseMove] mouseStartXY.current is null");
-      }
-
-      if (!zoomArea.current) {
-        throw new Error("zoomArea.current is null");
+        throw new Error("mouseStartXY.current is null");
       }
 
       e.stopPropagation(); // Prevents parent slider from moving when rotating 360
@@ -140,8 +143,12 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
           displayPreviousImage();
         }
       } else {
-        zoomArea.current.scrollLeft -= walkX;
-        zoomArea.current.scrollTop -= walkY;
+        const zoomArea = zoomAreaRef.current;
+        if (!zoomArea) {
+          throw new Error("zoomAreaRef is null");
+        }
+        zoomArea.scrollLeft -= walkX;
+        zoomArea.scrollTop -= walkY;
       }
 
       mouseStartXY.current = {
@@ -150,16 +157,16 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       };
     };
 
-    containerRef.addEventListener("mousedown", onMouseDown);
-    containerRef.addEventListener("mouseleave", onMouseEnd);
-    containerRef.addEventListener("mouseup", onMouseEnd);
-    containerRef.addEventListener("mousemove", onMouseMove);
+    container.addEventListener("mousedown", onMouseDown);
+    container.addEventListener("mouseleave", onMouseEnd);
+    container.addEventListener("mouseup", onMouseEnd);
+    container.addEventListener("mousemove", onMouseMove);
 
     return () => {
-      containerRef.removeEventListener("mousedown", onMouseDown);
-      containerRef.removeEventListener("mouseleave", onMouseEnd);
-      containerRef.removeEventListener("mouseup", onMouseEnd);
-      containerRef.removeEventListener("mousemove", onMouseMove);
+      container.removeEventListener("mousedown", onMouseDown);
+      container.removeEventListener("mouseleave", onMouseEnd);
+      container.removeEventListener("mouseup", onMouseEnd);
+      container.removeEventListener("mousemove", onMouseMove);
     };
   }, [
     displayNextImage,
@@ -169,32 +176,38 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     zoom,
   ]);
 
-  // -- Handle "invisible scroller" events to rotate 360.
+  // -- Event listeners to handle the "invisible scroller" that rotate 360 -- //
   useEffect(() => {
     // We do not want to rotate while zooming or showing a detail image
     if (zoom || showingDetailImage) {
       return;
     }
 
-    if (!scroller.current) {
+    const scroller = scrollerRef.current;
+
+    // DOM not ready yet
+
+    if (!scroller) {
       return;
     }
 
-    const scrollerRef = scroller.current;
+    const getScrollerWidth = () => scroller.getBoundingClientRect().width;
 
-    const getSliderWidth = () => scrollerRef.getBoundingClientRect().width;
+    const scollerCenterPosition =
+      scroller.scrollWidth / 2 - getScrollerWidth() / 2;
 
-    const sliderCenterPosition =
-      scrollerRef.scrollWidth / 2 - getSliderWidth() / 2;
-
-    const centerScrollElement = () => {
-      scrollerRef.scrollLeft = sliderCenterPosition;
+    const centerScroller = () => {
+      requestAnimationFrame(() => {
+        scroller.scrollLeft = scollerCenterPosition;
+      });
     };
 
-    centerScrollElement();
+    // When initializing, we want to center the scroller
+    centerScroller();
 
+    // - Update the image when the user uses scrolling (and not dragging)
     const onScroll = () => {
-      const walk = scrollerRef.scrollLeft - sliderCenterPosition;
+      const walk = scroller.scrollLeft - scollerCenterPosition;
 
       if (Math.abs(walk) < SCROLL_STEP_PX) {
         return;
@@ -207,13 +220,14 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
         displayPreviousImage();
       }
 
-      centerScrollElement();
+      // We just changed the image, we want to re-center the scroller
+      centerScroller();
     };
 
-    scrollerRef.addEventListener("scroll", onScroll);
+    scroller.addEventListener("scroll", onScroll);
 
     return () => {
-      scrollerRef.removeEventListener("scroll", onScroll);
+      scroller.removeEventListener("scroll", onScroll);
     };
   }, [
     displayNextImage,
@@ -224,7 +238,10 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   ]);
 
   return (
-    <div ref={container} className={!zoom ? "cursor-ew-resize" : "cursor-move"}>
+    <div
+      ref={containerRef}
+      className={!zoom ? "cursor-ew-resize" : "cursor-move"}
+    >
       <div className="hidden">
         {/* Take the 2 prev & 2 next images and insert them on the DOM to ensure preload */}
         {[-2, -1, 1, 2].map(offset => {
@@ -234,7 +251,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
         })}
       </div>
 
-      <div ref={zoomArea} className="overflow-auto no-scrollbar">
+      <div ref={zoomAreaRef} className="overflow-auto no-scrollbar">
         <div
           key={zoom} // Key is used to force re-render when zoom changes (if not, the scrollbar size is not updated)
           className="origin-top-left" // If not, will zoom at the center and crop the top-left part
@@ -260,7 +277,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       {/* Scroll is disabled while zooming or while showing detail image */}
       {!zoom && !showingDetailImage && (
         <div
-          ref={scroller}
+          ref={scrollerRef}
           className="absolute inset-0 overflow-auto no-scrollbar"
         >
           <div
