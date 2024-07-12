@@ -18,9 +18,10 @@ type Props = Omit<
   "sizes" | "srcSet"
 > & {
   src: string;
+  zoom?: number | null;
 };
 
-const CdnImage: React.FC<Props> = ({ src, ...props }) => {
+const CdnImage: React.FC<Props> = ({ src, zoom, ...props }) => {
   const { minImageWidth, maxImageWidth, imageLoadStrategy, itemsShown } =
     useGlobalContext();
 
@@ -47,7 +48,7 @@ const CdnImage: React.FC<Props> = ({ src, ...props }) => {
     // Ensure the widths are sorted
     usedImageWidths.sort((a, b) => a - b);
 
-    // Generate the srcSet attribute (list of image URLs with their widths)
+    // - Generate the srcSet attribute (list of image URLs with their widths)
     const getUrlForWidth = (width: ImageWidth) =>
       width !== imageHdWidth ? addWidthToCdnUrl(src, width) : src;
     const srcSetList = usedImageWidths.map(width => {
@@ -55,13 +56,15 @@ const CdnImage: React.FC<Props> = ({ src, ...props }) => {
       return `${url} ${width}w`;
     });
 
-    // Generate the sizes attribute (the web browser will choose the first matching rule, that's why we need to sort the widths in descending order for "speed" strategy)
+    // - Generate the sizes attribute (the web browser will choose the first matching rule, that's why we need to sort the widths in descending order for "speed" strategy)
+    // TODO: include the width ratio webplayer/viewport to avoid loading images that are too big
     let sizesList: string[];
+    const widthMultiplier = itemsShown / (zoom ?? 1);
     if (imageLoadStrategy === "quality") {
       const biggerWidth = usedImageWidths.pop();
 
       sizesList = usedImageWidths.map(
-        width => `(max-width: ${itemsShown * width}px) ${width}px`
+        width => `(max-width: ${widthMultiplier * width}px) ${width}px`
       );
 
       sizesList.push(`${biggerWidth}px`);
@@ -70,7 +73,7 @@ const CdnImage: React.FC<Props> = ({ src, ...props }) => {
 
       sizesList = usedImageWidths
         .reverse()
-        .map(width => `(min-width: ${itemsShown * width}px) ${width}px`);
+        .map(width => `(min-width: ${widthMultiplier * width}px) ${width}px`);
 
       sizesList.push(`${smallestWidth}px`);
     }
@@ -84,6 +87,7 @@ const CdnImage: React.FC<Props> = ({ src, ...props }) => {
     maxImageWidth,
     minImageWidth,
     src,
+    zoom,
   ]);
 
   return <img src={src} srcSet={srcSet} sizes={sizes} {...props} />;

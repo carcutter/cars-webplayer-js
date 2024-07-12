@@ -16,23 +16,28 @@ const MAX_ZOOM = 1 + ZOOM_STEP * 3;
 
 type ThreeSixtyElementProps = Omit<Extract<Item, { type: "360" }>, "type">;
 
+type TransformStyle = {
+  x: number;
+  y: number;
+  scale: number;
+};
+
 const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   images,
   hotspots,
 }) => {
   const { reverse360, zoomPosition } = useGlobalContext();
 
-  // -- Refs -- //
+  // -- Flip Book -- //
   // - element refs
   const containerRef = useRef<HTMLDivElement>(null);
-  const zoomAreaRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
 
   // - value refs
   const isMouseDown = useRef(false);
   const mouseStartXY = useRef<{ x: number; y: number } | null>(null);
 
-  // -- Image index & details -- //
+  // - Flip book image index & details
   const [imageIndex, setImageIndex] = useState(0);
   const length = images.length;
 
@@ -45,14 +50,102 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
   const [showingDetailImage, setShowingDetailImage] = useState(false);
 
-  // -- Zoom -- //
+  // -- Transform Element (zoom/pan) -- //
+  const transformElementRef = useRef<HTMLDivElement>(null);
+  const tranformStyleRef = useRef<TransformStyle>({ x: 0, y: 0, scale: 1 });
+
   const [zoom, setZoom] = useState<number | null>(null);
+
+  const setTransformStyle = useCallback((target: Partial<TransformStyle>) => {
+    const transformElement = transformElementRef.current;
+    if (!transformElement) {
+      throw new Error("transformElementRef.current is null");
+    }
+
+    const {
+      x: targetX,
+      y: targetY,
+      scale: targetScale,
+    } = {
+      ...tranformStyleRef.current,
+      ...target,
+    };
+
+    // Limit zoom
+    const scale = clamp(targetScale, 1, MAX_ZOOM);
+
+    const containerW = transformElement.clientWidth;
+    const containerH = transformElement.clientHeight;
+
+    const scaledW = containerW * scale;
+    const scaledH = containerH * scale;
+
+    // Ensure the image is not outside the container
+    const x = clamp(targetX, -(scaledW - containerW), 0);
+    const y = clamp(targetY, -(scaledH - containerH), 0);
+
+    tranformStyleRef.current = { x, y, scale };
+    transformElement.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+  }, []);
+
+  const animateTransformStyle = useCallback(
+    (target: Partial<TransformStyle>) => {
+      const transformElement = transformElementRef.current;
+      if (!transformElement) {
+        throw new Error("transformElementRef.current is null");
+      }
+
+      const {
+        x: startX,
+        y: startY,
+        scale: startScale,
+      } = tranformStyleRef.current;
+
+      const {
+        x: targetX,
+        y: targetY,
+        scale: targetScale,
+      } = {
+        ...tranformStyleRef.current,
+        ...target,
+      };
+
+      const animationDuration = 200;
+      const easeOut = (t: number) => 1 - Math.pow(1 - t, 2);
+
+      const startTime = new Date().getTime();
+
+      const animateStep = () => {
+        // linear interpolation
+        const lerp = (start: number, end: number, progress: number) =>
+          start + (end - start) * progress;
+
+        const currentTime = new Date().getTime();
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / animationDuration, 1);
+        const easedProgress = easeOut(progress);
+
+        const currentX = lerp(startX, targetX, easedProgress);
+        const currentY = lerp(startY, targetY, easedProgress);
+        const currentScale = lerp(startScale, targetScale, easedProgress);
+
+        setTransformStyle({ x: currentX, y: currentY, scale: currentScale });
+
+        if (timeElapsed < animationDuration) {
+          requestAnimationFrame(animateStep);
+        }
+      };
+
+      requestAnimationFrame(animateStep);
+    },
+    [setTransformStyle]
+  );
 
   const shiftZoom = useCallback(
     (shift: number) => {
-      const zoomArea = zoomAreaRef.current;
-      if (!zoomArea) {
-        throw new Error("zoomArea.current is null");
+      const transformElement = transformElementRef.current;
+      if (!transformElement) {
+        throw new Error("transformElementRef.current is null");
       }
 
       const currentZoomValue = zoom ?? 1;
@@ -60,23 +153,32 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
       setZoom(newZoomValue !== 1 ? newZoomValue : null);
 
-      // -- When zoom just changed, we want to compensate the scroll position to keep the same point at the center
-      const w = zoomArea.clientWidth;
-      const h = zoomArea.clientHeight;
-      const centerX = zoomArea.scrollLeft + w / 2;
-      const centerY = zoomArea.scrollTop + h / 2;
+      // -- Animation -- //
+      // When zoom just changed, we want to compensate the scroll position to keep the same point at the center
 
-      const newCenterX = (centerX * newZoomValue) / currentZoomValue;
-      const newCenterY = (centerY * newZoomValue) / currentZoomValue;
+      const { x: currentTransformX, y: currentTransformY } =
+        tranformStyleRef.current;
 
-      // We need to wait for the DOM to update the scroll position
-      // because the element has not been resized yet and scroll position could be unreachable
-      requestAnimationFrame(() => {
-        zoomArea.scrollLeft = newCenterX - w / 2;
-        zoomArea.scrollTop = newCenterY - h / 2;
+      const containerW = transformElement.clientWidth;
+      const containerH = transformElement.clientHeight;
+
+      const zoomRatio = newZoomValue / currentZoomValue;
+
+      const currentCenterX = containerW / 2 - currentTransformX;
+      const currentCenterY = containerH / 2 - currentTransformY;
+      const newCenterX = currentCenterX * zoomRatio;
+      const newCenterY = currentCenterY * zoomRatio;
+
+      const newTranformX = containerW / 2 - newCenterX;
+      const newTransformY = containerH / 2 - newCenterY;
+
+      animateTransformStyle({
+        x: newTranformX,
+        y: newTransformY,
+        scale: newZoomValue,
       });
     },
-    [zoom]
+    [animateTransformStyle, zoom]
   );
   const increaseZoom = useCallback(() => {
     shiftZoom(ZOOM_STEP);
@@ -85,7 +187,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     shiftZoom(-ZOOM_STEP);
   }, [shiftZoom]);
 
-  // -- Event listeners to handle the spinning -- //
+  // -- Event listeners to handle dragging (allow to spin & move within zoomed image) -- //
   useEffect(() => {
     const container = containerRef.current;
 
@@ -132,6 +234,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       const walkY = e.clientY - mouseStartXY.current.y;
 
       if (!zoom) {
+        // If the user did not move enough, we do not want to rotate
         if (Math.abs(walkX) < DRAG_STEP_PX) {
           return;
         }
@@ -143,12 +246,13 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
           displayPreviousImage();
         }
       } else {
-        const zoomArea = zoomAreaRef.current;
-        if (!zoomArea) {
-          throw new Error("zoomAreaRef is null");
-        }
-        zoomArea.scrollLeft -= walkX;
-        zoomArea.scrollTop -= walkY;
+        const { x: currentTransformX, y: currentTransformY } =
+          tranformStyleRef.current;
+
+        setTransformStyle({
+          x: currentTransformX + walkX,
+          y: currentTransformY + walkY,
+        });
       }
 
       mouseStartXY.current = {
@@ -172,6 +276,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     displayNextImage,
     displayPreviousImage,
     reverse360,
+    setTransformStyle,
     showingDetailImage,
     zoom,
   ]);
@@ -251,25 +356,16 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
         })}
       </div>
 
-      <div ref={zoomAreaRef} className="overflow-auto no-scrollbar">
-        <div
-          key={zoom} // Key is used to force re-render when zoom changes (if not, the scrollbar size is not updated)
-          className="origin-top-left" // If not, will zoom at the center and crop the top-left part
-          style={
-            !zoom
-              ? {}
-              : {
-                  transform: `scale(${zoom})`,
-                }
-          }
-        >
-          <ImageElement
-            src={images[imageIndex]}
-            hotspots={hotspots[imageIndex]}
-            zoom={zoom}
-            onShownDetailImageChange={v => setShowingDetailImage(!!v)}
-          />
-        </div>
+      <div
+        ref={transformElementRef}
+        className="origin-top-left" // If not, will zoom at the center and crop the top-left part
+      >
+        <ImageElement
+          src={images[imageIndex]}
+          hotspots={hotspots[imageIndex]}
+          zoom={zoom}
+          onShownDetailImageChange={v => setShowingDetailImage(!!v)}
+        />
       </div>
 
       {/* Scroller is an invisible element in front of the image to capture scroll event */}
