@@ -52,65 +52,74 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
   // -- Transform Element (zoom/pan) -- //
   const transformElementRef = useRef<HTMLDivElement>(null);
-  const tranformStyleRef = useRef<TransformStyle>({ x: 0, y: 0, scale: 1 });
-
-  const [zoom, setZoom] = useState<number | null>(null);
-
-  const setTransformStyle = useCallback((target: Partial<TransformStyle>) => {
-    const transformElement = transformElementRef.current;
-    if (!transformElement) {
-      throw new Error("transformElementRef.current is null");
+  const getTransformElementOrThrow = useCallback((origin?: string) => {
+    if (!transformElementRef.current) {
+      throw new Error(
+        `[${origin ?? "getTransformElementOrThrow"}] transformElementRef.current is null`
+      );
     }
 
-    const {
-      x: targetX,
-      y: targetY,
-      scale: targetScale,
-    } = {
-      ...tranformStyleRef.current,
-      ...target,
-    };
-
-    // Limit zoom
-    const scale = clamp(targetScale, 1, MAX_ZOOM);
-
-    const containerW = transformElement.clientWidth;
-    const containerH = transformElement.clientHeight;
-
-    const scaledW = containerW * scale;
-    const scaledH = containerH * scale;
-
-    // Ensure the image is not outside the container
-    const x = clamp(targetX, -(scaledW - containerW), 0);
-    const y = clamp(targetY, -(scaledH - containerH), 0);
-
-    tranformStyleRef.current = { x, y, scale };
-    transformElement.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+    return transformElementRef.current;
   }, []);
+  const transformStyleRef = useRef<TransformStyle>({ x: 0, y: 0, scale: 1 });
 
-  const animateTransformStyle = useCallback(
+  const [zoom, setZoom] = useState<number | null>(null);
+  const currentZoomValue = zoom ?? 1;
+
+  const setTransformStyle = useCallback(
     (target: Partial<TransformStyle>) => {
-      const transformElement = transformElementRef.current;
-      if (!transformElement) {
-        throw new Error("transformElementRef.current is null");
-      }
-
-      const {
-        x: startX,
-        y: startY,
-        scale: startScale,
-      } = tranformStyleRef.current;
+      const transformElement = getTransformElementOrThrow("setTransformStyle");
 
       const {
         x: targetX,
         y: targetY,
         scale: targetScale,
       } = {
-        ...tranformStyleRef.current,
+        ...transformStyleRef.current,
         ...target,
       };
 
-      const animationDuration = 200;
+      // Limit zoom
+      const scale = clamp(targetScale, 1, MAX_ZOOM);
+
+      const containerW = transformElement.clientWidth;
+      const containerH = transformElement.clientHeight;
+
+      const scaledW = containerW * scale;
+      const scaledH = containerH * scale;
+
+      // Ensure the image is not outside the container
+      const x = clamp(targetX, -(scaledW - containerW), 0);
+      const y = clamp(targetY, -(scaledH - containerH), 0);
+
+      transformStyleRef.current = { x, y, scale };
+      transformElement.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+    },
+    [getTransformElementOrThrow]
+  );
+
+  const animateTransformStyle = useCallback(
+    (target: Partial<TransformStyle>, animationDuration?: number) => {
+      const {
+        x: startX,
+        y: startY,
+        scale: startScale,
+      } = transformStyleRef.current;
+
+      const {
+        x: targetX,
+        y: targetY,
+        scale: targetScale,
+      } = {
+        ...transformStyleRef.current,
+        ...target,
+      };
+
+      if (!animationDuration) {
+        setTransformStyle({ x: targetX, y: targetY, scale: targetScale });
+        return;
+      }
+
       const easeOut = (t: number) => 1 - Math.pow(1 - t, 2);
 
       const startTime = new Date().getTime();
@@ -141,51 +150,103 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     [setTransformStyle]
   );
 
-  const shiftZoom = useCallback(
-    (shift: number) => {
-      const transformElement = transformElementRef.current;
-      if (!transformElement) {
-        throw new Error("transformElementRef.current is null");
+  const offsetTransformStyle = useCallback(
+    (offset: Partial<TransformStyle>, animationDuration?: number) => {
+      let { x, y, scale } = transformStyleRef.current;
+
+      if (offset.x) {
+        x += offset.x;
+      }
+      if (offset.y) {
+        y += offset.y;
+      }
+      if (offset.scale) {
+        scale += offset.scale;
       }
 
-      const currentZoomValue = zoom ?? 1;
+      animateTransformStyle(
+        {
+          x,
+          y,
+          scale,
+        },
+        animationDuration
+      );
+    },
+    [animateTransformStyle]
+  );
+
+  const shiftZoom = useCallback(
+    (
+      shift: number,
+      targetContainerPos: { x: number; y: number },
+      animationDuration?: number
+    ) => {
       const newZoomValue = clamp(currentZoomValue + shift, 1, MAX_ZOOM);
 
       setZoom(newZoomValue !== 1 ? newZoomValue : null);
 
       // -- Animation -- //
-      // When zoom just changed, we want to compensate the scroll position to keep the same point at the center
+      // When zoom just changed, we want to keep the target point at the same visual position
 
-      const { x: currentTransformX, y: currentTransformY } =
-        tranformStyleRef.current;
+      const { x: targetContainerX, y: targetContainerY } = targetContainerPos;
+
+      // # This equation is quite simple but hard to pull out of the hat : translation = targetContainerXY * (1 - newZoomValue)
+      // 1/ Whatever the zoom, the target point will always be in the same relative position in the image. That's why we multiply the target point by the new zoom value : targetContainerXY * newZoomValue
+      // 2/ As the image is translated from the top-left corner, we have to substract the target point to the translation : targetContainerXY * newZoomValue -targetContainerXY = targetContainerXY * (newZoomValue - 1)
+      // 3/ As the origin of the image is the top-left corner, we need to translate the image to the left & top : we need to reverse the sign of the translation : -targetContainerXY * (newZoomValue - 1) = -targetContainerXY * (1 - newZoomValue)
+
+      // 1/
+      const newTargetX = targetContainerX * newZoomValue;
+      const newTargetY = targetContainerY * newZoomValue;
+
+      // 2/
+      const newLeftX = newTargetX - targetContainerX;
+      const newTopY = newTargetY - targetContainerY;
+
+      // 3/
+      const newTransformX = -newLeftX;
+      const newTransformY = -newTopY;
+
+      animateTransformStyle(
+        {
+          x: newTransformX,
+          y: newTransformY,
+          scale: newZoomValue,
+        },
+        animationDuration
+      );
+    },
+    [animateTransformStyle, currentZoomValue]
+  );
+
+  const shiftZoomFromCenter = useCallback(
+    (shift: number) => {
+      const transformElement = getTransformElementOrThrow(
+        "shiftZoomFromButton"
+      );
 
       const containerW = transformElement.clientWidth;
       const containerH = transformElement.clientHeight;
 
-      const zoomRatio = newZoomValue / currentZoomValue;
-
-      const currentCenterX = containerW / 2 - currentTransformX;
-      const currentCenterY = containerH / 2 - currentTransformY;
-      const newCenterX = currentCenterX * zoomRatio;
-      const newCenterY = currentCenterY * zoomRatio;
-
-      const newTranformX = containerW / 2 - newCenterX;
-      const newTransformY = containerH / 2 - newCenterY;
-
-      animateTransformStyle({
-        x: newTranformX,
-        y: newTransformY,
-        scale: newZoomValue,
-      });
+      shiftZoom(
+        shift,
+        {
+          x: containerW / 2,
+          y: containerH / 2,
+        },
+        200
+      );
     },
-    [animateTransformStyle, zoom]
+    [getTransformElementOrThrow, shiftZoom]
   );
+
   const increaseZoom = useCallback(() => {
-    shiftZoom(ZOOM_STEP);
-  }, [shiftZoom]);
+    shiftZoomFromCenter(ZOOM_STEP);
+  }, [shiftZoomFromCenter]);
   const decreaseZoom = useCallback(() => {
-    shiftZoom(-ZOOM_STEP);
-  }, [shiftZoom]);
+    shiftZoomFromCenter(-ZOOM_STEP);
+  }, [shiftZoomFromCenter]);
 
   // -- Event listeners to handle dragging (allow to spin & move within zoomed image) -- //
   useEffect(() => {
@@ -246,12 +307,9 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
           displayPreviousImage();
         }
       } else {
-        const { x: currentTransformX, y: currentTransformY } =
-          tranformStyleRef.current;
-
-        setTransformStyle({
-          x: currentTransformX + walkX,
-          y: currentTransformY + walkY,
+        offsetTransformStyle({
+          x: walkX,
+          y: walkY,
         });
       }
 
@@ -261,22 +319,46 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       };
     };
 
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+
+      const transformElement = getTransformElementOrThrow("onWheel");
+      const { left: parentOffsetX, top: parentOffsetY } =
+        transformElement.getBoundingClientRect();
+      const { clientX, clientY, deltaY } = e;
+
+      const x = (clientX - parentOffsetX) / currentZoomValue;
+      const y = (clientY - parentOffsetY) / currentZoomValue;
+
+      shiftZoom(-0.01 * deltaY, {
+        x,
+        y,
+      });
+    };
+
     container.addEventListener("mousedown", onMouseDown);
     container.addEventListener("mouseleave", onMouseEnd);
     container.addEventListener("mouseup", onMouseEnd);
     container.addEventListener("mousemove", onMouseMove);
+
+    container.addEventListener("wheel", onWheel);
 
     return () => {
       container.removeEventListener("mousedown", onMouseDown);
       container.removeEventListener("mouseleave", onMouseEnd);
       container.removeEventListener("mouseup", onMouseEnd);
       container.removeEventListener("mousemove", onMouseMove);
+
+      container.removeEventListener("wheel", onWheel);
     };
   }, [
+    currentZoomValue,
     displayNextImage,
     displayPreviousImage,
+    getTransformElementOrThrow,
+    offsetTransformStyle,
     reverse360,
-    setTransformStyle,
+    shiftZoom,
     showingDetailImage,
     zoom,
   ]);
