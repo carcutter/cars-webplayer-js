@@ -9,7 +9,7 @@ import { positionToClassName } from "@/utils/style";
 import ImageElement from "./ImageElement";
 
 const DRAG_STEP_PX = 10;
-const SCROLL_STEP_PX = 20;
+const SCROLL_STEP_PX = 15;
 
 const ZOOM_STEP = 0.6;
 const MAX_ZOOM = 1 + ZOOM_STEP * 3;
@@ -189,22 +189,32 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       // -- Animation -- //
       // When zoom just changed, we want to keep the target point at the same visual position
 
+      const zoomRatio = newZoomValue / currentZoomValue;
+
+      const { x: currentTransformX, y: currentTransformY } =
+        transformStyleRef.current;
+
       const { x: targetContainerX, y: targetContainerY } = targetContainerPos;
 
-      // # This equation is quite simple but hard to pull out of the hat : translation = targetContainerXY * (1 - newZoomValue)
-      // 1/ Whatever the zoom, the target point will always be in the same relative position in the image. That's why we multiply the target point by the new zoom value : targetContainerXY * newZoomValue
-      // 2/ As the image is translated from the top-left corner, we have to substract the target point to the translation : targetContainerXY * newZoomValue -targetContainerXY = targetContainerXY * (newZoomValue - 1)
-      // 3/ As the origin of the image is the top-left corner, we need to translate the image to the left & top : we need to reverse the sign of the translation : -targetContainerXY * (newZoomValue - 1) = -targetContainerXY * (1 - newZoomValue)
+      // # This equation is quite simple but hard to pull out of the hat
+      // 1/ The target point is the position of the mouse in the container PLUS the current translation
+      // 2/ Whatever the zoom, the target point will always be in the same relative position in the image. That's why we multiply the target point by the zoomRatio value
+      // 3/ As the image is translated from the top-left corner, we have to substract the target point to the translation
+      // 4/ As the origin of the image is the top-left corner, we need to translate the image to the left & top : we need to reverse the sign of the translation
 
       // 1/
-      const newTargetX = targetContainerX * newZoomValue;
-      const newTargetY = targetContainerY * newZoomValue;
+      const currentTargetX = -currentTransformX + targetContainerX;
+      const currentTargetY = -currentTransformY + targetContainerY;
 
       // 2/
+      const newTargetX = currentTargetX * zoomRatio;
+      const newTargetY = currentTargetY * zoomRatio;
+
+      // 3/
       const newLeftX = newTargetX - targetContainerX;
       const newTopY = newTargetY - targetContainerY;
 
-      // 3/
+      // 4/
       const newTransformX = -newLeftX;
       const newTransformY = -newTopY;
 
@@ -320,15 +330,25 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     };
 
     const onWheel = (e: WheelEvent) => {
+      const { clientX, clientY, deltaX, deltaY } = e;
+
+      // If we are scrolling horizontally, we want to spin the 360, not zoom
+      if (deltaX !== 0 && Math.abs(deltaX) + 2 > Math.abs(deltaY)) {
+        return;
+      }
+
       e.preventDefault();
 
-      const transformElement = getTransformElementOrThrow("onWheel");
+      const contrainer = containerRef.current;
+      if (!contrainer) {
+        throw new Error("containerRef.current is null");
+      }
       const { left: parentOffsetX, top: parentOffsetY } =
-        transformElement.getBoundingClientRect();
-      const { clientX, clientY, deltaY } = e;
+        contrainer.getBoundingClientRect();
 
-      const x = (clientX - parentOffsetX) / currentZoomValue;
-      const y = (clientY - parentOffsetY) / currentZoomValue;
+      // Translate the mouse position to the container position
+      const x = clientX - parentOffsetX;
+      const y = clientY - parentOffsetY;
 
       shiftZoom(-0.01 * deltaY, {
         x,
