@@ -14,7 +14,8 @@ const OptionsBar: React.FC<OptionBarProps> = ({ dataLength }) => {
 
     showHotspots,
     toggleHotspots,
-    openGallery,
+    showGallery,
+    toggleGallery,
     extendMode,
     enableExtendMode,
     disableExtendMode,
@@ -26,8 +27,8 @@ const OptionsBar: React.FC<OptionBarProps> = ({ dataLength }) => {
     toggleHotspots();
   };
 
-  const handleShowGalleryClick = () => {
-    openGallery();
+  const handleGalleryClick = () => {
+    toggleGallery();
   };
 
   const handleExtendClick = () => {
@@ -62,10 +63,9 @@ const OptionsBar: React.FC<OptionBarProps> = ({ dataLength }) => {
           <Separator orientation="vertical" />
 
           <Button
-            variant="ghost"
-            color="neutral"
+            variant={showGallery ? "fill" : "ghost"}
             shape="icon"
-            onClick={handleShowGalleryClick}
+            onClick={handleGalleryClick}
           >
             <CustomizableIcon customizationKey="CONTROLS_GALLERY">
               <img

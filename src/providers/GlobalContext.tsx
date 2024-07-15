@@ -36,6 +36,7 @@ type ContextType = ProviderProps & {
   showGallery: boolean;
   openGallery: () => void;
   closeGallery: () => void;
+  toggleGallery: () => void;
 };
 
 const GlobalContext = createContext<ContextType | null>(null);
@@ -93,6 +94,14 @@ const GlobalContextProvider: React.FC<
     setShowGallery(false);
     emitEvent("gallery-close");
   }, [emitEvent]);
+  const toggleGallery = useCallback(() => {
+    const newValue = !showGallery;
+    if (newValue) {
+      openGallery();
+    } else {
+      closeGallery();
+    }
+  }, [closeGallery, openGallery, showGallery]);
 
   return (
     <GlobalContext.Provider
@@ -111,6 +120,7 @@ const GlobalContextProvider: React.FC<
         showGallery,
         openGallery,
         closeGallery,
+        toggleGallery,
       }}
     >
       {children}

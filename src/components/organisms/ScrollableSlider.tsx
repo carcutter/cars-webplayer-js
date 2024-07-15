@@ -16,8 +16,7 @@ type Props = {
 const ONE_ITEM_DRAG_MULTIPLIER = 1.5;
 
 const ScrollableSlider: React.FC<Props> = ({ items }) => {
-  const { aspectRatio, itemsShown, showGallery, closeGallery } =
-    useGlobalContext();
+  const { aspectRatio, itemsShown, showGallery } = useGlobalContext();
   const showOneItem = itemsShown === 1;
 
   // -- Refs -- //
@@ -56,7 +55,7 @@ const ScrollableSlider: React.FC<Props> = ({ items }) => {
 
     return indexes;
   }, [itemsShown, length, slidable]);
-  const [currentSnapIndex, setCurrentSnapIndex] = useState(0); // NOTE: Used only by the fixed index indicator
+  const [currentSnapIndex, setCurrentSnapIndex] = useState(0); // NOTE: Used by the fixed index indicator & gallery
 
   const getContainerWidth = useCallback(() => {
     const slider = getSliderOrThrow("getContainerWidth");
@@ -275,7 +274,6 @@ const ScrollableSlider: React.FC<Props> = ({ items }) => {
   // - Misc
 
   const handleOnGalleryItemClicked = (_item: Item, index: number) => {
-    closeGallery();
     scrollToSnapIndex(index);
   };
 
@@ -332,7 +330,11 @@ const ScrollableSlider: React.FC<Props> = ({ items }) => {
 
       {/* Gallery */}
       {showGallery && (
-        <Gallery items={items} onItemClicked={handleOnGalleryItemClicked} />
+        <Gallery
+          items={items}
+          currentIndex={currentSnapIndex}
+          onItemClicked={handleOnGalleryItemClicked}
+        />
       )}
     </div>
   );
