@@ -4,7 +4,7 @@ import { ZodError } from "zod";
 import CloseButton from "@/components/atoms/CloseButton";
 import CategoryBar from "@/components/molecules/CategoryBar";
 import OptionsBar from "@/components/molecules/OptionsBar";
-import ScrollableSlider from "@/components/organisms/ScrollableSlider";
+import WebPlayerCarrousel from "@/components/organisms/WebPlayerCarrousel";
 import ErrorTemplate from "@/components/template/ErrorTemplate";
 import { useComposition } from "@/hooks/useComposition";
 import CompositionContextProvider from "@/providers/CompositionContext";
@@ -97,7 +97,7 @@ const WebPlayerContent: React.FC<
     <CompositionContextProvider composition={composition}>
       <ExtendWrapper>
         <div className="relative h-fit">
-          <ScrollableSlider items={items} />
+          <WebPlayerCarrousel items={items} />
           {/* Options overlay */}
           {!flatten && (
             <CategoryBar

@@ -15,7 +15,7 @@ type Props = {
 
 const ONE_ITEM_DRAG_MULTIPLIER = 1.5;
 
-const ScrollableSlider: React.FC<Props> = ({ items }) => {
+const WebPlayerCarrousel: React.FC<Props> = ({ items }) => {
   const { aspectRatio, itemsShown, showGallery } = useGlobalContext();
   const showOneItem = itemsShown === 1;
 
@@ -340,4 +340,4 @@ const ScrollableSlider: React.FC<Props> = ({ items }) => {
   );
 };
 
-export default ScrollableSlider;
+export default WebPlayerCarrousel;

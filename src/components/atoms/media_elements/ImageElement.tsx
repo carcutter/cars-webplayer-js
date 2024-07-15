@@ -37,7 +37,7 @@ const ImageElement: React.FC<Props> = ({
       <CdnImage className="size-full" src={src} zoom={zoom} onLoad={onLoad} />
       {showHotspots &&
         !zoom && // Hotspots are not shown when zoomed in to avoid hiding anything
-        !detailImageShown && // Hotspots have a z-index to stay over the scrollArea, but we don't want them to be clickable when the detail image is shown
+        !detailImageShown && // Hotspots have a z-index to stay over the scrollArea, but we don't want them to be visible when the detail image is shown
         hotspots?.map((hotspot, index) => (
           <Hotspot
             key={index}
@@ -46,6 +46,7 @@ const ImageElement: React.FC<Props> = ({
           />
         ))}
 
+      {/* TODO: Zoom should be also available for the details */}
       {detailImageShown && (
         <div className="absolute inset-0 z-detailImage cursor-auto">
           <CdnImage className="size-full" src={detailImageShown} />

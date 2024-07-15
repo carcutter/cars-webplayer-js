@@ -22,6 +22,7 @@ type Props = Omit<
 };
 
 const CdnImage: React.FC<Props> = ({ src, zoom, ...props }) => {
+  // TODO: should use element width instead of viewport width
   const { minImageWidth, maxImageWidth, imageLoadStrategy, itemsShown } =
     useGlobalContext();
 
