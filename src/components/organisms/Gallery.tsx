@@ -1,26 +1,50 @@
+import { useEffect, useRef } from "react";
+
 import GalleryElement from "@/components/molecules/GalleryElement";
 import { useControlsContext } from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
 import type { Item } from "@/types/composition";
+import { clamp } from "@/utils/math";
 
 const Gallery: React.FC = () => {
   const { aspectRatioClass } = useGlobalContext();
-
-  // TODO: Move the scroll when target moves
 
   const {
     displayedItems,
 
     currentItemIndex,
+    targetItemIndex,
     setTargetItemIndex,
   } = useControlsContext();
+
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  // Scroll in order to always have the target item in the middle
+  useEffect(() => {
+    const slider = sliderRef.current;
+
+    if (!slider) {
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      const containerWidth = slider.clientWidth;
+      const itemWidth = slider.scrollWidth / displayedItems.length;
+      const targetScrollLeft =
+        (targetItemIndex + 1 / 2) * itemWidth - containerWidth / 2;
+
+      const maxScroll = slider.scrollWidth - slider.clientWidth;
+
+      slider.scrollLeft = clamp(targetScrollLeft, 0, maxScroll);
+    });
+  }, [displayedItems.length, targetItemIndex]);
 
   const onItemClicked = (_item: Item, index: number) => {
     setTargetItemIndex(index);
   };
 
   return (
-    <div className="overflow-x-auto no-scrollbar">
+    <div ref={sliderRef} className="overflow-x-auto scroll-smooth no-scrollbar">
       <div className="flex h-12 w-fit gap-2">
         {displayedItems.map((item, index) => (
           <div
