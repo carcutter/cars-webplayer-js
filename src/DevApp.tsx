@@ -43,33 +43,40 @@ const DevApp: React.FC = () => {
         </h2>
       </div>
 
-      <WebPlayer
-        // compositionUrl="/composition_mock_1.json"
-        compositionUrl="https://cdn.car-cutter.com/gallery/767f46375d752707fcb76a19b8b22bc0040bd3ff59abc43d1c19eb0c04785c68/TEST1/composition_v2.json"
-        aspectRatio="4:3"
-        // reverse360
-        // minImageWidth={300}
-        // maxImageWidth={1000}
-        // imageLoadStrategy="speed"
-        flatten
-        maxItemsShown={2.5}
-        itemsShownBreakpoint={960}
-        // eventId="cc-event"
-        // optionsPosition="top-left"
+      <div
+        style={{
+          maxWidth: "960px",
+          marginInline: "auto",
+        }}
       >
-        <WebPlayerIcon name="GASOLINESPIN" color="#ff00ff">
-          <svg
-            style={{ color: "white" }}
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 -960 960 960"
-          >
-            <path
-              fill="currentColor"
-              d="M230-450q-12.75 0-21.375-8.675-8.625-8.676-8.625-21.5 0-12.825 8.625-21.325T230-510h500q12.75 0 21.375 8.675 8.625 8.676 8.625 21.5 0 12.825-8.625 21.325T730-450H230Z"
-            />
-          </svg>
-        </WebPlayerIcon>
-      </WebPlayer>
+        <WebPlayer
+          // compositionUrl="/composition_mock_1.json"
+          compositionUrl="https://cdn.car-cutter.com/gallery/767f46375d752707fcb76a19b8b22bc0040bd3ff59abc43d1c19eb0c04785c68/TEST1/composition_v2.json"
+          aspectRatio="4:3"
+          // reverse360
+          // minImageWidth={300}
+          // maxImageWidth={1000}
+          // imageLoadStrategy="speed"
+          flatten
+          maxItemsShown={2.5}
+          itemsShownBreakpoint={960}
+          // eventId="cc-event"
+          // optionsPosition="top-left"
+        >
+          <WebPlayerIcon name="GASOLINESPIN" color="#ff00ff">
+            <svg
+              style={{ color: "white" }}
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 -960 960 960"
+            >
+              <path
+                fill="currentColor"
+                d="M230-450q-12.75 0-21.375-8.675-8.625-8.676-8.625-21.5 0-12.825 8.625-21.325T230-510h500q12.75 0 21.375 8.675 8.625 8.676 8.625 21.5 0 12.825-8.625 21.325T730-450H230Z"
+              />
+            </svg>
+          </WebPlayerIcon>
+        </WebPlayer>
+      </div>
     </div>
   );
 };

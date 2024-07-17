@@ -37,8 +37,8 @@ export const ItemSchema = z.discriminatedUnion("type", [
   }),
 ]);
 
-export const ElementSchema = z.object({
-  category: z.string(),
+export const CategorySchema = z.object({
+  id: z.string(),
   title: z.string(),
   items: z.array(ItemSchema),
 });
@@ -46,5 +46,5 @@ export const ElementSchema = z.object({
 export const CompositionSchema = z.object({
   imageHdWidth: ImageWidthSchema,
   imageSubWidths: z.array(ImageWidthSchema),
-  elements: z.array(ElementSchema),
+  categories: z.array(CategorySchema),
 });

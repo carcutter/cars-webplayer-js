@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 
 import type { WebPlayerProps } from "@/types/webPlayerProps";
 
@@ -20,23 +20,12 @@ type ProviderProps = Required<
     WebPlayerProps,
     "categoriesOrder" | "minImageWidth" | "maxImageWidth"
   > & {
+    // TODO: Rename "onScreen ? Count ?"
     itemsShown: number;
   };
 
 type ContextType = ProviderProps & {
   aspectRatioClass: string;
-
-  showHotspots: boolean;
-  toggleHotspots: () => void;
-
-  extendMode: boolean;
-  enableExtendMode: () => void;
-  disableExtendMode: () => void;
-
-  showGallery: boolean;
-  openGallery: () => void;
-  closeGallery: () => void;
-  toggleGallery: () => void;
 };
 
 const GlobalContext = createContext<ContextType | null>(null);
@@ -56,52 +45,9 @@ export const useGlobalContext = () => {
 const GlobalContextProvider: React.FC<
   React.PropsWithChildren<ProviderProps>
 > = ({ children, ...props }) => {
-  const { aspectRatio, eventId } = props;
+  const { aspectRatio } = props;
 
   const aspectRatioClass = aspectRatio === "4:3" ? "aspect-4/3" : "aspect-16/9";
-
-  const [showHotspots, setShowHotspots] = useState(true);
-  const [extendMode, setExtendMode] = useState(false);
-  const [showGallery, setShowGallery] = useState(false);
-
-  const emitEvent = useCallback(
-    (detail: string) => {
-      document.dispatchEvent(new CustomEvent(eventId, { detail }));
-    },
-    [eventId]
-  );
-
-  const toggleHotspots = useCallback(() => {
-    const newValue = !showHotspots;
-    setShowHotspots(newValue);
-    emitEvent(`hotspots-${newValue ? "on" : "off"}`);
-  }, [emitEvent, showHotspots]);
-
-  const enableExtendMode = useCallback(() => {
-    setExtendMode(true);
-    emitEvent("extend-mode-on");
-  }, [emitEvent]);
-  const disableExtendMode = useCallback(() => {
-    setExtendMode(false);
-    emitEvent("extend-mode-off");
-  }, [emitEvent]);
-
-  const openGallery = useCallback(() => {
-    setShowGallery(true);
-    emitEvent("gallery-open");
-  }, [emitEvent]);
-  const closeGallery = useCallback(() => {
-    setShowGallery(false);
-    emitEvent("gallery-close");
-  }, [emitEvent]);
-  const toggleGallery = useCallback(() => {
-    const newValue = !showGallery;
-    if (newValue) {
-      openGallery();
-    } else {
-      closeGallery();
-    }
-  }, [closeGallery, openGallery, showGallery]);
 
   return (
     <GlobalContext.Provider
@@ -109,18 +55,6 @@ const GlobalContextProvider: React.FC<
         ...props,
 
         aspectRatioClass,
-
-        showHotspots,
-        toggleHotspots,
-
-        extendMode,
-        enableExtendMode,
-        disableExtendMode,
-
-        showGallery,
-        openGallery,
-        closeGallery,
-        toggleGallery,
       }}
     >
       {children}

@@ -1,23 +1,23 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 import IndexIndicator from "@/components/atoms/IndexIndicator";
 import NextPrevButtons from "@/components/molecules/NextPrevButtons";
 import WebPlayerElement from "@/components/molecules/WebPlayerElement";
+import { useControlsContext } from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
-import type { Item } from "@/types/composition";
-import { aspectRatioStyle, positionToClassName } from "@/utils/style";
-
-import Gallery from "./Gallery";
-
-type Props = {
-  items: Item[];
-};
+import { positionToClassName } from "@/utils/style";
 
 const ONE_ITEM_DRAG_MULTIPLIER = 1.5;
 
-const WebPlayerCarrousel: React.FC<Props> = ({ items }) => {
-  const { aspectRatio, itemsShown, showGallery } = useGlobalContext();
-  const showOneItem = itemsShown === 1;
+const WebPlayerCarrousel: React.FC = () => {
+  const { aspectRatioClass } = useGlobalContext();
+  const {
+    displayedItems: items,
+    currentItemIndex,
+    setCurrentItemIndex,
+    targetItemIndex,
+    setTargetItemIndex,
+  } = useControlsContext();
 
   // -- Refs -- //
   // - element refs
@@ -37,25 +37,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ items }) => {
 
   // -- Snapping -- //
   const length = items.length;
-  const slidable = length > itemsShown;
-  const snapIndexes = useMemo(() => {
-    if (!slidable) {
-      return [0];
-    }
-
-    const maxSnapIndexInt = length - Math.ceil(itemsShown);
-
-    const indexes = Array.from({ length: maxSnapIndexInt + 1 }, (_, i) => i);
-
-    // Add fractionnal index if displaying a fraction of an item
-    const fractionnalIndex = itemsShown % 1;
-    if (fractionnalIndex !== 0) {
-      indexes.push(maxSnapIndexInt + fractionnalIndex);
-    }
-
-    return indexes;
-  }, [itemsShown, length, slidable]);
-  const [currentSnapIndex, setCurrentSnapIndex] = useState(0); // NOTE: Used by the fixed index indicator & gallery
+  const slidable = length > 1;
 
   const getContainerWidth = useCallback(() => {
     const slider = getSliderOrThrow("getContainerWidth");
@@ -63,58 +45,36 @@ const WebPlayerCarrousel: React.FC<Props> = ({ items }) => {
     return slider.getBoundingClientRect().width;
   }, [getSliderOrThrow]);
 
-  const getElementWidth = useCallback(
-    () => getContainerWidth() / itemsShown,
-    [getContainerWidth, itemsShown]
-  );
-
-  const scrollToSnapIndex = useCallback(
+  const scrollToIndex = useCallback(
     (index: number) => {
       const slider = getSliderOrThrow("scrollToSnapIndex");
 
-      if (!snapIndexes.includes(index)) {
-        throw new Error(`[scrollToSnapIndex] Unexpected index value: ${index}`);
-      }
-
       requestAnimationFrame(() => {
-        slider.scrollLeft = index * getElementWidth();
+        slider.scrollLeft = index * getContainerWidth();
       });
     },
-    [getElementWidth, getSliderOrThrow, snapIndexes]
+    [getContainerWidth, getSliderOrThrow]
   );
 
-  const computeClosestSnapIndex = useCallback(() => {
+  const computeClosestIndex = useCallback(() => {
     const slider = getSliderOrThrow("computeClosestSnapIndex");
 
-    const decimalIndex = slider.scrollLeft / getElementWidth();
+    const decimalIndex = slider.scrollLeft / getContainerWidth();
 
-    return snapIndexes.reduce(
-      (prevClosest, curr) =>
-        Math.abs(curr - decimalIndex) < Math.abs(prevClosest - decimalIndex)
-          ? curr
-          : prevClosest,
-      Infinity
-    );
-  }, [getElementWidth, getSliderOrThrow, snapIndexes]);
-
-  const scrollOffsetIndex = useCallback(
-    (offsetIndex: number) => {
-      const currentSnapIndex = computeClosestSnapIndex();
-      const newLeftIndex =
-        snapIndexes[snapIndexes.indexOf(currentSnapIndex) + offsetIndex];
-
-      scrollToSnapIndex(newLeftIndex);
-    },
-    [computeClosestSnapIndex, scrollToSnapIndex, snapIndexes]
-  );
+    return Math.round(decimalIndex);
+  }, [getContainerWidth, getSliderOrThrow]);
 
   const prevImage = useCallback(() => {
-    scrollOffsetIndex(-1);
-  }, [scrollOffsetIndex]);
+    setTargetItemIndex(currentItemIndex - 1);
+  }, [currentItemIndex, setTargetItemIndex]);
 
   const nextImage = useCallback(() => {
-    scrollOffsetIndex(1);
-  }, [scrollOffsetIndex]);
+    setTargetItemIndex(currentItemIndex + 1);
+  }, [currentItemIndex, setTargetItemIndex]);
+
+  useEffect(() => {
+    scrollToIndex(targetItemIndex);
+  }, [scrollToIndex, targetItemIndex]);
 
   // -- Update Style functions -- //
   const setStyleCursor = useCallback(
@@ -148,13 +108,13 @@ const WebPlayerCarrousel: React.FC<Props> = ({ items }) => {
     [getSliderOrThrow]
   );
 
-  // - Reset the index when the items changes (typically when the user changes the category)
+  // TODO : Reset the index when the items changes (typically when the user changes the category)
   useEffect(() => {
     setStyleScrollBehavior("auto");
-    scrollToSnapIndex(0);
-    setCurrentSnapIndex(0);
+    scrollToIndex(0);
+    setCurrentItemIndex(0);
     setStyleScrollBehavior("smooth");
-  }, [items, scrollToSnapIndex, setStyleScrollBehavior]);
+  }, [items, scrollToIndex, setCurrentItemIndex, setStyleScrollBehavior]);
 
   // -- Event listeners to handle the slider -- //
   useEffect(() => {
@@ -213,8 +173,8 @@ const WebPlayerCarrousel: React.FC<Props> = ({ items }) => {
       }, 500);
 
       // Snap scrolling
-      const closestSnapIndex = computeClosestSnapIndex();
-      scrollToSnapIndex(closestSnapIndex);
+      const closestSnapIndex = computeClosestIndex();
+      scrollToIndex(closestSnapIndex);
     };
 
     // Scroll according the user's dragging movement
@@ -236,16 +196,15 @@ const WebPlayerCarrousel: React.FC<Props> = ({ items }) => {
           throw new Error("[onMouseMove] scrollLeft is null");
         }
 
-        const scrollMultiplier = showOneItem ? ONE_ITEM_DRAG_MULTIPLIER : 1;
-
-        slider.scrollLeft = startScrollLeft.current - walk * scrollMultiplier;
+        slider.scrollLeft =
+          startScrollLeft.current - walk * ONE_ITEM_DRAG_MULTIPLIER;
       });
     };
 
-    // - Update the index when the user uses scrolling (and not dragging)
+    // - Update the currentItemIndex when the user moves the carrousel (scrolling/dragging)
     const onScroll = () => {
-      const closestSnapIndex = computeClosestSnapIndex();
-      setCurrentSnapIndex(closestSnapIndex);
+      const closestIndex = computeClosestIndex();
+      setCurrentItemIndex(closestIndex);
     };
 
     slider.addEventListener("mousedown", onMouseDown);
@@ -262,28 +221,17 @@ const WebPlayerCarrousel: React.FC<Props> = ({ items }) => {
       slider.removeEventListener("scroll", onScroll);
     };
   }, [
-    computeClosestSnapIndex,
-    scrollToSnapIndex,
+    computeClosestIndex,
+    scrollToIndex,
+    setCurrentItemIndex,
     setStyleCursor,
     setStyleScrollBehavior,
     setStyleSnapState,
-    showOneItem,
     slidable,
   ]);
 
-  // - Misc
-
-  const handleOnGalleryItemClicked = (_item: Item, index: number) => {
-    scrollToSnapIndex(index);
-  };
-
   return (
-    <div
-      className="relative w-full"
-      style={{
-        aspectRatio: aspectRatioStyle(aspectRatio, itemsShown),
-      }}
-    >
+    <div className={`relative w-full ${aspectRatioClass}`}>
       <div
         ref={sliderRef}
         className={`flex size-full ${slidable ? "overflow-x-auto transition-transform no-scrollbar *:snap-mandatory *:snap-start" : "justify-center"}`}
@@ -292,49 +240,28 @@ const WebPlayerCarrousel: React.FC<Props> = ({ items }) => {
           const key = item.type === "360" ? item.images[0] : item.src;
 
           return (
-            <div key={key} className="relative">
-              <WebPlayerElement
-                item={item}
-                lazy={
-                  Math.abs(index - currentSnapIndex) > Math.ceil(itemsShown)
-                }
-              />
-              {slidable && !showOneItem && (
-                <div
-                  className={`absolute ${positionToClassName("bottom-right")}`}
-                >
-                  <IndexIndicator currentIndex={index} length={length} />
-                </div>
-              )}
-            </div>
+            <WebPlayerElement
+              key={key}
+              item={item}
+              lazy={Math.abs(index - currentItemIndex) > 1}
+            />
           );
         })}
       </div>
 
       {slidable && (
         <>
-          {showOneItem && (
-            <div className={`absolute ${positionToClassName("bottom-right")}`}>
-              <IndexIndicator currentIndex={currentSnapIndex} length={length} />
-            </div>
-          )}
+          <div className={`absolute ${positionToClassName("top-right")}`}>
+            <IndexIndicator currentIndex={currentItemIndex} length={length} />
+          </div>
 
           <NextPrevButtons
-            currentIndex={currentSnapIndex}
-            maxIndex={length - itemsShown}
+            currentIndex={targetItemIndex}
+            maxIndex={length - 1}
             onPrev={prevImage}
             onNext={nextImage}
           />
         </>
-      )}
-
-      {/* Gallery */}
-      {showGallery && (
-        <Gallery
-          items={items}
-          currentIndex={currentSnapIndex}
-          onItemClicked={handleOnGalleryItemClicked}
-        />
       )}
     </div>
   );

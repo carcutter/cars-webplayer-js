@@ -3,7 +3,7 @@ import { useState } from "react";
 import CdnImage from "@/components/atoms/CdnImage";
 import CloseButton from "@/components/atoms/CloseButton";
 import Hotspot from "@/components/molecules/Hotspot";
-import { useGlobalContext } from "@/providers/GlobalContext";
+import { useControlsContext } from "@/providers/ControlsContext";
 import type { Item } from "@/types/composition";
 
 type Props = Omit<Extract<Item, { type: "image" }>, "type"> & {
@@ -19,7 +19,7 @@ const ImageElement: React.FC<Props> = ({
   onShownDetailImageChange,
   onLoad,
 }) => {
-  const { showHotspots } = useGlobalContext();
+  const { showHotspots } = useControlsContext();
 
   const [detailImageShown, setDetailImageShown] = useState<string | null>(null);
 
