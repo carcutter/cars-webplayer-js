@@ -44,15 +44,18 @@ const Gallery: React.FC = () => {
   };
 
   return (
-    <div ref={sliderRef} className="overflow-x-auto scroll-smooth no-scrollbar">
+    <div
+      ref={sliderRef}
+      className="relative -mx-1 overflow-x-auto scroll-smooth px-1 no-scrollbar [mask-image:linear-gradient(to_left,transparent_0px,black_4px,black_calc(100%-4px),transparent_100%)]"
+    >
       <div className="flex h-12 w-fit gap-2">
         {displayedItems.map((item, index) => (
           <div
             key={index}
             className={`
-              relative h-full ${aspectRatioClass} cursor-pointer
-              after:absolute after:inset-0 after:border-2 after:border-primary after:transition-opacity ${index === currentItemIndex ? "after:opacity-100" : "after:opacity-0 hover:after:opacity-70"}
-            `}
+                relative h-full ${aspectRatioClass} cursor-pointer
+                after:absolute after:inset-0 after:border-2 after:border-primary after:transition-opacity ${index === currentItemIndex ? "after:opacity-100" : "after:opacity-0 hover:after:opacity-70"}
+              `}
             onClick={() => onItemClicked(item, index)}
           >
             <GalleryElement item={item} />
@@ -60,7 +63,6 @@ const Gallery: React.FC = () => {
         ))}
       </div>
     </div>
-    // TODO: Mask elements to create illusion of transparency on scroll
   );
 };
 
