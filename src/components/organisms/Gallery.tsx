@@ -6,11 +6,7 @@ import { useGlobalContext } from "@/providers/GlobalContext";
 import type { Item } from "@/types/composition";
 import { clamp } from "@/utils/math";
 
-type Props = {
-  className?: string;
-};
-
-const Gallery: React.FC<Props> = ({ className = "" }) => {
+const Gallery: React.FC = () => {
   const { aspectRatioClass } = useGlobalContext();
 
   const {
@@ -27,20 +23,23 @@ const Gallery: React.FC<Props> = ({ className = "" }) => {
   useEffect(() => {
     const slider = sliderRef.current;
 
+    // DOM not ready yet
     if (!slider) {
       return;
     }
 
-    requestAnimationFrame(() => {
-      const containerWidth = slider.clientWidth;
-      const itemWidth = slider.scrollWidth / displayedItems.length;
-      const targetScrollLeft =
-        (targetItemIndex + 1 / 2) * itemWidth - containerWidth / 2;
+    // Scroll the gallery to have the target in view
+    const containerWidth = slider.clientWidth;
+    const itemWidth = slider.scrollWidth / displayedItems.length;
+    const targetScrollLeft =
+      (targetItemIndex + 1 / 2) * itemWidth - containerWidth / 2;
 
-      const maxScroll = slider.scrollWidth - slider.clientWidth;
+    const maxScroll = slider.scrollWidth - slider.clientWidth;
 
-      slider.scrollLeft = clamp(targetScrollLeft, 0, maxScroll);
-    });
+    slider.scrollLeft = clamp(targetScrollLeft, 0, maxScroll);
+
+    // Smooth scroll is enabled after the first scrolling (to avoid the initial scroll)
+    slider.style.scrollBehavior = "smooth";
   }, [displayedItems.length, targetItemIndex]);
 
   const onItemClicked = (_item: Item, index: number) => {
@@ -50,7 +49,7 @@ const Gallery: React.FC<Props> = ({ className = "" }) => {
   return (
     <div
       ref={sliderRef}
-      className={`relative -mx-1 overflow-x-auto scroll-smooth px-1 no-scrollbar [mask-image:linear-gradient(to_left,transparent_0px,black_4px,black_calc(100%-4px),transparent_100%)] ${className}`}
+      className="relative -mx-1 overflow-x-auto px-1 no-scrollbar [mask-image:linear-gradient(to_left,transparent_0px,black_4px,black_calc(100%-4px),transparent_100%)]"
     >
       <div className="flex h-12 w-fit gap-2">
         {displayedItems.map((item, index) => (

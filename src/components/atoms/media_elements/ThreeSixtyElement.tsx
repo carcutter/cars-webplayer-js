@@ -137,9 +137,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
       scroller.scrollWidth / 2 - getScrollerWidth() / 2;
 
     const centerScroller = () => {
-      requestAnimationFrame(() => {
-        scroller.scrollLeft = scollerCenterPosition;
-      });
+      scroller.scrollLeft = scollerCenterPosition;
     };
 
     // When initializing, we want to center the scroller

@@ -129,10 +129,9 @@ const WebPlayerOverlay: React.FC = () => {
         className={`absolute ${positionToClassName("bottom-fullW")} grid grid-cols-[auto,1fr,auto] items-end gap-x-1 sm:gap-x-2`}
       >
         {/* Gallery's toogle button & Gallery */}
-        {dataLength > 1 && (
+        {!hideGalleryControls && dataLength > 1 && (
           <>
             <Button
-              className={hideGalleryControls ? "invisible" : ""}
               variant="fill"
               color={showGallery ? "primary" : "neutral"}
               shape="icon"
@@ -146,9 +145,8 @@ const WebPlayerOverlay: React.FC = () => {
                 />
               </CustomizableIcon>
             </Button>
-            {showGallery && (
-              <Gallery className={hideGalleryControls ? "invisible" : ""} />
-            )}
+
+            {showGallery && <Gallery />}
           </>
         )}
 
