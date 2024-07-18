@@ -36,7 +36,7 @@ type ContextType = {
 
   zoom: number;
   isZoomed: boolean;
-  shiftZoom: (shift: number) => void;
+  setZoom: (zoom: number) => void;
   canZoomIn: boolean;
   zoomIn: () => void;
   canZoomOut: boolean;
@@ -157,7 +157,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
         zoom,
         isZoomed: zoom !== 1,
-        shiftZoom,
+        setZoom,
         canZoomIn: zoom < MAX_ZOOM,
         zoomIn,
         canZoomOut: zoom > 1,

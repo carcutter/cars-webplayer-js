@@ -13,23 +13,35 @@ function addWidthToCdnUrl(src: string, width: ImageWidth): string {
   return [directoryName, width, fileName].join("/");
 }
 
-type Props = Omit<
+export type CdnImageProps = Omit<
   React.ImgHTMLAttributes<HTMLImageElement>,
   "sizes" | "srcSet"
 > & {
   src: string;
-  zoom?: number | null;
-};
+} & (
+    | { onlyThumbnail?: false; imgInPlayerWidthRatio?: number }
+    | { onlyThumbnail: true; imgInPlayerWidthRatio?: never }
+  );
 
-const CdnImage: React.FC<Props> = ({ src, zoom, ...props }) => {
-  // TODO: should use element width instead of viewport width
-  const { minImageWidth, maxImageWidth, imageLoadStrategy, itemsShown } =
-    useGlobalContext();
+const CdnImage: React.FC<CdnImageProps> = ({
+  src,
+  imgInPlayerWidthRatio = 1,
+  onlyThumbnail,
+  ...props
+}) => {
+  const {
+    minImageWidth,
+    maxImageWidth,
+    imageLoadStrategy,
+    playerInViewportWidthRatio,
+  } = useGlobalContext();
 
   const { imageHdWidth, imageSubWidths } = useCompositionContext();
 
   const [srcSet, sizes] = useMemo(() => {
-    const imageWidths = imageSubWidths.concat(imageHdWidth);
+    const imageWidths = imageSubWidths
+      .concat(imageHdWidth)
+      .sort((a, b) => a - b);
 
     // Filter out the widths that are not within the constraints
     const usedImageWidths = imageWidths.filter(width => {
@@ -46,37 +58,44 @@ const CdnImage: React.FC<Props> = ({ src, zoom, ...props }) => {
       throw new Error("No image widths available for the given constraints");
     }
 
-    // Ensure the widths are sorted
-    usedImageWidths.sort((a, b) => a - b);
-
     // - Generate the srcSet attribute (list of image URLs with their widths)
-    const getUrlForWidth = (width: ImageWidth) =>
-      width !== imageHdWidth ? addWidthToCdnUrl(src, width) : src;
     const srcSetList = usedImageWidths.map(width => {
-      const url = getUrlForWidth(width);
+      const url = width !== imageHdWidth ? addWidthToCdnUrl(src, width) : src;
       return `${url} ${width}w`;
     });
 
     // - Generate the sizes attribute (the web browser will choose the first matching rule, that's why we need to sort the widths in descending order for "speed" strategy)
-    // TODO: include the width ratio webplayer/viewport to avoid loading images that are too big
     let sizesList: string[];
-    const widthMultiplier = itemsShown / (zoom ?? 1);
-    if (imageLoadStrategy === "quality") {
-      const biggerWidth = usedImageWidths.pop();
 
-      sizesList = usedImageWidths.map(
-        width => `(max-width: ${widthMultiplier * width}px) ${width}px`
-      );
+    if (!onlyThumbnail) {
+      const viewportWidthMultiplier =
+        1 / (imgInPlayerWidthRatio * playerInViewportWidthRatio);
 
-      sizesList.push(`${biggerWidth}px`);
+      if (imageLoadStrategy === "quality") {
+        const biggerWidth = usedImageWidths.pop();
+
+        sizesList = usedImageWidths.map(
+          imgWidth =>
+            `(max-width: ${viewportWidthMultiplier * imgWidth}px) ${imgWidth}px`
+        );
+
+        sizesList.push(`${biggerWidth}px`);
+      } else {
+        const smallestWidth = usedImageWidths.shift();
+
+        sizesList = usedImageWidths
+          .reverse()
+          .map(
+            imageWidth =>
+              `(min-width: ${viewportWidthMultiplier * imageWidth}px) ${imageWidth}px`
+          );
+
+        sizesList.push(`${smallestWidth}px`);
+      }
     } else {
       const smallestWidth = usedImageWidths.shift();
 
-      sizesList = usedImageWidths
-        .reverse()
-        .map(width => `(min-width: ${widthMultiplier * width}px) ${width}px`);
-
-      sizesList.push(`${smallestWidth}px`);
+      sizesList = [`${smallestWidth}px`];
     }
 
     return [srcSetList.join(", "), sizesList.join(", ")];
@@ -84,11 +103,12 @@ const CdnImage: React.FC<Props> = ({ src, zoom, ...props }) => {
     imageHdWidth,
     imageLoadStrategy,
     imageSubWidths,
-    itemsShown,
+    imgInPlayerWidthRatio,
     maxImageWidth,
     minImageWidth,
+    onlyThumbnail,
+    playerInViewportWidthRatio,
     src,
-    zoom,
   ]);
 
   return <img src={src} srcSet={srcSet} sizes={sizes} {...props} />;

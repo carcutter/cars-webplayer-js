@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import CdnImage from "@/components/atoms/CdnImage";
 import CloseButton from "@/components/atoms/CloseButton";
+import ZoomableCdnImage from "@/components/atoms/ZoomableCdnImage";
 import Hotspot from "@/components/molecules/Hotspot";
 import { useControlsContext } from "@/providers/ControlsContext";
 import type { Item } from "@/types/composition";
@@ -15,11 +16,10 @@ type Props = Omit<Extract<Item, { type: "image" }>, "type"> & {
 const ImageElement: React.FC<Props> = ({
   src,
   hotspots,
-  zoom,
-  onShownDetailImageChange,
+  onShownDetailImageChange, // TODO
   onLoad,
 }) => {
-  const { showHotspots } = useControlsContext();
+  const { isZoomed, showHotspots } = useControlsContext();
 
   const [detailImageShown, setDetailImageShown] = useState<string | null>(null);
 
@@ -34,9 +34,9 @@ const ImageElement: React.FC<Props> = ({
 
   return (
     <div className="relative size-full overflow-hidden">
-      <CdnImage className="size-full" src={src} zoom={zoom} onLoad={onLoad} />
+      <ZoomableCdnImage src={src} onLoad={onLoad} />
       {showHotspots &&
-        !zoom && // Hotspots are not shown when zoomed in to avoid hiding anything
+        !isZoomed && // Hotspots are not shown when zoomed in to avoid hiding anything
         !detailImageShown && // Hotspots have a z-index to stay over the scrollArea, but we don't want them to be visible when the detail image is shown
         hotspots?.map((hotspot, index) => (
           <Hotspot
