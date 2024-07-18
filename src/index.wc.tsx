@@ -35,9 +35,6 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedCSS, {
     categoriesOrder: "string",
     flatten: "boolean",
 
-    maxItemsShown: "number",
-    itemsShownBreakpoint: "number",
-
     eventId: "string",
 
     categoryPosition: "string",

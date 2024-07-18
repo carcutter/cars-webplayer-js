@@ -25,9 +25,6 @@ export const WebPlayerPropsSchema = z.object({
   categoriesOrder: z.string().optional(),
   flatten: z.boolean().optional(),
 
-  maxItemsShown: z.number().min(1).optional(),
-  itemsShownBreakpoint: z.number().min(0).optional(),
-
   eventId: z.string().optional(),
 
   categoryPosition: PositionYschema.extract(["top", "bottom"]).optional(),

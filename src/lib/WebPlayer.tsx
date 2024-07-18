@@ -9,8 +9,6 @@ import {
   DEFAULT_EVENT_ID,
   DEFAULT_FLATTEN,
   DEFAULT_IMAGE_LOAD_STRATEGY,
-  DEFAULT_ITEMS_SHOWN_BREAKPOINT,
-  DEFAULT_MAX_ITEMS_SHOWN,
   DEFAULT_NEXT_PREV_POSITION,
   DEFAULT_OPTIONS_POSITION,
   DEFAULT_REVERSE_360,
@@ -30,8 +28,6 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   reverse360 = DEFAULT_REVERSE_360,
   imageLoadStrategy = DEFAULT_IMAGE_LOAD_STRATEGY,
   flatten = DEFAULT_FLATTEN,
-  maxItemsShown = DEFAULT_MAX_ITEMS_SHOWN,
-  itemsShownBreakpoint = DEFAULT_ITEMS_SHOWN_BREAKPOINT,
   eventId = DEFAULT_EVENT_ID,
   categoryPosition = DEFAULT_CATEGORY_POSITION,
   optionsPosition = DEFAULT_OPTIONS_POSITION,
@@ -43,33 +39,32 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   ...props
 }) => {
   const wrapper = useRef<HTMLDivElement>(null);
-  const [itemsShown, setItemsShown] = useState(maxItemsShown);
+  const [playerInViewportWidthRatio, setPlayerInViewportWidthRatio] =
+    useState(0.5); // TODO: Should not be hardcoded
 
   // Handle resizing
   useEffect(() => {
-    if (maxItemsShown === 1) {
-      return;
-    }
-
     if (!wrapper.current) {
       return;
     }
 
     const wrapperRef = wrapper.current;
 
-    const updateShownItems = () => {
+    const updateWidthRatio = () => {
+      const viewportWidth = window.innerWidth;
       const playerWidth = wrapperRef.clientWidth;
-      setItemsShown(playerWidth < itemsShownBreakpoint ? 1 : maxItemsShown);
+
+      setPlayerInViewportWidthRatio(playerWidth / viewportWidth);
     };
 
-    updateShownItems();
+    updateWidthRatio();
 
-    addEventListener("resize", updateShownItems);
+    addEventListener("resize", updateWidthRatio);
 
     return () => {
-      removeEventListener("resize", updateShownItems);
+      removeEventListener("resize", updateWidthRatio);
     };
-  }, [itemsShownBreakpoint, maxItemsShown]);
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -86,7 +81,7 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
           nextPrevPosition,
           zoomPosition,
 
-          itemsShown,
+          playerInViewportWidthRatio,
         }}
       >
         <CustomizationContextProvider>

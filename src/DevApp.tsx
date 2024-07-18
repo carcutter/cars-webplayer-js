@@ -58,8 +58,6 @@ const DevApp: React.FC = () => {
           // maxImageWidth={1000}
           // imageLoadStrategy="speed"
           flatten
-          maxItemsShown={2.5}
-          itemsShownBreakpoint={960}
           // eventId="cc-event"
           // optionsPosition="top-left"
         >

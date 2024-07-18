@@ -20,8 +20,7 @@ type ProviderProps = Required<
     WebPlayerProps,
     "categoriesOrder" | "minImageWidth" | "maxImageWidth"
   > & {
-    // TODO: Rename "onScreen ? Count ?"
-    itemsShown: number;
+    playerInViewportWidthRatio: number;
   };
 
 type ContextType = ProviderProps & {
