@@ -12,7 +12,7 @@ const DevApp: React.FC = () => {
       const { detail } = e as CustomEvent;
 
       // eslint-disable-next-line no-console
-      console.log("Event received:", detail);
+      console.info("Event received:", detail);
     };
 
     // Listen for the custom event

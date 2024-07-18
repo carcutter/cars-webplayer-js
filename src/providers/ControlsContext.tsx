@@ -35,6 +35,10 @@ type ContextType = {
   showGallery: boolean;
   toggleGallery: () => void;
 
+  shownDetailImage: string | null;
+  showingDetailImage: boolean;
+  setShownDetailImage: (shownDetailImage: string | null) => void;
+
   zoom: number;
   isZoomed: boolean;
   setZoom: (zoom: number) => void;
@@ -127,7 +131,13 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     emitEvent(`gallery-${newValue ? "on" : "off"}`);
   }, [emitEvent, showGallery]);
 
+  const [shownDetailImage, setShownDetailImage] = useState<string | null>(null);
+
   const [zoom, setZoom] = useState(1);
+const isZoomed = zoom !== 1;
+  const canZoomIn = zoom < MAX_ZOOM;
+  const canZoomOut = zoom > 1;
+
   const shiftZoom = useCallback((shift: number) => {
     setZoom(prev => clamp(prev + shift, 1, MAX_ZOOM));
   }, []);
@@ -159,13 +169,17 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         showGallery,
         toggleGallery,
 
+        shownDetailImage,
+showingDetailImage: !!shownDetailImage,
+        setShownDetailImage,
+
         zoom,
-        isZoomed: zoom !== 1,
+        isZoomed,
         setZoom,
         resetZoom,
-        canZoomIn: zoom < MAX_ZOOM,
+        canZoomIn,
         zoomIn,
-        canZoomOut: zoom > 1,
+        canZoomOut,
         zoomOut,
       }}
     >

@@ -3,6 +3,7 @@ import { useCallback } from "react";
 import CloseButton from "@/components/atoms/CloseButton";
 import CustomizableIcon from "@/components/atoms/CustomizableIcon";
 import IndexIndicator from "@/components/atoms/IndexIndicator";
+import ZoomableCdnImage from "@/components/atoms/ZoomableCdnImage";
 import CategorySelect from "@/components/molecules/CategorySelect";
 import CustomizableButton from "@/components/molecules/CustomizableButton";
 import Gallery from "@/components/organisms/Gallery";
@@ -29,6 +30,9 @@ const WebPlayerOverlay: React.FC = () => {
     extendMode,
     toggleExtendMode,
 
+    shownDetailImage,
+    setShownDetailImage,
+
     isZoomed,
     resetZoom,
     canZoomIn,
@@ -47,19 +51,22 @@ const WebPlayerOverlay: React.FC = () => {
 
   const handleCloseClick = useCallback(() => {
     resetZoom();
-  }, [resetZoom]);
+    setShownDetailImage(null);
+  }, [resetZoom, setShownDetailImage]);
+
+  const hideGalleryControls = isZoomed || !!shownDetailImage;
 
   return (
     <>
       {/* CategorySelect (on top) */}
-      {!flatten && (
+      {!hideGalleryControls && !flatten && (
         <div className={`absolute ${positionToClassName("top-center")}`}>
           <CategorySelect />
         </div>
       )}
 
       {/* Index indicator & Next/Prev buttons */}
-      {!isZoomed && slidable && (
+      {!hideGalleryControls && slidable && (
         <>
           <div className={`absolute ${positionToClassName("top-right")}`}>
             <IndexIndicator
@@ -101,8 +108,19 @@ const WebPlayerOverlay: React.FC = () => {
         </>
       )}
 
+      {!!shownDetailImage && (
+        <div className="absolute inset-0">
+          <ZoomableCdnImage className="size-full" src={shownDetailImage} />
+        </div>
+      )}
+
       {/* Close button */}
-      {isZoomed && <CloseButton onClick={handleCloseClick} />}
+      {hideGalleryControls && (
+        <CloseButton
+          className={`absolute ${positionToClassName("top-right")}`}
+          onClick={handleCloseClick}
+        />
+      )}
 
       {/* Bottom overlay : Gallery, Hotspots toggle, ... */}
       <div
@@ -112,7 +130,7 @@ const WebPlayerOverlay: React.FC = () => {
         {dataLength > 1 && (
           <>
             <Button
-              className={isZoomed ? "invisible" : ""}
+              className={hideGalleryControls ? "invisible" : ""}
               variant="fill"
               color={showGallery ? "primary" : "neutral"}
               shape="icon"
@@ -126,7 +144,9 @@ const WebPlayerOverlay: React.FC = () => {
                 />
               </CustomizableIcon>
             </Button>
-            {showGallery && <Gallery className={isZoomed ? "invisible" : ""} />}
+            {showGallery && (
+              <Gallery className={hideGalleryControls ? "invisible" : ""} />
+            )}
           </>
         )}
 
@@ -186,7 +206,7 @@ const WebPlayerOverlay: React.FC = () => {
             variant="fill"
             color={showHotspots ? "primary" : "neutral"}
             shape="icon"
-            disabled={isZoomed}
+            disabled={hideGalleryControls}
             onClick={toggleHotspots}
           >
             <CustomizableIcon customizationKey="CONTROLS_HOTSPOTS">

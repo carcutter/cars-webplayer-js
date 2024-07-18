@@ -36,9 +36,6 @@ const config = {
       zIndex: {
         hotspot: "10",
         "hotspot-hover": "11",
-        detailImage: "20",
-        navigation: "30",
-        gallery: "40",
         overlay: "999",
       },
       // Animation

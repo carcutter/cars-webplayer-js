@@ -9,6 +9,7 @@ import { useComposition } from "@/hooks/useComposition";
 import CompositionContextProvider from "@/providers/CompositionContext";
 import { useControlsContext } from "@/providers/ControlsContext";
 import ControlsContextProvider from "@/providers/ControlsContext";
+import { positionToClassName } from "@/utils/style";
 
 const ExtendWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { extendMode, disableExtendMode } = useControlsContext();
@@ -35,7 +36,10 @@ const ExtendWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <div className="fixed inset-0 z-overlay flex flex-col items-center justify-center bg-foreground/85">
       {children}
-      <CloseButton onClick={disableExtendMode} />
+      <CloseButton
+        className={`absolute ${positionToClassName("top-right")}`}
+        onClick={disableExtendMode}
+      />
     </div>
   );
 };

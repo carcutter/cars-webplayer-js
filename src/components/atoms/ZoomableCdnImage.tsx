@@ -6,7 +6,7 @@ import { clamp } from "@/utils/math";
 
 import CdnImage, { CdnImageProps } from "./CdnImage";
 
-type Props = CdnImageProps;
+type Props = Omit<CdnImageProps, "onlyThumbnail" | "imgInPlayerWidthRatio">;
 
 type TransformStyle = {
   x: number;
@@ -14,8 +14,8 @@ type TransformStyle = {
   scale: number;
 };
 
-// TODO: Zoom is with wheel does not allow to scroll
-const ZoomableCdnImage: React.FC<Props> = ({ src, onLoad }) => {
+// TODO: Zoom is with wheel which does not allow to scroll
+const ZoomableCdnImage: React.FC<Props> = props => {
   const { zoom, isZoomed, setZoom } = useControlsContext();
 
   // -- Refs -- //
@@ -236,6 +236,11 @@ const ZoomableCdnImage: React.FC<Props> = ({ src, onLoad }) => {
 
   // - Update zoom when the ControlsContext's value changes
   useEffect(() => {
+    // DOM not ready yet
+    if (!transformElementRef.current) {
+      return;
+    }
+
     setZoomFromCenter(zoom);
   }, [setZoomFromCenter, zoom]);
 
@@ -356,9 +361,8 @@ const ZoomableCdnImage: React.FC<Props> = ({ src, onLoad }) => {
       >
         <CdnImage
           className="size-full"
-          src={src}
+          {...props}
           imgInPlayerWidthRatio={zoom}
-          onLoad={onLoad}
         />
       </div>
     </div>

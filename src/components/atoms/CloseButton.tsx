@@ -1,18 +1,11 @@
 import CustomizableIcon from "@/components/atoms/CustomizableIcon";
 import Button, { ButtonProps } from "@/components/ui/Button";
-import type { Position } from "@/types/position";
-import { positionToClassName } from "@/utils/style";
 
-type Props = ButtonProps & { position?: Position };
+type Props = ButtonProps;
 
-const CloseButton: React.FC<Props> = ({ position = "top-right", ...props }) => {
+const CloseButton: React.FC<Props> = ({ className = "", ...props }) => {
   return (
-    <Button
-      color="neutral"
-      shape="icon"
-      className={`absolute ${positionToClassName(position)}`}
-      {...props}
-    >
+    <Button color="neutral" shape="icon" className={className} {...props}>
       <CustomizableIcon customizationKey="CONTROLS_CLOSE">
         <img
           className="size-full"
