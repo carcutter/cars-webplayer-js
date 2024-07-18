@@ -13,17 +13,21 @@ import { clamp } from "@/utils/math";
 import { useCompositionContext } from "./CompositionContext";
 import { useGlobalContext } from "./GlobalContext";
 
+type ItemInteraction = null | "pending" | "running";
+
 type ContextType = {
   displayedCategoryId: string;
   setDisplayedCategoryId: (category: string) => void;
 
   displayedItems: Item[];
+  setItemInteraction: (index: number, value: ItemInteraction) => void;
   slidable: boolean;
   currentItemIndex: number;
   setCurrentItemIndex: (index: number) => void;
   targetItemIndex: number;
   setTargetItemIndex: (index: number) => void;
 
+  enableHotspotsControl: boolean;
   showHotspots: boolean;
   toggleHotspots: () => void;
 
@@ -39,6 +43,7 @@ type ContextType = {
   showingDetailImage: boolean;
   setShownDetailImage: (shownDetailImage: string | null) => void;
 
+  showZoomControls: boolean;
   zoom: number;
   isZoomed: boolean;
   setZoom: (zoom: number) => void;
@@ -88,10 +93,36 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     return displayedCategory.items;
   }, [flatten, compositionCategories, displayedCategoryId]);
 
+  const [itemInteractionList, setItemInteractionList] = useState<
+    ItemInteraction[]
+  >(displayedItems.map(() => null));
+  const setItemInteraction = useCallback(
+    (index: number, value: ItemInteraction) => {
+      setItemInteractionList(prev =>
+        prev.map((prevValue, i) => (i === index ? value : prevValue))
+      );
+    },
+    []
+  );
+
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
+  const currentItem = displayedItems[currentItemIndex];
+  const currentItemInteraction = itemInteractionList[currentItemIndex];
   const [targetItemIndex, setTargetItemIndex] = useState(0);
 
   const [showHotspots, setShowHotspots] = useState(true);
+  const enableHotspotsControl = useMemo(() => {
+    switch (currentItem.type) {
+      case "image":
+        return true;
+      case "video":
+      case "omni_directional":
+        return false;
+    }
+
+    return currentItemInteraction === "running";
+  }, [currentItem.type, currentItemInteraction]);
+
   const [extendMode, setExtendMode] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
 
@@ -133,8 +164,19 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
   const [shownDetailImage, setShownDetailImage] = useState<string | null>(null);
 
+  const showZoomControls = useMemo(() => {
+    switch (currentItem.type) {
+      case "image":
+        return true;
+      case "video":
+      case "omni_directional":
+        return false;
+    }
+
+    return currentItemInteraction === "running";
+  }, [currentItem.type, currentItemInteraction]);
   const [zoom, setZoom] = useState(1);
-const isZoomed = zoom !== 1;
+  const isZoomed = zoom !== 1;
   const canZoomIn = zoom < MAX_ZOOM;
   const canZoomOut = zoom > 1;
 
@@ -152,12 +194,14 @@ const isZoomed = zoom !== 1;
         setDisplayedCategoryId,
 
         displayedItems,
+        setItemInteraction,
         slidable: displayedItems.length > 1,
         currentItemIndex,
         setCurrentItemIndex,
         targetItemIndex,
         setTargetItemIndex,
 
+        enableHotspotsControl,
         showHotspots,
         toggleHotspots,
 
@@ -170,9 +214,10 @@ const isZoomed = zoom !== 1;
         toggleGallery,
 
         shownDetailImage,
-showingDetailImage: !!shownDetailImage,
+        showingDetailImage: !!shownDetailImage,
         setShownDetailImage,
 
+        showZoomControls,
         zoom,
         isZoomed,
         setZoom,

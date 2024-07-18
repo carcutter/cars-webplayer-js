@@ -11,9 +11,12 @@ import ImageElement from "./ImageElement";
 const DRAG_STEP_PX = 10;
 const SCROLL_STEP_PX = 15;
 
-type ThreeSixtyElementProps = Omit<Extract<Item, { type: "360" }>, "type">;
+type ThreeSixtyElementProps = Extract<Item, { type: "360" }> & {
+  index: number;
+};
+type ThreeSixtyElementInteractive = Omit<ThreeSixtyElementProps, "index">;
 
-const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
+const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
   images,
   hotspots,
 }) => {
@@ -292,19 +295,32 @@ const ThreeSixtyElementPlaceholder: React.FC<
   );
 };
 
-const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = props => {
+const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = ({
+  index,
+  ...item
+}) => {
+  const { setItemInteraction } = useControlsContext();
+
   const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    setItemInteraction(index, isReady ? "running" : "pending");
+
+    return () => {
+      setItemInteraction(index, null);
+    };
+  }, [index, isReady, setItemInteraction]);
 
   if (!isReady) {
     return (
       <ThreeSixtyElementPlaceholder
-        images={props.images}
+        images={item.images}
         onReady={() => setIsReady(true)}
       />
     );
   }
 
-  return <ThreeSixtyElementInteractive {...props} />;
+  return <ThreeSixtyElementInteractive {...item} />;
 };
 
 export default ThreeSixtyElement;

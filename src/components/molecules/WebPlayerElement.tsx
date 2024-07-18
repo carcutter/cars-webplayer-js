@@ -5,9 +5,13 @@ import VideoElement from "@/components/atoms/media_elements/VideoElement";
 import { useGlobalContext } from "@/providers/GlobalContext";
 import type { Item } from "@/types/composition";
 
-type Props = { item: Item; lazy?: boolean };
+type Props = {
+  index: number;
+  item: Item;
+  lazy?: boolean;
+};
 
-const WebPlayerElement: React.FC<Props> = ({ item, lazy }) => {
+const WebPlayerElement: React.FC<Props> = ({ index, item, lazy }) => {
   const { aspectRatioClass } = useGlobalContext();
 
   const { type } = item;
@@ -23,7 +27,7 @@ const WebPlayerElement: React.FC<Props> = ({ item, lazy }) => {
         Comp = <VideoElement item={item} />;
         break;
       case "360":
-        Comp = <ThreeSixtyElement {...item} />;
+        Comp = <ThreeSixtyElement index={index} {...item} />;
         break;
       case "omni_directional":
         Comp = <OmniDirectionElement item={item} />;

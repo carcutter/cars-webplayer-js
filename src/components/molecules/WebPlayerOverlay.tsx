@@ -23,6 +23,7 @@ const WebPlayerOverlay: React.FC = () => {
     currentItemIndex,
     setTargetItemIndex,
 
+    enableHotspotsControl,
     showHotspots,
     toggleHotspots,
     showGallery,
@@ -33,6 +34,7 @@ const WebPlayerOverlay: React.FC = () => {
     shownDetailImage,
     setShownDetailImage,
 
+    showZoomControls,
     isZoomed,
     resetZoom,
     canZoomIn,
@@ -152,31 +154,33 @@ const WebPlayerOverlay: React.FC = () => {
 
         <div className="col-start-3 flex flex-col gap-y-1 sm:gap-y-2">
           {/* Zoom buttons */}
-          <div>
-            <CustomizableButton
-              className="rounded-b-none"
-              customizationKey="CONTROLS_ZOOM_IN"
-              color="neutral"
-              shape="icon"
-              disabled={!canZoomIn}
-              onClick={zoomIn}
-            >
-              +
-            </CustomizableButton>
-            <Separator color="background" />
-            <CustomizableButton
-              className="rounded-t-none"
-              customizationKey="CONTROLS_ZOOM_OUT"
-              color="neutral"
-              shape="icon"
-              disabled={!canZoomOut}
-              onClick={zoomOut}
-            >
-              -
-            </CustomizableButton>
-          </div>
+          {showZoomControls && (
+            <div>
+              <CustomizableButton
+                className="rounded-b-none"
+                customizationKey="CONTROLS_ZOOM_IN"
+                color="neutral"
+                shape="icon"
+                disabled={!canZoomIn}
+                onClick={zoomIn}
+              >
+                +
+              </CustomizableButton>
+              <Separator color="background" />
+              <CustomizableButton
+                className="rounded-t-none"
+                customizationKey="CONTROLS_ZOOM_OUT"
+                color="neutral"
+                shape="icon"
+                disabled={!canZoomOut}
+                onClick={zoomOut}
+              >
+                -
+              </CustomizableButton>
+            </div>
+          )}
 
-          {/* Extend/Close button */}
+          {/* Extend/Reduce button */}
           <Button
             variant="fill"
             color={extendMode ? "primary" : "neutral"}
@@ -201,12 +205,13 @@ const WebPlayerOverlay: React.FC = () => {
               </CustomizableIcon>
             )}
           </Button>
+
           {/* Hotspot button */}
           <Button
             variant="fill"
             color={showHotspots ? "primary" : "neutral"}
             shape="icon"
-            disabled={hideGalleryControls}
+            disabled={!enableHotspotsControl || hideGalleryControls}
             onClick={toggleHotspots}
           >
             <CustomizableIcon customizationKey="CONTROLS_HOTSPOTS">

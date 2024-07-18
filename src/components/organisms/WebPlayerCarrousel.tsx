@@ -222,11 +222,12 @@ const WebPlayerCarrousel: React.FC = () => {
         className={`flex size-full ${slidable ? "overflow-x-auto transition-transform no-scrollbar *:snap-mandatory *:snap-start" : "justify-center"}`}
       >
         {items.map((item, index) => {
-          const key = item.type === "360" ? item.images[0] : item.src;
+          const imgSrc = item.type === "360" ? item.images[0] : item.src;
 
           return (
             <WebPlayerElement
-              key={key}
+              key={`${index}_${imgSrc}`}
+              index={index}
               item={item}
               lazy={Math.abs(index - currentItemIndex) > 1}
             />
