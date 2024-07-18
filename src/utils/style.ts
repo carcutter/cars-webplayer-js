@@ -10,6 +10,8 @@ export function positionXToClassName(positionX: PositionX): string {
       return "right-1 sm:right-2";
     case "center":
       return "left-1/2 -translate-x-1/2";
+    case "fullW":
+      return "inset-x-1 sm:inset-x-2";
   }
 }
 
@@ -21,6 +23,8 @@ export function positionYToClassName(positionY: PositionY): string {
       return "bottom-1 sm:bottom-2";
     case "middle":
       return "top-1/2 -translate-y-1/2";
+    case "fullH":
+      return "inset-y-1 sm:inset-y-2";
   }
 }
 
