@@ -12,9 +12,8 @@ const Gallery: React.FC = () => {
   const {
     displayedItems,
 
-    currentItemIndex,
-    targetItemIndex,
-    setTargetItemIndex,
+    masterItemIndex,
+    setItemIndexCommand,
   } = useControlsContext();
 
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -32,7 +31,7 @@ const Gallery: React.FC = () => {
     const containerWidth = slider.clientWidth;
     const itemWidth = slider.scrollWidth / displayedItems.length;
     const targetScrollLeft =
-      (targetItemIndex + 1 / 2) * itemWidth - containerWidth / 2;
+      (masterItemIndex + 1 / 2) * itemWidth - containerWidth / 2;
 
     const maxScroll = slider.scrollWidth - slider.clientWidth;
 
@@ -40,10 +39,10 @@ const Gallery: React.FC = () => {
 
     // Smooth scroll is enabled after the first scrolling (to avoid the initial scroll)
     slider.style.scrollBehavior = "smooth";
-  }, [displayedItems.length, targetItemIndex]);
+  }, [displayedItems.length, masterItemIndex]);
 
   const onItemClicked = (_item: Item, index: number) => {
-    setTargetItemIndex(index);
+    setItemIndexCommand(index);
   };
 
   return (
@@ -57,7 +56,7 @@ const Gallery: React.FC = () => {
             key={index}
             className={`
                 relative h-full ${aspectRatioClass} cursor-pointer
-                after:absolute after:inset-0 after:border-2 after:border-primary after:transition-opacity ${index === currentItemIndex ? "after:opacity-100" : "after:opacity-0 hover:after:opacity-70"}
+                after:absolute after:inset-0 after:border-2 after:border-primary after:transition-opacity ${index === masterItemIndex ? "after:opacity-100" : "after:opacity-0 hover:after:opacity-70"}
               `}
             onClick={() => onItemClicked(item, index)}
           >

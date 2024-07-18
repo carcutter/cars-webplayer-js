@@ -2,7 +2,6 @@ import { useCallback } from "react";
 
 import CloseButton from "@/components/atoms/CloseButton";
 import CustomizableIcon from "@/components/atoms/CustomizableIcon";
-import IndexIndicator from "@/components/atoms/IndexIndicator";
 import ZoomableCdnImage from "@/components/atoms/ZoomableCdnImage";
 import CategorySelect from "@/components/molecules/CategorySelect";
 import CustomizableButton from "@/components/molecules/CustomizableButton";
@@ -20,8 +19,8 @@ const WebPlayerOverlay: React.FC = () => {
     displayedItems: { length: dataLength },
     slidable,
 
-    currentItemIndex,
-    setTargetItemIndex,
+    masterItemIndex,
+    setItemIndexCommand,
 
     enableHotspotsControl,
     showHotspots,
@@ -44,12 +43,12 @@ const WebPlayerOverlay: React.FC = () => {
   } = useControlsContext();
 
   const prevImage = useCallback(() => {
-    setTargetItemIndex(currentItemIndex - 1);
-  }, [currentItemIndex, setTargetItemIndex]);
+    setItemIndexCommand(masterItemIndex - 1);
+  }, [masterItemIndex, setItemIndexCommand]);
 
   const nextImage = useCallback(() => {
-    setTargetItemIndex(currentItemIndex + 1);
-  }, [currentItemIndex, setTargetItemIndex]);
+    setItemIndexCommand(masterItemIndex + 1);
+  }, [masterItemIndex, setItemIndexCommand]);
 
   const handleCloseClick = useCallback(() => {
     resetZoom();
@@ -67,22 +66,15 @@ const WebPlayerOverlay: React.FC = () => {
         </div>
       )}
 
-      {/* Index indicator & Next/Prev buttons */}
+      {/* Next/Prev buttons */}
       {!hideGalleryControls && slidable && (
         <>
-          <div className={`absolute ${positionToClassName("top-right")}`}>
-            <IndexIndicator
-              currentIndex={currentItemIndex}
-              maxIndex={dataLength - 1}
-            />
-          </div>
-
           <Button
             shape="icon"
             color="neutral"
             className={`absolute ${positionToClassName("middle-left")}`}
             onClick={prevImage}
-            disabled={currentItemIndex <= 0}
+            disabled={masterItemIndex <= 0}
           >
             <CustomizableIcon customizationKey="CONTROLS_ARROW_LEFT">
               <img
@@ -97,7 +89,7 @@ const WebPlayerOverlay: React.FC = () => {
             color="neutral"
             className={`absolute ${positionToClassName("middle-right")}`}
             onClick={nextImage}
-            disabled={currentItemIndex >= dataLength}
+            disabled={masterItemIndex >= dataLength}
           >
             <CustomizableIcon customizationKey="CONTROLS_ARROW_RIGHT">
               <img

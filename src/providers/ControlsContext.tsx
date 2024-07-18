@@ -22,10 +22,11 @@ type ContextType = {
   displayedItems: Item[];
   setItemInteraction: (index: number, value: ItemInteraction) => void;
   slidable: boolean;
-  currentItemIndex: number;
-  setCurrentItemIndex: (index: number) => void;
-  targetItemIndex: number;
-  setTargetItemIndex: (index: number) => void;
+  carrouselItemIndex: number;
+  setCarrouselItemIndex: (index: number) => void;
+  itemIndexCommand: number | null;
+  setItemIndexCommand: (index: number | null) => void;
+  masterItemIndex: number;
 
   enableHotspotsControl: boolean;
   showHotspots: boolean;
@@ -105,14 +106,14 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     []
   );
 
-  const [currentItemIndex, setCurrentItemIndex] = useState(0);
-  const currentItem = displayedItems[currentItemIndex];
-  const currentItemInteraction = itemInteractionList[currentItemIndex];
-  const [targetItemIndex, setTargetItemIndex] = useState(0);
+  const [carrouselItemIndex, setCarrouselItemIndex] = useState(0);
+  const currentCarrouselItem = displayedItems[carrouselItemIndex];
+  const currentItemInteraction = itemInteractionList[carrouselItemIndex];
+  const [itemIndexCommand, setItemIndexCommand] = useState<number | null>(null);
 
   const [showHotspots, setShowHotspots] = useState(true);
   const enableHotspotsControl = useMemo(() => {
-    switch (currentItem.type) {
+    switch (currentCarrouselItem.type) {
       case "image":
         return true;
       case "video":
@@ -121,7 +122,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     }
 
     return currentItemInteraction === "running";
-  }, [currentItem.type, currentItemInteraction]);
+  }, [currentCarrouselItem.type, currentItemInteraction]);
 
   const [extendMode, setExtendMode] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
@@ -165,7 +166,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const [shownDetailImage, setShownDetailImage] = useState<string | null>(null);
 
   const showZoomControls = useMemo(() => {
-    switch (currentItem.type) {
+    switch (currentCarrouselItem.type) {
       case "image":
         return true;
       case "video":
@@ -174,7 +175,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     }
 
     return currentItemInteraction === "running";
-  }, [currentItem.type, currentItemInteraction]);
+  }, [currentCarrouselItem.type, currentItemInteraction]);
   const [zoom, setZoom] = useState(1);
   const isZoomed = zoom !== 1;
   const canZoomIn = zoom < MAX_ZOOM;
@@ -196,10 +197,11 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         displayedItems,
         setItemInteraction,
         slidable: displayedItems.length > 1,
-        currentItemIndex,
-        setCurrentItemIndex,
-        targetItemIndex,
-        setTargetItemIndex,
+        carrouselItemIndex,
+        setCarrouselItemIndex,
+        itemIndexCommand,
+        setItemIndexCommand,
+        masterItemIndex: itemIndexCommand ?? carrouselItemIndex,
 
         enableHotspotsControl,
         showHotspots,

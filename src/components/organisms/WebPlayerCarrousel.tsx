@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useRef } from "react";
 
+import IndexIndicator from "@/components/atoms/IndexIndicator";
 import WebPlayerElement from "@/components/molecules/WebPlayerElement";
 import { useControlsContext } from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
+import { positionToClassName } from "@/utils/style";
 
 const ONE_ITEM_DRAG_MULTIPLIER = 1.5;
 
@@ -11,9 +13,11 @@ const WebPlayerCarrousel: React.FC = () => {
   const {
     displayedItems: items,
     slidable,
-    currentItemIndex,
-    setCurrentItemIndex,
-    targetItemIndex,
+
+    carrouselItemIndex,
+    setCarrouselItemIndex,
+    itemIndexCommand,
+    setItemIndexCommand,
   } = useControlsContext();
 
   // -- Refs -- //
@@ -57,10 +61,6 @@ const WebPlayerCarrousel: React.FC = () => {
 
     return Math.round(decimalIndex);
   }, [getContainerWidth, getSliderOrThrow]);
-
-  useEffect(() => {
-    scrollToIndex(targetItemIndex);
-  }, [scrollToIndex, targetItemIndex]);
 
   // -- Update Style functions -- //
   const setStyleCursor = useCallback(
@@ -186,16 +186,22 @@ const WebPlayerCarrousel: React.FC = () => {
       });
     };
 
-    // - Update the currentItemIndex when the user moves the carrousel (scrolling/dragging)
+    // - Update the carrouselItemIndex when the user moves the carrousel (scrolling/dragging)
     const onScroll = () => {
       const closestIndex = computeClosestIndex();
-      setCurrentItemIndex(closestIndex);
+      setCarrouselItemIndex(closestIndex);
+
+      // Reset the command once it has been executed
+      if (closestIndex === itemIndexCommand) {
+        setItemIndexCommand(null);
+      }
     };
 
     slider.addEventListener("mousedown", onMouseDown);
     slider.addEventListener("mouseleave", onMouseEnd);
     slider.addEventListener("mouseup", onMouseEnd);
     slider.addEventListener("mousemove", onMouseMove);
+
     slider.addEventListener("scroll", onScroll);
 
     return () => {
@@ -203,17 +209,29 @@ const WebPlayerCarrousel: React.FC = () => {
       slider.removeEventListener("mouseleave", onMouseEnd);
       slider.removeEventListener("mouseup", onMouseEnd);
       slider.removeEventListener("mousemove", onMouseMove);
+
       slider.removeEventListener("scroll", onScroll);
     };
   }, [
     computeClosestIndex,
+    itemIndexCommand,
     scrollToIndex,
-    setCurrentItemIndex,
+    setCarrouselItemIndex,
+    setItemIndexCommand,
     setStyleCursor,
     setStyleScrollBehavior,
     setStyleSnapState,
     slidable,
   ]);
+
+  // Listen to ControlsContext's command to scroll to a specific index
+  useEffect(() => {
+    if (itemIndexCommand === null) {
+      return;
+    }
+
+    scrollToIndex(itemIndexCommand);
+  }, [scrollToIndex, itemIndexCommand]);
 
   return (
     <div className={`relative w-full ${aspectRatioClass}`}>
@@ -229,11 +247,20 @@ const WebPlayerCarrousel: React.FC = () => {
               key={`${index}_${imgSrc}`}
               index={index}
               item={item}
-              lazy={Math.abs(index - currentItemIndex) > 1}
+              lazy={Math.abs(index - carrouselItemIndex) > 1}
             />
           );
         })}
       </div>
+
+      {slidable && (
+        <div className={`absolute ${positionToClassName("top-right")}`}>
+          <IndexIndicator
+            currentIndex={carrouselItemIndex}
+            maxIndex={items.length - 1}
+          />
+        </div>
+      )}
     </div>
   );
 };
