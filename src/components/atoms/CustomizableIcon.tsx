@@ -4,7 +4,7 @@ type Props = { customizationKey: string; className?: string };
 
 const CustomizableIcon: React.FC<React.PropsWithChildren<Props>> = ({
   customizationKey,
-  className,
+  className = "",
   children: fallbackIcon,
 }) => {
   const { getIconConfig } = useCustomizationContext();

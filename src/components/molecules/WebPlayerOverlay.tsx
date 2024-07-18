@@ -1,4 +1,8 @@
+import { useCallback } from "react";
+
+import CloseButton from "@/components/atoms/CloseButton";
 import CustomizableIcon from "@/components/atoms/CustomizableIcon";
+import IndexIndicator from "@/components/atoms/IndexIndicator";
 import CategorySelect from "@/components/molecules/CategorySelect";
 import CustomizableButton from "@/components/molecules/CustomizableButton";
 import Gallery from "@/components/organisms/Gallery";
@@ -6,17 +10,17 @@ import Button from "@/components/ui/Button";
 import Separator from "@/components/ui/Separator";
 import { useControlsContext } from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
-import {
-  positionToClassName,
-  positionXToClassName,
-  positionYToClassName,
-} from "@/utils/style";
+import { positionToClassName } from "@/utils/style";
 
 const WebPlayerOverlay: React.FC = () => {
   const { flatten } = useGlobalContext();
 
   const {
     displayedItems: { length: dataLength },
+    slidable,
+
+    currentItemIndex,
+    setTargetItemIndex,
 
     showHotspots,
     toggleHotspots,
@@ -25,11 +29,25 @@ const WebPlayerOverlay: React.FC = () => {
     extendMode,
     toggleExtendMode,
 
+    isZoomed,
+    resetZoom,
     canZoomIn,
     zoomIn,
     canZoomOut,
     zoomOut,
   } = useControlsContext();
+
+  const prevImage = useCallback(() => {
+    setTargetItemIndex(currentItemIndex - 1);
+  }, [currentItemIndex, setTargetItemIndex]);
+
+  const nextImage = useCallback(() => {
+    setTargetItemIndex(currentItemIndex + 1);
+  }, [currentItemIndex, setTargetItemIndex]);
+
+  const handleCloseClick = useCallback(() => {
+    resetZoom();
+  }, [resetZoom]);
 
   return (
     <>
@@ -40,14 +58,61 @@ const WebPlayerOverlay: React.FC = () => {
         </div>
       )}
 
+      {/* Index indicator & Next/Prev buttons */}
+      {!isZoomed && slidable && (
+        <>
+          <div className={`absolute ${positionToClassName("top-right")}`}>
+            <IndexIndicator
+              currentIndex={currentItemIndex}
+              maxIndex={dataLength - 1}
+            />
+          </div>
+
+          <Button
+            shape="icon"
+            color="neutral"
+            className={`absolute ${positionToClassName("middle-left")}`}
+            onClick={prevImage}
+            disabled={currentItemIndex <= 0}
+          >
+            <CustomizableIcon customizationKey="CONTROLS_ARROW_LEFT">
+              <img
+                className="size-full rotate-180"
+                src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/arrow_forward.svg"
+                alt="Previous icon"
+              />
+            </CustomizableIcon>
+          </Button>
+          <Button
+            shape="icon"
+            color="neutral"
+            className={`absolute ${positionToClassName("middle-right")}`}
+            onClick={nextImage}
+            disabled={currentItemIndex >= dataLength}
+          >
+            <CustomizableIcon customizationKey="CONTROLS_ARROW_RIGHT">
+              <img
+                className="size-full"
+                src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/arrow_forward.svg"
+                alt="Next icon"
+              />
+            </CustomizableIcon>
+          </Button>
+        </>
+      )}
+
+      {/* Close button */}
+      {isZoomed && <CloseButton onClick={handleCloseClick} />}
+
       {/* Bottom overlay : Gallery, Hotspots toggle, ... */}
       <div
-        className={`absolute ${positionYToClassName("bottom")} ${positionXToClassName("left")} ${positionXToClassName("right")} grid grid-cols-[auto,1fr,auto] items-end gap-x-1 sm:gap-x-2`}
+        className={`absolute ${positionToClassName("bottom-fullW")} grid grid-cols-[auto,1fr,auto] items-end gap-x-1 sm:gap-x-2`}
       >
         {/* Gallery's toogle button & Gallery */}
         {dataLength > 1 && (
           <>
             <Button
+              className={isZoomed ? "invisible" : ""}
               variant="fill"
               color={showGallery ? "primary" : "neutral"}
               shape="icon"
@@ -61,7 +126,7 @@ const WebPlayerOverlay: React.FC = () => {
                 />
               </CustomizableIcon>
             </Button>
-            {showGallery && <Gallery />}
+            {showGallery && <Gallery className={isZoomed ? "invisible" : ""} />}
           </>
         )}
 
@@ -121,6 +186,7 @@ const WebPlayerOverlay: React.FC = () => {
             variant="fill"
             color={showHotspots ? "primary" : "neutral"}
             shape="icon"
+            disabled={isZoomed}
             onClick={toggleHotspots}
           >
             <CustomizableIcon customizationKey="CONTROLS_HOTSPOTS">

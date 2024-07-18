@@ -18,6 +18,7 @@ type ContextType = {
   setDisplayedCategoryId: (category: string) => void;
 
   displayedItems: Item[];
+  slidable: boolean;
   currentItemIndex: number;
   setCurrentItemIndex: (index: number) => void;
   targetItemIndex: number;
@@ -37,6 +38,7 @@ type ContextType = {
   zoom: number;
   isZoomed: boolean;
   setZoom: (zoom: number) => void;
+  resetZoom: () => void;
   canZoomIn: boolean;
   zoomIn: () => void;
   canZoomOut: boolean;
@@ -129,6 +131,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const shiftZoom = useCallback((shift: number) => {
     setZoom(prev => clamp(prev + shift, 1, MAX_ZOOM));
   }, []);
+  const resetZoom = useCallback(() => setZoom(1), []);
   const zoomIn = useCallback(() => shiftZoom(ZOOM_STEP), [shiftZoom]);
   const zoomOut = useCallback(() => shiftZoom(-ZOOM_STEP), [shiftZoom]);
 
@@ -139,6 +142,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         setDisplayedCategoryId,
 
         displayedItems,
+        slidable: displayedItems.length > 1,
         currentItemIndex,
         setCurrentItemIndex,
         targetItemIndex,
@@ -158,6 +162,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         zoom,
         isZoomed: zoom !== 1,
         setZoom,
+        resetZoom,
         canZoomIn: zoom < MAX_ZOOM,
         zoomIn,
         canZoomOut: zoom > 1,

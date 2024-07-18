@@ -1,11 +1,8 @@
 import { useCallback, useEffect, useRef } from "react";
 
-import IndexIndicator from "@/components/atoms/IndexIndicator";
-import NextPrevButtons from "@/components/molecules/NextPrevButtons";
 import WebPlayerElement from "@/components/molecules/WebPlayerElement";
 import { useControlsContext } from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
-import { positionToClassName } from "@/utils/style";
 
 const ONE_ITEM_DRAG_MULTIPLIER = 1.5;
 
@@ -13,10 +10,10 @@ const WebPlayerCarrousel: React.FC = () => {
   const { aspectRatioClass } = useGlobalContext();
   const {
     displayedItems: items,
+    slidable,
     currentItemIndex,
     setCurrentItemIndex,
     targetItemIndex,
-    setTargetItemIndex,
   } = useControlsContext();
 
   // -- Refs -- //
@@ -36,9 +33,6 @@ const WebPlayerCarrousel: React.FC = () => {
   const startScrollLeft = useRef<number | null>(null);
 
   // -- Snapping -- //
-  const length = items.length;
-  const slidable = length > 1;
-
   const getContainerWidth = useCallback(() => {
     const slider = getSliderOrThrow("getContainerWidth");
 
@@ -63,14 +57,6 @@ const WebPlayerCarrousel: React.FC = () => {
 
     return Math.round(decimalIndex);
   }, [getContainerWidth, getSliderOrThrow]);
-
-  const prevImage = useCallback(() => {
-    setTargetItemIndex(currentItemIndex - 1);
-  }, [currentItemIndex, setTargetItemIndex]);
-
-  const nextImage = useCallback(() => {
-    setTargetItemIndex(currentItemIndex + 1);
-  }, [currentItemIndex, setTargetItemIndex]);
 
   useEffect(() => {
     scrollToIndex(targetItemIndex);
@@ -112,9 +98,8 @@ const WebPlayerCarrousel: React.FC = () => {
   useEffect(() => {
     setStyleScrollBehavior("auto");
     scrollToIndex(0);
-    setCurrentItemIndex(0);
     setStyleScrollBehavior("smooth");
-  }, [items, scrollToIndex, setCurrentItemIndex, setStyleScrollBehavior]);
+  }, [items, scrollToIndex, setStyleScrollBehavior]);
 
   // -- Event listeners to handle the slider -- //
   useEffect(() => {
@@ -248,21 +233,6 @@ const WebPlayerCarrousel: React.FC = () => {
           );
         })}
       </div>
-
-      {slidable && (
-        <>
-          <div className={`absolute ${positionToClassName("top-right")}`}>
-            <IndexIndicator currentIndex={currentItemIndex} length={length} />
-          </div>
-
-          <NextPrevButtons
-            currentIndex={targetItemIndex}
-            maxIndex={length - 1}
-            onPrev={prevImage}
-            onNext={nextImage}
-          />
-        </>
-      )}
     </div>
   );
 };

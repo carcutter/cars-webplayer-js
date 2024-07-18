@@ -6,7 +6,11 @@ import { useGlobalContext } from "@/providers/GlobalContext";
 import type { Item } from "@/types/composition";
 import { clamp } from "@/utils/math";
 
-const Gallery: React.FC = () => {
+type Props = {
+  className?: string;
+};
+
+const Gallery: React.FC<Props> = ({ className = "" }) => {
   const { aspectRatioClass } = useGlobalContext();
 
   const {
@@ -46,7 +50,7 @@ const Gallery: React.FC = () => {
   return (
     <div
       ref={sliderRef}
-      className="relative -mx-1 overflow-x-auto scroll-smooth px-1 no-scrollbar [mask-image:linear-gradient(to_left,transparent_0px,black_4px,black_calc(100%-4px),transparent_100%)]"
+      className={`relative -mx-1 overflow-x-auto scroll-smooth px-1 no-scrollbar [mask-image:linear-gradient(to_left,transparent_0px,black_4px,black_calc(100%-4px),transparent_100%)] ${className}`}
     >
       <div className="flex h-12 w-fit gap-2">
         {displayedItems.map((item, index) => (
