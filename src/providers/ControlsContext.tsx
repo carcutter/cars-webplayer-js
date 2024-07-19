@@ -46,7 +46,7 @@ type ContextType = {
 
   showZoomControls: boolean;
   zoom: number;
-  isZoomed: boolean;
+  isZooming: boolean;
   setZoom: (zoom: number) => void;
   resetZoom: () => void;
   canZoomIn: boolean;
@@ -177,7 +177,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     return currentItemInteraction === "running";
   }, [currentCarrouselItem.type, currentItemInteraction]);
   const [zoom, setZoom] = useState(1);
-  const isZoomed = zoom !== 1;
+  const isZooming = zoom !== 1;
   const canZoomIn = zoom < MAX_ZOOM;
   const canZoomOut = zoom > 1;
 
@@ -221,7 +221,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
         showZoomControls,
         zoom,
-        isZoomed,
+        isZooming,
         setZoom,
         resetZoom,
         canZoomIn,

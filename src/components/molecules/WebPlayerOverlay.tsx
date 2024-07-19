@@ -34,7 +34,7 @@ const WebPlayerOverlay: React.FC = () => {
     setShownDetailImage,
 
     showZoomControls,
-    isZoomed,
+    isZooming,
     resetZoom,
     canZoomIn,
     zoomIn,
@@ -55,7 +55,7 @@ const WebPlayerOverlay: React.FC = () => {
     setShownDetailImage(null);
   }, [resetZoom, setShownDetailImage]);
 
-  const hideGalleryControls = isZoomed || !!shownDetailImage;
+  const hideGalleryControls = isZooming || !!shownDetailImage;
 
   const sharedClassName = "absolute z-overlay";
 

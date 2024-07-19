@@ -21,7 +21,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
   hotspots,
 }) => {
   const { reverse360 } = useGlobalContext();
-  const { showingDetailImage, isZoomed } = useControlsContext();
+  const { showingDetailImage, isZooming } = useControlsContext();
 
   // -- Flip Book -- //
   // - element refs
@@ -46,7 +46,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
   // -- Event listeners to handle dragging (allow to spin) -- //
   useEffect(() => {
     // We do not want to rotate while zooming or showing a detail image
-    if (isZoomed || showingDetailImage) {
+    if (isZooming || showingDetailImage) {
       return;
     }
 
@@ -114,13 +114,13 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
     displayPreviousImage,
     reverse360,
     showingDetailImage,
-    isZoomed,
+    isZooming,
   ]);
 
   // -- Event listeners to handle the "invisible scroller" that rotate 360 -- //
   useEffect(() => {
     // We do not want to rotate while zooming or showing a detail image
-    if (isZoomed || showingDetailImage) {
+    if (isZooming || showingDetailImage) {
       return;
     }
 
@@ -172,7 +172,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
     displayPreviousImage,
     reverse360,
     showingDetailImage,
-    isZoomed,
+    isZooming,
   ]);
 
   return (

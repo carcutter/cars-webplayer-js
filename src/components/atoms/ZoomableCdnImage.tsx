@@ -16,7 +16,7 @@ type TransformStyle = {
 
 // TODO: Zoom is with wheel which does not allow to scroll
 const ZoomableCdnImage: React.FC<Props> = props => {
-  const { zoom, isZoomed, setZoom } = useControlsContext();
+  const { zoom, isZooming, setZoom } = useControlsContext();
 
   // -- Refs -- //
   // - element refs
@@ -246,7 +246,7 @@ const ZoomableCdnImage: React.FC<Props> = props => {
 
   // -  Handle dragging within zoomed image
   useEffect(() => {
-    if (!isZoomed) {
+    if (!isZooming) {
       return;
     }
 
@@ -309,7 +309,7 @@ const ZoomableCdnImage: React.FC<Props> = props => {
       container.removeEventListener("mouseup", onMouseEnd);
       container.removeEventListener("mousemove", onMouseMove);
     };
-  }, [isZoomed, offsetTransformXYStyle]);
+  }, [isZooming, offsetTransformXYStyle]);
 
   // - Listen to wheel zooming
   useEffect(() => {
@@ -353,7 +353,7 @@ const ZoomableCdnImage: React.FC<Props> = props => {
   return (
     <div
       ref={containerRef}
-      className={`relative size-full overflow-hidden ${isZoomed ? "z-zoomed-image cursor-move" : ""}`}
+      className={`relative size-full overflow-hidden ${isZooming ? "z-zoomed-image cursor-move" : ""}`}
     >
       <div
         ref={transformElementRef}
