@@ -6,8 +6,6 @@ import { useControlsContext } from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
 import { positionToClassName } from "@/utils/style";
 
-const ONE_ITEM_DRAG_MULTIPLIER = 1.5;
-
 const WebPlayerCarrousel: React.FC = () => {
   const { aspectRatioClass } = useGlobalContext();
   const {
@@ -181,8 +179,7 @@ const WebPlayerCarrousel: React.FC = () => {
           throw new Error("[onMouseMove] scrollLeft is null");
         }
 
-        slider.scrollLeft =
-          startScrollLeft.current - walk * ONE_ITEM_DRAG_MULTIPLIER;
+        slider.scrollLeft = startScrollLeft.current - walk;
       });
     };
 
