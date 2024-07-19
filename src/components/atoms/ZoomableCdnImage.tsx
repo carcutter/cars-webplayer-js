@@ -353,7 +353,7 @@ const ZoomableCdnImage: React.FC<Props> = props => {
   return (
     <div
       ref={containerRef}
-      className={`size-full overflow-hidden ${isZoomed ? "cursor-move" : ""}`}
+      className={`relative size-full overflow-hidden ${isZoomed ? "z-zoomed-image cursor-move" : ""}`}
     >
       <div
         ref={transformElementRef}

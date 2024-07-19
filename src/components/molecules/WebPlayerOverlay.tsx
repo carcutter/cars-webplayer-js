@@ -57,11 +57,15 @@ const WebPlayerOverlay: React.FC = () => {
 
   const hideGalleryControls = isZoomed || !!shownDetailImage;
 
+  const sharedClassName = "absolute z-overlay";
+
   return (
     <>
       {/* CategorySelect (on top) */}
       {!hideGalleryControls && !flatten && (
-        <div className={`absolute ${positionToClassName("top-center")}`}>
+        <div
+          className={`${sharedClassName} ${positionToClassName("top-center")}`}
+        >
           <CategorySelect />
         </div>
       )}
@@ -72,7 +76,7 @@ const WebPlayerOverlay: React.FC = () => {
           <Button
             shape="icon"
             color="neutral"
-            className={`absolute ${positionToClassName("middle-left")}`}
+            className={`${sharedClassName} ${positionToClassName("middle-left")}`}
             onClick={prevImage}
             disabled={masterItemIndex <= 0}
           >
@@ -87,7 +91,7 @@ const WebPlayerOverlay: React.FC = () => {
           <Button
             shape="icon"
             color="neutral"
-            className={`absolute ${positionToClassName("middle-right")}`}
+            className={`${sharedClassName} ${positionToClassName("middle-right")}`}
             onClick={nextImage}
             disabled={masterItemIndex >= dataLength}
           >
@@ -103,7 +107,7 @@ const WebPlayerOverlay: React.FC = () => {
       )}
 
       {!!shownDetailImage && (
-        <div className="absolute inset-0">
+        <div className={`${sharedClassName} inset-0`}>
           <ZoomableCdnImage className="size-full" src={shownDetailImage} />
         </div>
       )}
@@ -111,14 +115,14 @@ const WebPlayerOverlay: React.FC = () => {
       {/* Close button */}
       {hideGalleryControls && (
         <CloseButton
-          className={`absolute ${positionToClassName("top-right")}`}
+          className={`${sharedClassName} ${positionToClassName("top-right")}`}
           onClick={handleCloseClick}
         />
       )}
 
       {/* Bottom overlay : Gallery, Hotspots toggle, ... */}
       <div
-        className={`absolute ${positionToClassName("bottom-fullW")} grid grid-cols-[auto,1fr,auto] items-end gap-x-1 sm:gap-x-2`}
+        className={`${sharedClassName} ${positionToClassName("bottom-fullW")} grid grid-cols-[auto,1fr,auto] items-end gap-x-1 sm:gap-x-2`}
       >
         {/* Gallery's toogle button & Gallery */}
         {!hideGalleryControls && dataLength > 1 && (

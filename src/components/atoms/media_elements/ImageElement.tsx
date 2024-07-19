@@ -9,8 +9,7 @@ type Props = Omit<Extract<Item, { type: "image" }>, "type"> & {
 };
 
 const ImageElement: React.FC<Props> = ({ src, hotspots, onLoad }) => {
-  const { showingDetailImage, setShownDetailImage, isZoomed, showHotspots } =
-    useControlsContext();
+  const { setShownDetailImage, showHotspots } = useControlsContext();
 
   const handleShowDetailImageClick = (detailImage: string) => {
     setShownDetailImage(detailImage);
@@ -20,8 +19,6 @@ const ImageElement: React.FC<Props> = ({ src, hotspots, onLoad }) => {
     <div className="relative size-full overflow-hidden">
       <ZoomableCdnImage src={src} onLoad={onLoad} />
       {showHotspots &&
-        !isZoomed && // Hotspots are not shown when zoomed in to avoid hiding anything
-        !showingDetailImage && // Hotspots have a z-index to stay over the scrollArea, but we don't want them to be visible when the detail image is shown
         hotspots?.map((hotspot, index) => (
           <Hotspot
             key={index}

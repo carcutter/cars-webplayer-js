@@ -34,7 +34,7 @@ const ExtendWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
   }
 
   return (
-    <div className="fixed inset-0 z-overlay flex flex-col items-center justify-center bg-foreground/85">
+    <div className="fixed inset-0 z-modal flex flex-col items-center justify-center bg-foreground/85">
       {children}
       <CloseButton
         className={`absolute ${positionToClassName("top-right")}`}

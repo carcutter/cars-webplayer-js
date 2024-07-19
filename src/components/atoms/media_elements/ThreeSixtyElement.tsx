@@ -176,10 +176,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
   ]);
 
   return (
-    <div
-      ref={containerRef}
-      className={!isZoomed ? "cursor-ew-resize" : "cursor-move"}
-    >
+    <div ref={containerRef} className="cursor-ew-resize">
       <div className="hidden">
         {/* Take the 2 prev & 2 next images and insert them on the DOM to ensure preload */}
         {[-2, -1, 1, 2].map(offset => {
@@ -191,20 +188,17 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
 
       <ImageElement src={images[imageIndex]} hotspots={hotspots[imageIndex]} />
 
-      {/* Scroller is an invisible element in front of the image to capture scroll event */}
-      {/* Hotspots' z-index allow to keep them in front */}
-      {/* Scroll is disabled while zooming or while showing detail image */}
-      {!isZoomed && !showingDetailImage && (
+      {/* Scroller is an invisible element in front of the image which capture scroll event to make the 360 spin */}
+      {/* NOTE: Hotspots' z-index allow to keep them in front */}
+      <div
+        ref={scrollerRef}
+        className="absolute inset-0 overflow-auto no-scrollbar"
+      >
         <div
-          ref={scrollerRef}
-          className="absolute inset-0 overflow-auto no-scrollbar"
-        >
-          <div
-            className="h-full"
-            style={{ width: `calc(100% + ${4 * SCROLL_STEP_PX}px` }}
-          />
-        </div>
-      )}
+          className="h-full"
+          style={{ width: `calc(100% + ${4 * SCROLL_STEP_PX}px` }}
+        />
+      </div>
     </div>
   );
 };
