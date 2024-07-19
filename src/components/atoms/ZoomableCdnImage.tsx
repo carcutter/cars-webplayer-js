@@ -14,7 +14,6 @@ type TransformStyle = {
   scale: number;
 };
 
-// TODO: Zoom is with wheel which does not allow to scroll
 const ZoomableCdnImage: React.FC<Props> = props => {
   const { zoom, isZooming, setZoom } = useControlsContext();
 
@@ -244,16 +243,16 @@ const ZoomableCdnImage: React.FC<Props> = props => {
     setZoomFromCenter(zoom);
   }, [setZoomFromCenter, zoom]);
 
-  // -  Handle dragging within zoomed image
+  // -  Handle mouse dragging within zoomed image
   useEffect(() => {
     if (!isZooming) {
       return;
     }
 
-    const container = containerRef.current;
+    const transformElement = transformElementRef.current;
 
     // DOM not ready yet
-    if (!container) {
+    if (!transformElement) {
       return;
     }
 
@@ -298,20 +297,20 @@ const ZoomableCdnImage: React.FC<Props> = props => {
       };
     };
 
-    container.addEventListener("mousedown", onMouseDown);
-    container.addEventListener("mouseleave", onMouseEnd);
-    container.addEventListener("mouseup", onMouseEnd);
-    container.addEventListener("mousemove", onMouseMove);
+    transformElement.addEventListener("mousedown", onMouseDown);
+    transformElement.addEventListener("mouseleave", onMouseEnd);
+    transformElement.addEventListener("mouseup", onMouseEnd);
+    transformElement.addEventListener("mousemove", onMouseMove);
 
     return () => {
-      container.removeEventListener("mousedown", onMouseDown);
-      container.removeEventListener("mouseleave", onMouseEnd);
-      container.removeEventListener("mouseup", onMouseEnd);
-      container.removeEventListener("mousemove", onMouseMove);
+      transformElement.removeEventListener("mousedown", onMouseDown);
+      transformElement.removeEventListener("mouseleave", onMouseEnd);
+      transformElement.removeEventListener("mouseup", onMouseEnd);
+      transformElement.removeEventListener("mousemove", onMouseMove);
     };
   }, [isZooming, offsetTransformXYStyle]);
 
-  // - Listen to wheel zooming
+  // - Listen to trackpad & wheel from zooming/scrolling
   useEffect(() => {
     const container = containerRef.current;
 
@@ -321,26 +320,33 @@ const ZoomableCdnImage: React.FC<Props> = props => {
     }
 
     const onWheel = (e: WheelEvent) => {
-      const { clientX, clientY, deltaX, deltaY } = e;
+      const { ctrlKey: zoomEvent, clientX, clientY, deltaX, deltaY } = e;
 
-      // If we are scrolling horizontally, we don't want to not zoom (maybe we want to spin the 360 or scroll the slider)
-      if (deltaX !== 0 && Math.abs(deltaX) + 2 > Math.abs(deltaY)) {
+      // If we are not zooming, we do only want to take care of zoom events
+      if (!isZooming && !zoomEvent) {
         return;
       }
 
+      e.stopPropagation();
       e.preventDefault();
 
-      const { left: parentOffsetX, top: parentOffsetY } =
-        container.getBoundingClientRect();
+      if (zoomEvent) {
+        const { left: parentOffsetX, top: parentOffsetY } =
+          container.getBoundingClientRect();
+        // Translate the mouse position to the container position
+        const x = clientX - parentOffsetX;
+        const y = clientY - parentOffsetY;
 
-      // Translate the mouse position to the container position
-      const x = clientX - parentOffsetX;
-      const y = clientY - parentOffsetY;
-
-      setTransformZoom(zoom - 0.01 * deltaY, {
-        x,
-        y,
-      });
+        setTransformZoom(zoom - 0.01 * deltaY, {
+          x,
+          y,
+        });
+      } else {
+        offsetTransformXYStyle({
+          x: -2 * deltaX,
+          y: -2 * deltaY,
+        });
+      }
     };
 
     container.addEventListener("wheel", onWheel);
@@ -348,7 +354,7 @@ const ZoomableCdnImage: React.FC<Props> = props => {
     return () => {
       container.removeEventListener("wheel", onWheel);
     };
-  }, [setTransformZoom, zoom]);
+  }, [isZooming, offsetTransformXYStyle, setTransformZoom, zoom]);
 
   return (
     <div
@@ -357,7 +363,7 @@ const ZoomableCdnImage: React.FC<Props> = props => {
     >
       <div
         ref={transformElementRef}
-        className="pointer-events-none origin-top-left" // If not, will zoom at the center and crop the top-left part
+        className="origin-top-left" // If not, will zoom at the center and crop the top-left part
       >
         <CdnImage
           className="size-full"
