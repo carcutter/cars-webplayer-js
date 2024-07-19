@@ -21,9 +21,10 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
   hotspots,
 }) => {
   const { reverse360 } = useGlobalContext();
-  const { showingDetailImage, isZooming } = useControlsContext();
+  const { showingDetailImage, isZooming, setZoom } = useControlsContext();
 
-  // -- Flip Book -- //
+  const disabled = isZooming || showingDetailImage; // We do not want to do anything while zooming or showing a detail image
+
   // - element refs
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -43,10 +44,9 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
     setImageIndex(currentIndex => (currentIndex + 1) % length);
   }, [length]);
 
-  // -- Event listeners to handle dragging (allow to spin) -- //
+  // - Event listeners to handle spinning with mouse dragging
   useEffect(() => {
-    // We do not want to rotate while zooming or showing a detail image
-    if (isZooming || showingDetailImage) {
+    if (disabled) {
       return;
     }
 
@@ -57,7 +57,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
       return;
     }
 
-    // - Handle when the user just clicked on the 360 to start spinning
+    // Handle when the user just clicked on the 360 to start spinning
     const onMouseDown = (e: MouseEvent) => {
       e.preventDefault(); // Prevents native image dragging
 
@@ -66,7 +66,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
       mouseStartX.current = e.clientX;
     };
 
-    // - Handle when the user releases the 360 or leaves the spinning area
+    // Handle when the user releases the 360 or leaves the spinning area
     const onMouseEnd = () => {
       isMouseDown.current = false;
     };
@@ -98,6 +98,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
       }
       mouseStartX.current = e.clientX;
     };
+
     container.addEventListener("mousedown", onMouseDown);
     container.addEventListener("mouseleave", onMouseEnd);
     container.addEventListener("mouseup", onMouseEnd);
@@ -109,18 +110,11 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
       container.removeEventListener("mouseup", onMouseEnd);
       container.removeEventListener("mousemove", onMouseMove);
     };
-  }, [
-    displayNextImage,
-    displayPreviousImage,
-    reverse360,
-    showingDetailImage,
-    isZooming,
-  ]);
+  }, [displayNextImage, displayPreviousImage, disabled, reverse360]);
 
-  // -- Event listeners to handle the "invisible scroller" that rotate 360 -- //
+  // - Event listener to handle spinning with scrolling (thanks to the "invisible scroller")
   useEffect(() => {
-    // We do not want to rotate while zooming or showing a detail image
-    if (isZooming || showingDetailImage) {
+    if (disabled) {
       return;
     }
 
@@ -167,13 +161,43 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
     return () => {
       scroller.removeEventListener("scroll", onScroll);
     };
-  }, [
-    displayNextImage,
-    displayPreviousImage,
-    reverse360,
-    showingDetailImage,
-    isZooming,
-  ]);
+  }, [displayNextImage, displayPreviousImage, disabled, reverse360]);
+
+  // - Event listener to enter zoom mode with wheel/pinch
+  useEffect(() => {
+    // We do not need to handle it while zooming or showing a detail image
+    if (disabled) {
+      return;
+    }
+
+    const scroller = scrollerRef.current;
+
+    // DOM not ready yet
+    if (!scroller) {
+      return;
+    }
+
+    const onWheel = (e: WheelEvent) => {
+      const { ctrlKey: zoomEvent, deltaY } = e;
+
+      // Check if the user is trying to zoom in
+      if (!zoomEvent || deltaY > 0) {
+        return;
+      }
+
+      // Avoid to zoom the page
+      e.preventDefault();
+
+      // Enter zoom mode
+      setZoom(1.005);
+    };
+
+    scroller.addEventListener("wheel", onWheel);
+
+    return () => {
+      scroller.removeEventListener("wheel", onWheel);
+    };
+  }, [disabled, setZoom]);
 
   return (
     <div ref={containerRef} className="cursor-ew-resize">
@@ -192,7 +216,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
       {/* NOTE: Hotspots' z-index allow to keep them in front */}
       <div
         ref={scrollerRef}
-        className="absolute inset-0 overflow-auto no-scrollbar"
+        className="absolute inset-0 overflow-x-scroll no-scrollbar"
       >
         <div
           className="h-full"

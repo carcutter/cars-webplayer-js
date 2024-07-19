@@ -330,7 +330,7 @@ const ZoomableCdnImage: React.FC<Props> = props => {
         return;
       }
 
-      e.stopPropagation();
+      // Avoid to zoom the page
       e.preventDefault();
 
       if (zoomEvent) {
