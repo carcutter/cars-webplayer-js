@@ -91,7 +91,10 @@ const ZoomableCdnImage: React.FC<Props> = props => {
 
       const animationId = ++currentAnimationIdRef.current;
 
-      if (!animationDuration) {
+      const targetAlreadyReached =
+        startX === targetX && startY === targetY && startScale === targetScale;
+
+      if (!animationDuration || targetAlreadyReached) {
         setTransformStyle({ x: targetX, y: targetY, scale: targetScale });
         setZoom(targetScale);
         return;
@@ -102,7 +105,7 @@ const ZoomableCdnImage: React.FC<Props> = props => {
       const startTime = new Date().getTime();
 
       const animateStep = () => {
-        // Animation was interrupted
+        // Check if a new animation has been requested in the meantime
         if (animationId !== currentAnimationIdRef.current) {
           return;
         }
