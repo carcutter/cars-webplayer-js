@@ -8,6 +8,7 @@ import CustomizableButton from "@/components/molecules/CustomizableButton";
 import Gallery from "@/components/organisms/Gallery";
 import Button from "@/components/ui/Button";
 import Separator from "@/components/ui/Separator";
+import { useEscapeKeyEffect } from "@/hooks/useEscapeKeyEffect";
 import { useControlsContext } from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
 import { positionToClassName } from "@/utils/style";
@@ -50,10 +51,13 @@ const WebPlayerOverlay: React.FC = () => {
     setItemIndexCommand(masterItemIndex + 1);
   }, [masterItemIndex, setItemIndexCommand]);
 
-  const handleCloseClick = useCallback(() => {
+  const resetView = useCallback(() => {
     resetZoom();
     setShownDetailImage(null);
   }, [resetZoom, setShownDetailImage]);
+
+  // Handle escape key to unzoom/exit detail image
+  useEscapeKeyEffect(resetView);
 
   const hideGalleryControls = isZooming || !!shownDetailImage;
 
@@ -116,7 +120,7 @@ const WebPlayerOverlay: React.FC = () => {
       {hideGalleryControls && (
         <CloseButton
           className={`${sharedClassName} ${positionToClassName("top-right")}`}
-          onClick={handleCloseClick}
+          onClick={resetView}
         />
       )}
 

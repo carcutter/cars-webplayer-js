@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback } from "react";
 import { ZodError } from "zod";
 
 import CloseButton from "@/components/atoms/CloseButton";
@@ -6,28 +6,25 @@ import WebPlayerOverlay from "@/components/molecules/WebPlayerOverlay";
 import WebPlayerCarrousel from "@/components/organisms/WebPlayerCarrousel";
 import ErrorTemplate from "@/components/template/ErrorTemplate";
 import { useComposition } from "@/hooks/useComposition";
+import { useEscapeKeyEffect } from "@/hooks/useEscapeKeyEffect";
 import CompositionContextProvider from "@/providers/CompositionContext";
 import { useControlsContext } from "@/providers/ControlsContext";
 import ControlsContextProvider from "@/providers/ControlsContext";
 import { positionToClassName } from "@/utils/style";
 
 const ExtendWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const { extendMode, disableExtendMode } = useControlsContext();
+  const { extendMode, disableExtendMode, isZooming, showingDetailImage } =
+    useControlsContext();
 
   // Handle escape key to disable extend mode
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        disableExtendMode();
+  useEscapeKeyEffect(
+    useCallback(() => {
+      if (isZooming || showingDetailImage || !extendMode) {
+        return;
       }
-    };
-
-    addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      removeEventListener("keydown", handleKeyDown);
-    };
-  }, [disableExtendMode]);
+      disableExtendMode();
+    }, [disableExtendMode, extendMode, isZooming, showingDetailImage])
+  );
 
   if (!extendMode) {
     return children;
