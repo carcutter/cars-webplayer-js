@@ -149,7 +149,7 @@ const WebPlayerOverlay: React.FC = () => {
         <div className="col-start-3 flex flex-col gap-y-1 sm:gap-y-2">
           {/* Zoom buttons */}
           {showZoomControls && (
-            <div>
+            <div className="max-sm:hidden">
               <CustomizableButton
                 className="rounded-b-none"
                 customizationKey="CONTROLS_ZOOM_IN"

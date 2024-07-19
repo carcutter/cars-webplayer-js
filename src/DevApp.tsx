@@ -45,7 +45,7 @@ const DevApp: React.FC = () => {
 
       <div
         style={{
-          maxWidth: "960px",
+          maxWidth: "800px",
           marginInline: "auto",
         }}
       >
