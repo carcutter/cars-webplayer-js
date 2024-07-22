@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import CdnImage from "@/components/atoms/CdnImage";
+import PlayIcon from "@/components/atoms/icons/PlayIcon";
+import ThreeSixtyIcon from "@/components/atoms/icons/ThreeSixtyIcon";
+import ImageElement from "@/components/atoms/media_elements/ImageElement";
 import CustomizableButton from "@/components/molecules/CustomizableButton";
 import { useControlsContext } from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
 import type { Item } from "@/types/composition";
-
-import ImageElement from "./ImageElement";
 
 const DRAG_STEP_PX = 10;
 const SCROLL_STEP_PX = 15;
@@ -286,26 +287,27 @@ const ThreeSixtyElementPlaceholder: React.FC<
 
       <CdnImage src={images[0]} />
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
+        <div className="size-20">
+          <ThreeSixtyIcon />
+        </div>
+
         <CustomizableButton
-          customizationKey="CONTROLS_PLAY_360"
+          customizationKey="CONTROLS_PLAY"
           color="neutral"
           shape="icon"
           onClick={fetchImages}
         >
-          <img
-            className="size-full"
-            src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/play.svg"
-            alt="Play"
-          />
+          <PlayIcon />
         </CustomizableButton>
-        {loadingProgress !== null && (
-          <div className="relative h-1 w-3/5 overflow-hidden rounded-full bg-background">
-            <div
-              className="absolute inset-0 bg-primary transition-[right]"
-              style={{ right: `${100 - loadingProgress}%` }}
-            />
-          </div>
-        )}
+
+        <div
+          className={`relative h-1 w-3/5 overflow-hidden rounded-full bg-background ${loadingProgress !== null ? "" : "invisible"}`}
+        >
+          <div
+            className="absolute inset-0 bg-primary transition-[right]"
+            style={{ right: `${100 - (loadingProgress ?? 0)}%` }}
+          />
+        </div>
       </div>
     </div>
   );

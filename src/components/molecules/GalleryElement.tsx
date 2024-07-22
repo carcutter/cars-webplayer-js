@@ -1,10 +1,11 @@
 import CdnImage from "@/components/atoms/CdnImage";
+import PlayIcon from "@/components/atoms/icons/PlayIcon";
+import ThreeSixtyIcon from "@/components/atoms/icons/ThreeSixtyIcon";
 import type { Item } from "@/types/composition";
 
 type Props = { item: Item };
 
 // TODO
-// - Add visual way to identify the type of the item
 // - Add srcSet for video and omni_directional
 const GalleryElement: React.FC<Props> = ({ item }) => {
   const { type } = item;
@@ -28,13 +29,45 @@ const GalleryElement: React.FC<Props> = ({ item }) => {
       throw new Error(`Unsupported item type: ${type}`);
   }
 
+  let imgNode: React.ReactNode;
+
   if (["360", "image"].includes(type)) {
-    return (
+    imgNode = (
       <CdnImage className="size-full object-cover" src={imgSrc} onlyThumbnail />
     );
   } else {
-    return <img className="size-full object-cover" src={imgSrc} />;
+    imgNode = <img className="size-full object-cover" src={imgSrc} />;
   }
+
+  let overlayIcon: React.ReactNode;
+
+  switch (type) {
+    case "360":
+      overlayIcon = (
+        <ThreeSixtyIcon className="size-3/4 brightness-200 grayscale" />
+      );
+      break;
+    case "video":
+      overlayIcon = (
+        <div className="aspect-square h-3/5 rounded-full bg-foreground/50 p-1">
+          <PlayIcon className="invert" />
+        </div>
+      );
+      break;
+  }
+
+  if (!overlayIcon) {
+    return imgNode;
+  }
+
+  return (
+    <div className="relative size-full">
+      {imgNode}
+      <div className="absolute inset-0 flex items-center justify-center bg-foreground/25">
+        {overlayIcon}
+      </div>
+    </div>
+  );
 };
 
 export default GalleryElement;
