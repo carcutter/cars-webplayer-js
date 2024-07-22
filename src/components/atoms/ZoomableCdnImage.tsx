@@ -35,6 +35,8 @@ const ZoomableCdnImage: React.FC<Props> = props => {
   const isMouseDown = useRef(false);
   const mouseStartXY = useRef<{ x: number; y: number } | null>(null);
 
+  const touchStartXYmap = useRef(new Map<Touch["identifier"], Touch>());
+
   const transformStyleRef = useRef<TransformStyle>({ x: 0, y: 0, scale: 1 });
   const currentAnimationIdRef = useRef<number>(0);
 
@@ -356,6 +358,104 @@ const ZoomableCdnImage: React.FC<Props> = props => {
 
     return () => {
       container.removeEventListener("wheel", onWheel);
+    };
+  }, [isZooming, offsetTransformXYStyle, setTransformZoom, zoom]);
+
+  // - Listen to touch for zoom & pan
+  useEffect(() => {
+    const transformElement = transformElementRef.current;
+
+    if (!transformElement) {
+      return;
+    }
+
+    const touchStartXYmapRef = touchStartXYmap.current;
+
+    const onTouchStart = (e: TouchEvent) => {
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        const touch = e.changedTouches[i];
+        touchStartXYmapRef.set(touch.identifier, touch);
+      }
+    };
+
+    const onTouchEnd = (e: TouchEvent) => {
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        const touch = e.changedTouches[i];
+        touchStartXYmapRef.delete(touch.identifier);
+      }
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      const nbrTouches = e.touches.length;
+
+      // 1 finger => pan
+      if (nbrTouches === 1) {
+        // If we are not zooming, we do only want to take care of zoom events
+        if (!isZooming) {
+          return;
+        }
+
+        e.preventDefault(); // Prevents native scrolling (which would slide the carrousel)
+
+        const touch = e.touches[0];
+        const touchStart = touchStartXYmapRef.get(touch.identifier);
+
+        if (!touchStart) {
+          throw new Error("touchStart is null");
+        }
+
+        const walkX = touch.clientX - touchStart.clientX;
+        const walkY = touch.clientY - touchStart.clientY;
+        offsetTransformXYStyle({
+          x: walkX,
+          y: walkY,
+        });
+        touchStartXYmapRef.set(touch.identifier, touch);
+      }
+      // 2 fingers => zoom
+      else if (nbrTouches === 2) {
+        e.preventDefault(); // Prevents native page zooming
+
+        const computeDistance = (touchA: Touch, touchB: Touch) => {
+          return Math.sqrt(
+            (touchA.clientX - touchB.clientX) ** 2 +
+              (touchA.clientY - touchB.clientY) ** 2
+          );
+        };
+
+        const [touch1, touch2] = e.touches;
+
+        const intialTouch1 = touchStartXYmapRef.get(touch1.identifier);
+        const intialTouch2 = touchStartXYmapRef.get(touch2.identifier);
+        if (!intialTouch1 || !intialTouch2) {
+          throw new Error("intialTouch1 or intialTouch2 is null");
+        }
+
+        const initialDistance = computeDistance(intialTouch1, intialTouch2);
+        const currentDistance = computeDistance(touch1, touch2);
+
+        const distanceFactor = currentDistance / initialDistance;
+
+        setTransformZoom(distanceFactor * zoom, {
+          x: (touch1.clientX + touch2.clientX) / 2,
+          y: (touch1.clientY + touch2.clientY) / 2,
+        });
+
+        touchStartXYmapRef.set(touch1.identifier, touch1);
+        touchStartXYmapRef.set(touch2.identifier, touch2);
+      }
+    };
+
+    transformElement.addEventListener("touchstart", onTouchStart);
+    transformElement.addEventListener("touchmove", onTouchMove);
+    transformElement.addEventListener("touchend", onTouchEnd);
+    transformElement.addEventListener("touchcancel", onTouchEnd);
+
+    return () => {
+      transformElement.removeEventListener("touchstart", onTouchStart);
+      transformElement.removeEventListener("touchmove", onTouchMove);
+      transformElement.removeEventListener("touchend", onTouchEnd);
+      transformElement.removeEventListener("touchcancel", onTouchEnd);
     };
   }, [isZooming, offsetTransformXYStyle, setTransformZoom, zoom]);
 
