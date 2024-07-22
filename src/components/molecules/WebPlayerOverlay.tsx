@@ -97,7 +97,7 @@ const WebPlayerOverlay: React.FC = () => {
             color="neutral"
             className={`${sharedClassName} ${positionToClassName("middle-right")}`}
             onClick={nextImage}
-            disabled={masterItemIndex >= dataLength}
+            disabled={masterItemIndex >= dataLength - 1}
           >
             <CustomizableIcon customizationKey="CONTROLS_ARROW_RIGHT">
               <img
