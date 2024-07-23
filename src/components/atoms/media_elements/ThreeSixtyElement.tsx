@@ -14,12 +14,14 @@ const SCROLL_STEP_PX = 15;
 
 type ThreeSixtyElementProps = Extract<Item, { type: "360" }> & {
   index: number;
+  onlyPreload: boolean;
 };
 type ThreeSixtyElementInteractive = Omit<ThreeSixtyElementProps, "index">;
 
 const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
   images,
   hotspots,
+  onlyPreload,
 }) => {
   const { reverse360 } = useGlobalContext();
   const { showingDetailImage, isZooming } = useControlsContext();
@@ -182,6 +184,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
           <ImageElement
             src={images[imageIndex]}
             hotspots={hotspots[imageIndex]}
+            onlyPreload={onlyPreload}
           />
         </div>
         {/* Add space on both sides to allow scrolling */}
@@ -278,6 +281,7 @@ const ThreeSixtyElementPlaceholder: React.FC<
 
 const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = ({
   index,
+  onlyPreload,
   ...item
 }) => {
   const { setItemInteraction } = useControlsContext();
@@ -301,7 +305,7 @@ const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = ({
     );
   }
 
-  return <ThreeSixtyElementInteractive {...item} />;
+  return <ThreeSixtyElementInteractive onlyPreload={onlyPreload} {...item} />;
 };
 
 export default ThreeSixtyElement;

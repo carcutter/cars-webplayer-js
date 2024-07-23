@@ -6,7 +6,12 @@ import { useControlsContext } from "@/providers/ControlsContext";
 import { clamp } from "@/utils/math";
 import { computeTouchesDistance } from "@/utils/touch";
 
-type Props = Omit<CdnImageProps, "onlyThumbnail" | "imgInPlayerWidthRatio">;
+export type ZoomableCdnImageProps = Omit<
+  CdnImageProps,
+  "onlyThumbnail" | "imgInPlayerWidthRatio"
+> & {
+  onlyPreload?: boolean;
+};
 
 type TransformStyle = {
   x: number;
@@ -14,7 +19,10 @@ type TransformStyle = {
   scale: number;
 };
 
-const ZoomableCdnImage: React.FC<Props> = props => {
+const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
+  onlyPreload,
+  ...props
+}) => {
   const { zoom, isZooming, setZoom } = useControlsContext();
 
   // -- Refs -- //
@@ -475,7 +483,9 @@ const ZoomableCdnImage: React.FC<Props> = props => {
         <CdnImage
           className="size-full"
           {...props}
-          imgInPlayerWidthRatio={zoom}
+          // We use the zoom to update CDN image's size. Zoom should not affect if the component is present for onlyPreload purpose
+          // NOTE: Not working if multiple images are displayed
+          imgInPlayerWidthRatio={!onlyPreload ? zoom : 1}
         />
       </div>
     </div>

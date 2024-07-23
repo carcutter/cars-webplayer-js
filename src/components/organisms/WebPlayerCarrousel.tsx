@@ -246,7 +246,7 @@ const WebPlayerCarrousel: React.FC = () => {
               key={`${index}_${imgSrc}`}
               index={index}
               item={item}
-              lazy={Math.abs(index - carrouselItemIndex) > 1}
+              currentIndex={carrouselItemIndex}
             />
           );
         })}

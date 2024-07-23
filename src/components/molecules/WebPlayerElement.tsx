@@ -8,10 +8,13 @@ import type { Item } from "@/types/composition";
 type Props = {
   index: number;
   item: Item;
-  lazy?: boolean;
+  currentIndex: number;
 };
 
-const WebPlayerElement: React.FC<Props> = ({ index, item, lazy }) => {
+const WebPlayerElement: React.FC<Props> = ({ index, item, currentIndex }) => {
+  const isShown = index === currentIndex;
+  const lazy = Math.abs(index - currentIndex) > 1;
+
   const { aspectRatioClass } = useGlobalContext();
 
   const { type } = item;
@@ -21,13 +24,15 @@ const WebPlayerElement: React.FC<Props> = ({ index, item, lazy }) => {
   if (!lazy) {
     switch (type) {
       case "image":
-        Comp = <ImageElement {...item} />;
+        Comp = <ImageElement onlyPreload={!isShown} {...item} />;
         break;
       case "video":
         Comp = <VideoElement item={item} />;
         break;
       case "360":
-        Comp = <ThreeSixtyElement index={index} {...item} />;
+        Comp = (
+          <ThreeSixtyElement index={index} onlyPreload={!isShown} {...item} />
+        );
         break;
       case "omni_directional":
         Comp = <OmniDirectionElement item={item} />;

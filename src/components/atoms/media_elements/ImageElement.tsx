@@ -1,14 +1,14 @@
-import ZoomableCdnImage from "@/components/atoms/ZoomableCdnImage";
+import ZoomableCdnImage, {
+  ZoomableCdnImageProps,
+} from "@/components/atoms/ZoomableCdnImage";
 import Hotspot from "@/components/molecules/Hotspot";
 import { useControlsContext } from "@/providers/ControlsContext";
 import type { Item } from "@/types/composition";
 
-type Props = Omit<Extract<Item, { type: "image" }>, "type"> & {
-  zoom?: number;
-  onLoad?: () => void;
-};
+type Props = ZoomableCdnImageProps &
+  Omit<Extract<Item, { type: "image" }>, "type">;
 
-const ImageElement: React.FC<Props> = ({ src, hotspots, onLoad }) => {
+const ImageElement: React.FC<Props> = ({ hotspots, ...props }) => {
   const { setShownDetailImage, showHotspots } = useControlsContext();
 
   const handleShowDetailImageClick = (detailImage: string) => {
@@ -17,7 +17,7 @@ const ImageElement: React.FC<Props> = ({ src, hotspots, onLoad }) => {
 
   return (
     <div className="relative size-full overflow-hidden">
-      <ZoomableCdnImage src={src} onLoad={onLoad} />
+      <ZoomableCdnImage {...props} />
       {showHotspots &&
         hotspots?.map((hotspot, index) => (
           <Hotspot
