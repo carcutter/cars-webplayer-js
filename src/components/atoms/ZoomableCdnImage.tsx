@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef } from "react";
 
+import CdnImage, { CdnImageProps } from "@/components/atoms/CdnImage";
 import { MAX_ZOOM } from "@/const/zoom";
 import { useControlsContext } from "@/providers/ControlsContext";
 import { clamp } from "@/utils/math";
-
-import CdnImage, { CdnImageProps } from "./CdnImage";
+import { computeTouchesDistance } from "@/utils/touch";
 
 type Props = Omit<CdnImageProps, "onlyThumbnail" | "imgInPlayerWidthRatio">;
 
@@ -327,15 +327,13 @@ const ZoomableCdnImage: React.FC<Props> = props => {
     const onWheel = (e: WheelEvent) => {
       const { ctrlKey: zoomEvent, clientX, clientY, deltaX, deltaY } = e;
 
-      // If we are not zooming, we do only want to take care of zoom events
-      if (!isZooming && !zoomEvent) {
-        return;
-      }
-
-      // Avoid to zoom the page
-      e.preventDefault();
-
+      // Handle zoom
       if (zoomEvent) {
+        // If we are not zooming and the user wants to zoom out, do nothing
+        if (!isZooming && deltaY >= 0) {
+          return;
+        }
+
         const { left: parentOffsetX, top: parentOffsetY } =
           container.getBoundingClientRect();
         // Translate the mouse position to the container position
@@ -346,12 +344,21 @@ const ZoomableCdnImage: React.FC<Props> = props => {
           x,
           y,
         });
-      } else {
+      }
+      // Handle pan
+      else {
+        // We do not want to pan if we are not zooming
+        if (!isZooming) {
+          return;
+        }
+
         offsetTransformXYStyle({
           x: -2 * deltaX,
           y: -2 * deltaY,
         });
       }
+
+      e.preventDefault(); // Prevents native page zooming
     };
 
     container.addEventListener("wheel", onWheel);
@@ -390,7 +397,7 @@ const ZoomableCdnImage: React.FC<Props> = props => {
 
       // 1 finger => pan
       if (nbrTouches === 1) {
-        // If we are not zooming, we do only want to take care of zoom events
+        // If we are not zooming, we do not need to pan
         if (!isZooming) {
           return;
         }
@@ -416,23 +423,20 @@ const ZoomableCdnImage: React.FC<Props> = props => {
       else if (nbrTouches === 2) {
         e.preventDefault(); // Prevents native page zooming
 
-        const computeDistance = (touchA: Touch, touchB: Touch) => {
-          return Math.sqrt(
-            (touchA.clientX - touchB.clientX) ** 2 +
-              (touchA.clientY - touchB.clientY) ** 2
-          );
-        };
-
         const [touch1, touch2] = e.touches;
 
         const intialTouch1 = touchStartXYmapRef.get(touch1.identifier);
         const intialTouch2 = touchStartXYmapRef.get(touch2.identifier);
+
         if (!intialTouch1 || !intialTouch2) {
           throw new Error("intialTouch1 or intialTouch2 is null");
         }
 
-        const initialDistance = computeDistance(intialTouch1, intialTouch2);
-        const currentDistance = computeDistance(touch1, touch2);
+        const initialDistance = computeTouchesDistance(
+          intialTouch1,
+          intialTouch2
+        );
+        const currentDistance = computeTouchesDistance(touch1, touch2);
 
         const distanceFactor = currentDistance / initialDistance;
 

@@ -12,6 +12,8 @@ const WebPlayerCarrousel: React.FC = () => {
     displayedItems: items,
     slidable,
 
+    isZooming,
+
     carrouselItemIndex,
     setCarrouselItemIndex,
     itemIndexCommand,
@@ -250,7 +252,7 @@ const WebPlayerCarrousel: React.FC = () => {
         })}
       </div>
 
-      {slidable && (
+      {slidable && !isZooming && (
         <div className={`absolute ${positionToClassName("top-right")}`}>
           <IndexIndicator
             currentIndex={carrouselItemIndex}

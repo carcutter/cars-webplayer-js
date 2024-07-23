@@ -22,7 +22,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
   hotspots,
 }) => {
   const { reverse360 } = useGlobalContext();
-  const { showingDetailImage, isZooming, setZoom } = useControlsContext();
+  const { showingDetailImage, isZooming } = useControlsContext();
 
   const disabled = isZooming || showingDetailImage; // We do not want to do anything while zooming or showing a detail image
 
@@ -164,42 +164,6 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
     };
   }, [displayNextImage, displayPreviousImage, disabled, reverse360]);
 
-  // - Event listener to enter zoom mode with wheel/pinch
-  useEffect(() => {
-    // We do not need to handle it while zooming or showing a detail image
-    if (disabled) {
-      return;
-    }
-
-    const scroller = scrollerRef.current;
-
-    // DOM not ready yet
-    if (!scroller) {
-      return;
-    }
-
-    const onWheel = (e: WheelEvent) => {
-      const { ctrlKey: zoomEvent, deltaY } = e;
-
-      // Check if the user is trying to zoom in
-      if (!zoomEvent || deltaY > 0) {
-        return;
-      }
-
-      // Avoid to zoom the page
-      e.preventDefault();
-
-      // Enter zoom mode
-      setZoom(1.005);
-    };
-
-    scroller.addEventListener("wheel", onWheel);
-
-    return () => {
-      scroller.removeEventListener("wheel", onWheel);
-    };
-  }, [disabled, setZoom]);
-
   return (
     <div ref={containerRef} className="cursor-ew-resize">
       <div className="hidden">
@@ -211,18 +175,17 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
         })}
       </div>
 
-      <ImageElement src={images[imageIndex]} hotspots={hotspots[imageIndex]} />
-
-      {/* Scroller is an invisible element in front of the image which capture scroll event to make the 360 spin */}
-      {/* NOTE: Hotspots' z-index allow to keep them in front */}
-      <div
-        ref={scrollerRef}
-        className="absolute inset-0 overflow-x-scroll no-scrollbar"
-      >
-        <div
-          className="h-full"
-          style={{ width: `calc(100% + ${4 * SCROLL_STEP_PX}px` }}
-        />
+      {/* Scroller is element larger than the image to capture scroll event and then, make the 360 spin */}
+      {/* NOTE: ImageElement is within so that it can capture events first */}
+      <div ref={scrollerRef} className="overflow-x-scroll no-scrollbar">
+        <div className="sticky left-0 top-0">
+          <ImageElement
+            src={images[imageIndex]}
+            hotspots={hotspots[imageIndex]}
+          />
+        </div>
+        {/* Add space on both sides to allow scrolling */}
+        <div style={{ width: `calc(100% + ${4 * SCROLL_STEP_PX}px` }} />
       </div>
     </div>
   );
