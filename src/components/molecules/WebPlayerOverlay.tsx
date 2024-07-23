@@ -20,6 +20,7 @@ const WebPlayerOverlay: React.FC = () => {
     displayedItems: { length: dataLength },
     slidable,
 
+    carrouselItemIndex,
     masterItemIndex,
     setItemIndexCommand,
 
@@ -44,12 +45,12 @@ const WebPlayerOverlay: React.FC = () => {
   } = useControlsContext();
 
   const prevImage = useCallback(() => {
-    setItemIndexCommand(masterItemIndex - 1);
-  }, [masterItemIndex, setItemIndexCommand]);
+    setItemIndexCommand(carrouselItemIndex - 1);
+  }, [carrouselItemIndex, setItemIndexCommand]);
 
   const nextImage = useCallback(() => {
-    setItemIndexCommand(masterItemIndex + 1);
-  }, [masterItemIndex, setItemIndexCommand]);
+    setItemIndexCommand(carrouselItemIndex + 1);
+  }, [carrouselItemIndex, setItemIndexCommand]);
 
   const resetView = useCallback(() => {
     resetZoom();
