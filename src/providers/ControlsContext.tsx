@@ -17,7 +17,7 @@ type ItemInteraction = null | "pending" | "running";
 
 type ContextType = {
   displayedCategoryId: string;
-  setDisplayedCategoryId: (category: string) => void;
+  changeCategory: (categoryId: string) => void;
 
   displayedItems: Item[];
   setItemInteraction: (index: number, value: ItemInteraction) => void;
@@ -94,9 +94,13 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     return displayedCategory.items;
   }, [flatten, compositionCategories, displayedCategoryId]);
 
+  const initItemInteractionList = useCallback(() => {
+    return displayedItems.map(() => null);
+  }, [displayedItems]);
+
   const [itemInteractionList, setItemInteractionList] = useState<
     ItemInteraction[]
-  >(displayedItems.map(() => null));
+  >(initItemInteractionList);
   const setItemInteraction = useCallback(
     (index: number, value: ItemInteraction) => {
       setItemInteractionList(prev =>
@@ -105,11 +109,23 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     },
     []
   );
-
   const [carrouselItemIndex, setCarrouselItemIndex] = useState(0);
   const currentCarrouselItem = displayedItems[carrouselItemIndex];
   const currentItemInteraction = itemInteractionList[carrouselItemIndex];
   const [itemIndexCommand, setItemIndexCommand] = useState<number | null>(null);
+
+  const changeCategory = useCallback(
+    (categoryId: string) => {
+      // Reset everything
+      setCarrouselItemIndex(0);
+      setItemIndexCommand(null);
+      setItemInteractionList(initItemInteractionList());
+
+      // Change category
+      setDisplayedCategoryId(categoryId);
+    },
+    [initItemInteractionList]
+  );
 
   const [showHotspots, setShowHotspots] = useState(true);
   const enableHotspotsControl = useMemo(() => {
@@ -192,7 +208,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     <ControlsContext.Provider
       value={{
         displayedCategoryId,
-        setDisplayedCategoryId,
+        changeCategory,
 
         displayedItems,
         setItemInteraction,

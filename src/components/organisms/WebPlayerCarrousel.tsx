@@ -94,12 +94,14 @@ const WebPlayerCarrousel: React.FC = () => {
     [getSliderOrThrow]
   );
 
-  // TODO : Reset the index when the items changes (typically when the user changes the category)
+  // Reset the index when the items changes (typically when the user changes the category)
   useEffect(() => {
+    const slider = getSliderOrThrow("reset effect");
+
     setStyleScrollBehavior("auto");
-    scrollToIndex(0);
+    slider.scrollLeft = 0; // NOTE: We do not use scrollToIndex to avoid the requestAnimationFrame which will happen after the scroll behavior reseted to smooth
     setStyleScrollBehavior("smooth");
-  }, [items, scrollToIndex, setStyleScrollBehavior]);
+  }, [getSliderOrThrow, items, scrollToIndex, setStyleScrollBehavior]);
 
   // -- Event listeners to handle the slider -- //
   useEffect(() => {

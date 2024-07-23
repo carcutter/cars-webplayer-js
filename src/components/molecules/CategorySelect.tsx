@@ -4,7 +4,7 @@ import { useControlsContext } from "@/providers/ControlsContext";
 
 const CategorySelect: React.FC = () => {
   const { compositionCategories } = useCompositionContext();
-  const { displayedCategoryId, setDisplayedCategoryId } = useControlsContext();
+  const { displayedCategoryId, changeCategory } = useControlsContext();
 
   return (
     <div className="flex gap-x-2 rounded bg-background p-2 shadow">
@@ -13,7 +13,7 @@ const CategorySelect: React.FC = () => {
           <Button
             key={id}
             variant={id === displayedCategoryId ? "fill" : "ghost"}
-            onClick={() => setDisplayedCategoryId(id)}
+            onClick={() => changeCategory(id)}
           >
             {title}
           </Button>
