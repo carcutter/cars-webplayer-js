@@ -481,7 +481,6 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
         className="origin-top-left" // If not, will zoom at the center and crop the top-left part
       >
         <CdnImage
-          className="size-full"
           {...props}
           // We use the zoom to update CDN image's size. Zoom should not affect if the component is present for onlyPreload purpose
           // NOTE: Not working if multiple images are displayed

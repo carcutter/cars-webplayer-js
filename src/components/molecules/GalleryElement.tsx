@@ -30,12 +30,10 @@ const GalleryElement: React.FC<Props> = ({ item }) => {
   let imgNode: React.ReactNode;
 
   if (["360", "image"].includes(type)) {
-    imgNode = (
-      <CdnImage className="size-full object-cover" src={imgSrc} onlyThumbnail />
-    );
+    imgNode = <CdnImage className="object-cover" src={imgSrc} onlyThumbnail />;
   } else {
     // FUTURE : Add srcSet for video and omni_directional
-    imgNode = <img className="size-full object-cover" src={imgSrc} />;
+    imgNode = <img className="object-cover" src={imgSrc} />;
   }
 
   let overlayIcon: React.ReactNode;

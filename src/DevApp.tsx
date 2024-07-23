@@ -60,6 +60,7 @@ const DevApp: React.FC = () => {
           flatten
           // eventId="cc-event"
           // optionsPosition="top-left"
+          // imageLoadStrategy="speed"
         >
           <WebPlayerIcon name="GASOLINESPIN" color="#ff00ff">
             <svg

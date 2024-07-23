@@ -54,7 +54,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
         {/* Use the icon from the config if available. Else, replace it if needed */}
         {hotspotConfig?.Icon ?? (
           <img
-            className="size-full invert"
+            className="invert"
             src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/add.svg"
             alt="Plus"
           />

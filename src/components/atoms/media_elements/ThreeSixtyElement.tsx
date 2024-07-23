@@ -173,7 +173,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
         {[-2, -1, 1, 2].map(offset => {
           const index = (imageIndex + offset + length) % length;
           const src = images[index];
-          return <CdnImage key={src} className="size-full" src={src} />;
+          return <CdnImage key={src} src={src} />;
         })}
       </div>
 
