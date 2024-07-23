@@ -5,8 +5,6 @@ import type { Item } from "@/types/composition";
 
 type Props = { item: Item };
 
-// TODO
-// - Add srcSet for video and omni_directional
 const GalleryElement: React.FC<Props> = ({ item }) => {
   const { type } = item;
 
@@ -36,6 +34,7 @@ const GalleryElement: React.FC<Props> = ({ item }) => {
       <CdnImage className="size-full object-cover" src={imgSrc} onlyThumbnail />
     );
   } else {
+    // FUTURE : Add srcSet for video and omni_directional
     imgNode = <img className="size-full object-cover" src={imgSrc} />;
   }
 

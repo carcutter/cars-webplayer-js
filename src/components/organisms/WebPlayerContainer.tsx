@@ -67,6 +67,7 @@ const WebPlayerContainer: React.FC<WebPlayerContainerProps> = ({
   } = useComposition(compositionUrl);
 
   if (error) {
+    // TODO
     return (
       <ErrorTemplate
         title="Failed to fetch composition"
