@@ -38,7 +38,6 @@ const config = {
         "hotspot-hover": "11",
         "zoomed-image": "20",
         overlay: "30",
-        modal: "999",
       },
       // Animation
       keyframes: {

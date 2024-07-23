@@ -2,6 +2,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -72,7 +73,15 @@ export const useControlsContext = () => {
 const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const { eventId, flatten } = useGlobalContext();
+  const {
+    eventId,
+    flatten,
+
+    isFullScreen,
+    allowFullScreen,
+    requestFullscreen,
+    exitFullscreen,
+  } = useGlobalContext();
   const { compositionCategories } = useCompositionContext();
 
   const [displayedCategoryId, setDisplayedCategoryId] = useState(
@@ -159,11 +168,21 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const enableExtendMode = useCallback(() => {
     setExtendMode(true);
     emitEvent("extend-mode-on");
-  }, [emitEvent]);
+
+    if (allowFullScreen) {
+      requestFullscreen();
+    }
+  }, [allowFullScreen, emitEvent, requestFullscreen]);
+
   const disableExtendMode = useCallback(() => {
     setExtendMode(false);
     emitEvent("extend-mode-off");
-  }, [emitEvent]);
+
+    if (allowFullScreen) {
+      exitFullscreen();
+    }
+  }, [allowFullScreen, emitEvent, exitFullscreen]);
+
   const toggleExtendMode = useCallback(() => {
     if (extendMode) {
       disableExtendMode();
@@ -171,6 +190,15 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       enableExtendMode();
     }
   }, [disableExtendMode, enableExtendMode, extendMode]);
+
+  // Listen to fullscreen changes
+  useEffect(() => {
+    if (!allowFullScreen) {
+      return;
+    }
+
+    setExtendMode(isFullScreen);
+  }, [allowFullScreen, isFullScreen]);
 
   const toggleGallery = useCallback(() => {
     const newValue = !showGallery;

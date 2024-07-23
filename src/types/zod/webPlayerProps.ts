@@ -27,6 +27,8 @@ export const WebPlayerPropsSchema = z.object({
 
   eventId: z.string().optional(),
 
+  allowFullScreen: z.boolean().optional(),
+
   categoryPosition: PositionYschema.extract(["top", "bottom"]).optional(),
   optionsPosition: PositionSchema.extract([
     "top-right",

@@ -1,9 +1,10 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import withZodSchema from "@/components/hoc/withZodSchema";
 import WebPlayerContainer from "@/components/organisms/WebPlayerContainer";
 import {
+  DEFAULT_ALLOW_FULL_SCREEN,
   DEFAULT_ASPECT_RATIO,
   DEFAULT_CATEGORY_POSITION,
   DEFAULT_EVENT_ID,
@@ -29,6 +30,7 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   imageLoadStrategy = DEFAULT_IMAGE_LOAD_STRATEGY,
   flatten = DEFAULT_FLATTEN,
   eventId = DEFAULT_EVENT_ID,
+  allowFullScreen = DEFAULT_ALLOW_FULL_SCREEN,
   categoryPosition = DEFAULT_CATEGORY_POSITION,
   optionsPosition = DEFAULT_OPTIONS_POSITION,
   nextPrevPosition = DEFAULT_NEXT_PREV_POSITION,
@@ -38,32 +40,47 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
 
   ...props
 }) => {
-  const wrapper = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const [playerInViewportWidthRatio, setPlayerInViewportWidthRatio] =
     useState(0.5); // TODO: Should not be hardcoded
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
   // Handle resizing
   useEffect(() => {
-    if (!wrapper.current) {
+    if (!wrapperRef.current) {
       return;
     }
 
-    const wrapperRef = wrapper.current;
+    const wrapper = wrapperRef.current;
 
-    const updateWidthRatio = () => {
+    const refresh = () => {
       const viewportWidth = window.innerWidth;
-      const playerWidth = wrapperRef.clientWidth;
+      const playerWidth = wrapper.clientWidth;
 
       setPlayerInViewportWidthRatio(playerWidth / viewportWidth);
+
+      setIsFullScreen(document.fullscreenElement === wrapper);
     };
 
-    updateWidthRatio();
+    refresh();
 
-    addEventListener("resize", updateWidthRatio);
+    addEventListener("resize", refresh);
 
     return () => {
-      removeEventListener("resize", updateWidthRatio);
+      removeEventListener("resize", refresh);
     };
+  }, []);
+
+  const requestFullscreen = useCallback(() => {
+    const wrapper = wrapperRef.current;
+    if (!wrapper) {
+      throw new Error("Wrapper not found");
+    }
+    wrapper.requestFullscreen();
+  }, []);
+
+  const exitFullscreen = useCallback(() => {
+    document.exitFullscreen();
   }, []);
 
   return (
@@ -76,20 +93,20 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
           imageLoadStrategy,
           flatten,
           eventId,
+          allowFullScreen,
           categoryPosition,
           optionsPosition,
           nextPrevPosition,
           zoomPosition,
 
           playerInViewportWidthRatio,
+          isFullScreen,
+          requestFullscreen,
+          exitFullscreen,
         }}
       >
         <CustomizationContextProvider>
-          <div
-            id="cc-webplayer-wrapper"
-            ref={wrapper}
-            className="relative size-full overflow-hidden"
-          >
+          <div id="cc-webplayer-wrapper" ref={wrapperRef}>
             <WebPlayerContainer compositionUrl={compositionUrl} />
           </div>
           {customizationChildren}

@@ -10,6 +10,7 @@ type ProviderProps = Required<
     | "imageLoadStrategy"
     | "flatten"
     | "eventId"
+    | "allowFullScreen"
     | "categoryPosition"
     | "optionsPosition"
     | "nextPrevPosition"
@@ -21,6 +22,9 @@ type ProviderProps = Required<
     "categoriesOrder" | "minImageWidth" | "maxImageWidth"
   > & {
     playerInViewportWidthRatio: number;
+    isFullScreen: boolean;
+    requestFullscreen: () => void;
+    exitFullscreen: () => void;
   };
 
 type ContextType = ProviderProps & {

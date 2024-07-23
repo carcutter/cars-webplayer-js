@@ -44,7 +44,7 @@ const WebPlayerElement: React.FC<Props> = ({ index, item, currentIndex }) => {
     Comp = null;
   }
 
-  return <div className={`relative h-full ${aspectRatioClass}`}>{Comp}</div>;
+  return <div className={`relative ${aspectRatioClass}`}>{Comp}</div>;
 };
 
 export default WebPlayerElement;

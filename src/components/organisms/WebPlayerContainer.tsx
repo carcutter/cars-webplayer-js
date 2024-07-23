@@ -2,7 +2,6 @@ import { useCallback } from "react";
 import { ZodError } from "zod";
 
 import CloseButton from "@/components/atoms/CloseButton";
-import WebPlayerOverlay from "@/components/molecules/WebPlayerOverlay";
 import WebPlayerCarrousel from "@/components/organisms/WebPlayerCarrousel";
 import ErrorTemplate from "@/components/template/ErrorTemplate";
 import { useComposition } from "@/hooks/useComposition";
@@ -12,7 +11,7 @@ import { useControlsContext } from "@/providers/ControlsContext";
 import ControlsContextProvider from "@/providers/ControlsContext";
 import { positionToClassName } from "@/utils/style";
 
-const ExtendWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
+const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
   const { extendMode, disableExtendMode, isZooming, showingDetailImage } =
     useControlsContext();
 
@@ -26,30 +25,27 @@ const ExtendWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
     }, [disableExtendMode, extendMode, isZooming, showingDetailImage])
   );
 
-  if (!extendMode) {
-    return children;
-  }
-
   return (
-    <div className="fixed inset-0 z-modal flex flex-col items-center justify-center bg-foreground/85">
-      {children}
-      <CloseButton
-        className={`absolute ${positionToClassName("top-right")}`}
-        onClick={disableExtendMode}
-      />
-    </div>
-  );
-};
-
-const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
-  return (
-    <ExtendWrapper>
-      <div className="relative h-fit">
+    <div
+      className={`relative ${!extendMode ? "" : "flex size-full items-center justify-center bg-foreground/85"}`}
+    >
+      <div
+        className={
+          !extendMode
+            ? undefined
+            : "flex size-full items-center justify-center sm:size-5/6"
+        }
+      >
         <WebPlayerCarrousel />
-
-        <WebPlayerOverlay />
       </div>
-    </ExtendWrapper>
+
+      {extendMode && (
+        <CloseButton
+          className={`absolute ${positionToClassName("top-right")} lg:right-4 lg:top-4`}
+          onClick={disableExtendMode}
+        />
+      )}
+    </div>
   );
 };
 

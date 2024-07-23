@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef } from "react";
 
 import IndexIndicator from "@/components/atoms/IndexIndicator";
 import WebPlayerElement from "@/components/molecules/WebPlayerElement";
+import WebPlayerOverlay from "@/components/molecules/WebPlayerOverlay";
 import { useControlsContext } from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
 import { positionToClassName } from "@/utils/style";
@@ -235,7 +236,7 @@ const WebPlayerCarrousel: React.FC = () => {
   }, [scrollToIndex, itemIndexCommand]);
 
   return (
-    <div className={`relative w-full ${aspectRatioClass}`}>
+    <div className={`relative max-h-full max-w-full ${aspectRatioClass}`}>
       <div
         ref={sliderRef}
         className={`flex size-full ${slidable ? "snap-x snap-mandatory overflow-x-auto transition-transform no-scrollbar *:snap-start *:snap-always" : "justify-center"}`}
@@ -262,6 +263,8 @@ const WebPlayerCarrousel: React.FC = () => {
           />
         </div>
       )}
+
+      <WebPlayerOverlay />
     </div>
   );
 };
