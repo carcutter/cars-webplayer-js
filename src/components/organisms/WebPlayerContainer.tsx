@@ -25,9 +25,25 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
     }, [disableExtendMode, extendMode, isZooming, showingDetailImage])
   );
 
+  // Handle click on overlay to disable extend mode
+  const handleOverlayClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!extendMode) {
+        return;
+      }
+
+      // Check if the click originated from the overlay itself
+      if (e.target === e.currentTarget) {
+        disableExtendMode();
+      }
+    },
+    [disableExtendMode, extendMode]
+  );
+
   return (
     <div
-      className={`relative ${!extendMode ? "" : "flex size-full items-center justify-center bg-foreground/85"}`}
+      className={`relative ${!extendMode ? "" : "flex size-full items-center justify-center bg-foreground/75"}`}
+      onClick={handleOverlayClick}
     >
       <div
         className={
