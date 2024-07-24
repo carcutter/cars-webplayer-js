@@ -23,8 +23,8 @@ type ProviderProps = Required<
   > & {
     playerInViewportWidthRatio: number;
     isFullScreen: boolean;
-    requestFullscreen: () => void;
-    exitFullscreen: () => void;
+    requestFullscreen: () => Promise<void>;
+    exitFullscreen: () => Promise<void>;
   };
 
 type ContextType = ProviderProps & {

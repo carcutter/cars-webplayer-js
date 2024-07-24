@@ -165,22 +165,22 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     emitEvent(`hotspots-${newValue ? "on" : "off"}`);
   }, [emitEvent, showHotspots]);
 
-  const enableExtendMode = useCallback(() => {
+  const enableExtendMode = useCallback(async () => {
+    if (allowFullScreen) {
+      await requestFullscreen();
+    }
+
     setExtendMode(true);
     emitEvent("extend-mode-on");
-
-    if (allowFullScreen) {
-      requestFullscreen();
-    }
   }, [allowFullScreen, emitEvent, requestFullscreen]);
 
-  const disableExtendMode = useCallback(() => {
+  const disableExtendMode = useCallback(async () => {
+    if (allowFullScreen) {
+      await exitFullscreen();
+    }
+
     setExtendMode(false);
     emitEvent("extend-mode-off");
-
-    if (allowFullScreen) {
-      exitFullscreen();
-    }
   }, [allowFullScreen, emitEvent, exitFullscreen]);
 
   const toggleExtendMode = useCallback(() => {

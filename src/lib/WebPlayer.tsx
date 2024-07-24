@@ -76,11 +76,12 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
     if (!wrapper) {
       throw new Error("Wrapper not found");
     }
-    wrapper.requestFullscreen();
+
+    return wrapper.requestFullscreen();
   }, []);
 
   const exitFullscreen = useCallback(() => {
-    document.exitFullscreen();
+    return document.exitFullscreen();
   }, []);
 
   return (
