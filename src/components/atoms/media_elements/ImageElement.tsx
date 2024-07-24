@@ -9,23 +9,20 @@ type Props = ZoomableCdnImageProps &
   Omit<Extract<Item, { type: "image" }>, "type">;
 
 const ImageElement: React.FC<Props> = ({ hotspots, ...props }) => {
-  const { setShownDetailImage, showHotspots } = useControlsContext();
-
-  const handleShowDetailImageClick = (detailImage: string) => {
-    setShownDetailImage(detailImage);
-  };
+  const { showingDetails, showHotspots } = useControlsContext();
 
   return (
     <div className="relative size-full overflow-hidden">
-      <ZoomableCdnImage {...props} />
-      {showHotspots &&
-        hotspots?.map((hotspot, index) => (
-          <Hotspot
-            key={index}
-            hotspot={hotspot}
-            onShowDetailImageClick={handleShowDetailImageClick}
-          />
-        ))}
+      <div
+        // Scale effect on show details
+        className={`duration-details ${showingDetails ? "scale-105" : "scale-100"}`}
+      >
+        <ZoomableCdnImage {...props} />
+        {showHotspots &&
+          hotspots?.map((hotspot, index) => (
+            <Hotspot key={index} hotspot={hotspot} />
+          ))}
+      </div>
     </div>
   );
 };

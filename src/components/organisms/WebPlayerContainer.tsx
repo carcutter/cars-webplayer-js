@@ -10,32 +10,35 @@ import CompositionContextProvider from "@/providers/CompositionContext";
 import { useControlsContext } from "@/providers/ControlsContext";
 import ControlsContextProvider from "@/providers/ControlsContext";
 import { positionToClassName } from "@/utils/style";
+import { isSelfEvent } from "@/utils/web";
 
 const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
-  const { extendMode, disableExtendMode, isZooming, showingDetailImage } =
+  const { extendMode, disableExtendMode, isZooming, showingDetails } =
     useControlsContext();
 
   // Handle escape key to disable extend mode
   useEscapeKeyEffect(
     useCallback(() => {
-      if (isZooming || showingDetailImage || !extendMode) {
+      if (isZooming || showingDetails || !extendMode) {
         return;
       }
       disableExtendMode();
-    }, [disableExtendMode, extendMode, isZooming, showingDetailImage])
+    }, [disableExtendMode, extendMode, isZooming, showingDetails])
   );
 
   // Handle click on overlay to disable extend mode
   const handleOverlayClick = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
+    (e: React.MouseEvent) => {
       if (!extendMode) {
         return;
       }
 
       // Check if the click originated from the overlay itself
-      if (e.target === e.currentTarget) {
-        disableExtendMode();
+      if (!isSelfEvent(e)) {
+        return;
       }
+
+      disableExtendMode();
     },
     [disableExtendMode, extendMode]
   );

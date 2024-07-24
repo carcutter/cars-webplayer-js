@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 
+import CdnImage from "@/components/atoms/CdnImage";
 import CloseButton from "@/components/atoms/CloseButton";
 import CustomizableIcon from "@/components/atoms/CustomizableIcon";
-import ZoomableCdnImage from "@/components/atoms/ZoomableCdnImage";
 import CategorySelect from "@/components/molecules/CategorySelect";
 import CustomizableButton from "@/components/molecules/CustomizableButton";
 import Gallery from "@/components/organisms/Gallery";
@@ -12,6 +12,7 @@ import { useEscapeKeyEffect } from "@/hooks/useEscapeKeyEffect";
 import { useControlsContext } from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
 import { positionToClassName } from "@/utils/style";
+import { isSelfEvent } from "@/utils/web";
 
 const WebPlayerOverlay: React.FC = () => {
   const { flatten } = useGlobalContext();
@@ -32,8 +33,9 @@ const WebPlayerOverlay: React.FC = () => {
     extendMode,
     toggleExtendMode,
 
-    shownDetailImage,
-    setShownDetailImage,
+    shownDetails,
+    showingDetails,
+    setShownDetails,
 
     showZoomControls,
     isZooming,
@@ -54,20 +56,31 @@ const WebPlayerOverlay: React.FC = () => {
 
   const resetView = useCallback(() => {
     resetZoom();
-    setShownDetailImage(null);
-  }, [resetZoom, setShownDetailImage]);
+    setShownDetails(null);
+  }, [resetZoom, setShownDetails]);
 
-  // Handle escape key to unzoom/exit detail image
+  // Handle escape key to unzoom/exit details
   useEscapeKeyEffect(resetView);
 
-  const hideGalleryControls = isZooming || !!shownDetailImage;
+  // Handle click on overlay to exit details
+  const handleDetailsOverlayClick = useCallback(
+    (e: React.MouseEvent) => {
+      // Check if the click originated from the overlay itself
+      if (!isSelfEvent(e)) {
+        return;
+      }
+
+      resetView();
+    },
+    [resetView]
+  );
 
   const sharedClassName = "absolute z-overlay";
 
   return (
     <>
       {/* CategorySelect (on top) */}
-      {!hideGalleryControls && !flatten && (
+      {!isZooming && !flatten && (
         <div
           className={`${sharedClassName} ${positionToClassName("top-center")}`}
         >
@@ -76,7 +89,7 @@ const WebPlayerOverlay: React.FC = () => {
       )}
 
       {/* Next/Prev buttons */}
-      {!hideGalleryControls && slidable && (
+      {!isZooming && slidable && (
         <>
           <Button
             shape="icon"
@@ -110,26 +123,12 @@ const WebPlayerOverlay: React.FC = () => {
         </>
       )}
 
-      {!!shownDetailImage && (
-        <div className={`${sharedClassName} inset-0`}>
-          <ZoomableCdnImage src={shownDetailImage} />
-        </div>
-      )}
-
-      {/* Close button */}
-      {hideGalleryControls && (
-        <CloseButton
-          className={`${sharedClassName} ${positionToClassName("top-right")}`}
-          onClick={resetView}
-        />
-      )}
-
       {/* Bottom overlay : Gallery, Hotspots toggle, ... We need to disable pointer-event to allow the propagation to parent elements */}
       <div
         className={`${sharedClassName} ${positionToClassName("bottom-fullW")} pointer-events-none grid grid-cols-[auto,1fr,auto] items-end gap-x-1 *:pointer-events-auto sm:gap-x-2`}
       >
         {/* Gallery's toogle button & Gallery */}
-        {!hideGalleryControls && dataLength > 1 && (
+        {!isZooming && dataLength > 1 && (
           <>
             <Button
               variant="fill"
@@ -206,7 +205,7 @@ const WebPlayerOverlay: React.FC = () => {
             variant="fill"
             color={showHotspots ? "primary" : "neutral"}
             shape="icon"
-            disabled={!enableHotspotsControl || hideGalleryControls}
+            disabled={!enableHotspotsControl || isZooming}
             onClick={toggleHotspots}
           >
             <CustomizableIcon customizationKey="CONTROLS_HOTSPOTS">
@@ -218,6 +217,34 @@ const WebPlayerOverlay: React.FC = () => {
           </Button>
         </div>
       </div>
+
+      <div
+        className={`${sharedClassName} inset-0 flex justify-end overflow-hidden bg-foreground/60 transition-opacity duration-details ${showingDetails ? "opacity-100" : "pointer-events-none opacity-0"}`}
+        onClick={handleDetailsOverlayClick}
+      >
+        <div
+          className={`h-full w-3/5 bg-background transition-transform duration-details ${showingDetails ? "translate-x-0" : "translate-x-full"}`}
+        >
+          {!!shownDetails && (
+            <>
+              <CdnImage src={shownDetails.src} imgInPlayerWidthRatio={0.6} />
+
+              <div className="space-y-1 p-3">
+                <span>{shownDetails.title}</span>
+                <p>{shownDetails.text}</p>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Close button */}
+      {(isZooming || showingDetails) && (
+        <CloseButton
+          className={`${sharedClassName} ${positionToClassName("top-right")}`}
+          onClick={resetView}
+        />
+      )}
     </>
   );
 };

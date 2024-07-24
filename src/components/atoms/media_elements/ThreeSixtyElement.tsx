@@ -24,9 +24,9 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
   onlyPreload,
 }) => {
   const { reverse360 } = useGlobalContext();
-  const { showingDetailImage, isZooming } = useControlsContext();
+  const { showingDetails, isZooming } = useControlsContext();
 
-  const disabled = isZooming || showingDetailImage; // We do not want to do anything while zooming or showing a detail image
+  const disabled = isZooming || showingDetails; // We do not want to do anything while zooming or showing a detail image
 
   // - element refs
   const containerRef = useRef<HTMLDivElement>(null);

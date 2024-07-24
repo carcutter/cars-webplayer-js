@@ -1,18 +1,15 @@
 import { useState } from "react";
 
+import { useControlsContext } from "@/providers/ControlsContext";
 import { useCustomizationContext } from "@/providers/CustomizationContext";
 import type { Hotspot as HotspotType } from "@/types/composition";
 
 type HotspotProps = {
   hotspot: HotspotType;
-  onShowDetailImageClick: (shownDetailImage: string) => void;
 };
 type IconHotspotProps = HotspotProps;
 
-const IconHotspot: React.FC<IconHotspotProps> = ({
-  hotspot,
-  onShowDetailImageClick,
-}) => {
+const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
   const {
     feature,
     position,
@@ -23,16 +20,28 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   const { getIconConfig } = useCustomizationContext();
   const hotspotConfig = getIconConfig(feature);
 
+  const { setShownDetails } = useControlsContext();
+
   const [showDescription, setShowDescription] = useState(false);
 
-  const handleOnClick = detail
-    ? () => onShowDetailImageClick(detail)
-    : undefined;
+  const clickable = !!detail;
+
+  const onClick = () => {
+    if (!detail) {
+      return;
+    }
+
+    setShownDetails({
+      src: detail,
+      title: hotspot.description.short,
+      text: hotspot.description.long,
+    });
+  };
 
   return (
     <div
-      className={`absolute ${showDescription ? "z-hotspot-hover" : "z-hotspot"} -translate-x-1/2 -translate-y-1/2 ${handleOnClick ? "cursor-pointer" : "cursor-help"}`}
-      onClick={handleOnClick}
+      className={`absolute ${showDescription ? "z-hotspot-hover" : "z-hotspot"} -translate-x-1/2 -translate-y-1/2 ${clickable ? "cursor-pointer" : "cursor-help"}`}
+      onClick={onClick}
       onMouseEnter={() => setShowDescription(true)}
       onMouseLeave={() => setShowDescription(false)}
       style={{

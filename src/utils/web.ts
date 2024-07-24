@@ -6,3 +6,7 @@ export function preloadImage(src: string): Promise<HTMLImageElement> {
     img.onerror = reject;
   });
 }
+
+export function isSelfEvent(event: React.MouseEvent) {
+  return event.target === event.currentTarget;
+}

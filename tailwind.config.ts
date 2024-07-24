@@ -33,6 +33,9 @@ const config = {
         md: "calc(var(--radius) + 2px)",
         lg: "calc(var(--radius) + 4px)",
       },
+      transitionDuration: {
+        details: "350ms",
+      },
       zIndex: {
         hotspot: "10",
         "hotspot-hover": "11",

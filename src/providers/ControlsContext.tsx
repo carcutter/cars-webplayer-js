@@ -15,6 +15,7 @@ import { useCompositionContext } from "./CompositionContext";
 import { useGlobalContext } from "./GlobalContext";
 
 type ItemInteraction = null | "pending" | "running";
+type Details = { src: string; title?: string; text?: string };
 
 type ContextType = {
   displayedCategoryId: string;
@@ -41,9 +42,9 @@ type ContextType = {
   showGallery: boolean;
   toggleGallery: () => void;
 
-  shownDetailImage: string | null;
-  showingDetailImage: boolean;
-  setShownDetailImage: (shownDetailImage: string | null) => void;
+  shownDetails: Details | null;
+  showingDetails: boolean;
+  setShownDetails: (shownDetails: Details | null) => void;
 
   showZoomControls: boolean;
   zoom: number;
@@ -207,7 +208,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     emitEvent(`gallery-${newValue ? "on" : "off"}`);
   }, [emitEvent, showGallery]);
 
-  const [shownDetailImage, setShownDetailImage] = useState<string | null>(null);
+  const [shownDetails, setShownDetails] = useState<Details | null>(null);
 
   const showZoomControls = useMemo(() => {
     switch (currentCarrouselItem.type) {
@@ -259,9 +260,9 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         showGallery,
         toggleGallery,
 
-        shownDetailImage,
-        showingDetailImage: !!shownDetailImage,
-        setShownDetailImage,
+        shownDetails,
+        showingDetails: !!shownDetails,
+        setShownDetails,
 
         showZoomControls,
         zoom,
