@@ -239,7 +239,7 @@ const WebPlayerCarrousel: React.FC = () => {
     <div className={`relative max-h-full max-w-full ${aspectRatioClass}`}>
       <div
         ref={sliderRef}
-        className={`flex size-full ${slidable ? "snap-x snap-mandatory overflow-x-auto transition-transform no-scrollbar *:snap-start *:snap-always" : "justify-center"}`}
+        className={`flex size-full ${slidable ? "overflow-x-auto no-scrollbar *:snap-start *:snap-always" : "justify-center"}`}
       >
         {items.map((item, index) => {
           const imgSrc = item.type === "360" ? item.images[0] : item.src;
