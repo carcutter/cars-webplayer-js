@@ -52,13 +52,14 @@ const DevApp: React.FC = () => {
         <WebPlayer
           // compositionUrl="/composition_mock_1.json"
           compositionUrl="https://cdn.car-cutter.com/gallery/767f46375d752707fcb76a19b8b22bc0040bd3ff59abc43d1c19eb0c04785c68/TEST1/composition_v2.json"
-          aspectRatio="4:3"
+          // aspectRatio="4:3"
           // reverse360
           // minImageWidth={300}
           // maxImageWidth={1000}
           // imageLoadStrategy="speed"
           flatten
           // eventId="cc-event"
+          // allowFullScreen={false}
           // optionsPosition="top-left"
           // imageLoadStrategy="speed"
         >

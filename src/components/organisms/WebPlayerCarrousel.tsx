@@ -8,17 +8,19 @@ import { useGlobalContext } from "@/providers/GlobalContext";
 import { positionToClassName } from "@/utils/style";
 
 const WebPlayerCarrousel: React.FC = () => {
-  const { aspectRatioClass } = useGlobalContext();
+  const { aspectRatioClass, isFullScreen } = useGlobalContext();
   const {
     displayedItems: items,
     slidable,
-
-    isZooming,
 
     carrouselItemIndex,
     setCarrouselItemIndex,
     itemIndexCommand,
     setItemIndexCommand,
+
+    extendMode,
+
+    isZooming,
   } = useControlsContext();
 
   // -- Refs -- //
@@ -37,23 +39,12 @@ const WebPlayerCarrousel: React.FC = () => {
   const startX = useRef<number | null>(null);
   const startScrollLeft = useRef<number | null>(null);
 
-  // -- Snapping -- //
+  // -- Slider's functions -- //
   const getContainerWidth = useCallback(() => {
     const slider = getSliderOrThrow("getContainerWidth");
 
     return slider.getBoundingClientRect().width;
   }, [getSliderOrThrow]);
-
-  const scrollToIndex = useCallback(
-    (index: number) => {
-      const slider = getSliderOrThrow("scrollToSnapIndex");
-
-      requestAnimationFrame(() => {
-        slider.scrollLeft = index * getContainerWidth();
-      });
-    },
-    [getContainerWidth, getSliderOrThrow]
-  );
 
   const computeClosestIndex = useCallback(() => {
     const slider = getSliderOrThrow("computeClosestSnapIndex");
@@ -63,7 +54,6 @@ const WebPlayerCarrousel: React.FC = () => {
     return Math.round(decimalIndex);
   }, [getContainerWidth, getSliderOrThrow]);
 
-  // -- Update Style functions -- //
   const setStyleCursor = useCallback(
     (cursor: "auto" | "grab" | "grabbing") => {
       const slider = getSliderOrThrow("setStyleCursor");
@@ -95,14 +85,44 @@ const WebPlayerCarrousel: React.FC = () => {
     [getSliderOrThrow]
   );
 
-  // Reset the index when the items changes (typically when the user changes the category)
-  useEffect(() => {
-    const slider = getSliderOrThrow("reset effect");
+  const scrollToIndex = useCallback(
+    (index: number, instant?: boolean) => {
+      const scroll = () => {
+        const slider = getSliderOrThrow("scrollToSnapIndex");
+        slider.scrollLeft = index * getContainerWidth();
+      };
 
-    setStyleScrollBehavior("auto");
-    slider.scrollLeft = 0; // NOTE: We do not use scrollToIndex to avoid the requestAnimationFrame which will happen after the scroll behavior reseted to smooth
-    setStyleScrollBehavior("smooth");
-  }, [getSliderOrThrow, items, scrollToIndex, setStyleScrollBehavior]);
+      if (!instant) {
+        requestAnimationFrame(scroll);
+      } else {
+        setStyleScrollBehavior("auto");
+        scroll(); // NOTE: We do not use requestAnimationFrame which would happen after the scroll behavior reseted to smooth
+        setStyleScrollBehavior("smooth");
+      }
+    },
+    [getContainerWidth, getSliderOrThrow, setStyleScrollBehavior]
+  );
+
+  // -- Update the scroll when the layout changes
+  // 1) when the user changes the category (need to reset the first index)
+  // 2) when the user toggles the extend mode
+  useEffect(() => {
+    const closestIndex = computeClosestIndex();
+
+    if (closestIndex === carrouselItemIndex) {
+      return;
+    }
+
+    scrollToIndex(carrouselItemIndex, true);
+  }, [
+    carrouselItemIndex,
+    scrollToIndex,
+    computeClosestIndex,
+    // - Run the effect when those values change
+    items,
+    isFullScreen,
+    extendMode,
+  ]);
 
   // -- Event listeners to handle the slider -- //
   useEffect(() => {
