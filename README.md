@@ -78,3 +78,7 @@ You can also specify the mode:
 - `yarn analyze:light` to use light mode
 
 NOTE : the sourcemap seems to interfere with size calculation [GitHub issue](https://github.com/KusStar/vite-bundle-visualizer/issues/8). More info [here](https://www.npmjs.com/package/vite-bundle-visualizer).
+
+### Useful scripts
+
+- You can use the command `yarn run migrate_composition <COMPOSITION_V1_PATH>` in order to convert an old composition to the new model. It will create a new file with the new type
