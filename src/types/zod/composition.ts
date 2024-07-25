@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { ImageWidthSchema } from "./misc";
+import { AspectRatioSchema, ImageWidthSchema } from "./misc";
 
 export const HotspotSchema = z.object({
   feature: z.string(),
@@ -44,6 +44,7 @@ export const CategorySchema = z.object({
 });
 
 export const CompositionSchema = z.object({
+  aspectRatio: AspectRatioSchema,
   imageHdWidth: ImageWidthSchema,
   imageSubWidths: z.array(ImageWidthSchema),
   categories: z.array(CategorySchema),

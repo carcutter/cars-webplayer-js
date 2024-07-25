@@ -2,7 +2,7 @@ import ImageElement from "@/components/atoms/media_elements/ImageElement";
 import OmniDirectionElement from "@/components/atoms/media_elements/OmniDirectionElement";
 import ThreeSixtyElement from "@/components/atoms/media_elements/ThreeSixtyElement";
 import VideoElement from "@/components/atoms/media_elements/VideoElement";
-import { useGlobalContext } from "@/providers/GlobalContext";
+import { useCompositionContext } from "@/providers/CompositionContext";
 import type { Item } from "@/types/composition";
 
 type Props = {
@@ -15,7 +15,7 @@ const WebPlayerElement: React.FC<Props> = ({ index, item, currentIndex }) => {
   const isShown = index === currentIndex;
   const lazy = Math.abs(index - currentIndex) > 1;
 
-  const { aspectRatioClass } = useGlobalContext();
+  const { aspectRatioClass } = useCompositionContext();
 
   const { type } = item;
 

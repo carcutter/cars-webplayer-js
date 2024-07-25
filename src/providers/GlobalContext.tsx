@@ -5,7 +5,6 @@ import type { WebPlayerProps } from "@/types/webPlayerProps";
 type ProviderProps = Required<
   Pick<
     WebPlayerProps,
-    | "aspectRatio"
     | "reverse360"
     | "imageLoadStrategy"
     | "flatten"
@@ -27,9 +26,7 @@ type ProviderProps = Required<
     exitFullscreen: () => Promise<void>;
   };
 
-type ContextType = ProviderProps & {
-  aspectRatioClass: string;
-};
+type ContextType = ProviderProps;
 
 const GlobalContext = createContext<ContextType | null>(null);
 
@@ -48,20 +45,8 @@ export const useGlobalContext = () => {
 const GlobalContextProvider: React.FC<
   React.PropsWithChildren<ProviderProps>
 > = ({ children, ...props }) => {
-  const { aspectRatio } = props;
-
-  const aspectRatioClass = aspectRatio === "4:3" ? "aspect-4/3" : "aspect-16/9";
-
   return (
-    <GlobalContext.Provider
-      value={{
-        ...props,
-
-        aspectRatioClass,
-      }}
-    >
-      {children}
-    </GlobalContext.Provider>
+    <GlobalContext.Provider value={props}>{children}</GlobalContext.Provider>
   );
 };
 

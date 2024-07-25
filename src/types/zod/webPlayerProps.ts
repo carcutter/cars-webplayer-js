@@ -3,8 +3,6 @@ import { z } from "zod";
 import { ImageWidthSchema } from "./misc";
 import { PositionSchema, PositionYschema } from "./position";
 
-export const AspectRatioSchema = z.union([z.literal("4:3"), z.literal("16:9")]);
-
 export const ImageLoadStrategySchema = z.union([
   z.literal("quality"),
   z.literal("speed"),
@@ -12,8 +10,6 @@ export const ImageLoadStrategySchema = z.union([
 
 export const WebPlayerPropsSchema = z.object({
   compositionUrl: z.string(),
-
-  aspectRatio: AspectRatioSchema.optional(),
 
   reverse360: z.boolean().optional(),
 

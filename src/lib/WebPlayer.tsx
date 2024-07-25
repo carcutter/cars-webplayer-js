@@ -5,7 +5,6 @@ import withZodSchema from "@/components/hoc/withZodSchema";
 import WebPlayerContainer from "@/components/organisms/WebPlayerContainer";
 import {
   DEFAULT_ALLOW_FULL_SCREEN,
-  DEFAULT_ASPECT_RATIO,
   DEFAULT_CATEGORY_POSITION,
   DEFAULT_EVENT_ID,
   DEFAULT_FLATTEN,
@@ -25,7 +24,6 @@ const queryClient = new QueryClient();
 const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   compositionUrl,
 
-  aspectRatio = DEFAULT_ASPECT_RATIO,
   reverse360 = DEFAULT_REVERSE_360,
   imageLoadStrategy = DEFAULT_IMAGE_LOAD_STRATEGY,
   flatten = DEFAULT_FLATTEN,
@@ -89,7 +87,6 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
       <GlobalContextProvider
         {...{
           ...props,
-          aspectRatio,
           reverse360,
           imageLoadStrategy,
           flatten,

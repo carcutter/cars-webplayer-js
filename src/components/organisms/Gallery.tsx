@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
 
 import GalleryElement from "@/components/molecules/GalleryElement";
+import { useCompositionContext } from "@/providers/CompositionContext";
 import { useControlsContext } from "@/providers/ControlsContext";
-import { useGlobalContext } from "@/providers/GlobalContext";
 import type { Item } from "@/types/composition";
 import { clamp } from "@/utils/math";
 
 const Gallery: React.FC = () => {
-  const { aspectRatioClass } = useGlobalContext();
+  const { aspectRatioClass } = useCompositionContext();
 
   const {
     displayedItems,

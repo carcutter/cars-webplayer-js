@@ -1,4 +1,5 @@
 {
+  "aspectRatio": "4:3",
   "imageHdWidth": 1600,
   "imageSubWidths": [100, 300, 512, 640, 768, 1024],
   "categories": [

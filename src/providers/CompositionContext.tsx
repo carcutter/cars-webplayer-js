@@ -1,15 +1,15 @@
 import { createContext, useContext, useMemo } from "react";
 
 import type { Composition } from "@/types/composition";
-import type { ImageWidth } from "@/types/misc";
 
 import { useGlobalContext } from "./GlobalContext";
 
-type ContextType = {
+type ContextType = Pick<
+  Composition,
+  "aspectRatio" | "imageHdWidth" | "imageSubWidths"
+> & {
+  aspectRatioClass: string;
   compositionCategories: Composition["categories"];
-
-  imageHdWidth: ImageWidth;
-  imageSubWidths: ImageWidth[];
 };
 
 const CompositionContext = createContext<ContextType | null>(null);
@@ -33,13 +33,15 @@ type ProviderProps = {
 const CompositionContextProvider: React.FC<
   React.PropsWithChildren<ProviderProps>
 > = ({ composition, children }) => {
+  const { categories: compositionUnsortedCategories, aspectRatio } =
+    composition;
+
   const { categoriesOrder } = useGlobalContext();
 
-  const {
-    categories: compositionUnsortedCategories,
-    imageHdWidth,
-    imageSubWidths,
-  } = composition;
+  // Compute aspectRatioClass based on aspectRatio
+  const aspectRatioClass = aspectRatio === "4:3" ? "aspect-4/3" : "aspect-16/9";
+
+  // - Order categories based on categoriesOrder
 
   // Sort categories based on categoriesOrder
   const compositionCategories = useMemo(() => {
@@ -66,10 +68,10 @@ const CompositionContextProvider: React.FC<
   return (
     <CompositionContext.Provider
       value={{
-        compositionCategories: compositionCategories,
+        ...composition,
 
-        imageHdWidth,
-        imageSubWidths,
+        aspectRatioClass,
+        compositionCategories,
       }}
     >
       {children}

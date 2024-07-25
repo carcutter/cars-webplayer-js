@@ -1,5 +1,5 @@
+import type { AspectRatio } from "@/types/misc";
 import type { PositionX, PositionY, Position } from "@/types/position";
-import type { AspectRatio } from "@/types/webPlayerProps";
 import { extractPositions } from "@/utils/position";
 
 export function positionXToClassName(positionX: PositionX): string {

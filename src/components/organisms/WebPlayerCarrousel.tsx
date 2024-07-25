@@ -3,12 +3,15 @@ import { useCallback, useEffect, useRef } from "react";
 import IndexIndicator from "@/components/atoms/IndexIndicator";
 import WebPlayerElement from "@/components/molecules/WebPlayerElement";
 import WebPlayerOverlay from "@/components/molecules/WebPlayerOverlay";
+import { useCompositionContext } from "@/providers/CompositionContext";
 import { useControlsContext } from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
 import { positionToClassName } from "@/utils/style";
 
 const WebPlayerCarrousel: React.FC = () => {
-  const { aspectRatioClass, isFullScreen } = useGlobalContext();
+  const { isFullScreen } = useGlobalContext();
+  const { aspectRatioClass } = useCompositionContext();
+
   const {
     displayedItems: items,
     slidable,

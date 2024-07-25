@@ -1,7 +1,6 @@
 import type { Position, PositionY } from "@/types/position";
-import type { AspectRatio, ImageLoadStrategy } from "@/types/webPlayerProps";
+import type { ImageLoadStrategy } from "@/types/webPlayerProps";
 
-export const DEFAULT_ASPECT_RATIO = "4:3" satisfies AspectRatio;
 export const DEFAULT_REVERSE_360 = false;
 export const DEFAULT_IMAGE_LOAD_STRATEGY =
   "quality" satisfies ImageLoadStrategy;

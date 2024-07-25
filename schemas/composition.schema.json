@@ -4,6 +4,13 @@
     "composition": {
       "type": "object",
       "properties": {
+        "aspectRatio": {
+          "type": "string",
+          "enum": [
+            "4:3",
+            "16:9"
+          ]
+        },
         "imageHdWidth": {
           "type": "number",
           "minimum": 24,
@@ -177,6 +184,7 @@
         }
       },
       "required": [
+        "aspectRatio",
         "imageHdWidth",
         "imageSubWidths",
         "categories"

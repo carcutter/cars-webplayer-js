@@ -24,8 +24,6 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedCSS, {
   props: {
     compositionUrl: "string",
 
-    aspectRatio: "string",
-
     reverse360: "boolean",
 
     minImageWidth: "number",
