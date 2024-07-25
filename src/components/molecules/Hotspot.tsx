@@ -57,7 +57,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
       >
         <div
           // Ping animation
-          className="absolute inset-0 -z-10 animate-hotspot-ping rounded-full bg-inherit"
+          className="pointer-events-none absolute inset-0 -z-20 animate-hotspot-ping rounded-full border-2 border-background"
         />
 
         {/* Use the icon from the config if available. Else, replace it if needed */}
@@ -71,9 +71,9 @@ const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
       </div>
       {showDescription && descriptionShort && (
         <div
-          className={`absolute ${position.y < 0.6 ? "top-1/3" : "bottom-1/3"} ${position.x < 0.7 ? "left-full" : "right-full"} w-max max-w-48 px-2`}
+          className={`absolute -z-10 ${position.y < 0.6 ? "-top-0.5" : "-bottom-0.5"} ${position.x < 0.7 ? "-left-0.5" : "-right-0.5"} w-max max-w-48 rounded-lg bg-background p-2 pl-8`}
         >
-          <div className="rounded bg-background px-2 py-1">
+          <div className="space-y-1">
             <div className="text-sm">{descriptionShort}</div>
             {descriptionLong && (
               <div className="text-xs">{descriptionLong}</div>
