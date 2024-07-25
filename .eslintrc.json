@@ -69,6 +69,14 @@
           }
         ]
       }
+    },
+    {
+      // -- Script files
+      "files": ["scripts/*.ts"],
+
+      "rules": {
+        "no-console": "off"
+      }
     }
   ]
 }

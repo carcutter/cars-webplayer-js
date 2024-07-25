@@ -81,4 +81,10 @@ NOTE : the sourcemap seems to interfere with size calculation [GitHub issue](htt
 
 ### Useful scripts
 
-- You can use the command `yarn run migrate_composition <COMPOSITION_V1_PATH>` in order to convert an old composition to the new model. It will create a new file with the new type
+#### Generate JSON schema
+
+Use the command `yarn migrate_composition <COMPOSITION_V1_PATH>`. It will create a new file with the new type
+
+#### Convert composition from V1 to V2
+
+Use the command `yarn generate_json_schema`. It will create a file within the _schemas_ folder

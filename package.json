@@ -15,7 +15,9 @@
     "analyze:safe": "yarn analyze --mode safe",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "migrate_composition": "tsx ./scripts/migrate_composition.ts"
+    "run_ts_script": "tsx --tsconfig tsconfig.app.json",
+    "generate_json_schema": "yarn run_ts_script ./scripts/generate_json_schema.ts",
+    "migrate_composition": "yarn run_ts_script ./scripts/migrate_composition.ts"
   },
   "dependencies": {
     "@r2wc/react-to-web-component": "^2.0.3",
@@ -51,6 +53,7 @@
     "tsx": "^4.16.2",
     "typescript": "^5.2.2",
     "vite": "^5.3.1",
-    "vite-bundle-visualizer": "^1.2.1"
+    "vite-bundle-visualizer": "^1.2.1",
+    "zod-to-json-schema": "^3.23.1"
   }
 }

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 // -- From a composition.json file, generate a composition_v2.json file
 
 import fs from "fs";
@@ -10,6 +9,8 @@ import type {
   Composition as CompositionV2,
   Item as ItemV2,
 } from "@/types/composition";
+
+import { saveJsonToFile } from "./utils";
 
 // -- Composition V1
 
@@ -50,7 +51,7 @@ type CompositionV1 = z.infer<typeof CompositionV1Schema>;
 // Get the composition file path from CLI arguments
 const compositionFilePath = process.argv[process.argv.length - 1];
 
-if (!compositionFilePath) {
+if (!compositionFilePath.endsWith(".json")) {
   console.error("Please provide the composition file path as an argument.");
   process.exit(1);
 }
@@ -107,10 +108,6 @@ const transformedComposition = transformComposition(composition);
 // Save the new composition
 const newCompositionFilePath = compositionFilePath.replace(".json", "_v2.json");
 
-fs.writeFileSync(
-  newCompositionFilePath,
-  JSON.stringify(transformedComposition, null, 2),
-  "utf8"
-);
+saveJsonToFile(newCompositionFilePath, transformedComposition);
 
-console.log(`New composition saved at: ${chalk.blue(newCompositionFilePath)}`);
+console.info(`New composition saved at: ${chalk.blue(newCompositionFilePath)}`);
