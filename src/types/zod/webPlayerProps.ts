@@ -23,6 +23,8 @@ export const WebPlayerPropsSchema = z.object({
   eventId: z.string().optional(),
 
   allowFullScreen: z.boolean().optional(),
+
+  permanentGallery: z.boolean().optional(),
 });
 
 export type WebPlayerProps = z.infer<typeof WebPlayerPropsSchema>;

@@ -10,6 +10,7 @@ type ProviderProps = Required<
     | "flatten"
     | "eventId"
     | "allowFullScreen"
+    | "permanentGallery"
   >
 > &
   Pick<

@@ -15,7 +15,7 @@ import { positionToClassName } from "@/utils/style";
 import { isSelfEvent } from "@/utils/web";
 
 const WebPlayerOverlay: React.FC = () => {
-  const { flatten } = useGlobalContext();
+  const { flatten, permanentGallery } = useGlobalContext();
 
   const {
     displayedItems: { length: dataLength },
@@ -80,7 +80,7 @@ const WebPlayerOverlay: React.FC = () => {
   return (
     <>
       {/* CategorySelect (on top) */}
-      {!isZooming && !flatten && (
+      {!flatten && !isZooming && (
         <div
           className={`${sharedClassName} ${positionToClassName("top-center")}`}
         >
@@ -89,7 +89,7 @@ const WebPlayerOverlay: React.FC = () => {
       )}
 
       {/* Next/Prev buttons */}
-      {!isZooming && slidable && (
+      {slidable && !isZooming && (
         <>
           <Button
             shape="icon"
@@ -128,7 +128,7 @@ const WebPlayerOverlay: React.FC = () => {
         className={`${sharedClassName} ${positionToClassName("bottom-fullW")} pointer-events-none grid grid-cols-[auto,1fr,auto] items-end gap-x-1 *:pointer-events-auto sm:gap-x-2`}
       >
         {/* Gallery's toogle button & Gallery */}
-        {!isZooming && dataLength > 1 && (
+        {!permanentGallery && dataLength > 1 && !isZooming && (
           <>
             <Button
               variant="fill"
@@ -144,10 +144,11 @@ const WebPlayerOverlay: React.FC = () => {
               </CustomizableIcon>
             </Button>
 
-            {showGallery && <Gallery />}
+            {showGallery && (
+              <Gallery className="-mx-1 px-1 [mask-image:linear-gradient(to_left,transparent_0px,black_4px,black_calc(100%-4px),transparent_100%)]" />
+            )}
           </>
         )}
-
         <div className="col-start-3 flex flex-col gap-y-1 sm:gap-y-2">
           {/* Zoom buttons */}
           {showZoomControls && (
@@ -218,6 +219,7 @@ const WebPlayerOverlay: React.FC = () => {
         </div>
       </div>
 
+      {/* Details overlay */}
       <div
         className={`${sharedClassName} inset-0 flex justify-end overflow-hidden bg-foreground/60 transition-opacity duration-details ${showingDetails ? "opacity-100" : "pointer-events-none opacity-0"}`}
         onClick={handleDetailsOverlayClick}

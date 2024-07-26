@@ -56,10 +56,11 @@ const DevApp: React.FC = () => {
           // minImageWidth={300}
           // maxImageWidth={1000}
           // imageLoadStrategy="speed"
+          // categoriesOrder="interior|video"
           flatten
           // eventId="cc-event"
           // allowFullScreen={false}
-          // imageLoadStrategy="speed"
+          // permanentGallery
         >
           <WebPlayerIcon name="GASOLINESPIN" color="#ff00ff">
             <svg

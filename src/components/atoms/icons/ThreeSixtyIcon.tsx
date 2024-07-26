@@ -1,6 +1,6 @@
 type Props = { className?: string };
 
-const ThreeSixtyIcon: React.FC<Props> = ({ className }) => {
+const ThreeSixtyIcon: React.FC<Props> = ({ className = "" }) => {
   return (
     <img
       className={className}

@@ -34,6 +34,10 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedCSS, {
     flatten: "boolean",
 
     eventId: "string",
+
+    allowFullScreen: "boolean",
+
+    permanentGallery: "boolean",
   },
 });
 

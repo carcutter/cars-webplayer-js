@@ -6,11 +6,17 @@ import { useControlsContext } from "@/providers/ControlsContext";
 import type { Item } from "@/types/composition";
 import { clamp } from "@/utils/math";
 
-const Gallery: React.FC = () => {
+type Props = {
+  className?: string;
+};
+
+const Gallery: React.FC<Props> = ({ className = "" }) => {
   const { aspectRatioClass } = useCompositionContext();
 
   const {
     displayedItems,
+
+    extendMode,
 
     masterItemIndex,
     setItemIndexCommand,
@@ -48,16 +54,16 @@ const Gallery: React.FC = () => {
   return (
     <div
       ref={sliderRef}
-      className="relative -mx-1 overflow-x-auto px-1 no-scrollbar [mask-image:linear-gradient(to_left,transparent_0px,black_4px,black_calc(100%-4px),transparent_100%)]"
+      className={`relative h-12 w-full overflow-x-auto no-scrollbar ${!extendMode ? "" : "sm:h-20"} ${className}`}
     >
-      <div className="flex h-12 w-fit gap-2">
+      <div className={`flex h-full gap-2 ${!extendMode ? "" : "sm:gap-4"}`}>
         {displayedItems.map((item, index) => (
           <div
             key={index}
-            className={`
-                relative h-full ${aspectRatioClass} cursor-pointer
-                after:absolute after:inset-0 after:border-2 after:border-primary after:transition-opacity ${index === masterItemIndex ? "after:opacity-100" : "after:opacity-0 hover:after:opacity-70"}
-              `}
+            className={
+              `relative h-full ${aspectRatioClass} cursor-pointer` +
+              ` after:absolute after:inset-0 after:border-2 after:border-primary after:transition-opacity ${index === masterItemIndex ? "after:opacity-100" : "after:opacity-0 hover:after:opacity-70"}`
+            }
             onClick={() => onItemClicked(item, index)}
           >
             <GalleryElement item={item} />

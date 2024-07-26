@@ -8,7 +8,11 @@ import { useControlsContext } from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
 import { positionToClassName } from "@/utils/style";
 
-const WebPlayerCarrousel: React.FC = () => {
+type Props = {
+  className?: string;
+};
+
+const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   const { isFullScreen } = useGlobalContext();
   const { aspectRatioClass } = useCompositionContext();
 
@@ -259,7 +263,7 @@ const WebPlayerCarrousel: React.FC = () => {
   }, [scrollToIndex, itemIndexCommand]);
 
   return (
-    <div className={`relative max-h-full max-w-full ${aspectRatioClass}`}>
+    <div className={`relative ${aspectRatioClass} ${className}`}>
       <div
         ref={sliderRef}
         className={`flex size-full ${slidable ? "overflow-x-auto no-scrollbar *:snap-start *:snap-always" : "justify-center"}`}

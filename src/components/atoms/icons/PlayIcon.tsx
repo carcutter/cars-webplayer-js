@@ -1,6 +1,6 @@
 type Props = { className?: string };
 
-const PlayIcon: React.FC<Props> = ({ className }) => {
+const PlayIcon: React.FC<Props> = ({ className = "" }) => {
   return (
     <img
       className={className}

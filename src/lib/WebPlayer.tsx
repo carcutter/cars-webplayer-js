@@ -8,6 +8,7 @@ import {
   DEFAULT_EVENT_ID,
   DEFAULT_FLATTEN,
   DEFAULT_IMAGE_LOAD_STRATEGY,
+  DEFAULT_PERMANENT_GALLERY,
   DEFAULT_REVERSE_360,
 } from "@/const/default";
 import CustomizationContextProvider from "@/providers/CustomizationContext";
@@ -25,6 +26,7 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   flatten = DEFAULT_FLATTEN,
   eventId = DEFAULT_EVENT_ID,
   allowFullScreen = DEFAULT_ALLOW_FULL_SCREEN,
+  permanentGallery = DEFAULT_PERMANENT_GALLERY,
 
   children: customizationChildren, // NOTE: use to customize the player, not to display the content
 
@@ -84,6 +86,7 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
           flatten,
           eventId,
           allowFullScreen,
+          permanentGallery,
 
           playerInViewportWidthRatio,
           isFullScreen,

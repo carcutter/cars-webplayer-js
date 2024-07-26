@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { ZodError } from "zod";
 
 import CloseButton from "@/components/atoms/CloseButton";
+import Gallery from "@/components/organisms/Gallery";
 import WebPlayerCarrousel from "@/components/organisms/WebPlayerCarrousel";
 import ErrorTemplate from "@/components/template/ErrorTemplate";
 import { useComposition } from "@/hooks/useComposition";
@@ -9,10 +10,13 @@ import { useEscapeKeyEffect } from "@/hooks/useEscapeKeyEffect";
 import CompositionContextProvider from "@/providers/CompositionContext";
 import { useControlsContext } from "@/providers/ControlsContext";
 import ControlsContextProvider from "@/providers/ControlsContext";
+import { useGlobalContext } from "@/providers/GlobalContext";
 import { positionToClassName } from "@/utils/style";
 import { isSelfEvent } from "@/utils/web";
 
 const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
+  const { permanentGallery } = useGlobalContext();
+
   const { extendMode, disableExtendMode, isZooming, showingDetails } =
     useControlsContext();
 
@@ -51,11 +55,16 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
       <div
         className={
           !extendMode
-            ? undefined
-            : "flex size-full items-center justify-center sm:size-5/6"
+            ? "space-y-2"
+            : "flex size-full max-h-[calc(100%-128px)] flex-col justify-center gap-y-2 sm:gap-y-4"
         }
       >
-        <WebPlayerCarrousel />
+        <WebPlayerCarrousel
+          className={!extendMode ? undefined : "mx-auto max-w-screen-xl"}
+        />
+        {permanentGallery && (
+          <Gallery className={!extendMode ? undefined : "shrink-0"} />
+        )}
       </div>
 
       {extendMode && (
