@@ -5,14 +5,10 @@ import withZodSchema from "@/components/hoc/withZodSchema";
 import WebPlayerContainer from "@/components/organisms/WebPlayerContainer";
 import {
   DEFAULT_ALLOW_FULL_SCREEN,
-  DEFAULT_CATEGORY_POSITION,
   DEFAULT_EVENT_ID,
   DEFAULT_FLATTEN,
   DEFAULT_IMAGE_LOAD_STRATEGY,
-  DEFAULT_NEXT_PREV_POSITION,
-  DEFAULT_OPTIONS_POSITION,
   DEFAULT_REVERSE_360,
-  DEFAULT_ZOOM_POSITION,
 } from "@/const/default";
 import CustomizationContextProvider from "@/providers/CustomizationContext";
 import GlobalContextProvider from "@/providers/GlobalContext";
@@ -29,10 +25,6 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   flatten = DEFAULT_FLATTEN,
   eventId = DEFAULT_EVENT_ID,
   allowFullScreen = DEFAULT_ALLOW_FULL_SCREEN,
-  categoryPosition = DEFAULT_CATEGORY_POSITION,
-  optionsPosition = DEFAULT_OPTIONS_POSITION,
-  nextPrevPosition = DEFAULT_NEXT_PREV_POSITION,
-  zoomPosition = DEFAULT_ZOOM_POSITION,
 
   children: customizationChildren, // NOTE: use to customize the player, not to display the content
 
@@ -92,10 +84,6 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
           flatten,
           eventId,
           allowFullScreen,
-          categoryPosition,
-          optionsPosition,
-          nextPrevPosition,
-          zoomPosition,
 
           playerInViewportWidthRatio,
           isFullScreen,

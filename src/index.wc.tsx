@@ -34,11 +34,6 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedCSS, {
     flatten: "boolean",
 
     eventId: "string",
-
-    categoryPosition: "string",
-    optionsPosition: "string",
-    nextPrevPosition: "string",
-    zoomPosition: "string",
   },
 });
 

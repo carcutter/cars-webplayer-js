@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 import { ImageWidthSchema } from "./misc";
-import { PositionSchema, PositionYschema } from "./position";
 
 export const ImageLoadStrategySchema = z.union([
   z.literal("quality"),
@@ -24,20 +23,6 @@ export const WebPlayerPropsSchema = z.object({
   eventId: z.string().optional(),
 
   allowFullScreen: z.boolean().optional(),
-
-  categoryPosition: PositionYschema.extract(["top", "bottom"]).optional(),
-  optionsPosition: PositionSchema.extract([
-    "top-right",
-    "bottom-right",
-    "bottom-left",
-    "top-left",
-  ]).optional(),
-  nextPrevPosition: PositionYschema.optional(),
-  zoomPosition: PositionSchema.extract([
-    "middle-right",
-    "bottom-center",
-    "middle-left",
-  ]).optional(),
 });
 
 export type WebPlayerProps = z.infer<typeof WebPlayerPropsSchema>;

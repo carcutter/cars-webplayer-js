@@ -10,10 +10,6 @@ type ProviderProps = Required<
     | "flatten"
     | "eventId"
     | "allowFullScreen"
-    | "categoryPosition"
-    | "optionsPosition"
-    | "nextPrevPosition"
-    | "zoomPosition"
   >
 > &
   Pick<
