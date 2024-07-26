@@ -45,23 +45,43 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
 
     const wrapper = wrapperRef.current;
 
-    const refresh = () => {
+    const onResize = () => {
       const viewportWidth = window.innerWidth;
       const playerWidth = wrapper.clientWidth;
 
       setPlayerInViewportWidthRatio(playerWidth / viewportWidth);
+    };
 
+    onResize();
+
+    addEventListener("resize", onResize);
+
+    return () => {
+      removeEventListener("resize", onResize);
+    };
+  }, []);
+
+  // Handle fullscreen
+  useEffect(() => {
+    if (!allowFullScreen) {
+      return;
+    }
+
+    const wrapper = wrapperRef.current;
+    if (!wrapper) {
+      throw new Error("Wrapper not found");
+    }
+
+    const onFullscreenChange = () => {
       setIsFullScreen(document.fullscreenElement === wrapper);
     };
 
-    refresh();
-
-    addEventListener("resize", refresh);
+    document.addEventListener("fullscreenchange", onFullscreenChange);
 
     return () => {
-      removeEventListener("resize", refresh);
+      document.removeEventListener("fullscreenchange", onFullscreenChange);
     };
-  }, []);
+  }, [allowFullScreen]);
 
   const requestFullscreen = useCallback(() => {
     const wrapper = wrapperRef.current;

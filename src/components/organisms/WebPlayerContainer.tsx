@@ -12,7 +12,7 @@ import { useControlsContext } from "@/providers/ControlsContext";
 import ControlsContextProvider from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
 import { positionToClassName } from "@/utils/style";
-import { isSelfEvent } from "@/utils/web";
+import { isFirstChildEvent, isSelfEvent } from "@/utils/web";
 
 const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
   const { permanentGallery } = useGlobalContext();
@@ -33,18 +33,14 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
   // Handle click on overlay to disable extend mode
   const handleOverlayClick = useCallback(
     (e: React.MouseEvent) => {
-      if (!extendMode) {
-        return;
-      }
-
-      // Check if the click originated from the overlay itself
-      if (!isSelfEvent(e)) {
+      // Check if the click originated from the overlay itself or the firstChild which is only to place the content in the center
+      if (!isSelfEvent(e) && !isFirstChildEvent(e)) {
         return;
       }
 
       disableExtendMode();
     },
-    [disableExtendMode, extendMode]
+    [disableExtendMode]
   );
 
   return (
