@@ -44,7 +44,11 @@ const WebPlayerElement: React.FC<Props> = ({ index, item, currentIndex }) => {
     Comp = null;
   }
 
-  return <div className={`relative ${aspectRatioClass}`}>{Comp}</div>;
+  return (
+    <div className={`relative ${aspectRatioClass} bg-foreground/50`}>
+      {Comp}
+    </div>
+  );
 };
 
 export default WebPlayerElement;

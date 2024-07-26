@@ -1,11 +1,14 @@
 import CdnImage from "@/components/atoms/CdnImage";
 import PlayIcon from "@/components/atoms/icons/PlayIcon";
 import ThreeSixtyIcon from "@/components/atoms/icons/ThreeSixtyIcon";
+import { useCompositionContext } from "@/providers/CompositionContext";
 import type { Item } from "@/types/composition";
 
 type Props = { item: Item };
 
 const GalleryElement: React.FC<Props> = ({ item }) => {
+  const { aspectRatioClass } = useCompositionContext();
+
   const { type } = item;
 
   let imgSrc: string;
@@ -53,16 +56,14 @@ const GalleryElement: React.FC<Props> = ({ item }) => {
       break;
   }
 
-  if (!overlayIcon) {
-    return imgNode;
-  }
-
   return (
-    <div className="relative size-full">
+    <div className={`relative ${aspectRatioClass} bg-foreground/50`}>
       {imgNode}
-      <div className="absolute inset-0 flex items-center justify-center bg-foreground/25">
-        {overlayIcon}
-      </div>
+      {overlayIcon && (
+        <div className="absolute inset-0 flex items-center justify-center bg-foreground/25">
+          {overlayIcon}
+        </div>
+      )}
     </div>
   );
 };
