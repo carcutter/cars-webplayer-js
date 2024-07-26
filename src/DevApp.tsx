@@ -4,7 +4,6 @@ import { DEFAULT_EVENT_ID } from "@/const/default";
 import WebPlayer from "@/lib/WebPlayer.tsx";
 import WebPlayerIcon from "@/lib/WebPlayerIcon.tsx";
 
-import "./index.dev.css";
 import "./index.css";
 
 const DevApp: React.FC = () => {

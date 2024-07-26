@@ -20,7 +20,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
 
   const DefaultIcon = withImage ? (
     <img
-      className="h-4"
+      className="size-4"
       src="https://cdn.car-cutter.com/libs/web-player/v3/assets/icons/ui/image.svg"
       alt="Image"
     />

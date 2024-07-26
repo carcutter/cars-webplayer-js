@@ -100,7 +100,7 @@ const WebPlayerOverlay: React.FC = () => {
           >
             <CustomizableIcon customizationKey="CONTROLS_ARROW_LEFT">
               <img
-                className="rotate-180"
+                className="size-full rotate-180"
                 src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/arrow_forward.svg"
                 alt="Previous icon"
               />
@@ -115,6 +115,7 @@ const WebPlayerOverlay: React.FC = () => {
           >
             <CustomizableIcon customizationKey="CONTROLS_ARROW_RIGHT">
               <img
+                className="size-full"
                 src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/arrow_forward.svg"
                 alt="Next icon"
               />
@@ -138,6 +139,7 @@ const WebPlayerOverlay: React.FC = () => {
             >
               <CustomizableIcon customizationKey="CONTROLS_GALLERY">
                 <img
+                  className="size-full"
                   src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/motion.svg"
                   alt="Gallery icon"
                 />
@@ -187,6 +189,7 @@ const WebPlayerOverlay: React.FC = () => {
             {!extendMode ? (
               <CustomizableIcon customizationKey="CONTROLS_EXTEND">
                 <img
+                  className="size-full"
                   src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/fullscreen.svg"
                   alt="Extend icon"
                 />
@@ -194,6 +197,7 @@ const WebPlayerOverlay: React.FC = () => {
             ) : (
               <CustomizableIcon customizationKey="CONTROLS_REDUCE">
                 <img
+                  className="size-full"
                   src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/close_fullscreen.svg"
                   alt="Extend icon"
                 />
@@ -211,6 +215,7 @@ const WebPlayerOverlay: React.FC = () => {
           >
             <CustomizableIcon customizationKey="CONTROLS_HOTSPOTS">
               <img
+                className="size-full"
                 src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/info.svg"
                 alt="Hotspot icon"
               />

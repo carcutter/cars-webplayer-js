@@ -14,11 +14,6 @@
 }
 
 @layer base {
-  img {
-    /* Make images take all available space instead of limiting to their instrinsic size */
-    @apply size-full;
-  }
-
   #cc-webplayer-wrapper {
     @apply bg-background text-foreground;
   }

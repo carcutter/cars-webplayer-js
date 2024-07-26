@@ -8,6 +8,7 @@ const CloseButton: React.FC<Props> = ({ className = "", ...props }) => {
     <Button color="neutral" shape="icon" className={className} {...props}>
       <CustomizableIcon customizationKey="CONTROLS_CLOSE">
         <img
+          className="size-full"
           src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/close.svg"
           alt="Close"
         />

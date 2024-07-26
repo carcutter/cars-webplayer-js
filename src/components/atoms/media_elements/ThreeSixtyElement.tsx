@@ -251,7 +251,7 @@ const ThreeSixtyElementPlaceholder: React.FC<
         </div>
       )}
 
-      <CdnImage src={images[0]} />
+      <CdnImage className="size-full" src={images[0]} />
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
         <div className="size-20">
           <ThreeSixtyIcon />
