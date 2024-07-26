@@ -7,8 +7,9 @@ import { z } from "zod";
 
 import type {
   Composition as CompositionV2,
+  Hotspot as HotspotV2,
   Item as ItemV2,
-} from "@/types/composition";
+} from "../src/types/composition";
 
 import { saveJsonToFile } from "./utils";
 
@@ -28,6 +29,7 @@ const HotspotV1Schema = z
     detail: z.string().optional(),
   })
   .strict();
+type HotspotV1 = z.infer<typeof HotspotV1Schema>;
 
 const ItemV1Schema = z
   .object({
@@ -71,17 +73,41 @@ if (!success) {
 // Transform
 const transformComposition = (composition: CompositionV1): CompositionV2 => {
   return {
+    aspectRatio: "4:3",
     imageHdWidth: 1600,
     imageSubWidths: [100, 300, 512, 640, 768, 1024],
 
     categories: composition.map(({ category, title, items }) => {
       let itemsV2: ItemV2[];
+
+      const convertHotspot = (hotspot: HotspotV1): HotspotV2 => {
+        const description = hotspot.description.short
+          ? hotspot.description
+          : undefined;
+
+        const detail = hotspot.detail
+          ? {
+              type: "image" as const,
+              src: hotspot.detail,
+            }
+          : undefined;
+
+        return {
+          feature: hotspot.feature,
+          position: hotspot.position,
+          description,
+          detail,
+        };
+      };
+
       if (category === "360") {
         itemsV2 = [
           {
             type: "360",
             images: items.map(item => item.image),
-            hotspots: items.map(item => item.hotspots),
+            hotspots: items.map(({ hotspots }) =>
+              hotspots.map(hotspot => convertHotspot(hotspot))
+            ),
           },
         ];
       } else {
@@ -89,7 +115,7 @@ const transformComposition = (composition: CompositionV1): CompositionV2 => {
           return {
             type: "image",
             src: item.image,
-            hotspots: item.hotspots,
+            hotspots: item.hotspots.map(hotspot => convertHotspot(hotspot)),
           };
         });
       }

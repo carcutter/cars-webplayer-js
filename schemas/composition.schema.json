@@ -81,16 +81,36 @@
                                     "type": "string"
                                   }
                                 },
+                                "required": [
+                                  "short"
+                                ],
                                 "additionalProperties": false
                               },
                               "detail": {
-                                "type": "string"
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "image",
+                                      "link",
+                                      "pdf"
+                                    ]
+                                  },
+                                  "src": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "src"
+                                ],
+                                "additionalProperties": false
                               }
                             },
                             "required": [
                               "feature",
-                              "position",
-                              "description"
+                              "position"
                             ],
                             "additionalProperties": false
                           }

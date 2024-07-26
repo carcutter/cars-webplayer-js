@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
-import { CompositionSchema } from "@/types/zod/composition";
+import { CompositionSchema } from "../src/types/zod/composition";
 
 import { saveJsonToFile } from "./utils";
 

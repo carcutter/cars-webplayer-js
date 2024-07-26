@@ -8,11 +8,18 @@ export const HotspotSchema = z.object({
     x: z.number(),
     y: z.number(),
   }),
-  description: z.object({
-    short: z.string().optional(),
-    long: z.string().optional(),
-  }),
-  detail: z.string().optional(),
+  description: z
+    .object({
+      short: z.string(),
+      long: z.string().optional(),
+    })
+    .optional(),
+  detail: z
+    .object({
+      type: z.union([z.literal("image"), z.literal("link"), z.literal("pdf")]),
+      src: z.string(),
+    })
+    .optional(),
 });
 
 export const ItemSchema = z.discriminatedUnion("type", [

@@ -34,5 +34,5 @@
       "@/utils/*": ["./src/utils/*"]
     }
   },
-  "include": ["src", "mock_modules", "scripts"]
+  "include": ["src", "mock_modules"]
 }
