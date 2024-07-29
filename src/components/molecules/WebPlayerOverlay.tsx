@@ -126,7 +126,7 @@ const WebPlayerOverlay: React.FC = () => {
 
       {/* Bottom overlay : Gallery, Hotspots toggle, ... We need to disable pointer-event to allow the propagation to parent elements */}
       <div
-        className={`${sharedClassName} ${positionToClassName("bottom-fullW")} pointer-events-none grid grid-cols-[auto,1fr,auto] items-end gap-x-1 *:pointer-events-auto sm:gap-x-2`}
+        className={`${sharedClassName} ${positionToClassName("bottom-fullW")} pointer-events-none grid grid-cols-[auto,1fr,auto] items-end *:pointer-events-auto sm:gap-x-2`}
       >
         {/* Gallery's toogle button & Gallery */}
         {!permanentGallery && dataLength > 1 && !isZooming && (
@@ -147,7 +147,10 @@ const WebPlayerOverlay: React.FC = () => {
             </Button>
 
             {showGallery && (
-              <Gallery className="-mx-1 px-1 [mask-image:linear-gradient(to_left,transparent_0px,black_4px,black_calc(100%-4px),transparent_100%)]" />
+              <Gallery
+                className="[mask-image:linear-gradient(to_left,transparent_0px,black_4px,black_calc(100%-4px),transparent_100%)]"
+                containerClassName="mx-1"
+              />
             )}
           </>
         )}

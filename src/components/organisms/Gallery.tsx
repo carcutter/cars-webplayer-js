@@ -9,9 +9,13 @@ import { clamp } from "@/utils/math";
 
 type Props = {
   className?: string;
+  containerClassName?: string;
 };
 
-const Gallery: React.FC<Props> = ({ className = "" }) => {
+const Gallery: React.FC<Props> = ({
+  className = "",
+  containerClassName = "",
+}) => {
   const { isFullScreen } = useGlobalContext();
 
   const { aspectRatioClass } = useCompositionContext();
@@ -98,7 +102,9 @@ const Gallery: React.FC<Props> = ({ className = "" }) => {
       ref={sliderRef}
       className={`relative h-12 w-full overflow-x-auto no-scrollbar ${!extendMode ? "" : "sm:h-20"} ${className}`}
     >
-      <div className={`flex h-full gap-2 ${!extendMode ? "" : "sm:gap-4"}`}>
+      <div
+        className={`flex h-full w-fit gap-2 ${!extendMode ? "" : "sm:gap-4"} ${containerClassName}`}
+      >
         {displayedItems.map((item, index) => (
           <div
             key={index}
