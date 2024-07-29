@@ -9,6 +9,7 @@ import Gallery from "@/components/organisms/Gallery";
 import Button from "@/components/ui/Button";
 import Separator from "@/components/ui/Separator";
 import { useEscapeKeyEffect } from "@/hooks/useEscapeKeyEffect";
+import { useCompositionContext } from "@/providers/CompositionContext";
 import { useControlsContext } from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
 import { positionToClassName } from "@/utils/style";
@@ -16,6 +17,8 @@ import { isSelfEvent } from "@/utils/web";
 
 const WebPlayerOverlay: React.FC = () => {
   const { flatten, permanentGallery } = useGlobalContext();
+
+  const { aspectRatioClass } = useCompositionContext();
 
   const {
     displayedItems: { length: dataLength },
@@ -237,7 +240,11 @@ const WebPlayerOverlay: React.FC = () => {
         >
           {!!shownDetails && (
             <>
-              <CdnImage src={shownDetails.src} imgInPlayerWidthRatio={0.6} />
+              <CdnImage
+                className={`w-full ${aspectRatioClass} bg-foreground/65`}
+                src={shownDetails.src}
+                imgInPlayerWidthRatio={0.6}
+              />
 
               <div className="space-y-1 p-3">
                 <span>{shownDetails.title}</span>
