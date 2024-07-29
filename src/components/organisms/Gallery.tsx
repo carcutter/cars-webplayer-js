@@ -1,8 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 import GalleryElement from "@/components/molecules/GalleryElement";
 import { useCompositionContext } from "@/providers/CompositionContext";
 import { useControlsContext } from "@/providers/ControlsContext";
+import { useGlobalContext } from "@/providers/GlobalContext";
 import type { Item } from "@/types/composition";
 import { clamp } from "@/utils/math";
 
@@ -11,20 +12,53 @@ type Props = {
 };
 
 const Gallery: React.FC<Props> = ({ className = "" }) => {
+  const { isFullScreen } = useGlobalContext();
+
   const { aspectRatioClass } = useCompositionContext();
 
   const {
     displayedItems,
 
     extendMode,
+    extendTransition,
 
     masterItemIndex,
     setItemIndexCommand,
   } = useControlsContext();
 
   const sliderRef = useRef<HTMLDivElement>(null);
+  const getSliderOrThrow = useCallback(() => {
+    if (!sliderRef.current) {
+      throw new Error("slider.current is null");
+    }
 
-  // Scroll in order to always have the target item in the middle
+    return sliderRef.current;
+  }, []);
+
+  const slideToIndex = useCallback(
+    (index: number, behavior: "instant" | "smooth") => {
+      const slider = getSliderOrThrow();
+
+      // Scroll the gallery to have the target in view
+      const containerWidth = slider.clientWidth;
+      const itemWidth = slider.scrollWidth / displayedItems.length;
+      const targetScrollLeft = (index + 1 / 2) * itemWidth - containerWidth / 2;
+
+      const maxScroll = slider.scrollWidth - slider.clientWidth;
+
+      slider.scrollTo({
+        left: clamp(targetScrollLeft, 0, maxScroll),
+        behavior,
+      });
+    },
+    [displayedItems.length, getSliderOrThrow]
+  );
+
+  // -- Effects
+
+  const lastMasterItemIndexRef = useRef(masterItemIndex);
+
+  // Scroll smoothly in order to always have the target item in the middle
   useEffect(() => {
     const slider = sliderRef.current;
 
@@ -33,19 +67,27 @@ const Gallery: React.FC<Props> = ({ className = "" }) => {
       return;
     }
 
-    // Scroll the gallery to have the target in view
-    const containerWidth = slider.clientWidth;
-    const itemWidth = slider.scrollWidth / displayedItems.length;
-    const targetScrollLeft =
-      (masterItemIndex + 1 / 2) * itemWidth - containerWidth / 2;
+    slideToIndex(masterItemIndex, "smooth");
+    lastMasterItemIndexRef.current = masterItemIndex;
+  }, [masterItemIndex, slideToIndex]);
 
-    const maxScroll = slider.scrollWidth - slider.clientWidth;
+  // Scroll instantly to handle layout shift when going to full-screen
+  useEffect(() => {
+    const slider = sliderRef.current;
 
-    slider.scrollLeft = clamp(targetScrollLeft, 0, maxScroll);
+    // DOM not ready yet
+    if (!slider) {
+      return;
+    }
 
-    // Smooth scroll is enabled after the first scrolling (to avoid the initial scroll)
-    slider.style.scrollBehavior = "smooth";
-  }, [displayedItems.length, masterItemIndex]);
+    slideToIndex(lastMasterItemIndexRef.current, "instant");
+  }, [
+    slideToIndex,
+    // - Run the effect when those values change
+    isFullScreen,
+    extendMode,
+    extendTransition,
+  ]);
 
   const onItemClicked = (_item: Item, index: number) => {
     setItemIndexCommand(index);
