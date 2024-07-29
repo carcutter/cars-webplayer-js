@@ -38,6 +38,7 @@ type ContextType = {
   enableExtendMode: () => void;
   disableExtendMode: () => void;
   toggleExtendMode: () => void;
+  extendTransition: boolean;
 
   showGallery: boolean;
   toggleGallery: () => void;
@@ -151,6 +152,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   }, [currentCarrouselItem, currentItemInteraction]);
 
   const [extendMode, setExtendMode] = useState(false);
+  const [extendTransitionTimeout, setExtendTransitionTimeout] =
+    useState<NodeJS.Timeout>();
   const [showGallery, setShowGallery] = useState(false);
 
   const emitEvent = useCallback(
@@ -166,23 +169,37 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     emitEvent(`hotspots-${newValue ? "on" : "off"}`);
   }, [emitEvent, showHotspots]);
 
+  // Hack to refresh scroll position when switching from toggling full-screen
+  const triggerExtendTransition = useCallback(() => {
+    clearTimeout(extendTransitionTimeout);
+    const timeout = setTimeout(() => {
+      setExtendTransitionTimeout(undefined);
+    }, 500);
+
+    setExtendTransitionTimeout(timeout);
+  }, [extendTransitionTimeout]);
+
   const enableExtendMode = useCallback(async () => {
+    triggerExtendTransition();
+
     if (allowFullScreen) {
       await requestFullscreen();
     }
 
     setExtendMode(true);
     emitEvent("extend-mode-on");
-  }, [allowFullScreen, emitEvent, requestFullscreen]);
+  }, [allowFullScreen, emitEvent, requestFullscreen, triggerExtendTransition]);
 
   const disableExtendMode = useCallback(async () => {
+    triggerExtendTransition();
+
     if (allowFullScreen) {
       await exitFullscreen();
     }
 
     setExtendMode(false);
     emitEvent("extend-mode-off");
-  }, [allowFullScreen, emitEvent, exitFullscreen]);
+  }, [allowFullScreen, emitEvent, exitFullscreen, triggerExtendTransition]);
 
   const toggleExtendMode = useCallback(() => {
     if (extendMode) {
@@ -256,6 +273,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         enableExtendMode,
         disableExtendMode,
         toggleExtendMode,
+        extendTransition: !!extendTransitionTimeout,
 
         showGallery,
         toggleGallery,

@@ -26,6 +26,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     setItemIndexCommand,
 
     extendMode,
+    extendTransition,
 
     isZooming,
   } = useControlsContext();
@@ -116,6 +117,11 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   useEffect(() => {
     const closestIndex = computeClosestIndex();
 
+    // When changing layout with full-screen for instance, the scroll position can be messed-up
+    if (Number.isNaN(closestIndex)) {
+      return;
+    }
+
     if (closestIndex === carrouselItemIndex) {
       return;
     }
@@ -129,9 +135,10 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     items,
     isFullScreen,
     extendMode,
+    extendTransition,
   ]);
 
-  // -- Event listeners to handle the slider -- //
+  // -- Event listeners to handle the slider dragging -- //
   useEffect(() => {
     // Sliding is disabled when there is only one item
     if (!slidable) {
@@ -216,10 +223,46 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       });
     };
 
+    slider.addEventListener("mousedown", onMouseDown);
+    slider.addEventListener("mouseleave", onMouseEnd);
+    slider.addEventListener("mouseup", onMouseEnd);
+    slider.addEventListener("mousemove", onMouseMove);
+
+    return () => {
+      slider.removeEventListener("mousedown", onMouseDown);
+      slider.removeEventListener("mouseleave", onMouseEnd);
+      slider.removeEventListener("mouseup", onMouseEnd);
+      slider.removeEventListener("mousemove", onMouseMove);
+    };
+  }, [
+    computeClosestIndex,
+    scrollToIndex,
+    setStyleCursor,
+    setStyleScrollBehavior,
+    setStyleSnapState,
+    slidable,
+  ]);
+
+  // -- Event listeners to handle the slider scrolling -- //
+  useEffect(() => {
+    // Event listener can mess things when toggling full-screen
+    if (extendTransition) {
+      return;
+    }
+
+    const slider = sliderRef.current;
+
+    // DOM not ready yet
+    if (!slider) {
+      return;
+    }
+
     // - Update the carrouselItemIndex when the user moves the carrousel (scrolling/dragging)
+    // NOTE: it is also triggered when the layout changes (full-screen/resizing)
     const onScroll = () => {
       const closestIndex = computeClosestIndex();
-      // Fix type undefined when switching to full screen mode
+
+      // When changing layout with full-screen, the scroll position can be messed-up
       if (Number.isNaN(closestIndex)) {
         return;
       }
@@ -232,31 +275,17 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       }
     };
 
-    slider.addEventListener("mousedown", onMouseDown);
-    slider.addEventListener("mouseleave", onMouseEnd);
-    slider.addEventListener("mouseup", onMouseEnd);
-    slider.addEventListener("mousemove", onMouseMove);
-
     slider.addEventListener("scroll", onScroll);
 
     return () => {
-      slider.removeEventListener("mousedown", onMouseDown);
-      slider.removeEventListener("mouseleave", onMouseEnd);
-      slider.removeEventListener("mouseup", onMouseEnd);
-      slider.removeEventListener("mousemove", onMouseMove);
-
       slider.removeEventListener("scroll", onScroll);
     };
   }, [
     computeClosestIndex,
+    extendTransition,
     itemIndexCommand,
-    scrollToIndex,
     setCarrouselItemIndex,
     setItemIndexCommand,
-    setStyleCursor,
-    setStyleScrollBehavior,
-    setStyleSnapState,
-    slidable,
   ]);
 
   // Listen to ControlsContext's command to scroll to a specific index
