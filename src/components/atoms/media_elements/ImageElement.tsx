@@ -15,7 +15,7 @@ const ImageElement: React.FC<Props> = ({ hotspots, ...props }) => {
     <div className="relative size-full overflow-hidden">
       <div
         // Scale effect on show details
-        className={`duration-details ${showingDetails ? "scale-105" : "scale-100"}`}
+        className={`size-full duration-details ${showingDetails ? "scale-105" : "scale-100"}`}
       >
         <ZoomableCdnImage {...props} />
         {showHotspots &&
