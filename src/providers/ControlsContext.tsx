@@ -141,14 +141,14 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const enableHotspotsControl = useMemo(() => {
     switch (currentCarrouselItem.type) {
       case "image":
-        return true;
+        return !!currentCarrouselItem.hotspots?.length;
+      case "360":
+        return currentItemInteraction === "running";
       case "video":
       case "omni_directional":
         return false;
     }
-
-    return currentItemInteraction === "running";
-  }, [currentCarrouselItem.type, currentItemInteraction]);
+  }, [currentCarrouselItem, currentItemInteraction]);
 
   const [extendMode, setExtendMode] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
