@@ -218,6 +218,11 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     // - Update the carrouselItemIndex when the user moves the carrousel (scrolling/dragging)
     const onScroll = () => {
       const closestIndex = computeClosestIndex();
+      // Fix type undefined when switching to full screen mode
+      if (Number.isNaN(closestIndex)) {
+        return;
+      }
+
       setCarrouselItemIndex(closestIndex);
 
       // Reset the command once it has been executed
