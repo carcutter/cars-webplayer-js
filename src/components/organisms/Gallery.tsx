@@ -60,6 +60,7 @@ const Gallery: React.FC<Props> = ({
 
   // -- Effects
 
+  // Ref to use index within effect without re-rendering
   const lastMasterItemIndexRef = useRef(masterItemIndex);
 
   // Scroll smoothly in order to always have the target item in the middle
