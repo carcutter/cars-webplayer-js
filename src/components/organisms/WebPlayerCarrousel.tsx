@@ -153,6 +153,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     // - Handle when the user just clicked on the slider to start dragging
     const onMouseDown = (e: MouseEvent) => {
       e.preventDefault(); // Prevents native image dragging
+      e.stopPropagation(); // Prevents overlay click when ending drag outside the carrousel
 
       // Take snapshot of the current state
       // NOTE: Since we are using scroll-smooth, the scrollLeft may not be correct as the animation is still running
