@@ -184,10 +184,10 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
     if (allowFullScreen) {
       await requestFullscreen();
+    } else {
+      setExtendMode(true);
+      emitEvent("extend-mode-on");
     }
-
-    setExtendMode(true);
-    emitEvent("extend-mode-on");
   }, [allowFullScreen, emitEvent, requestFullscreen, triggerExtendTransition]);
 
   const disableExtendMode = useCallback(async () => {
@@ -195,10 +195,10 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
     if (allowFullScreen) {
       await exitFullscreen();
+    } else {
+      setExtendMode(false);
+      emitEvent("extend-mode-off");
     }
-
-    setExtendMode(false);
-    emitEvent("extend-mode-off");
   }, [allowFullScreen, emitEvent, exitFullscreen, triggerExtendTransition]);
 
   const toggleExtendMode = useCallback(() => {
@@ -209,14 +209,30 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     }
   }, [disableExtendMode, enableExtendMode, extendMode]);
 
-  // Listen to fullscreen changes
+  // Listen to fullscreen changes (mandatory to get the full screen close with Echap)
   useEffect(() => {
     if (!allowFullScreen) {
       return;
     }
 
+    // Already handled
+    if (isFullScreen === extendMode) {
+      return;
+    }
+
+    triggerExtendTransition();
+
     setExtendMode(isFullScreen);
-  }, [allowFullScreen, isFullScreen]);
+    emitEvent(`extend-mode-${isFullScreen ? "on" : "off"}`);
+
+    setExtendMode(isFullScreen);
+  }, [
+    allowFullScreen,
+    emitEvent,
+    extendMode,
+    isFullScreen,
+    triggerExtendTransition,
+  ]);
 
   const toggleGallery = useCallback(() => {
     const newValue = !showGallery;

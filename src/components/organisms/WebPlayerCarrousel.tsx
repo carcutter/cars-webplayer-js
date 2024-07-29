@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import IndexIndicator from "@/components/atoms/IndexIndicator";
 import WebPlayerElement from "@/components/molecules/WebPlayerElement";
@@ -111,6 +111,29 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     [getContainerWidth, getSliderOrThrow, setStyleScrollBehavior]
   );
 
+  // - Listen to resizing to avoid layer shift
+  const [resizeTransitionTimeout, setResizeTransitionTimeout] =
+    useState<NodeJS.Timeout>();
+  const isResizing = !!resizeTransitionTimeout;
+
+  useEffect(() => {
+    const onResize = () => {
+      clearTimeout(resizeTransitionTimeout);
+      const timeout = setTimeout(() => {
+        setResizeTransitionTimeout(undefined);
+      }, 500);
+      setResizeTransitionTimeout(timeout);
+    };
+
+    addEventListener("resize", onResize);
+    document.addEventListener("fullscreenchange", onResize);
+
+    return () => {
+      removeEventListener("resize", onResize);
+      document.removeEventListener("fullscreenchange", onResize);
+    };
+  }, [resizeTransitionTimeout]);
+
   // -- Update the scroll when the layout changes
   // 1) when the user changes the category (need to reset the first index)
   // 2) when the user toggles the extend mode
@@ -133,6 +156,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     computeClosestIndex,
     // - Run the effect when those values change
     items,
+    resizeTransitionTimeout,
     isFullScreen,
     extendMode,
     extendTransition,
@@ -246,7 +270,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   // -- Event listeners to handle the slider scrolling -- //
   useEffect(() => {
     // Event listener can mess things when toggling full-screen
-    if (extendTransition) {
+    if (extendTransition || isResizing) {
       return;
     }
 
@@ -283,6 +307,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   }, [
     computeClosestIndex,
     extendTransition,
+    isResizing,
     itemIndexCommand,
     setCarrouselItemIndex,
     setItemIndexCommand,
