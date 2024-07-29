@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import withZodSchema from "@/components/hoc/withZodSchema";
 import WebPlayerContainer from "@/components/organisms/WebPlayerContainer";
+import { WEB_PLAYER_CUSTOM_ELEMENTS_NAME } from "@/const/custom_elements";
 import {
   DEFAULT_ALLOW_FULL_SCREEN,
   DEFAULT_EVENT_ID,
@@ -73,7 +74,13 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
     }
 
     const onFullscreenChange = () => {
-      setIsFullScreen(document.fullscreenElement === wrapper);
+      const { fullscreenElement } = document;
+
+      setIsFullScreen(
+        fullscreenElement === wrapper ||
+          // NOTE: For custom element, the web browser is making the whole custom element full-screen and not only the wrapper
+          fullscreenElement?.localName === WEB_PLAYER_CUSTOM_ELEMENTS_NAME
+      );
     };
 
     document.addEventListener("fullscreenchange", onFullscreenChange);
@@ -92,8 +99,12 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
     return wrapper.requestFullscreen();
   }, []);
 
-  const exitFullscreen = useCallback(() => {
-    return document.exitFullscreen();
+  const exitFullscreen = useCallback(async () => {
+    try {
+      await document.exitFullscreen();
+    } catch (error) {
+      // Will throw error if, for some reason no element is in full-screen
+    }
   }, []);
 
   return (
