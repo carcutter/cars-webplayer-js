@@ -8,7 +8,6 @@ import CustomizableButton from "@/components/molecules/CustomizableButton";
 import Gallery from "@/components/organisms/Gallery";
 import Button from "@/components/ui/Button";
 import Separator from "@/components/ui/Separator";
-import { useEscapeKeyEffect } from "@/hooks/useEscapeKeyEffect";
 import { useCompositionContext } from "@/providers/CompositionContext";
 import { useControlsContext } from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
@@ -24,9 +23,9 @@ const WebPlayerOverlay: React.FC = () => {
     displayedItems: { length: dataLength },
     slidable,
 
-    carrouselItemIndex,
     masterItemIndex,
-    setItemIndexCommand,
+    prevImage,
+    nextImage,
 
     showControls,
 
@@ -50,17 +49,6 @@ const WebPlayerOverlay: React.FC = () => {
 
     resetView,
   } = useControlsContext();
-
-  const prevImage = useCallback(() => {
-    setItemIndexCommand(carrouselItemIndex - 1);
-  }, [carrouselItemIndex, setItemIndexCommand]);
-
-  const nextImage = useCallback(() => {
-    setItemIndexCommand(carrouselItemIndex + 1);
-  }, [carrouselItemIndex, setItemIndexCommand]);
-
-  // Handle escape key to unzoom/exit details
-  useEscapeKeyEffect(resetView);
 
   // Handle click on overlay to exit details
   const handleDetailsOverlayClick = useCallback(

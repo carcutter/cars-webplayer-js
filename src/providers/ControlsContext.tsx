@@ -24,11 +24,14 @@ type ContextType = {
   displayedItems: Item[];
   setItemInteraction: (index: number, value: ItemInteraction) => void;
   slidable: boolean;
+
   carrouselItemIndex: number;
   setCarrouselItemIndex: (index: number) => void;
   itemIndexCommand: number | null;
   setItemIndexCommand: (index: number | null) => void;
   masterItemIndex: number;
+  prevImage: () => void;
+  nextImage: () => void;
 
   showControls: boolean;
 
@@ -124,10 +127,21 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     },
     []
   );
+
   const [carrouselItemIndex, setCarrouselItemIndex] = useState(0);
   const currentCarrouselItem = displayedItems[carrouselItemIndex];
   const currentItemInteraction = itemInteractionList[carrouselItemIndex];
   const [itemIndexCommand, setItemIndexCommand] = useState<number | null>(null);
+
+  const prevImage = useCallback(() => {
+    setItemIndexCommand(Math.max(carrouselItemIndex - 1, 0));
+  }, [carrouselItemIndex]);
+
+  const nextImage = useCallback(() => {
+    setItemIndexCommand(
+      Math.min(carrouselItemIndex + 1, displayedItems.length - 1)
+    );
+  }, [carrouselItemIndex, displayedItems.length]);
 
   const changeCategory = useCallback(
     (categoryId: string) => {
@@ -312,11 +326,14 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         displayedItems,
         setItemInteraction,
         slidable: displayedItems.length > 1,
+
         carrouselItemIndex,
         setCarrouselItemIndex,
         itemIndexCommand,
         setItemIndexCommand,
         masterItemIndex: itemIndexCommand ?? carrouselItemIndex,
+        prevImage,
+        nextImage,
 
         showControls,
 

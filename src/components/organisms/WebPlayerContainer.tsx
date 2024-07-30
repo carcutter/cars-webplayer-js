@@ -6,7 +6,6 @@ import Gallery from "@/components/organisms/Gallery";
 import WebPlayerCarrousel from "@/components/organisms/WebPlayerCarrousel";
 import ErrorTemplate from "@/components/template/ErrorTemplate";
 import { useComposition } from "@/hooks/useComposition";
-import { useEscapeKeyEffect } from "@/hooks/useEscapeKeyEffect";
 import CompositionContextProvider, {
   useCompositionContext,
 } from "@/providers/CompositionContext";
@@ -20,17 +19,45 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
 
   const { aspectRatioClass } = useCompositionContext();
 
-  const { extendMode, disableExtendMode, isZooming, showingDetails } =
-    useControlsContext();
+  const {
+    prevImage,
+    nextImage,
 
-  // Handle escape key to disable extend mode
-  useEscapeKeyEffect(
-    useCallback(() => {
-      if (isZooming || showingDetails || !extendMode) {
-        return;
+    extendMode,
+    disableExtendMode,
+    isZooming,
+    showingDetails,
+
+    resetView,
+  } = useControlsContext();
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      switch (e.key) {
+        case "Escape":
+          if (isZooming || showingDetails) {
+            resetView();
+          } else {
+            disableExtendMode();
+          }
+          break;
+        case "ArrowLeft":
+          prevImage();
+
+          break;
+        case "ArrowRight":
+          nextImage();
+          break;
       }
-      disableExtendMode();
-    }, [disableExtendMode, extendMode, isZooming, showingDetails])
+    },
+    [
+      disableExtendMode,
+      isZooming,
+      nextImage,
+      prevImage,
+      resetView,
+      showingDetails,
+    ]
   );
 
   // Handle click on overlay to disable extend mode
@@ -51,6 +78,7 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
       // Main Overlay (apply backdrop)
       className={`relative ${!extendMode ? "" : "flex size-full items-center justify-center bg-foreground/75"}`}
       onClick={handleCloseElementClick}
+      onKeyDown={handleKeyDown}
     >
       <div
         // Container : Space for the carrousel and gallery + center vertically in extend mode
