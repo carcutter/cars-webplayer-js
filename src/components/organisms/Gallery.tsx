@@ -28,6 +28,8 @@ const Gallery: React.FC<Props> = ({
 
     masterItemIndex,
     setItemIndexCommand,
+
+    resetView,
   } = useControlsContext();
 
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -96,6 +98,7 @@ const Gallery: React.FC<Props> = ({
 
   const onItemClicked = (_item: Item, index: number) => {
     setItemIndexCommand(index);
+    resetView();
   };
 
   return (
