@@ -7,15 +7,18 @@ import WebPlayerCarrousel from "@/components/organisms/WebPlayerCarrousel";
 import ErrorTemplate from "@/components/template/ErrorTemplate";
 import { useComposition } from "@/hooks/useComposition";
 import { useEscapeKeyEffect } from "@/hooks/useEscapeKeyEffect";
-import CompositionContextProvider from "@/providers/CompositionContext";
+import CompositionContextProvider, {
+  useCompositionContext,
+} from "@/providers/CompositionContext";
 import { useControlsContext } from "@/providers/ControlsContext";
 import ControlsContextProvider from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
-import { positionToClassName } from "@/utils/style";
-import { isFirstChildEvent, isSelfEvent } from "@/utils/web";
+import { isSelfEvent } from "@/utils/web";
 
 const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
   const { permanentGallery } = useGlobalContext();
+
+  const { aspectRatioClass } = useCompositionContext();
 
   const { extendMode, disableExtendMode, isZooming, showingDetails } =
     useControlsContext();
@@ -31,10 +34,10 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
   );
 
   // Handle click on overlay to disable extend mode
-  const handleOverlayClick = useCallback(
+  const handleCloseElementClick = useCallback(
     (e: React.MouseEvent) => {
-      // Check if the click originated from the overlay itself or the firstChild which is only to place the content in the center
-      if (!isSelfEvent(e) && !isFirstChildEvent(e)) {
+      // Check if the click originated from the element itself (to avoid closing on children clicks)
+      if (!isSelfEvent(e)) {
         return;
       }
 
@@ -45,19 +48,26 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
 
   return (
     <div
+      // Main Overlay (apply backdrop)
       className={`relative ${!extendMode ? "" : "flex size-full items-center justify-center bg-foreground/75"}`}
-      onClick={handleOverlayClick}
+      onClick={handleCloseElementClick}
     >
       <div
+        // Container : Space for the carrousel and gallery + center vertically in extend mode
         className={
           !extendMode
             ? "space-y-2"
-            : "flex size-full max-h-[calc(100%-128px)] flex-col justify-center gap-y-2 sm:gap-y-4"
+            : "flex size-full flex-col justify-center gap-y-2 py-16 sm:gap-y-4"
         }
+        onClick={handleCloseElementClick}
       >
-        <WebPlayerCarrousel
-          className={!extendMode ? undefined : "mx-auto max-w-screen-xl"}
-        />
+        <div
+          // Carrousel Wrapper : Center horizontally and limit width
+          className={`mx-auto flex min-h-0 w-full max-w-screen-2xl ${aspectRatioClass} justify-center`}
+          onClick={handleCloseElementClick}
+        >
+          <WebPlayerCarrousel />
+        </div>
         {permanentGallery && (
           <Gallery className={!extendMode ? undefined : "shrink-0"} />
         )}
@@ -65,7 +75,7 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
 
       {extendMode && (
         <CloseButton
-          className={`absolute ${positionToClassName("top-right")} lg:right-4 lg:top-4`}
+          className={`absolute right-2 top-2 lg:right-4 lg:top-4`}
           onClick={disableExtendMode}
         />
       )}
