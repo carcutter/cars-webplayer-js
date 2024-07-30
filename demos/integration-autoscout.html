@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CarCutter WebPlayerV3 - Integration Demo Autocout</title>
+    <script src="https://cdn.car-cutter.com/libs/web-player/v3/bundle.js"></script>
+    <style>
+      .header__container {
+        max-width: 1600px;
+        margin-inline: auto;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header__container a {
+        color: white;
+      }
+
+      .header__nav {
+        display: flex;
+        column-gap: 16px;
+      }
+
+      .content {
+        max-width: 1200px;
+        margin-inline: auto;
+
+        padding: 16px;
+
+        display: flex;
+
+        column-gap: 16px;
+
+        background-color: white;
+      }
+
+      .details__buttons {
+        display: flex;
+        column-gap: 4px;
+      }
+
+      .details__buttons button {
+        flex: 1;
+        padding: 10px 8px;
+        background-color: #f5f200;
+        border-radius: 4px;
+      }
+
+      @media (max-width: 768px) {
+        .header__container {
+          justify-content: center;
+        }
+
+        .header__nav {
+          display: none;
+        }
+
+        .content {
+          flex-direction: column;
+        }
+      }
+
+      cc-web-player {
+        --cc-primary: 59, 100%, 45%;
+      }
+    </style>
+  </head>
+  <body
+    style="font-family: Arial, sans-serif; margin: 0; background-color: #f0f0f0"
+  >
+    <div>
+      <header style="padding: 24px; background-color: #333">
+        <div class="header__container">
+          <img
+            height="30"
+            src="https://www.autoscout24.de/assets/as24-header-footer/as24-horizontal-inverse.d34ff335.svg"
+            alt="Autoscout24 Logo"
+          />
+          <nav class="header__nav">
+            <a href="#">Kaufen</a>
+            <a href="#">Verkaufen</a>
+            <a href="#">Flexible Kaufmodelle</a>
+            <a href="#">Entscheidungshilfe</a>
+          </nav>
+        </div>
+      </header>
+
+      <div class="content">
+        <div style="min-width: 0; flex: 2">
+          <cc-web-player
+            composition-url="https://cdn.car-cutter.com/gallery/767f46375d752707fcb76a19b8b22bc0040bd3ff59abc43d1c19eb0c04785c68/TEST1/composition_v2.json"
+          >
+          </cc-web-player>
+        </div>
+
+        <div class="details" style="flex: 1">
+          <h1>Audi Q3</h1>
+          <h2>Sportback S</h2>
+
+          <div class="details__price">
+            <span>€ 32.350,-</span> inkl. MwSt.
+            <p>ab € 465,- mtl. Finanzierung berechnen</p>
+          </div>
+
+          <div class="details__buttons">
+            <button>E-Mail senden</button>
+            <button>Nummer anzeigen</button>
+          </div>
+
+          <p>Verkäufer: Autohaus Elmshorn GmbH & Co. KG</p>
+          <p>19 Bewertungen (94% Weiterempfehlungen)</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
