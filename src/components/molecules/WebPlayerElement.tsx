@@ -45,7 +45,7 @@ const WebPlayerElement: React.FC<Props> = ({ index, item, currentIndex }) => {
   }
 
   return (
-    <div className={`relative ${aspectRatioClass} bg-foreground/50`}>
+    <div className={`relative h-full ${aspectRatioClass} bg-foreground/50`}>
       {Comp}
     </div>
   );
