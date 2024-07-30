@@ -98,7 +98,7 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
           }
           onClick={handleCloseElementClick}
         >
-          <WebPlayerCarrousel />
+          <WebPlayerCarrousel className={!extendMode ? undefined : "h-full"} />
         </div>
         {permanentGallery && (
           <Gallery className={!extendMode ? undefined : "shrink-0"} />

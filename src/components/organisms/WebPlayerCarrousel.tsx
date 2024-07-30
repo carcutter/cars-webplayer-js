@@ -323,7 +323,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   }, [scrollToIndex, itemIndexCommand]);
 
   return (
-    <div className={`relative h-full ${aspectRatioClass} ${className}`}>
+    <div className={`relative ${aspectRatioClass} ${className}`}>
       <div
         ref={sliderRef}
         className={`flex size-full ${slidable ? "overflow-x-auto no-scrollbar *:snap-start *:snap-always" : "justify-center"}`}
