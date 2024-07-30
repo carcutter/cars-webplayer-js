@@ -38,15 +38,15 @@ const WebPlayerOverlay: React.FC = () => {
 
     shownDetails,
     showingDetails,
-    setShownDetails,
 
     showZoomControls,
     isZooming,
-    resetZoom,
     canZoomIn,
     zoomIn,
     canZoomOut,
     zoomOut,
+
+    resetView,
   } = useControlsContext();
 
   const prevImage = useCallback(() => {
@@ -56,11 +56,6 @@ const WebPlayerOverlay: React.FC = () => {
   const nextImage = useCallback(() => {
     setItemIndexCommand(carrouselItemIndex + 1);
   }, [carrouselItemIndex, setItemIndexCommand]);
-
-  const resetView = useCallback(() => {
-    resetZoom();
-    setShownDetails(null);
-  }, [resetZoom, setShownDetails]);
 
   // Handle escape key to unzoom/exit details
   useEscapeKeyEffect(resetView);

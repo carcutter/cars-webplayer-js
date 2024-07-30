@@ -34,12 +34,6 @@ type ContextType = {
   showHotspots: boolean;
   toggleHotspots: () => void;
 
-  extendMode: boolean;
-  enableExtendMode: () => void;
-  disableExtendMode: () => void;
-  toggleExtendMode: () => void;
-  extendTransition: boolean;
-
   showGallery: boolean;
   toggleGallery: () => void;
 
@@ -56,6 +50,14 @@ type ContextType = {
   zoomIn: () => void;
   canZoomOut: boolean;
   zoomOut: () => void;
+
+  resetView: () => void;
+
+  extendMode: boolean;
+  enableExtendMode: () => void;
+  disableExtendMode: () => void;
+  toggleExtendMode: () => void;
+  extendTransition: boolean;
 };
 
 const ControlsContext = createContext<ContextType | null>(null);
@@ -151,9 +153,6 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     }
   }, [currentCarrouselItem, currentItemInteraction]);
 
-  const [extendMode, setExtendMode] = useState(false);
-  const [extendTransitionTimeout, setExtendTransitionTimeout] =
-    useState<NodeJS.Timeout>();
   const [showGallery, setShowGallery] = useState(false);
 
   const emitEvent = useCallback(
@@ -168,71 +167,6 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     setShowHotspots(newValue);
     emitEvent(`hotspots-${newValue ? "on" : "off"}`);
   }, [emitEvent, showHotspots]);
-
-  // Hack to refresh scroll position when switching from toggling full-screen
-  const triggerExtendTransition = useCallback(() => {
-    clearTimeout(extendTransitionTimeout);
-    const timeout = setTimeout(() => {
-      setExtendTransitionTimeout(undefined);
-    }, 500);
-
-    setExtendTransitionTimeout(timeout);
-  }, [extendTransitionTimeout]);
-
-  const enableExtendMode = useCallback(async () => {
-    triggerExtendTransition();
-
-    if (allowFullScreen) {
-      await requestFullscreen();
-    } else {
-      setExtendMode(true);
-      emitEvent("extend-mode-on");
-    }
-  }, [allowFullScreen, emitEvent, requestFullscreen, triggerExtendTransition]);
-
-  const disableExtendMode = useCallback(async () => {
-    triggerExtendTransition();
-
-    if (allowFullScreen) {
-      await exitFullscreen();
-    } else {
-      setExtendMode(false);
-      emitEvent("extend-mode-off");
-    }
-  }, [allowFullScreen, emitEvent, exitFullscreen, triggerExtendTransition]);
-
-  const toggleExtendMode = useCallback(() => {
-    if (extendMode) {
-      disableExtendMode();
-    } else {
-      enableExtendMode();
-    }
-  }, [disableExtendMode, enableExtendMode, extendMode]);
-
-  // Listen to fullscreen changes (mandatory to get the full screen close with Echap)
-  useEffect(() => {
-    if (!allowFullScreen) {
-      return;
-    }
-
-    // Already handled
-    if (isFullScreen === extendMode) {
-      return;
-    }
-
-    triggerExtendTransition();
-
-    setExtendMode(isFullScreen);
-    emitEvent(`extend-mode-${isFullScreen ? "on" : "off"}`);
-
-    setExtendMode(isFullScreen);
-  }, [
-    allowFullScreen,
-    emitEvent,
-    extendMode,
-    isFullScreen,
-    triggerExtendTransition,
-  ]);
 
   const toggleGallery = useCallback(() => {
     const newValue = !showGallery;
@@ -266,6 +200,96 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const zoomIn = useCallback(() => shiftZoom(ZOOM_STEP), [shiftZoom]);
   const zoomOut = useCallback(() => shiftZoom(-ZOOM_STEP), [shiftZoom]);
 
+  const resetView = useCallback(() => {
+    resetZoom();
+    setShownDetails(null);
+  }, [resetZoom]);
+
+  // -- Extend mode
+
+  const [extendMode, setExtendMode] = useState(false);
+  const [extendTransitionTimeout, setExtendTransitionTimeout] =
+    useState<NodeJS.Timeout>();
+
+  const changeExtendMode = useCallback(
+    async (newValue: boolean) => {
+      resetView();
+      setExtendMode(newValue);
+      emitEvent(`extend-mode-${newValue ? "on" : "off"}`);
+    },
+    [emitEvent, resetView]
+  );
+
+  // Hack to refresh scroll position when switching from toggling full-screen
+  const triggerExtendTransition = useCallback(() => {
+    clearTimeout(extendTransitionTimeout);
+    const timeout = setTimeout(() => {
+      setExtendTransitionTimeout(undefined);
+    }, 500);
+
+    setExtendTransitionTimeout(timeout);
+  }, [extendTransitionTimeout]);
+
+  const enableExtendMode = useCallback(async () => {
+    triggerExtendTransition();
+
+    if (allowFullScreen) {
+      await requestFullscreen();
+    } else {
+      changeExtendMode(true);
+    }
+  }, [
+    allowFullScreen,
+    changeExtendMode,
+    requestFullscreen,
+    triggerExtendTransition,
+  ]);
+
+  const disableExtendMode = useCallback(async () => {
+    triggerExtendTransition();
+
+    if (allowFullScreen) {
+      await exitFullscreen();
+    } else {
+      changeExtendMode(false);
+    }
+  }, [
+    allowFullScreen,
+    changeExtendMode,
+    exitFullscreen,
+    triggerExtendTransition,
+  ]);
+
+  const toggleExtendMode = useCallback(() => {
+    if (extendMode) {
+      disableExtendMode();
+    } else {
+      enableExtendMode();
+    }
+  }, [disableExtendMode, enableExtendMode, extendMode]);
+
+  // Listen to fullscreen changes (mandatory to get the full screen close with Echap)
+  useEffect(() => {
+    if (!allowFullScreen) {
+      return;
+    }
+
+    // Already handled
+    if (isFullScreen === extendMode) {
+      return;
+    }
+
+    triggerExtendTransition();
+
+    changeExtendMode(isFullScreen);
+  }, [
+    allowFullScreen,
+    changeExtendMode,
+    extendMode,
+    isFullScreen,
+    triggerExtendTransition,
+  ]);
+
   return (
     <ControlsContext.Provider
       value={{
@@ -285,12 +309,6 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         showHotspots,
         toggleHotspots,
 
-        extendMode,
-        enableExtendMode,
-        disableExtendMode,
-        toggleExtendMode,
-        extendTransition: !!extendTransitionTimeout,
-
         showGallery,
         toggleGallery,
 
@@ -307,6 +325,14 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         zoomIn,
         canZoomOut,
         zoomOut,
+
+        resetView,
+
+        extendMode,
+        enableExtendMode,
+        disableExtendMode,
+        toggleExtendMode,
+        extendTransition: !!extendTransitionTimeout,
       }}
     >
       {children}
