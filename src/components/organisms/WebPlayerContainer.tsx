@@ -26,18 +26,16 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
     extendMode,
     disableExtendMode,
     isZooming,
-    showingDetails,
-
-    resetView,
+    resetZoom,
   } = useControlsContext();
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      // If we are zooming or showing details, we want to unzoom/close the details panel
-      if (isZooming || showingDetails) {
+      // If we are zooming, we want to unzoom on Escape
+      if (isZooming) {
         switch (e.key) {
           case "Escape":
-            resetView();
+            resetZoom();
             break;
         }
       } else {
@@ -54,14 +52,7 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
         }
       }
     },
-    [
-      disableExtendMode,
-      isZooming,
-      nextImage,
-      prevImage,
-      resetView,
-      showingDetails,
-    ]
+    [disableExtendMode, isZooming, nextImage, prevImage, resetZoom]
   );
 
   // Handle click on overlay to disable extend mode

@@ -45,6 +45,7 @@ type ContextType = {
   shownDetails: Details | null;
   showingDetails: boolean;
   setShownDetails: (shownDetails: Details | null) => void;
+  resetShownDetails: () => void;
 
   showZoomControls: boolean;
   zoom: number;
@@ -203,6 +204,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   }, [emitEvent, showGallery]);
 
   const [shownDetails, setShownDetails] = useState<Details | null>(null);
+  const resetShownDetails = useCallback(() => setShownDetails(null), []);
 
   const showZoomControls = useMemo(() => {
     switch (currentCarrouselItem.type) {
@@ -229,8 +231,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
   const resetView = useCallback(() => {
     resetZoom();
-    setShownDetails(null);
-  }, [resetZoom]);
+    resetShownDetails();
+  }, [resetZoom, resetShownDetails]);
 
   // -- Extend mode
 
@@ -347,6 +349,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         shownDetails,
         showingDetails: !!shownDetails,
         setShownDetails,
+        resetShownDetails,
 
         showZoomControls,
         zoom,

@@ -8,6 +8,7 @@ import CustomizableButton from "@/components/molecules/CustomizableButton";
 import Gallery from "@/components/organisms/Gallery";
 import Button from "@/components/ui/Button";
 import Separator from "@/components/ui/Separator";
+import { useEscapeKeyEffect } from "@/hooks/useEscapeKeyEffect";
 import { useCompositionContext } from "@/providers/CompositionContext";
 import { useControlsContext } from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
@@ -39,6 +40,7 @@ const WebPlayerOverlay: React.FC = () => {
 
     shownDetails,
     showingDetails,
+    resetShownDetails,
 
     showZoomControls,
     isZooming,
@@ -58,10 +60,13 @@ const WebPlayerOverlay: React.FC = () => {
         return;
       }
 
-      resetView();
+      resetShownDetails();
     },
-    [resetView]
+    [resetShownDetails]
   );
+
+  // Handle escape key to close details overlay
+  useEscapeKeyEffect(resetShownDetails);
 
   const sharedClassName = "absolute z-overlay";
 
