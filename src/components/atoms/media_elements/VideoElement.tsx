@@ -1,12 +1,36 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Button from "@/components/ui/Button";
+import { useControlsContext } from "@/providers/ControlsContext";
 import type { Item } from "@/types/composition";
 
-type Props = { item: Extract<Item, { type: "video" }> };
+type Props = Extract<Item, { type: "video" }> & {
+  index: number;
+};
 
-const VideoElement: React.FC<Props> = ({ item: { src, poster } }) => {
+const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
+  const { carrouselItemIndex, setItemInteraction } = useControlsContext();
+
+  const isActiveIndex = carrouselItemIndex === index;
+
   const [displayVideo, setDisplayVideo] = useState(false);
+
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleOnPlay = () => {
+    setItemInteraction(index, "running");
+  };
+
+  const handleOnPause = () => {
+    setItemInteraction(index, "pending");
+  };
+
+  // Stop video when not active
+  useEffect(() => {
+    if (!isActiveIndex) {
+      videoRef.current?.pause();
+    }
+  }, [isActiveIndex]);
 
   const handleOnClick = () => {
     setDisplayVideo(true);
@@ -34,7 +58,17 @@ const VideoElement: React.FC<Props> = ({ item: { src, poster } }) => {
     );
   }
 
-  return <video className="size-full" src={src} controls autoPlay />;
+  return (
+    <video
+      ref={videoRef}
+      className="size-full"
+      src={src}
+      controls
+      autoPlay
+      onPlay={handleOnPlay}
+      onPause={handleOnPause}
+    />
+  );
 };
 
 export default VideoElement;

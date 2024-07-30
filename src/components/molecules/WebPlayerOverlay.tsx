@@ -28,6 +28,8 @@ const WebPlayerOverlay: React.FC = () => {
     masterItemIndex,
     setItemIndexCommand,
 
+    showControls,
+
     enableHotspotsControl,
     showHotspots,
     toggleHotspots,
@@ -124,7 +126,7 @@ const WebPlayerOverlay: React.FC = () => {
 
       {/* Bottom overlay : Gallery, Hotspots toggle, ... We need to disable pointer-event to allow the propagation to parent elements */}
       <div
-        className={`${sharedClassName} ${positionToClassName("bottom-fullW")} pointer-events-none grid grid-cols-[auto,1fr,auto] items-end *:pointer-events-auto sm:gap-x-2`}
+        className={`${sharedClassName} ${positionToClassName("bottom-fullW")} pointer-events-none grid grid-cols-[auto,1fr,auto] items-end transition-opacity sm:gap-x-2 ${showControls ? "opacity-100 *:pointer-events-auto" : "opacity-0"}`}
       >
         {/* Gallery's toogle button & Gallery */}
         {!permanentGallery && dataLength > 1 && !isZooming && (

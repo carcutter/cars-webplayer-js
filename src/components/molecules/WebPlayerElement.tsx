@@ -27,7 +27,7 @@ const WebPlayerElement: React.FC<Props> = ({ index, item, currentIndex }) => {
         Comp = <ImageElement onlyPreload={!isShown} {...item} />;
         break;
       case "video":
-        Comp = <VideoElement item={item} />;
+        Comp = <VideoElement index={index} {...item} />;
         break;
       case "360":
         Comp = (

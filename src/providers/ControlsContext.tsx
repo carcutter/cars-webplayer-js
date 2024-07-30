@@ -30,6 +30,8 @@ type ContextType = {
   setItemIndexCommand: (index: number | null) => void;
   masterItemIndex: number;
 
+  showControls: boolean;
+
   enableHotspotsControl: boolean;
   showHotspots: boolean;
   toggleHotspots: () => void;
@@ -139,6 +141,17 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     },
     [initItemInteractionList]
   );
+
+  const showControls = useMemo(() => {
+    switch (currentCarrouselItem.type) {
+      case "image":
+      case "360":
+      case "omni_directional":
+        return true;
+      case "video":
+        return currentItemInteraction !== "running";
+    }
+  }, [currentCarrouselItem, currentItemInteraction]);
 
   const [showHotspots, setShowHotspots] = useState(true);
   const enableHotspotsControl = useMemo(() => {
@@ -304,6 +317,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         itemIndexCommand,
         setItemIndexCommand,
         masterItemIndex: itemIndexCommand ?? carrouselItemIndex,
+
+        showControls,
 
         enableHotspotsControl,
         showHotspots,
