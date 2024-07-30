@@ -33,21 +33,25 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      switch (e.key) {
-        case "Escape":
-          if (isZooming || showingDetails) {
+      // If we are zooming or showing details, we want to unzoom/close the details panel
+      if (isZooming || showingDetails) {
+        switch (e.key) {
+          case "Escape":
             resetView();
-          } else {
+            break;
+        }
+      } else {
+        switch (e.key) {
+          case "Escape":
             disableExtendMode();
-          }
-          break;
-        case "ArrowLeft":
-          prevImage();
-
-          break;
-        case "ArrowRight":
-          nextImage();
-          break;
+            break;
+          case "ArrowLeft":
+            prevImage();
+            break;
+          case "ArrowRight":
+            nextImage();
+            break;
+        }
       }
     },
     [
