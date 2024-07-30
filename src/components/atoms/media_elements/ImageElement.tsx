@@ -5,7 +5,7 @@ import Hotspot from "@/components/molecules/Hotspot";
 import { useControlsContext } from "@/providers/ControlsContext";
 import type { Item } from "@/types/composition";
 
-type Props = ZoomableCdnImageProps &
+type Props = Omit<ZoomableCdnImageProps, "className"> &
   Omit<Extract<Item, { type: "image" }>, "type">;
 
 const ImageElement: React.FC<Props> = ({ hotspots, ...props }) => {
@@ -17,7 +17,7 @@ const ImageElement: React.FC<Props> = ({ hotspots, ...props }) => {
         // Scale effect on show details
         className={`size-full duration-details ${showingDetails ? "scale-105" : "scale-100"}`}
       >
-        <ZoomableCdnImage {...props} />
+        <ZoomableCdnImage className="size-full" {...props} />
         {showHotspots &&
           hotspots?.map((hotspot, index) => (
             <Hotspot key={index} hotspot={hotspot} />

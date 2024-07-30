@@ -63,7 +63,11 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
       >
         <div
           // Carrousel Wrapper : Center horizontally and limit width
-          className={`mx-auto flex min-h-0 w-full max-w-screen-2xl ${aspectRatioClass} justify-center`}
+          className={
+            !extendMode
+              ? undefined
+              : `mx-auto flex min-h-0 w-full max-w-screen-2xl ${aspectRatioClass} justify-center`
+          }
           onClick={handleCloseElementClick}
         >
           <WebPlayerCarrousel />

@@ -38,8 +38,13 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
     useState(0.5); // TODO: Should not be hardcoded
   const [isFullScreen, setIsFullScreen] = useState(false);
 
-  // Handle resizing
+  // Compute player width ratio in viewport (to handle imgs' srcSet)
   useEffect(() => {
+    if (isFullScreen) {
+      setPlayerInViewportWidthRatio(1);
+      return;
+    }
+
     if (!wrapperRef.current) {
       return;
     }
@@ -60,7 +65,7 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
     return () => {
       removeEventListener("resize", onResize);
     };
-  }, []);
+  }, [isFullScreen]);
 
   // Handle fullscreen
   useEffect(() => {
