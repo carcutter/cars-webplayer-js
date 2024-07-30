@@ -66,7 +66,7 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
           className={
             !extendMode
               ? undefined
-              : `mx-auto flex min-h-0 w-full max-w-screen-2xl ${aspectRatioClass} justify-center`
+              : `flex min-h-0 w-full max-w-screen-2xl ${aspectRatioClass} justify-center`
           }
           onClick={handleCloseElementClick}
         >
