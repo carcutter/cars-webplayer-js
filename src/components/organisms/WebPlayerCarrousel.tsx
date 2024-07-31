@@ -29,6 +29,8 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     extendTransition,
 
     isZooming,
+
+    freezeCarrousel,
   } = useControlsContext();
 
   // -- Refs -- //
@@ -165,7 +167,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   // -- Event listeners to handle the slider dragging -- //
   useEffect(() => {
     // Sliding is disabled when there is only one item
-    if (!slidable) {
+    if (!slidable || freezeCarrousel) {
       setStyleCursor("auto");
       return;
     }
@@ -260,6 +262,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     };
   }, [
     computeClosestIndex,
+    freezeCarrousel,
     scrollToIndex,
     setStyleCursor,
     setStyleScrollBehavior,

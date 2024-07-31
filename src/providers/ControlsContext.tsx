@@ -57,6 +57,7 @@ type ContextType = {
   canZoomOut: boolean;
   zoomOut: () => void;
 
+  freezeCarrousel: boolean;
   resetView: () => void;
 
   extendMode: boolean;
@@ -229,6 +230,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const zoomIn = useCallback(() => shiftZoom(ZOOM_STEP), [shiftZoom]);
   const zoomOut = useCallback(() => shiftZoom(-ZOOM_STEP), [shiftZoom]);
 
+  // -- Side effects
+  const freezeCarrousel = currentItemInteraction === "running";
   const resetView = useCallback(() => {
     resetZoom();
     resetShownDetails();
@@ -361,6 +364,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         canZoomOut,
         zoomOut,
 
+        freezeCarrousel,
         resetView,
 
         extendMode,
