@@ -9,13 +9,13 @@ type Props = Omit<ZoomableCdnImageProps, "className"> &
   Omit<Extract<Item, { type: "image" }>, "type">;
 
 const ImageElement: React.FC<Props> = ({ hotspots, ...props }) => {
-  const { showingDetails, showHotspots } = useControlsContext();
+  const { isShowingDetails, showHotspots } = useControlsContext();
 
   return (
     <div className="relative size-full overflow-hidden">
       <div
         // Scale effect on show details
-        className={`size-full duration-details ${showingDetails ? "scale-105" : "scale-100"}`}
+        className={`size-full duration-details ${isShowingDetails ? "scale-105" : "scale-100"}`}
       >
         <ZoomableCdnImage className="size-full" {...props} />
         {showHotspots &&

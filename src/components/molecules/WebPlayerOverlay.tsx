@@ -39,7 +39,7 @@ const WebPlayerOverlay: React.FC = () => {
     toggleExtendMode,
 
     shownDetails,
-    showingDetails,
+    isShowingDetails,
     resetShownDetails,
 
     showZoomControls,
@@ -222,11 +222,11 @@ const WebPlayerOverlay: React.FC = () => {
 
       {/* Details overlay */}
       <div
-        className={`${sharedClassName} inset-0 flex justify-end overflow-hidden bg-foreground/60 transition-opacity duration-details ${showingDetails ? "opacity-100" : "pointer-events-none opacity-0"}`}
+        className={`${sharedClassName} inset-0 flex justify-end overflow-hidden bg-foreground/60 transition-opacity duration-details ${isShowingDetails ? "opacity-100" : "pointer-events-none opacity-0"}`}
         onClick={handleDetailsOverlayClick}
       >
         <div
-          className={`h-full w-3/5 bg-background transition-transform duration-details ${showingDetails ? "translate-x-0" : "translate-x-full"}`}
+          className={`h-full w-3/5 bg-background transition-transform duration-details ${isShowingDetails ? "translate-x-0" : "translate-x-full"}`}
         >
           {!!shownDetails && (
             <>
@@ -246,7 +246,7 @@ const WebPlayerOverlay: React.FC = () => {
       </div>
 
       {/* Close button */}
-      {(isZooming || showingDetails) && (
+      {(isZooming || isShowingDetails) && (
         <CloseButton
           className={`${sharedClassName} ${positionToClassName("top-right")}`}
           onClick={resetView}

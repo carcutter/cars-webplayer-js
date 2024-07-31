@@ -43,7 +43,7 @@ type ContextType = {
   toggleGallery: () => void;
 
   shownDetails: Details | null;
-  showingDetails: boolean;
+  isShowingDetails: boolean;
   setShownDetails: (shownDetails: Details | null) => void;
   resetShownDetails: () => void;
 
@@ -347,7 +347,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         toggleGallery,
 
         shownDetails,
-        showingDetails: !!shownDetails,
+        isShowingDetails: !!shownDetails,
         setShownDetails,
         resetShownDetails,
 
