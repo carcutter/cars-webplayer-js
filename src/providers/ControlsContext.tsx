@@ -134,6 +134,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const currentCarrouselItem = displayedItems[carrouselItemIndex];
   const currentItemInteraction = itemInteractionList[carrouselItemIndex];
   const [itemIndexCommand, setItemIndexCommand] = useState<number | null>(null);
+  const masterItemIndex = itemIndexCommand ?? carrouselItemIndex;
 
   const prevImage = useCallback(() => {
     setItemIndexCommand(Math.max(carrouselItemIndex - 1, 0));
@@ -206,6 +207,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
   const [shownDetails, setShownDetails] = useState<Details | null>(null);
   const resetShownDetails = useCallback(() => setShownDetails(null), []);
+  const isShowingDetails = !!shownDetails;
 
   const showZoomControls = useMemo(() => {
     switch (currentCarrouselItem.type) {
@@ -231,7 +233,23 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const zoomOut = useCallback(() => shiftZoom(-ZOOM_STEP), [shiftZoom]);
 
   // -- Side effects
-  const freezeCarrousel = currentItemInteraction === "running";
+  const freezeCarrousel = useMemo(() => {
+    if (shownDetails || isZooming) {
+      return true;
+    }
+    switch (currentCarrouselItem.type) {
+      case "video":
+        return currentItemInteraction === "running";
+    }
+
+    return false;
+  }, [
+    shownDetails,
+    isZooming,
+    currentCarrouselItem.type,
+    currentItemInteraction,
+  ]);
+
   const resetView = useCallback(() => {
     resetZoom();
     resetShownDetails();
@@ -336,7 +354,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         setCarrouselItemIndex,
         itemIndexCommand,
         setItemIndexCommand,
-        masterItemIndex: itemIndexCommand ?? carrouselItemIndex,
+        masterItemIndex,
         prevImage,
         nextImage,
 
@@ -350,7 +368,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         toggleGallery,
 
         shownDetails,
-        isShowingDetails: !!shownDetails,
+        isShowingDetails,
         setShownDetails,
         resetShownDetails,
 

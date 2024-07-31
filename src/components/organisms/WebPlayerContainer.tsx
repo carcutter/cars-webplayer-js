@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { ZodError } from "zod";
 
 import CloseButton from "@/components/atoms/CloseButton";
@@ -23,26 +23,31 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
     prevImage,
     nextImage,
 
+    isShowingDetails,
+    resetShownDetails,
+
     extendMode,
     disableExtendMode,
     isZooming,
     resetZoom,
   } = useControlsContext();
 
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      // If we are zooming, we want to unzoom on Escape
-      if (isZooming) {
-        switch (e.key) {
-          case "Escape":
-            resetZoom();
-            break;
+  // -- Handle keys
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const isEscape = event.key === "Escape";
+      const canNavigate = !isZooming && !isShowingDetails;
+
+      if (isEscape) {
+        if (isZooming) {
+          resetZoom();
+        } else if (isShowingDetails) {
+          resetShownDetails();
+        } else {
+          disableExtendMode();
         }
-      } else {
-        switch (e.key) {
-          case "Escape":
-            disableExtendMode();
-            break;
+      } else if (canNavigate) {
+        switch (event.key) {
           case "ArrowLeft":
             prevImage();
             break;
@@ -51,9 +56,22 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
             break;
         }
       }
-    },
-    [disableExtendMode, isZooming, nextImage, prevImage, resetZoom]
-  );
+    };
+
+    addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      removeEventListener("keydown", handleKeyDown);
+    };
+  }, [
+    disableExtendMode,
+    isShowingDetails,
+    isZooming,
+    nextImage,
+    prevImage,
+    resetShownDetails,
+    resetZoom,
+  ]);
 
   // Handle click on overlay to disable extend mode
   const handleCloseElementClick = useCallback(
@@ -73,7 +91,6 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
       // Main Overlay (apply backdrop)
       className={`relative ${!extendMode ? "" : "flex size-full items-center justify-center bg-foreground/75"}`}
       onClick={handleCloseElementClick}
-      onKeyDown={handleKeyDown}
     >
       <div
         // Container : Space for the carrousel and gallery + center vertically in extend mode
