@@ -43,7 +43,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   }, []);
 
   // - value refs
-  const isDown = useRef(false);
+  const mouseIsDown = useRef(false);
   const startX = useRef<number | null>(null);
   const startScrollLeft = useRef<number | null>(null);
 
@@ -189,7 +189,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       // Take snapshot of the current state
       // NOTE: Since we are using scroll-smooth, the scrollLeft may not be correct as the animation is still running
       //       It's the reason why it can feel buggy when the user spams the click
-      isDown.current = true;
+      mouseIsDown.current = true;
       startX.current = e.pageX - slider.offsetLeft;
       startScrollLeft.current = slider.scrollLeft;
 
@@ -202,18 +202,18 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     // - Handle when the user releases the slider or leaves the dragging area
     const onMouseEnd = () => {
       // Check if the user was actually dragging
-      if (!isDown.current) {
+      if (!mouseIsDown.current) {
         return;
       }
 
-      isDown.current = false;
+      mouseIsDown.current = false;
 
       // Reset CSS
       setStyleCursor("grab");
       setStyleScrollBehavior("smooth");
       setTimeout(() => {
         // setTimeout to avoid flickering, but we have to handle the case where the user clicks again on the slider
-        if (isDown.current) {
+        if (mouseIsDown.current) {
           return;
         }
         setStyleSnapState("mandatory");
@@ -227,7 +227,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     // Scroll according the user's dragging movement
     const onMouseMove = (e: MouseEvent) => {
       // Check if the user is actually dragging
-      if (!isDown.current) {
+      if (!mouseIsDown.current) {
         return;
       }
 
@@ -248,15 +248,15 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     };
 
     slider.addEventListener("mousedown", onMouseDown);
-    slider.addEventListener("mouseleave", onMouseEnd);
-    slider.addEventListener("mouseup", onMouseEnd);
-    slider.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseleave", onMouseEnd);
+    document.addEventListener("mouseup", onMouseEnd);
 
     return () => {
       slider.removeEventListener("mousedown", onMouseDown);
-      slider.removeEventListener("mouseleave", onMouseEnd);
-      slider.removeEventListener("mouseup", onMouseEnd);
-      slider.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseleave", onMouseEnd);
+      document.removeEventListener("mouseup", onMouseEnd);
     };
   }, [
     computeClosestIndex,

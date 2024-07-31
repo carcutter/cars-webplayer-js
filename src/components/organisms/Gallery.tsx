@@ -126,15 +126,15 @@ const Gallery: React.FC<Props> = ({
     };
 
     slider.addEventListener("mousedown", onMouseDown);
-    slider.addEventListener("mouseleave", onMouseEnd);
-    slider.addEventListener("mouseup", onMouseEnd);
-    slider.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseleave", onMouseEnd);
+    document.addEventListener("mouseup", onMouseEnd);
 
     return () => {
       slider.removeEventListener("mousedown", onMouseDown);
-      slider.removeEventListener("mouseleave", onMouseEnd);
-      slider.removeEventListener("mouseup", onMouseEnd);
-      slider.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseleave", onMouseEnd);
+      document.removeEventListener("mouseup", onMouseEnd);
     };
   }, []);
 
