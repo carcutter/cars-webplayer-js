@@ -11,4 +11,4 @@ const savePath = "./schemas/composition.schema.json";
 
 saveJsonToFile(savePath, jsonSchema);
 
-console.log(`JSON Schema saved at: ${chalk.blue(savePath)}`);
+console.info(`JSON Schema saved at: ${chalk.blue(savePath)}`);
