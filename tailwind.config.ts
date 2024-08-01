@@ -49,9 +49,14 @@ const config = {
           "25%": { opacity: "1" },
           "75%, to": { transform: "scale(1.5)", opacity: "0" },
         },
+        rotation: {
+          from: { transform: "rotate(0deg)" },
+          to: { transform: "rotate(360deg)" },
+        },
       },
       animation: {
         "hotspot-ping": "hotspot-ping 3s cubic-bezier(0, 0, 0.2, 1) infinite;",
+        rotation: "rotation 1s linear infinite;",
       },
     },
   },
