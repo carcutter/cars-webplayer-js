@@ -33,7 +33,7 @@ type ContextType = {
   prevImage: () => void;
   nextImage: () => void;
 
-  showControls: boolean;
+  showGalleryControls: boolean;
 
   enableHotspotsControl: boolean;
   showHotspots: boolean;
@@ -159,7 +159,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     [initItemInteractionList]
   );
 
-  const showControls = useMemo(() => {
+  const showGalleryControls = useMemo(() => {
     switch (currentCarrouselItem.type) {
       case "image":
       case "360":
@@ -358,7 +358,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         prevImage,
         nextImage,
 
-        showControls,
+        showGalleryControls,
 
         enableHotspotsControl,
         showHotspots,

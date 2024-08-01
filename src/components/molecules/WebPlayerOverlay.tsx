@@ -28,7 +28,7 @@ const WebPlayerOverlay: React.FC = () => {
     prevImage,
     nextImage,
 
-    showControls,
+    showGalleryControls,
 
     enableHotspotsControl,
     showHotspots,
@@ -69,6 +69,8 @@ const WebPlayerOverlay: React.FC = () => {
   useEscapeKeyEffect(resetShownDetails);
 
   const sharedClassName = "absolute z-overlay";
+
+  const galleryControlsClassName = `transition-opacity ${showGalleryControls ? "opacity-100" : "opacity-0 pointer-events-none"}`;
 
   return (
     <>
@@ -119,12 +121,13 @@ const WebPlayerOverlay: React.FC = () => {
 
       {/* Bottom overlay : Gallery, Hotspots toggle, ... We need to disable pointer-event to allow the propagation to parent elements */}
       <div
-        className={`${sharedClassName} ${positionToClassName("bottom-fullW")} pointer-events-none grid grid-cols-[auto,1fr,auto] items-end transition-opacity sm:gap-x-2 ${showControls ? "opacity-100 *:pointer-events-auto" : "opacity-0"}`}
+        className={`${sharedClassName} ${positionToClassName("bottom-fullW")} pointer-events-none grid grid-cols-[auto,1fr,auto] items-end *:pointer-events-auto sm:gap-x-2`}
       >
         {/* Gallery's toogle button & Gallery */}
         {!permanentGallery && dataLength > 1 && !isZooming && (
           <>
             <Button
+              className={galleryControlsClassName}
               variant="fill"
               color={showGallery ? "primary" : "neutral"}
               shape="icon"
@@ -141,7 +144,7 @@ const WebPlayerOverlay: React.FC = () => {
 
             {showGallery && (
               <Gallery
-                className="[mask-image:linear-gradient(to_left,transparent_0px,black_4px,black_calc(100%-4px),transparent_100%)]"
+                className={`[mask-image:linear-gradient(to_left,transparent_0px,black_4px,black_calc(100%-4px),transparent_100%)] ${galleryControlsClassName}`}
                 containerClassName="mx-1"
               />
             )}
