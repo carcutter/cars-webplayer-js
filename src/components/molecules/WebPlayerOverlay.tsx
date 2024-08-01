@@ -70,7 +70,7 @@ const WebPlayerOverlay: React.FC = () => {
 
   const sharedClassName = "absolute z-overlay";
 
-  const galleryControlsClassName = `transition-opacity ${showGalleryControls ? "opacity-100" : "opacity-0 pointer-events-none"}`;
+  const galleryControlsClassName = `transition-opacity ${showGalleryControls ? "opacity-100" : "opacity-0 !pointer-events-none"}`;
 
   return (
     <>
