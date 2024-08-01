@@ -79,6 +79,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
     const newVolume = Math.min(1, Math.max(0, percentage));
 
     videoElmt.volume = newVolume;
+    videoElmt.muted = false;
   };
   const setMutedAttribute = (value: boolean) => {
     const videoElmt = getVideoElmtOrThrow();
@@ -221,7 +222,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
                   <div
                     // Wrap the progress bar to make the click easier
                     // NOTE: we could/should use an input "range" instead of a progress bar
-                    className="w-12 cursor-pointer py-1 opacity-0 transition-opacity group-hover/volume:opacity-100"
+                    className={`w-12 cursor-pointer py-1 opacity-0 transition-opacity ${!videoVolumeInfos.isMuted ? "group-hover/volume:opacity-100" : "group-hover/volume:opacity-50"}`}
                     onClick={handlleVolumeClick}
                   >
                     <ProgressBar progress={videoVolumeInfos.volume} />
