@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import Button from "@/components/ui/Button";
+import ProgressBar from "@/components/ui/ProgressBar";
 import Spinner from "@/components/ui/Spinner";
 import { useControlsContext } from "@/providers/ControlsContext";
-import { useGlobalContext } from "@/providers/GlobalContext";
 import type { Item } from "@/types/composition";
 
 type Props = Extract<Item, { type: "video" }> & {
@@ -11,8 +11,6 @@ type Props = Extract<Item, { type: "video" }> & {
 };
 
 const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
-  const { isFullScreen } = useGlobalContext();
-
   const { carrouselItemIndex, setItemInteraction } = useControlsContext();
 
   const isActiveIndex = carrouselItemIndex === index;
@@ -40,7 +38,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
     }
   }, [pause, isActiveIndex]);
 
-  // - Events
+  // -- Play/Pause/Loading Events
 
   const [isRunning, setIsRunning] = useState(false); // Video is playing or loading
   const [isLoading, setIsLoading] = useState(true);
@@ -66,47 +64,94 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
     setIsLoading(true);
   };
 
-  // -- Progress bar
-
-  const [videoTimes, setVideoTimes] = useState<{
-    currentTime: number;
-    duration: number;
+  // -- Volume
+  const [videoVolumeInfos, setVideoVolumeInfos] = useState<{
+    volume: number;
+    isMuted: boolean;
   } | null>(null);
-  const progress = videoTimes
-    ? (videoTimes.currentTime / videoTimes.duration) * 100
-    : 0;
 
-  const updateProgress = useCallback(() => {
-    const videoElmt = videoRef.current;
-    setVideoTimes(
-      videoElmt
-        ? { currentTime: videoElmt.currentTime, duration: videoElmt.duration }
-        : null
-    );
-  }, []);
-
-  // Update progress every second
-  useEffect(() => {
-    const interval = setInterval(updateProgress, 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [getVideoElmtOrThrow, updateProgress]);
-
-  const handleProgressBarClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handlleVolumeClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const videoElmt = getVideoElmtOrThrow();
 
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const percentage = x / rect.width;
-    const time = videoElmt.duration * percentage;
+    const newVolume = Math.min(1, Math.max(0, percentage));
 
-    videoElmt.currentTime = time;
-
-    updateProgress();
+    videoElmt.volume = newVolume;
+  };
+  const setMutedAttribute = (value: boolean) => {
+    const videoElmt = getVideoElmtOrThrow();
+    videoElmt.muted = value;
   };
 
+  // Listen to volume changes
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const refreshVideoVolume = () => {
+      setVideoVolumeInfos({
+        volume: video.volume,
+        isMuted: video.muted,
+      });
+    };
+
+    refreshVideoVolume();
+
+    video.addEventListener("volumechange", refreshVideoVolume);
+    return () => {
+      video.removeEventListener("volumechange", refreshVideoVolume);
+    };
+  }, []);
+
+  // -- Progress bar
+
+  const [videoTimeInfos, setVideoTimeInfos] = useState<{
+    currentTime: number;
+    duration: number;
+  } | null>(null);
+  const progress = videoTimeInfos
+    ? videoTimeInfos.currentTime / videoTimeInfos.duration
+    : 0;
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const refreshVideoTimeInfos = () => {
+      const currentTime = video.currentTime;
+      const duration = video.duration;
+      if (isNaN(currentTime) || isNaN(duration)) {
+        return;
+      }
+
+      setVideoTimeInfos({
+        currentTime,
+        duration,
+      });
+    };
+
+    refreshVideoTimeInfos();
+
+    video.addEventListener("timeupdate", refreshVideoTimeInfos);
+    return () => {
+      video.removeEventListener("timeupdate", refreshVideoTimeInfos);
+    };
+  }, []);
+
+  const handleProgressBarClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const video = getVideoElmtOrThrow();
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percentage = x / rect.width;
+    const time = video.duration * percentage;
+
+    video.currentTime = time;
+  };
+
+  // - Misc
   const formatTime = (time: number) => {
     const minutes = Math.floor((time % 3600) / 60);
     const seconds = Math.floor(time % 60);
@@ -121,7 +166,6 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
         className="size-full"
         src={src}
         poster={poster}
-        controlsList={`${!isFullScreen ? "" : "nofullscreen"} nodownload noremoteplayback noplaybackrate`}
         disablePictureInPicture={true}
         onPlay={handleOnPlay}
         onPause={handleOnStop}
@@ -149,33 +193,65 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
             // Controls
             className="pointer-events-none absolute inset-x-0 bottom-0 space-y-2 bg-gradient-to-t from-foreground to-transparent p-4 pr-12 pt-8 opacity-0 transition-opacity *:pointer-events-auto group-hover:opacity-100"
           >
-            <div className="flex items-center gap-x-4">
-              <Button shape="icon" variant="ghost" onClick={pause}>
-                <img
-                  className="size-full invert"
-                  src="https://cdn.car-cutter.com/libs/web-player/v3/assets/icons/ui/pause.svg"
-                  alt="Play"
-                />
-              </Button>
-              {videoTimes && (
-                <span className="text-sm text-background">
-                  {formatTime(videoTimes.currentTime)} /{" "}
-                  {formatTime(videoTimes.duration)}
-                </span>
+            <div className="flex items-center justify-between">
+              <div
+                // Play and time
+                className="flex items-center gap-x-4"
+              >
+                <Button shape="icon" variant="ghost" onClick={pause}>
+                  <img
+                    className="size-full invert"
+                    src="https://cdn.car-cutter.com/libs/web-player/v3/assets/icons/ui/pause.svg"
+                    alt="Pause"
+                  />
+                </Button>
+                {videoTimeInfos && (
+                  <span className="text-sm text-background">
+                    {formatTime(videoTimeInfos.currentTime)} /{" "}
+                    {formatTime(videoTimeInfos.duration)}
+                  </span>
+                )}
+              </div>
+
+              {videoVolumeInfos && (
+                <div
+                  // Volume
+                  className="group/volume flex items-center gap-x-4 rounded-full p-2 transition-colors hover:bg-foreground/25"
+                >
+                  <div
+                    // Wrap the progress bar to make the click easier
+                    // NOTE: we could/should use an input "range" instead of a progress bar
+                    className="w-12 cursor-pointer py-1 opacity-0 transition-opacity group-hover/volume:opacity-100"
+                    onClick={handlleVolumeClick}
+                  >
+                    <ProgressBar progress={videoVolumeInfos.volume} />
+                  </div>
+
+                  <div
+                    className="size-5 cursor-pointer"
+                    onClick={() => setMutedAttribute(!videoVolumeInfos.isMuted)}
+                  >
+                    <img
+                      className="size-full invert"
+                      src={
+                        !videoVolumeInfos.isMuted
+                          ? "https://cdn.car-cutter.com/libs/web-player/v3/assets/icons/ui/volume.svg"
+                          : "https://cdn.car-cutter.com/libs/web-player/v3/assets/icons/ui/volume-x.svg"
+                      }
+                      alt="Volume"
+                    />
+                  </div>
+                </div>
               )}
             </div>
 
             <div
               // Wrap the progress bar to make the click easier
+              // NOTE: we could/should use an input "range" instead of a progress bar
               className="cursor-pointer py-1"
               onClick={handleProgressBarClick}
             >
-              <div className="h-1 w-full rounded-full bg-background/25">
-                <div
-                  className="h-full rounded-full bg-background"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
+              <ProgressBar progress={progress} />
             </div>
           </div>
 
