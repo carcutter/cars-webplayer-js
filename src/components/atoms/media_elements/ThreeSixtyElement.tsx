@@ -63,6 +63,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
     // Handle when the user just clicked on the 360 to start spinning
     const onMouseDown = (e: MouseEvent) => {
       e.preventDefault(); // Prevents native image dragging
+      e.stopPropagation(); // Prevents carrousel to slide
 
       // Take snapshot of the current state
       isMouseDown.current = true;
@@ -103,15 +104,15 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
     };
 
     container.addEventListener("mousedown", onMouseDown);
-    container.addEventListener("mouseleave", onMouseEnd);
-    container.addEventListener("mouseup", onMouseEnd);
-    container.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseleave", onMouseEnd);
+    document.addEventListener("mouseup", onMouseEnd);
+    document.addEventListener("mousemove", onMouseMove);
 
     return () => {
       container.removeEventListener("mousedown", onMouseDown);
-      container.removeEventListener("mouseleave", onMouseEnd);
-      container.removeEventListener("mouseup", onMouseEnd);
-      container.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseleave", onMouseEnd);
+      document.removeEventListener("mouseup", onMouseEnd);
+      document.removeEventListener("mousemove", onMouseMove);
     };
   }, [displayNextImage, displayPreviousImage, disabled, reverse360]);
 
