@@ -177,6 +177,11 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
 
     // - Handle when the user just clicked on the slider to start dragging
     const onMouseDown = (e: MouseEvent) => {
+      // Ignore event if the user is not using left click
+      if (e.button !== 0) {
+        return;
+      }
+
       e.preventDefault(); // Prevents native image dragging
       e.stopPropagation(); // Prevents overlay click when ending drag outside the carrousel
 
@@ -217,7 +222,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     };
 
     // - Handle when the user releases the slider
-    const onMouseEnd = () => {
+    const onStopDragging = () => {
       // Check if the user was actually clicking
       if (!mouseIsDown.current) {
         return;
@@ -243,14 +248,16 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
 
     slider.addEventListener("mousedown", onMouseDown);
     document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseleave", onMouseEnd);
-    document.addEventListener("mouseup", onMouseEnd);
+    document.addEventListener("mouseleave", onStopDragging);
+    document.addEventListener("mouseup", onStopDragging);
+    document.addEventListener("contextmenu", onStopDragging);
 
     return () => {
       slider.removeEventListener("mousedown", onMouseDown);
       document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseleave", onMouseEnd);
-      document.removeEventListener("mouseup", onMouseEnd);
+      document.removeEventListener("mouseleave", onStopDragging);
+      document.removeEventListener("mouseup", onStopDragging);
+      document.removeEventListener("contextmenu", onStopDragging);
     };
   }, [
     computeClosestIndex,

@@ -62,17 +62,17 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
 
     // Handle when the user just clicked on the 360 to start spinning
     const onMouseDown = (e: MouseEvent) => {
+      // Ignore event if the user is not using left click
+      if (e.button !== 0) {
+        return;
+      }
+
       e.preventDefault(); // Prevents native image dragging
       e.stopPropagation(); // Prevents carrousel to slide
 
       // Take snapshot of the current state
       isMouseDown.current = true;
       mouseStartX.current = e.clientX;
-    };
-
-    // Handle when the user releases the 360 or leaves the spinning area
-    const onMouseEnd = () => {
-      isMouseDown.current = false;
     };
 
     const onMouseMove = (e: MouseEvent) => {
@@ -103,16 +103,23 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
       mouseStartX.current = e.clientX;
     };
 
+    // Handle when the user releases the 360 or leaves the spinning area
+    const onStopDragging = () => {
+      isMouseDown.current = false;
+    };
+
     container.addEventListener("mousedown", onMouseDown);
-    document.addEventListener("mouseleave", onMouseEnd);
-    document.addEventListener("mouseup", onMouseEnd);
     document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseleave", onStopDragging);
+    document.addEventListener("mouseup", onStopDragging);
+    document.addEventListener("contextmenu", onStopDragging);
 
     return () => {
       container.removeEventListener("mousedown", onMouseDown);
-      document.removeEventListener("mouseleave", onMouseEnd);
-      document.removeEventListener("mouseup", onMouseEnd);
       document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseleave", onStopDragging);
+      document.removeEventListener("mouseup", onStopDragging);
+      document.removeEventListener("contextmenu", onStopDragging);
     };
   }, [displayNextImage, displayPreviousImage, disabled, reverse360]);
 
