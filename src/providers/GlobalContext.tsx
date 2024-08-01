@@ -13,10 +13,7 @@ type ProviderProps = Required<
     | "permanentGallery"
   >
 > &
-  Pick<
-    WebPlayerProps,
-    "categoriesOrder" | "minImageWidth" | "maxImageWidth"
-  > & {
+  Pick<WebPlayerProps, "minImageWidth" | "maxImageWidth"> & {
     playerInViewportWidthRatio: number;
     isFullScreen: boolean;
     requestFullscreen: () => Promise<void>;

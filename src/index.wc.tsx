@@ -30,7 +30,6 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedCSS, {
     maxImageWidth: "number",
     imageLoadStrategy: "string",
 
-    categoriesOrder: "string",
     flatten: "boolean",
 
     eventId: "string",

@@ -93,18 +93,18 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     requestFullscreen,
     exitFullscreen,
   } = useGlobalContext();
-  const { compositionCategories } = useCompositionContext();
+  const { categories } = useCompositionContext();
 
   const [displayedCategoryId, setDisplayedCategoryId] = useState(
-    compositionCategories[0].id
+    categories[0].id
   );
 
   const displayedItems: Item[] = useMemo(() => {
     if (flatten) {
-      return compositionCategories.flatMap(({ items }) => items);
+      return categories.flatMap(({ items }) => items);
     }
 
-    const displayedCategory = compositionCategories.find(
+    const displayedCategory = categories.find(
       ({ id }) => id === displayedCategoryId
     );
     if (!displayedCategory) {
@@ -112,7 +112,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     }
 
     return displayedCategory.items;
-  }, [flatten, compositionCategories, displayedCategoryId]);
+  }, [flatten, categories, displayedCategoryId]);
 
   const initItemInteractionList = useCallback(() => {
     return displayedItems.map(() => null);

@@ -16,8 +16,6 @@ export const WebPlayerPropsSchema = z.object({
   maxImageWidth: ImageWidthSchema.optional(),
   imageLoadStrategy: ImageLoadStrategySchema.optional(),
 
-  // <CATEGORY>|<CATEGORY>
-  categoriesOrder: z.string().optional(),
   flatten: z.boolean().optional(),
 
   eventId: z.string().optional(),
