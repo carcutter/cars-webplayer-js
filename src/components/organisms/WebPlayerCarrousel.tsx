@@ -48,8 +48,6 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   const mouseIsDown = useRef(false);
   const startX = useRef<number | null>(null);
   const startScrollLeft = useRef<number | null>(null);
-  const isMoving = useRef(false);
-  const resetSnapTimeout = useRef<NodeJS.Timeout>();
 
   // -- Slider's functions -- //
   const getContainerWidth = useCallback(() => {
@@ -86,25 +84,24 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     },
     [getSliderOrThrow]
   );
-  const delayedSetStyleMandatorySnap = useCallback(() => {
-    resetSnapTimeout.current = setTimeout(
-      () => {
-        setStyleSnapState("mandatory");
-        resetSnapTimeout.current = undefined;
-      },
-      // Timeout corresponsing to the CSS scroll transition duration
-      350
-    );
-  }, [setStyleSnapState]);
 
   const scrollToIndex = useCallback(
     (index: number, behavior: "instant" | "smooth") => {
-      const slider = getSliderOrThrow("scrollToSnapIndex");
+      const scroll = () => {
+        const slider = getSliderOrThrow("scrollToSnapIndex");
+        const targetScroll = index * getContainerWidth();
 
-      slider.scrollTo({
-        left: index * getContainerWidth(),
-        behavior,
-      });
+        slider.scrollTo({
+          left: targetScroll,
+          behavior,
+        });
+      };
+
+      if (behavior === "instant") {
+        scroll();
+      } else {
+        requestAnimationFrame(scroll);
+      }
     },
     [getContainerWidth, getSliderOrThrow]
   );
@@ -192,6 +189,8 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
 
       // Set cursor
       setStyleCursor("grabbing");
+      // Disable snap scrolling
+      setStyleSnapState("none");
     };
 
     // Scroll according the user's dragging movement
@@ -204,13 +203,6 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       if (startX.current === null) {
         throw new Error("[onMouseMove] startX is null");
       }
-
-      isMoving.current = true;
-
-      // Disable snap scrolling
-      setStyleSnapState("none");
-      clearTimeout(resetSnapTimeout.current);
-      resetSnapTimeout.current = undefined;
 
       const x = e.pageX - slider.offsetLeft;
       const walk = x - startX.current;
@@ -235,15 +227,14 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
 
       // Reset cursor
       setStyleCursor("grab");
-
-      // Check if the user was actually dragging
-      if (!isMoving.current) {
-        return;
-      }
-
-      isMoving.current = false;
-      // setTimeout to avoid flickering, but we have to handle the case where the user interacts again
-      delayedSetStyleMandatorySnap();
+      // Reset snap scrolling. setTimeout to avoid flickering as setting the scroll snap to mandatory resets the scroll position
+      setTimeout(() => {
+        //  but we have to handle the case where the user clicks again on the slider
+        if (mouseIsDown.current) {
+          return;
+        }
+        setStyleSnapState("mandatory");
+      }, 350);
 
       // Snap scrolling
       const closestSnapIndex = computeClosestIndex();
@@ -263,7 +254,6 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     };
   }, [
     computeClosestIndex,
-    delayedSetStyleMandatorySnap,
     freezeCarrousel,
     scrollToIndex,
     setStyleCursor,
@@ -323,19 +313,8 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       return;
     }
 
-    // As setting the scroll snap to mandatory resets the scroll position, we need to delay it
-    if (resetSnapTimeout.current) {
-      clearTimeout(resetSnapTimeout.current);
-      delayedSetStyleMandatorySnap();
-    }
-
     scrollToIndex(itemIndexCommand, "smooth");
-  }, [
-    scrollToIndex,
-    itemIndexCommand,
-    setStyleSnapState,
-    delayedSetStyleMandatorySnap,
-  ]);
+  }, [itemIndexCommand, scrollToIndex]);
 
   return (
     <div className={`relative ${aspectRatioClass} ${className}`}>
