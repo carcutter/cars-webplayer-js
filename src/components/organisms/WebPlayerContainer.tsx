@@ -5,6 +5,7 @@ import CloseButton from "@/components/atoms/CloseButton";
 import Gallery from "@/components/organisms/Gallery";
 import WebPlayerCarrousel from "@/components/organisms/WebPlayerCarrousel";
 import ErrorTemplate from "@/components/template/ErrorTemplate";
+import Spinner from "@/components/ui/Spinner";
 import { useComposition } from "@/hooks/useComposition";
 import CompositionContextProvider, {
   useCompositionContext,
@@ -155,8 +156,9 @@ const WebPlayerContainer: React.FC<WebPlayerContainerProps> = ({
   if (!isSuccess) {
     // TODO
     return (
-      <div className="flex items-center justify-center">
-        Loading WebPlayer...
+      <div className="flex aspect-4/3 size-full flex-col items-center justify-center gap-y-4">
+        <div className="text-xl">Loading WebPlayer...</div>
+        <Spinner color="primary" />
       </div>
     );
   }
