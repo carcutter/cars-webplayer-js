@@ -73,9 +73,9 @@ if (!success) {
 // Transform
 const transformComposition = (composition: CompositionV1): CompositionV2 => {
   return {
-    aspectRatio: "4:3",
-    imageHdWidth: 1600,
-    imageSubWidths: [100, 300, 512, 640, 768, 1024],
+    aspectRatio: "4:3", // HARD-CODED
+    imageHdWidth: 1600, // HARD-CODED
+    imageSubWidths: [100, 300, 512, 640, 768, 1024], // HARD-CODED
 
     categories: composition.map(({ category, title, items }) => {
       let itemsV2: ItemV2[];
@@ -104,10 +104,10 @@ const transformComposition = (composition: CompositionV1): CompositionV2 => {
         itemsV2 = [
           {
             type: "360",
-            images: items.map(item => item.image),
-            hotspots: items.map(({ hotspots }) =>
-              hotspots.map(hotspot => convertHotspot(hotspot))
-            ),
+            images: items.map(({ image, hotspots }) => ({
+              src: image,
+              hotspots: hotspots.map(hotspot => convertHotspot(hotspot)),
+            })),
           },
         ];
       } else {
