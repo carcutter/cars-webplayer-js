@@ -22,12 +22,17 @@ export const HotspotSchema = z.object({
     .optional(),
 });
 
+export const ImageWithHotspotsSchema = z.object({
+  src: z.string(),
+  hotspots: z.array(HotspotSchema).optional(),
+});
+
 export const ItemSchema = z.discriminatedUnion("type", [
-  z.object({
-    type: z.literal("image"),
-    src: z.string(),
-    hotspots: z.array(HotspotSchema).optional(),
-  }),
+  z
+    .object({
+      type: z.literal("image"),
+    })
+    .merge(ImageWithHotspotsSchema),
   z.object({
     type: z.literal("video"),
     src: z.string(),
@@ -35,8 +40,7 @@ export const ItemSchema = z.discriminatedUnion("type", [
   }),
   z.object({
     type: z.literal("360"),
-    images: z.array(z.string()),
-    hotspots: z.array(z.array(HotspotSchema)),
+    images: z.array(ImageWithHotspotsSchema),
   }),
   z.object({
     type: z.literal("omni_directional"),

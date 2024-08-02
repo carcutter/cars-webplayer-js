@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import CdnImage from "@/components/atoms/CdnImage";
 import PlayIcon from "@/components/atoms/icons/PlayIcon";
@@ -7,7 +7,7 @@ import ImageElement from "@/components/atoms/media_elements/ImageElement";
 import CustomizableButton from "@/components/molecules/CustomizableButton";
 import { useControlsContext } from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
-import type { Item } from "@/types/composition";
+import type { ImageWithHotspots, Item } from "@/types/composition";
 
 const DRAG_STEP_PX = 10;
 const SCROLL_STEP_PX = 15;
@@ -20,7 +20,6 @@ type ThreeSixtyElementInteractive = Omit<ThreeSixtyElementProps, "index">;
 
 const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
   images,
-  hotspots,
   onlyPreload,
 }) => {
   const { reverse360 } = useGlobalContext();
@@ -180,7 +179,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
         {/* Take the 2 prev & 2 next images and insert them on the DOM to ensure preload */}
         {[-2, -1, 1, 2].map(offset => {
           const index = (imageIndex + offset + length) % length;
-          const src = images[index];
+          const { src } = images[index];
           return <CdnImage key={src} src={src} />;
         })}
       </div>
@@ -189,11 +188,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
       {/* NOTE: ImageElement is within so that it can capture events first */}
       <div ref={scrollerRef} className="overflow-x-scroll no-scrollbar">
         <div className="sticky left-0 top-0">
-          <ImageElement
-            src={images[imageIndex]}
-            hotspots={hotspots[imageIndex]}
-            onlyPreload={onlyPreload}
-          />
+          <ImageElement {...images[imageIndex]} onlyPreload={onlyPreload} />
         </div>
         {/* Add space on both sides to allow scrolling */}
         <div style={{ width: `calc(100% + ${4 * SCROLL_STEP_PX}px` }} />
@@ -203,13 +198,15 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
 };
 
 type ThreeSixtyElementPlaceholderProps = {
-  images: string[];
+  images: ImageWithHotspots[];
   onReady: () => void;
 };
 
 const ThreeSixtyElementPlaceholder: React.FC<
   ThreeSixtyElementPlaceholderProps
 > = ({ images, onReady }) => {
+  const imagesSrc = useMemo(() => images.map(({ src }) => src), [images]);
+
   const [loadingStatusMap, setLoadingStatusMap] = useState<Map<
     string,
     boolean
@@ -226,10 +223,10 @@ const ThreeSixtyElementPlaceholder: React.FC<
       return;
     }
 
-    setLoadingStatusMap(new Map(images.map(image => [image, false])));
+    setLoadingStatusMap(new Map(imagesSrc.map(src => [src, false])));
 
-    // TODO: add a timeout ?
-  }, [images, loadingProgress]);
+    // TODO: add a timeout to handle error ?
+  }, [imagesSrc, loadingProgress]);
 
   const onImageLoaded = useCallback((image: string) => {
     setLoadingStatusMap(prev => {
@@ -249,17 +246,13 @@ const ThreeSixtyElementPlaceholder: React.FC<
     <div className="relative size-full">
       {loadingProgress !== null && loadingProgress !== 100 && (
         <div className="hidden">
-          {images.map(image => (
-            <CdnImage
-              key={image}
-              src={image}
-              onLoad={() => onImageLoaded(image)}
-            />
+          {imagesSrc.map(src => (
+            <CdnImage key={src} src={src} onLoad={() => onImageLoaded(src)} />
           ))}
         </div>
       )}
 
-      <CdnImage className="size-full" src={images[0]} />
+      <CdnImage className="size-full" src={imagesSrc[0]} />
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
         <div className="size-20">
           <ThreeSixtyIcon />
@@ -289,8 +282,7 @@ const ThreeSixtyElementPlaceholder: React.FC<
 
 const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = ({
   index,
-  onlyPreload,
-  ...item
+  ...props
 }) => {
   const { setItemInteraction } = useControlsContext();
 
@@ -307,13 +299,13 @@ const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = ({
   if (!isReady) {
     return (
       <ThreeSixtyElementPlaceholder
-        images={item.images}
+        {...props}
         onReady={() => setIsReady(true)}
       />
     );
   }
 
-  return <ThreeSixtyElementInteractive onlyPreload={onlyPreload} {...item} />;
+  return <ThreeSixtyElementInteractive {...props} />;
 };
 
 export default ThreeSixtyElement;

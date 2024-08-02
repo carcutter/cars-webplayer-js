@@ -153,23 +153,25 @@
                         "images": {
                           "type": "array",
                           "items": {
-                            "type": "string"
-                          }
-                        },
-                        "hotspots": {
-                          "type": "array",
-                          "items": {
-                            "type": "array",
-                            "items": {
-                              "$ref": "#/definitions/composition/properties/categories/items/properties/items/items/anyOf/0/properties/hotspots/items"
-                            }
+                            "type": "object",
+                            "properties": {
+                              "src": {
+                                "$ref": "#/definitions/composition/properties/categories/items/properties/items/items/anyOf/0/properties/src"
+                              },
+                              "hotspots": {
+                                "$ref": "#/definitions/composition/properties/categories/items/properties/items/items/anyOf/0/properties/hotspots"
+                              }
+                            },
+                            "required": [
+                              "src"
+                            ],
+                            "additionalProperties": false
                           }
                         }
                       },
                       "required": [
                         "type",
-                        "images",
-                        "hotspots"
+                        "images"
                       ],
                       "additionalProperties": false
                     },

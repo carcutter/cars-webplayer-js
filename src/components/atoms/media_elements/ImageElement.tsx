@@ -3,10 +3,9 @@ import ZoomableCdnImage, {
 } from "@/components/atoms/ZoomableCdnImage";
 import Hotspot from "@/components/molecules/Hotspot";
 import { useControlsContext } from "@/providers/ControlsContext";
-import type { Item } from "@/types/composition";
+import type { ImageWithHotspots } from "@/types/composition";
 
-type Props = Omit<ZoomableCdnImageProps, "className"> &
-  Omit<Extract<Item, { type: "image" }>, "type">;
+type Props = Omit<ZoomableCdnImageProps, "className"> & ImageWithHotspots;
 
 const ImageElement: React.FC<Props> = ({ hotspots, ...props }) => {
   const { isShowingDetails, showHotspots } = useControlsContext();

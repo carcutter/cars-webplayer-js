@@ -21,7 +21,7 @@ const GalleryElement: React.FC<Props> = ({ item }) => {
       imgSrc = item.poster;
       break;
     case "360":
-      imgSrc = item.images[0];
+      imgSrc = item.images[0].src;
       break;
     case "omni_directional":
       imgSrc = item.src;

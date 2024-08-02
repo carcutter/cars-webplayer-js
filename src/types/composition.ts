@@ -4,10 +4,13 @@ import type {
   CategorySchema,
   CompositionSchema,
   HotspotSchema,
+  ImageWithHotspotsSchema,
   ItemSchema,
 } from "./zod/composition";
 
 export type Hotspot = z.infer<typeof HotspotSchema>;
+
+export type ImageWithHotspots = z.infer<typeof ImageWithHotspotsSchema>;
 
 export type Item = z.infer<typeof ItemSchema>;
 
