@@ -14,6 +14,7 @@ const z = {
   discriminatedUnion: () => z,
 
   extract: () => z,
+  merge: () => z,
 
   min: () => z,
   max: () => z,
