@@ -50,19 +50,30 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   const startScrollLeft = useRef<number | null>(null);
 
   // -- Slider's functions -- //
-  const getContainerWidth = useCallback(() => {
-    const slider = getSliderOrThrow("getContainerWidth");
-
-    return slider.getBoundingClientRect().width;
-  }, [getSliderOrThrow]);
-
   const computeClosestIndex = useCallback(() => {
     const slider = getSliderOrThrow("computeClosestSnapIndex");
+    const children = Array.from(slider.children) as HTMLElement[];
 
-    const decimalIndex = slider.scrollLeft / getContainerWidth();
+    const currentScroll = slider.scrollLeft;
 
-    return Math.round(decimalIndex);
-  }, [getContainerWidth, getSliderOrThrow]);
+    const closestIndex = children.reduce(
+      (currentClosestIndex, child, childIndex) => {
+        const childScroll = child.offsetLeft;
+
+        if (
+          Math.abs(childScroll - currentScroll) <
+          Math.abs(children[currentClosestIndex].offsetLeft - currentScroll)
+        ) {
+          return childIndex;
+        }
+
+        return currentClosestIndex;
+      },
+      0
+    );
+
+    return closestIndex;
+  }, [getSliderOrThrow]);
 
   const setStyleCursor = useCallback(
     (cursor: "auto" | "grab" | "grabbing") => {
@@ -89,7 +100,9 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     (index: number, behavior: "instant" | "smooth") => {
       const scroll = () => {
         const slider = getSliderOrThrow("scrollToSnapIndex");
-        const targetScroll = index * getContainerWidth();
+        const children = Array.from(slider.children) as HTMLElement[];
+
+        const targetScroll = children[index].offsetLeft;
 
         slider.scrollTo({
           left: targetScroll,
@@ -103,7 +116,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
         requestAnimationFrame(scroll);
       }
     },
-    [getContainerWidth, getSliderOrThrow]
+    [getSliderOrThrow]
   );
 
   // - Listen to resizing to avoid layer shift
@@ -232,14 +245,16 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
 
       // Reset cursor
       setStyleCursor("grab");
-      // Reset snap scrolling. setTimeout to avoid flickering as setting the scroll snap to mandatory resets the scroll position
+      // Reset snap scrolling.
+      // NOTE: we are using setTimeout to avoid flickering because snap "mandatory" sets instantly the scroll position
+      //       If we could get ride of the flickering, we could remove the setTimeout
       setTimeout(() => {
         //  but we have to handle the case where the user clicks again on the slider
         if (mouseIsDown.current) {
           return;
         }
         setStyleSnapState("mandatory");
-      }, 350);
+      }, 400);
 
       // Snap scrolling
       const closestSnapIndex = computeClosestIndex();
