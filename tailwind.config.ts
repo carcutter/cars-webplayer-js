@@ -21,7 +21,9 @@ const config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: "hsl(var(--primary))",
+        "primary-foreground": "hsl(var(--primary-foreground))",
         neutral: "hsl(var(--neutral))",
+        "neutral-foreground": "hsl(var(--neutral-foreground))",
       },
       aspectRatio: {
         "4/3": "4 / 3",

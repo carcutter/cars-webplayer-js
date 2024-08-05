@@ -17,9 +17,11 @@ const Button: React.FC<React.PropsWithChildren<ButtonProps>> = ({
   switch (variant) {
     case "fill":
       if (color === "primary") {
-        variantClassName = "bg-primary text-background hover:opacity-80";
+        variantClassName =
+          "bg-primary text-primary-foreground hover:opacity-80";
       } else {
-        variantClassName = "bg-background text-neutral hover:opacity-80";
+        variantClassName =
+          "bg-background text-neutral-foreground hover:opacity-80";
       }
       break;
     case "ghost":

@@ -4,10 +4,14 @@
 
 @layer base {
   :root {
-    --cc-background: 0 0% 100%;
-    --cc-foreground: 240 10% 3.9%;
+    /* --cc-background: 0 0% 100%; */
+    /* --cc-foreground: 240 10% 3.9%; */
+    /* --cc-primary: 42 100% 52%; */
+    /* --cc-primary-foreground:; */
+    /* --cc-neutral:; */
+    /* --cc-neutral-foreground:; */
 
-    --cc-primary: 42 100% 52%;
+    /* --cc-radius:; */
   }
 }
 
