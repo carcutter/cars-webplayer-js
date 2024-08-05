@@ -8,13 +8,11 @@ import type { Item } from "@/types/composition";
 type Props = {
   index: number;
   item: Item;
-  currentIndex: number;
+  isShown: boolean;
+  lazy: boolean;
 };
 
-const WebPlayerElement: React.FC<Props> = ({ index, item, currentIndex }) => {
-  const isShown = index === currentIndex;
-  const lazy = Math.abs(index - currentIndex) > 1;
-
+const WebPlayerElement: React.FC<Props> = ({ index, item, isShown, lazy }) => {
   const { aspectRatioClass } = useCompositionContext();
 
   const { type } = item;

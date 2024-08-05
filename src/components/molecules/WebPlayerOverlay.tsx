@@ -24,7 +24,6 @@ const WebPlayerOverlay: React.FC = () => {
     displayedItems: { length: dataLength },
     slidable,
 
-    masterItemIndex,
     prevImage,
     nextImage,
 
@@ -91,7 +90,6 @@ const WebPlayerOverlay: React.FC = () => {
             color="neutral"
             className={`${sharedClassName} ${positionToClassName("middle-left")}`}
             onClick={prevImage}
-            disabled={masterItemIndex <= 0}
           >
             <CustomizableIcon customizationKey="CONTROLS_ARROW_LEFT">
               <img
@@ -106,7 +104,6 @@ const WebPlayerOverlay: React.FC = () => {
             color="neutral"
             className={`${sharedClassName} ${positionToClassName("middle-right")}`}
             onClick={nextImage}
-            disabled={masterItemIndex >= dataLength - 1}
           >
             <CustomizableIcon customizationKey="CONTROLS_ARROW_RIGHT">
               <img

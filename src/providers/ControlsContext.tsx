@@ -30,6 +30,8 @@ type ContextType = {
   itemIndexCommand: number | null;
   setItemIndexCommand: (index: number | null) => void;
   masterItemIndex: number;
+  isCycling: boolean;
+  finishCycling: () => void;
   prevImage: () => void;
   nextImage: () => void;
 
@@ -135,16 +137,38 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const currentItemInteraction = itemInteractionList[carrouselItemIndex];
   const [itemIndexCommand, setItemIndexCommand] = useState<number | null>(null);
   const masterItemIndex = itemIndexCommand ?? carrouselItemIndex;
+  const [isCycling, setIsCycling] = useState(false); // Used to handle cycling (prev/next) when reaching the end of the list
+  const finishCycling = useCallback(() => setIsCycling(false), []);
 
   const prevImage = useCallback(() => {
-    setItemIndexCommand(Math.max(carrouselItemIndex - 1, 0));
-  }, [carrouselItemIndex]);
+    if (isCycling) {
+      return;
+    }
+
+    const target = carrouselItemIndex - 1;
+    // Check if we need to cycle
+    if (target <= 0) {
+      setIsCycling(true);
+      setItemIndexCommand(displayedItems.length - 1);
+    } else {
+      setItemIndexCommand(target);
+    }
+  }, [carrouselItemIndex, displayedItems.length, isCycling]);
 
   const nextImage = useCallback(() => {
-    setItemIndexCommand(
-      Math.min(carrouselItemIndex + 1, displayedItems.length - 1)
-    );
-  }, [carrouselItemIndex, displayedItems.length]);
+    if (isCycling) {
+      return;
+    }
+
+    const target = carrouselItemIndex + 1;
+    // Check if we need to cycle
+    if (target > displayedItems.length - 1) {
+      setIsCycling(true);
+      setItemIndexCommand(0);
+    } else {
+      setItemIndexCommand(target);
+    }
+  }, [carrouselItemIndex, displayedItems.length, isCycling]);
 
   const changeCategory = useCallback(
     (categoryId: string) => {
@@ -355,6 +379,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         itemIndexCommand,
         setItemIndexCommand,
         masterItemIndex,
+        isCycling,
+        finishCycling,
         prevImage,
         nextImage,
 

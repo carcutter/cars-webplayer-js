@@ -24,6 +24,8 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     setCarrouselItemIndex,
     itemIndexCommand,
     setItemIndexCommand,
+    isCycling,
+    finishCycling,
 
     extendMode,
     extendTransition,
@@ -72,8 +74,8 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       0
     );
 
-    return closestIndex;
-  }, [getSliderOrThrow]);
+    return closestIndex % items.length; // Cycle the index
+  }, [getSliderOrThrow, items.length]);
 
   const setStyleCursor = useCallback(
     (cursor: "auto" | "grab" | "grabbing") => {
@@ -172,8 +174,8 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
 
   // -- Event listeners to handle the slider dragging -- //
   useEffect(() => {
-    // Sliding is disabled when there is only one item
-    if (!slidable || freezeCarrousel) {
+    // Sliding is disabled
+    if (!slidable || freezeCarrousel || isCycling) {
       setStyleCursor("auto");
       return;
     }
@@ -277,6 +279,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   }, [
     computeClosestIndex,
     freezeCarrousel,
+    isCycling,
     scrollToIndex,
     setStyleCursor,
     setStyleSnapState,
@@ -323,8 +326,10 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   }, [
     computeClosestIndex,
     extendTransition,
+    isCycling,
     isResizing,
     itemIndexCommand,
+    items.length,
     setCarrouselItemIndex,
     setItemIndexCommand,
   ]);
@@ -335,8 +340,30 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       return;
     }
 
-    scrollToIndex(itemIndexCommand, "smooth");
-  }, [itemIndexCommand, scrollToIndex]);
+    if (isCycling) {
+      // Should go from first item to last item
+      if (itemIndexCommand === items.length - 1) {
+        // Instantly go to the duplicate of the first item
+        scrollToIndex(items.length, "instant");
+        scrollToIndex(itemIndexCommand, "smooth");
+        setTimeout(() => {
+          finishCycling();
+        }, 700);
+      } else {
+        // Smoothly go to the duplicate of the first item
+        scrollToIndex(items.length, "smooth");
+        setTimeout(() => {
+          // Instantly go back to the real first item
+          scrollToIndex(itemIndexCommand, "instant");
+          finishCycling();
+        }, 700);
+      }
+    }
+    // Standard case
+    else {
+      scrollToIndex(itemIndexCommand, "smooth");
+    }
+  }, [finishCycling, isCycling, itemIndexCommand, items.length, scrollToIndex]);
 
   return (
     <div className={`relative ${aspectRatioClass} ${className}`}>
@@ -347,15 +374,33 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
         {items.map((item, index) => {
           const imgSrc = item.type === "360" ? item.images[0] : item.src;
 
+          const isShown = index === carrouselItemIndex;
+          // Lazy param avoids loading images that are too far from the current one
+          const lazy =
+            Math.abs(index - carrouselItemIndex) > 1 && // Not next to the current one
+            !(carrouselItemIndex === 0 && index === items.length - 1) && // Not the last one when the first one is shown
+            !(carrouselItemIndex === items.length - 1 && index === 0); // Not the first one when the last one is shown
+
           return (
             <WebPlayerElement
               key={`${index}_${imgSrc}`}
               index={index}
               item={item}
-              currentIndex={carrouselItemIndex}
+              isShown={isShown}
+              lazy={lazy}
             />
           );
         })}
+
+        {isCycling && (
+          // Duplicate the first element to allow cycling
+          <WebPlayerElement
+            index={0}
+            item={items[0]}
+            isShown={carrouselItemIndex === 0}
+            lazy={false}
+          />
+        )}
       </div>
 
       {slidable && !isZooming && (
