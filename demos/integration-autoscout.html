@@ -6,8 +6,13 @@
     <title>CarCutter WebPlayerV3 - Integration Demo Autocout</title>
     <script src="https://cdn.car-cutter.com/libs/web-player/v3/bundle.js"></script>
     <style>
+      a {
+        text-decoration: none;
+        color: rgb(17, 102, 168);
+      }
+
       .header__container {
-        max-width: 1600px;
+        max-width: 1400px;
         margin-inline: auto;
 
         display: flex;
@@ -17,6 +22,8 @@
 
       .header__container a {
         color: white;
+        font-size: 16px;
+        font-weight: 600;
       }
 
       .header__nav {
@@ -24,8 +31,20 @@
         column-gap: 16px;
       }
 
+      .header__cta {
+        color: #333;
+        height: 40px;
+        background-color: #fbfa99;
+        border: 0;
+        border-radius: 4px;
+        padding: 8px 16px;
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: 1.3;
+      }
+
       .content {
-        max-width: 1250px;
+        max-width: 1100px;
         margin-inline: auto;
 
         padding: 16px;
@@ -37,19 +56,56 @@
         background-color: white;
       }
 
+      .details {
+        display: flex;
+        flex-direction: column;
+        row-gap: 8px;
+
+        color: #333;
+      }
+
+      .details__header {
+        display: flex;
+        flex-direction: column;
+        row-gap: 8px;
+
+        margin-top: 16px;
+      }
+
+      .details h1,
+      .details h2 {
+        margin-block: 0;
+        font-size: 1.5rem;
+      }
+
+      .details h1 {
+        font-weight: 600;
+      }
+
+      .details h2 {
+        font-weight: 400;
+      }
+
+      .details .divider {
+        border-top: 1px solid #dcdcdc;
+        margin: 8px;
+      }
+
       .details__buttons {
         display: flex;
-        column-gap: 4px;
+        column-gap: 8px;
       }
 
       .details__buttons button {
         flex: 1;
         padding: 10px 8px;
         background-color: #f5f200;
+        border: none;
         border-radius: 4px;
+        box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 3px 0px;
       }
 
-      @media (max-width: 768px) {
+      @media (max-width: 1000px) {
         .header__container {
           justify-content: center;
         }
@@ -58,8 +114,23 @@
           display: none;
         }
 
+        .header__cta {
+          display: none;
+        }
+
         .content {
           flex-direction: column;
+        }
+
+        .details__header {
+          flex-direction: row-reverse;
+          align-items: center;
+        }
+
+        .details__header h2 {
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
         }
       }
 
@@ -86,6 +157,7 @@
             <a href="#">Flexible Kaufmodelle</a>
             <a href="#">Entscheidungshilfe</a>
           </nav>
+          <button class="header__cta">Mein Auto verkaufen</button>
         </div>
       </header>
 
@@ -98,21 +170,56 @@
         </div>
 
         <div class="details" style="flex: 1">
-          <h1>Audi Q3</h1>
-          <h2>Sportback S</h2>
+          <div class="details__header">
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                column-gap: 8px;
+                margin: 0px 24px 12px;
+              "
+            >
+              <a href="#">Merken</a>
+              <a href="#">Teilen</a>
+              <a href="#">Drucken</a>
+            </div>
+            <div style="min-width: 0">
+              <h1>Audi Q3</h1>
+              <h2>Sportback S line 35 TFSI PANO MATRIX STANDHEIZ NA</h2>
+            </div>
+          </div>
+
+          <a href="#">Kölln Reisiek / bei Elmshorn -Hamburg, DE</a>
+
+          <div class="divider"></div>
 
           <div class="details__price">
-            <span>€ 32.350,-</span> inkl. MwSt.
-            <p>ab € 465,- mtl. Finanzierung berechnen</p>
+            <span style="font-size: 1.5rem; font-weight: 600"
+              >€ 32.350,-<sup>1</sup></span
+            >
+            inkl. MwSt.
+            <p>
+              ab
+              <span style="font-size: 1.25rem; font-weight: 600"
+                >€ 465,- mtl.</span
+              >
+              <a href="#">Finanzierung berechnen</a>
+            </p>
           </div>
+
+          <div class="divider"></div>
 
           <div class="details__buttons">
             <button>E-Mail senden</button>
             <button>Nummer anzeigen</button>
           </div>
 
-          <p>Verkäufer: Autohaus Elmshorn GmbH & Co. KG</p>
-          <p>19 Bewertungen (94% Weiterempfehlungen)</p>
+          <div class="divider"></div>
+
+          <div>
+            <p style="font-weight: 600">Autohaus Elmshorn GmbH & Co. KG</p>
+            <p><a href="#">19 Bewertungen</a> (94% Weiterempfehlungen)</p>
+          </div>
         </div>
       </div>
     </div>
