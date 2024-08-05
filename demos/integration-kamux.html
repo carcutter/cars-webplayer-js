@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CarCutter WebPlayerV3 - Integration Demo Kamux</title>
     <script src="https://cdn.car-cutter.com/libs/web-player/v3/bundle.js"></script>
+
     <style>
+      /* BASE */
       body {
         font-family: Arial, sans-serif;
         margin: 0;
@@ -13,32 +15,40 @@
       }
 
       h1,
+      h2,
+      h3,
       p {
         margin-block: 0;
       }
 
       a {
-        color: #000;
+        color: black;
         text-decoration: none;
       }
 
+      button {
+        cursor: pointer;
+      }
+
+      /* STYLE */
+
       header {
-        padding: 24px;
         background-color: white;
-      }
+        padding: 24px;
 
-      .header__container {
-        max-width: 1600px;
-        margin-inline: auto;
+        & .header__container {
+          max-width: 1600px;
+          margin-inline: auto;
 
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
 
-      .header__nav {
-        display: flex;
-        column-gap: 16px;
+        & .header__nav {
+          display: flex;
+          column-gap: 16px;
+        }
       }
 
       main {
@@ -60,76 +70,78 @@
         flex-direction: column;
         justify-content: space-between;
         row-gap: 24px;
+
+        & .infos__top {
+          display: flex;
+          flex-direction: column;
+          row-gap: 16px;
+        }
+
+        & .infos__list {
+          font-size: 1rem;
+          font-weight: 400;
+        }
+
+        & .infos__list > hr {
+          margin-block: 12px;
+          opacity: 0.5;
+        }
+
+        & .infos__list > div {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        & .prices {
+          display: flex;
+          justify-content: space-between;
+          font-size: 24px;
+          font-weight: 700;
+        }
+
+        & .infos__bottom {
+          display: flex;
+          flex-direction: column;
+          row-gap: 12px;
+        }
+
+        & .infos__bottom button {
+          padding: 10px 20px;
+          border-radius: 9999px;
+          border: 1px solid hsl(73 100% 41.76%);
+        }
+
+        & .infos__bottom .contact-button {
+          background-color: hsl(73 100% 41.76%);
+        }
+
+        & .infos__bottom .reserve-button {
+          background-color: #ffffff;
+        }
       }
 
-      .infos__top {
-        display: flex;
-        flex-direction: column;
-        row-gap: 16px;
-      }
-
-      .infos__list {
-        font-size: 1rem;
-        font-weight: 400;
-      }
-
-      .infos__list > hr {
-        margin-block: 12px;
-        opacity: 0.5;
-      }
-
-      .infos__list > div {
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .infos .prices {
-        display: flex;
-        justify-content: space-between;
-        font-size: 24px;
-        font-weight: 700;
-      }
-
-      .infos__bottom {
-        display: flex;
-        flex-direction: column;
-        row-gap: 12px;
-      }
-
-      .infos__bottom button {
-        padding: 10px 20px;
-        border-radius: 9999px;
-        border: 1px solid hsl(73 100% 41.76%);
-      }
-
-      .infos__bottom .contact-button {
-        background-color: hsl(73 100% 41.76%);
-      }
-
-      .infos__bottom .reserve-button {
-        background-color: #ffffff;
-      }
+      /* RESPONSIVE */
 
       @media (max-width: 768px) {
         header {
           padding: 16px;
-        }
 
-        .header__container {
-          justify-content: center;
-        }
+          & .header__container {
+            justify-content: center;
+          }
 
-        .header__nav {
-          display: none;
+          & .header__nav {
+            display: none;
+          }
         }
 
         main {
           flex-direction: column;
           row-gap: 12px;
-        }
 
-        .infos__list {
-          font-size: 0.85rem;
+          & .infos__list {
+            font-size: 0.85rem;
+          }
         }
       }
 
@@ -138,7 +150,7 @@
       }
     </style>
   </head>
-  <body class="body-style">
+  <body>
     <header>
       <div class="header__container">
         <img

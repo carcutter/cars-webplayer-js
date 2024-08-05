@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CarCutter WebPlayerV3 - Integration Demo AHG</title>
+    <script src="https://cdn.car-cutter.com/libs/web-player/v3/bundle.js"></script>
+
+    <style>
+      /* BASE */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background-color: white;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-block: 0;
+      }
+
+      a {
+        color: black;
+        text-decoration: none;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      /* STYLE */
+
+      header {
+        & .header__container {
+          max-width: 1254px;
+          margin-inline: auto;
+          padding: 8px;
+
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        & .header__nav {
+          display: flex;
+          column-gap: 16px;
+        }
+      }
+
+      main {
+        max-width: 1254px;
+        margin-inline: auto;
+
+        padding-bottom: 8px;
+
+        display: flex;
+        gap: 1rem;
+      }
+
+      .main__left {
+        min-width: 0;
+        flex: 7;
+      }
+
+      .main__right {
+        flex: 5;
+        display: flex;
+        flex-direction: column;
+        row-gap: 24px;
+
+        padding-inline: 2rem;
+
+        & .titles {
+          & h1 {
+            font-size: 36px;
+            margin-block: 8px;
+          }
+
+          & h2 {
+            font-size: 18px;
+            font-weight: 400;
+          }
+        }
+
+        & .features {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.6rem 0.3rem;
+
+          & span {
+            padding: 6px 10px;
+
+            font-size: 14px;
+            font-weight: 400;
+
+            color: rgb(110, 110, 110);
+            background-color: rgb(244, 248, 255);
+
+            border-radius: 999px;
+
+            &:first-child {
+              color: rgb(28, 104, 212);
+              background-color: rgb(235, 243, 255);
+            }
+          }
+        }
+
+        & .payment {
+          display: flex;
+          flex-direction: column;
+          row-gap: 16px;
+
+          padding: 40px;
+
+          background-color: rgb(255, 255, 255);
+          border-radius: 0.4rem;
+          box-shadow: rgba(0, 0, 0, 0.08) 0px 0.3rem 1.2rem;
+
+          & .price-infos {
+            display: flex;
+            flex-direction: column;
+            row-gap: 4px;
+
+            & .price {
+              font-size: 36px;
+              font-weight: 600;
+              color: rgb(28, 104, 212);
+            }
+          }
+
+          & .buttons {
+            display: grid;
+            gap: 8px;
+
+            grid-template-columns: 3fr 1fr;
+            grid-template-areas:
+              "contact site"
+              "achat achat";
+
+            & button {
+              width: 100%;
+
+              padding: 8px 16px;
+              font-size: 16px;
+
+              border: 1px solid rgb(28, 104, 212);
+              border-radius: 4px;
+
+              transition: transform 300ms;
+
+              &:hover {
+                transform: scale(1.025);
+              }
+
+              &:nth-child(-n + 2) {
+                background-color: white;
+                color: rgb(28, 104, 212);
+              }
+
+              &:nth-child(1) {
+                grid-area: contact;
+              }
+              &:nth-child(2) {
+                grid-area: site;
+              }
+
+              &:nth-child(3) {
+                grid-area: achat;
+
+                background-color: rgb(28, 104, 212);
+                color: white;
+              }
+            }
+          }
+        }
+      }
+
+      /* RESPONSIVE */
+
+      @media (max-width: 1000px) {
+        header {
+          .header__nav {
+            display: none;
+          }
+        }
+
+        main {
+          flex-direction: column;
+
+          text-align: center;
+        }
+
+        .main__right {
+          padding-inline: 1rem;
+
+          & .titles {
+            & h1 {
+              font-size: 24px;
+            }
+            & h2 {
+              font-size: 16px;
+            }
+          }
+
+          .features {
+            justify-content: center;
+          }
+
+          .payment .buttons {
+            display: flex;
+            flex-direction: column;
+            row-gap: 8px;
+          }
+        }
+      }
+
+      @media (min-width: 768px) {
+        header {
+          margin-bottom: 20px;
+          box-shadow: rgba(38, 38, 38, 0.15) 0px 0.4rem 2.4rem 0px;
+        }
+      }
+
+      cc-web-player {
+        --cc-primary: 215 77% 47%;
+      }
+    </style>
+  </head>
+  <body style="font-family: Arial, sans-serif; margin: 0">
+    <header>
+      <div class="header__container">
+        <div style="display: flex; align-items: center; column-gap: 32px">
+          <img
+            style="width: 96px; height: 40px; object-fit: cover"
+            src="https://upload.wikimedia.org/wikipedia/commons/6/67/Ahg_logo.png"
+            alt="AHG Logo"
+          />
+          <nav class="header__nav">
+            <a href="#">Prestation</a>
+            <a href="#">Succursale</a>
+          </nav>
+        </div>
+        <a href="#">Vers le site le plus proche</a>
+      </div>
+    </header>
+
+    <main>
+      <div class="main__left">
+        <cc-web-player
+          composition-url="https://cdn.car-cutter.com/gallery/767f46375d752707fcb76a19b8b22bc0040bd3ff59abc43d1c19eb0c04785c68/TEST1/composition_v2.json"
+          flatten="true"
+          permanent-gallery="true"
+        >
+        </cc-web-player>
+      </div>
+
+      <div class="main__right">
+        <div>
+          <div class="titles">
+            <h1>Volkswagen - Passat 2.0 TDI SCR DSG 4MOT Alltrack</h1>
+            <h2>Passat 2.0 TDI SCR DSG 4MOT Alltrack Servotronic</h2>
+          </div>
+        </div>
+
+        <div class="features">
+          <span>Eningen unter Achalm</span>
+          <span>occasion</span>
+          <span>108.000 km</span>
+          <span>EZ 08/2017</span>
+          <span>239 PS</span>
+          <span>Diesel</span>
+          <span>Vollleder</span>
+          <span>Regensensor</span>
+          <span>Leichtmetallfelgen</span>
+          <span>Bluetooth</span>
+          <span>Sitzheizung</span>
+          <span>+ 5 autres</span>
+        </div>
+
+        <p>
+          Consommation comb.: 6,0 l/100 km; Émissions de CO2: 157 g/km; Classe
+          CO2: F (WLTP)
+        </p>
+
+        <div class="payment">
+          <h3>Mode de paiement</h3>
+          <div class="price-infos">
+            <span>Price d'achat</span>
+            <span class="price">23.860 €</span>
+          </div>
+          <div class="buttons">
+            <button>Demande de contact sans engagement</button>
+            <button>Vers le site</button>
+            <button>Vers la demande d'achat</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

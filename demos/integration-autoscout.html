@@ -5,45 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CarCutter WebPlayerV3 - Integration Demo Autocout</title>
     <script src="https://cdn.car-cutter.com/libs/web-player/v3/bundle.js"></script>
+
     <style>
+      /* BASE */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background-color: white;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-block: 0;
+      }
+
       a {
-        text-decoration: none;
         color: rgb(17, 102, 168);
+        text-decoration: none;
       }
 
-      .header__container {
-        max-width: 1400px;
-        margin-inline: auto;
-
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+      button {
+        cursor: pointer;
       }
 
-      .header__container a {
-        color: white;
-        font-size: 16px;
-        font-weight: 600;
+      /* STYLE */
+
+      header {
+        padding: 24px;
+        background-color: #333;
+
+        & .header__container {
+          max-width: 1400px;
+          margin-inline: auto;
+
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        & .header__container a {
+          color: white;
+          font-size: 16px;
+          font-weight: 600;
+        }
+
+        & .header__nav {
+          display: flex;
+          column-gap: 16px;
+        }
+
+        & .header__cta {
+          color: #333;
+          height: 40px;
+          background-color: #fbfa99;
+          border: 0;
+          border-radius: 4px;
+          padding: 8px 16px;
+          font-size: 1rem;
+          font-weight: 600;
+          line-height: 1.3;
+        }
       }
 
-      .header__nav {
-        display: flex;
-        column-gap: 16px;
-      }
-
-      .header__cta {
-        color: #333;
-        height: 40px;
-        background-color: #fbfa99;
-        border: 0;
-        border-radius: 4px;
-        padding: 8px 16px;
-        font-size: 1rem;
-        font-weight: 600;
-        line-height: 1.3;
-      }
-
-      .content {
+      main {
         max-width: 1100px;
         margin-inline: auto;
 
@@ -56,81 +82,102 @@
         background-color: white;
       }
 
+      .main__left {
+        min-width: 0;
+        flex: 2;
+      }
+
       .details {
+        min-width: 0;
+        flex: 1;
+
         display: flex;
         flex-direction: column;
         row-gap: 8px;
 
         color: #333;
+
+        & .details__header {
+          display: flex;
+          flex-direction: column;
+          row-gap: 8px;
+
+          margin-top: 16px;
+
+          & .details__actions {
+            display: flex;
+            justify-content: space-between;
+            column-gap: 8px;
+            margin: 0px 24px 12px;
+          }
+        }
+
+        & h1,
+        & h2 {
+          margin-block: 0;
+          font-size: 1.5rem;
+        }
+
+        & h1 {
+          font-weight: 600;
+        }
+
+        & h2 {
+          font-weight: 400;
+        }
+
+        & .divider {
+          border-top: 1px solid #dcdcdc;
+          margin: 8px;
+        }
+
+        & .details__buttons {
+          display: flex;
+          column-gap: 8px;
+        }
+
+        & .details__buttons button {
+          flex: 1;
+          padding: 10px 8px;
+          background-color: #f5f200;
+          border: none;
+          border-radius: 4px;
+          box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 3px 0px;
+        }
       }
 
-      .details__header {
-        display: flex;
-        flex-direction: column;
-        row-gap: 8px;
-
-        margin-top: 16px;
-      }
-
-      .details h1,
-      .details h2 {
-        margin-block: 0;
-        font-size: 1.5rem;
-      }
-
-      .details h1 {
-        font-weight: 600;
-      }
-
-      .details h2 {
-        font-weight: 400;
-      }
-
-      .details .divider {
-        border-top: 1px solid #dcdcdc;
-        margin: 8px;
-      }
-
-      .details__buttons {
-        display: flex;
-        column-gap: 8px;
-      }
-
-      .details__buttons button {
-        flex: 1;
-        padding: 10px 8px;
-        background-color: #f5f200;
-        border: none;
-        border-radius: 4px;
-        box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 3px 0px;
-      }
+      /* RESPONSIVE */
 
       @media (max-width: 1000px) {
-        .header__container {
-          justify-content: center;
+        header {
+          & .header__container {
+            justify-content: center;
+          }
+
+          & .header__nav {
+            display: none;
+          }
+
+          & .header__cta {
+            display: none;
+          }
         }
 
-        .header__nav {
-          display: none;
-        }
-
-        .header__cta {
-          display: none;
-        }
-
-        .content {
+        main {
           flex-direction: column;
         }
 
-        .details__header {
-          flex-direction: row-reverse;
-          align-items: center;
-        }
+        .details {
+          & .details__header {
+            flex-direction: row-reverse;
+            align-items: center;
+          }
 
-        .details__header h2 {
-          text-overflow: ellipsis;
-          overflow: hidden;
-          white-space: nowrap;
+          & .details__header h2 {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+          }
         }
       }
 
@@ -140,88 +187,77 @@
       }
     </style>
   </head>
-  <body
-    style="font-family: Arial, sans-serif; margin: 0; background-color: #f0f0f0"
-  >
-    <div>
-      <header style="padding: 24px; background-color: #333">
-        <div class="header__container">
-          <img
-            height="30"
-            src="https://www.autoscout24.de/assets/as24-header-footer/as24-horizontal-inverse.d34ff335.svg"
-            alt="Autoscout24 Logo"
-          />
-          <nav class="header__nav">
-            <a href="#">Kaufen</a>
-            <a href="#">Verkaufen</a>
-            <a href="#">Flexible Kaufmodelle</a>
-            <a href="#">Entscheidungshilfe</a>
-          </nav>
-          <button class="header__cta">Mein Auto verkaufen</button>
-        </div>
-      </header>
+  <body>
+    <header>
+      <div class="header__container">
+        <img
+          height="30"
+          src="https://www.autoscout24.de/assets/as24-header-footer/as24-horizontal-inverse.d34ff335.svg"
+          alt="Autoscout24 Logo"
+        />
+        <nav class="header__nav">
+          <a href="#">Kaufen</a>
+          <a href="#">Verkaufen</a>
+          <a href="#">Flexible Kaufmodelle</a>
+          <a href="#">Entscheidungshilfe</a>
+        </nav>
+        <button class="header__cta">Mein Auto verkaufen</button>
+      </div>
+    </header>
 
-      <div class="content">
-        <div style="min-width: 0; flex: 2">
-          <cc-web-player
-            composition-url="https://cdn.car-cutter.com/gallery/767f46375d752707fcb76a19b8b22bc0040bd3ff59abc43d1c19eb0c04785c68/TEST1/composition_v2.json"
+    <main>
+      <div class="main__left">
+        <cc-web-player
+          composition-url="https://cdn.car-cutter.com/gallery/767f46375d752707fcb76a19b8b22bc0040bd3ff59abc43d1c19eb0c04785c68/TEST1/composition_v2.json"
+        >
+        </cc-web-player>
+      </div>
+
+      <div class="details">
+        <div class="details__header">
+          <div class="details__actions">
+            <a href="#">Merken</a>
+            <a href="#">Teilen</a>
+            <a href="#">Drucken</a>
+          </div>
+          <div style="min-width: 0">
+            <h1>Audi Q3</h1>
+            <h2>Sportback S line 35 TFSI PANO MATRIX STANDHEIZ NA</h2>
+          </div>
+        </div>
+
+        <a href="#">Kölln Reisiek / bei Elmshorn -Hamburg, DE</a>
+
+        <div class="divider"></div>
+
+        <div class="details__price">
+          <span style="font-size: 1.5rem; font-weight: 600"
+            >€ 32.350,-<sup>1</sup></span
           >
-          </cc-web-player>
+          inkl. MwSt.
+          <p>
+            ab
+            <span style="font-size: 1.25rem; font-weight: 600"
+              >€ 465,- mtl.</span
+            >
+            <a href="#">Finanzierung berechnen</a>
+          </p>
         </div>
 
-        <div class="details" style="flex: 1">
-          <div class="details__header">
-            <div
-              style="
-                display: flex;
-                justify-content: space-between;
-                column-gap: 8px;
-                margin: 0px 24px 12px;
-              "
-            >
-              <a href="#">Merken</a>
-              <a href="#">Teilen</a>
-              <a href="#">Drucken</a>
-            </div>
-            <div style="min-width: 0">
-              <h1>Audi Q3</h1>
-              <h2>Sportback S line 35 TFSI PANO MATRIX STANDHEIZ NA</h2>
-            </div>
-          </div>
+        <div class="divider"></div>
 
-          <a href="#">Kölln Reisiek / bei Elmshorn -Hamburg, DE</a>
+        <div class="details__buttons">
+          <button>E-Mail senden</button>
+          <button>Nummer anzeigen</button>
+        </div>
 
-          <div class="divider"></div>
+        <div class="divider"></div>
 
-          <div class="details__price">
-            <span style="font-size: 1.5rem; font-weight: 600"
-              >€ 32.350,-<sup>1</sup></span
-            >
-            inkl. MwSt.
-            <p>
-              ab
-              <span style="font-size: 1.25rem; font-weight: 600"
-                >€ 465,- mtl.</span
-              >
-              <a href="#">Finanzierung berechnen</a>
-            </p>
-          </div>
-
-          <div class="divider"></div>
-
-          <div class="details__buttons">
-            <button>E-Mail senden</button>
-            <button>Nummer anzeigen</button>
-          </div>
-
-          <div class="divider"></div>
-
-          <div>
-            <p style="font-weight: 600">Autohaus Elmshorn GmbH & Co. KG</p>
-            <p><a href="#">19 Bewertungen</a> (94% Weiterempfehlungen)</p>
-          </div>
+        <div>
+          <p style="font-weight: 600">Autohaus Elmshorn GmbH & Co. KG</p>
+          <p><a href="#">19 Bewertungen</a> (94% Weiterempfehlungen)</p>
         </div>
       </div>
-    </div>
+    </main>
   </body>
 </html>
