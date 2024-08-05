@@ -101,6 +101,12 @@ const Gallery: React.FC<Props> = ({
 
       const x = e.pageX - slider.offsetLeft;
       const walk = x - sliderStartSnapshot.current.x;
+
+      // Safeguard to prevent unwanted dragging when the user just clicked
+      if (!isDragging && Math.abs(walk) < 5) {
+        return;
+      }
+
       const newScrollLeft = sliderStartSnapshot.current.scrollLeft - walk;
 
       setIsDragging(true);
@@ -136,7 +142,7 @@ const Gallery: React.FC<Props> = ({
       document.removeEventListener("mouseleave", onMouseEnd);
       document.removeEventListener("mouseup", onMouseEnd);
     };
-  }, []);
+  }, [isDragging]);
 
   // Ref to use index within effect without re-rendering
   const lastMasterItemIndexRef = useRef(masterItemIndex);
