@@ -4,7 +4,7 @@ import CdnImage from "@/components/atoms/CdnImage";
 import ImageElement from "@/components/atoms/media_elements/ImageElement";
 import PlayIcon from "@/components/icons/PlayIcon";
 import ThreeSixtyIcon from "@/components/icons/ThreeSixtyIcon";
-import CustomizableButton from "@/components/molecules/CustomizableButton";
+import Button from "@/components/ui/Button";
 import { useControlsContext } from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
 import type { ImageWithHotspots, Item } from "@/types/composition";
@@ -256,14 +256,9 @@ const ThreeSixtyElementPlaceholder: React.FC<
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
         <ThreeSixtyIcon className="size-20 text-primary" />
 
-        <CustomizableButton
-          customizationKey="CONTROLS_PLAY"
-          color="neutral"
-          shape="icon"
-          onClick={fetchImages}
-        >
+        <Button color="neutral" shape="icon" onClick={fetchImages}>
           <PlayIcon />
-        </CustomizableButton>
+        </Button>
 
         <div
           className={`relative h-1 w-3/5 overflow-hidden rounded-full bg-background ${loadingProgress !== null ? "" : "invisible"}`}

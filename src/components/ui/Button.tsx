@@ -33,7 +33,7 @@ const Button: React.FC<React.PropsWithChildren<ButtonProps>> = ({
       break;
   }
 
-  const shapeClassName = shape === "button" ? "h-8 px-2" : "size-8 p-1.5";
+  const shapeClassName = shape === "button" ? "h-8 px-2" : "size-8 p-2";
 
   return (
     <button

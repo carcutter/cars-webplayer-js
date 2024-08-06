@@ -6,10 +6,9 @@ import CustomizableIcon from "@/components/atoms/CustomizableIcon";
 import ArrowRightIcon from "@/components/icons/ArrowRightIcon";
 import ExtendIcon from "@/components/icons/ExtendIcon";
 import GalleryIcon from "@/components/icons/GalleryIcon";
-import HotspotIcon from "@/components/icons/HotspotIcon";
+import HotspotsIcon from "@/components/icons/HotspotsIcon";
 import ReduceIcon from "@/components/icons/ReduceIcon";
 import CategorySelect from "@/components/molecules/CategorySelect";
-import CustomizableButton from "@/components/molecules/CustomizableButton";
 import Gallery from "@/components/organisms/Gallery";
 import Button from "@/components/ui/Button";
 import Separator from "@/components/ui/Separator";
@@ -144,27 +143,25 @@ const WebPlayerOverlay: React.FC = () => {
           {/* Zoom buttons */}
           {showZoomControls && (
             <div className="max-sm:hidden">
-              <CustomizableButton
+              <Button
                 className="rounded-b-none"
-                customizationKey="CONTROLS_ZOOM_IN"
                 color="neutral"
                 shape="icon"
                 disabled={!canZoomIn}
                 onClick={zoomIn}
               >
-                +
-              </CustomizableButton>
+                {/* TODO: Use ICON */}+
+              </Button>
               <Separator color="background" />
-              <CustomizableButton
+              <Button
                 className="rounded-t-none"
-                customizationKey="CONTROLS_ZOOM_OUT"
                 color="neutral"
                 shape="icon"
                 disabled={!canZoomOut}
                 onClick={zoomOut}
               >
-                -
-              </CustomizableButton>
+                {/* TODO: Use ICON */}-
+              </Button>
             </div>
           )}
 
@@ -176,13 +173,9 @@ const WebPlayerOverlay: React.FC = () => {
             onClick={toggleExtendMode}
           >
             {!extendMode ? (
-              <CustomizableIcon customizationKey="CONTROLS_EXTEND">
-                <ExtendIcon className="size-full" />
-              </CustomizableIcon>
+              <ExtendIcon className="size-full" />
             ) : (
-              <CustomizableIcon customizationKey="CONTROLS_REDUCE">
-                <ReduceIcon className="size-full" />
-              </CustomizableIcon>
+              <ReduceIcon className="size-full" />
             )}
           </Button>
 
@@ -194,9 +187,7 @@ const WebPlayerOverlay: React.FC = () => {
             disabled={!enableHotspotsControl || isZooming}
             onClick={toggleHotspots}
           >
-            <CustomizableIcon customizationKey="CONTROLS_HOTSPOTS">
-              <HotspotIcon className="size-full" />
-            </CustomizableIcon>
+            <HotspotsIcon className="size-full" />
           </Button>
         </div>
       </div>

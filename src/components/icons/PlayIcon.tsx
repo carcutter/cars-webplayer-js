@@ -2,9 +2,9 @@ import CustomizableIcon from "@/components/atoms/CustomizableIcon";
 
 type Props = { className?: string };
 
-const PlayIcon: React.FC<Props> = ({ className = "" }) => {
+const PlayIcon: React.FC<Props> = ({ className }) => {
   return (
-    <CustomizableIcon customizationKey="CONTROLS_PLAY">
+    <CustomizableIcon className={className} customizationKey="PLAY">
       <svg
         className={className}
         viewBox="0 0 24 24"

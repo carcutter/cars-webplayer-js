@@ -8,12 +8,11 @@ import {
 export type WebPlayerIconProps = {
   name: string;
   color?: string;
-  override?: boolean;
 };
 
 const WebPlayerIconReact: React.FC<
   React.PropsWithChildren<WebPlayerIconProps>
-> = ({ name, color, override, children: Icon }) => {
+> = ({ name, color, children: Icon }) => {
   const { setIconConfig, resetIconConfig } = useCustomizationContext();
 
   useEffect(() => {
@@ -24,13 +23,12 @@ const WebPlayerIconReact: React.FC<
     setIconConfig(name, {
       Icon,
       color,
-      override,
     });
 
     return () => {
       resetIconConfig(name);
     };
-  }, [Icon, color, name, override, resetIconConfig, setIconConfig]);
+  }, [Icon, color, name, resetIconConfig, setIconConfig]);
 
   return null;
 };

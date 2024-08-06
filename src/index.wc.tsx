@@ -45,7 +45,6 @@ const WebPlayerIconWebComponent = r2wc(WebPlayerIcon, {
   props: {
     name: "string",
     color: "string",
-    override: "boolean",
   },
 });
 

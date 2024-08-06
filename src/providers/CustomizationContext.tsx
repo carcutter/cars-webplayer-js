@@ -5,7 +5,6 @@ import { WEB_PLAYER_ICON_CUSTOM_ELEMENTS_NAME } from "@/const/custom_elements";
 type IconConfig = {
   Icon: React.ReactNode;
   color: string;
-  override: boolean;
 };
 
 type PartialIconConfig = Partial<IconConfig>;
@@ -64,8 +63,6 @@ const CustomizationContextProvider: React.FC<
       }
 
       const color = domElement.getAttribute("color") ?? undefined;
-      const override =
-        (domElement.getAttribute("override") ?? undefined) === "true";
       const iconHTML = domElement.innerHTML;
       const Icon = iconHTML ? (
         <div
@@ -78,7 +75,7 @@ const CustomizationContextProvider: React.FC<
         return;
       }
 
-      return { Icon, color, override };
+      return { Icon, color };
     },
     [iconConfigMap]
   );

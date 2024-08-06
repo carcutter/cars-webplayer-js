@@ -16,7 +16,7 @@ const CustomizableIcon: React.FC<React.PropsWithChildren<Props>> = ({
 
   return (
     <div
-      className={`size-full ${className}`}
+      className={className}
       // Override the background color with the one from the config if available
       style={{ color: iconConfig?.color }}
     >
