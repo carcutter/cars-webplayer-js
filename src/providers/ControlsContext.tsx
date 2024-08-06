@@ -147,7 +147,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
     const target = carrouselItemIndex - 1;
     // Check if we need to cycle
-    if (target <= 0) {
+    if (target < 0) {
       setIsCycling(true);
       setItemIndexCommand(displayedItems.length - 1);
     } else {
