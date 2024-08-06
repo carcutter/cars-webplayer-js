@@ -1,3 +1,4 @@
+import ImageIcon from "@/components/icons/ImageIcon";
 import { useControlsContext } from "@/providers/ControlsContext";
 import { useCustomizationContext } from "@/providers/CustomizationContext";
 import type { Hotspot as HotspotType } from "@/types/composition";
@@ -19,11 +20,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
   const withImage = detail?.type === "image";
 
   const DefaultIcon = withImage ? (
-    <img
-      className="size-4"
-      src="https://cdn.car-cutter.com/libs/web-player/v3/assets/icons/ui/image.svg"
-      alt="Image"
-    />
+    <ImageIcon className="size-4" />
   ) : (
     <div className="size-1" />
   );
@@ -52,7 +49,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
     >
       <div
         // Hoverable icon
-        className="relative flex items-center justify-center rounded-full border-2 border-background bg-primary text-background"
+        className="relative flex items-center justify-center rounded-full border-2 border-background bg-primary text-primary-foreground"
         // Override the background color with the one from the config if available
         style={{ backgroundColor: hotspotConfig?.color }}
       >
