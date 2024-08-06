@@ -33,12 +33,11 @@ const Button: React.FC<React.PropsWithChildren<ButtonProps>> = ({
       break;
   }
 
-  const shapeClassName =
-    shape === "button" ? "h-8 px-2 rounded-sm" : "size-8 p-1.5 rounded-full";
+  const shapeClassName = shape === "button" ? "h-8 px-2" : "size-8 p-1.5";
 
   return (
     <button
-      className={`${variantClassName} ${shapeClassName} flex items-center justify-center text-sm transition disabled:opacity-60 ${className}`}
+      className={`${variantClassName} ${shapeClassName} flex items-center justify-center rounded-ui text-sm transition disabled:opacity-60 ${className}`}
       {...props}
     >
       {children}

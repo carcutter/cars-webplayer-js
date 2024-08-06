@@ -30,10 +30,12 @@ const config = {
         "16/9": "16 / 9",
       },
       borderRadius: {
-        sm: "calc(var(--radius) - 2px)",
-        DEFAULT: "var(--radius)",
-        md: "calc(var(--radius) + 2px)",
-        lg: "calc(var(--radius) + 4px)",
+        "ui-sm": "calc(var(--radius-ui) - 2px)",
+        ui: "var(--radius-ui)",
+        "ui-md": "calc(var(--radius-ui) + 2px)",
+        "ui-lg": "calc(var(--radius-ui) + 4px)",
+        carrousel: "var(--radius-carrousel)",
+        gallery: "var(--radius-gallery)",
       },
       transitionDuration: {
         details: "350ms",

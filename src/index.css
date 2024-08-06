@@ -7,11 +7,13 @@
     --background: var(--cc-background, 0 0% 100%);
     --foreground: var(--cc-foreground, 240 10% 3.9%);
     --primary: var(--cc-primary, 216 100% 52%);
-    --primary-foreground: var(--cc-primary-foreground, var(--foreground));
+    --primary-foreground: var(--cc-primary-foreground, var(--background));
     --neutral: var(--cc-neutral, 0 0% 39%);
     --neutral-foreground: var(--cc-neutral-foreground, var(--foreground));
 
-    --radius: var(--cc-radius, 0.55rem);
+    --radius-ui: var(--cc-radius-ui, 9999px);
+    --radius-carrousel: var(--cc-radius-carrousel, 0);
+    --radius-gallery: var(--cc-radius-gallery, 0);
   }
 }
 

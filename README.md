@@ -30,10 +30,12 @@ You can customise the WebPlayer CSS with CSS Variables
 | `--cc-background`         | Background color                   | `0 0% 100%`       |
 | `--cc-foreground`         | Foreground color (text color)      | `240 10% 3.9%`    |
 | `--cc-primary`            | Primary color (buttons)            | `216 100% 52%`    |
-| `--cc-primary-foreground` | Foreground color for primary items | `--cc-foreground` |
+| `--cc-primary-foreground` | Foreground color for primary items | `--cc-background` |
 | `--cc-neutral`            | Neutral color                      | `0 0% 39%`        |
 | `--cc-neutral-foreground` | Foreground color for neutral items | `--cc-foreground` |
-| `--cc-radius`             | Border radius                      | `0.55rem`         |
+| `--cc-radius-ui`          | UI element Border radius (buttons) | `9999px` (full)   |
+| `--cc-radius-carrousel`   | Carrousel border radius            | `0`               |
+| `--cc-radius-gallery`     | Gallery images border radius       | `0`               |
 
 ##### Example
 
@@ -44,7 +46,7 @@ You can customise the WebPlayer CSS with CSS Variables
     --cc-foreground: 262 5% 0%;
     --cc-primary: 262 88% 58%;
     --cc-neutral: 262 10% 39%;
-    --cc-radius: 0.8rem;
+    --cc-radius-ui: 0.8rem;
   }
 </style>
 ```

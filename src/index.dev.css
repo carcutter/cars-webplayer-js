@@ -11,7 +11,9 @@
     /* --cc-neutral:; */
     /* --cc-neutral-foreground:; */
 
-    /* --cc-radius:; */
+    /* --cc-radius-ui: 0.55rem; */
+    /* --cc-radius-carrousel: 0.8rem; */
+    /* --cc-radius-gallery: 0.4rem; */
   }
 }
 

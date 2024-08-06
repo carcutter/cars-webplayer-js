@@ -7,7 +7,7 @@ const CategorySelect: React.FC = () => {
   const { displayedCategoryId, changeCategory } = useControlsContext();
 
   return (
-    <div className="flex gap-x-2 rounded bg-background p-2 shadow">
+    <div className="flex gap-x-2 rounded-ui-lg bg-background p-2 shadow">
       <div className="flex gap-x-2">
         {categories.map(({ id, title }) => (
           <Button
