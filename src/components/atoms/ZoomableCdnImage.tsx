@@ -281,11 +281,6 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
       };
     };
 
-    // - Handle when the user releases
-    const onMouseEnd = () => {
-      isMouseDown.current = false;
-    };
-
     const onMouseMove = (e: MouseEvent) => {
       if (!isMouseDown.current) {
         return;
@@ -310,16 +305,23 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
       };
     };
 
+    // - Handle when the user releases or leaves the area
+    const onStopDragging = () => {
+      isMouseDown.current = false;
+    };
+
     transformElement.addEventListener("mousedown", onMouseDown);
-    transformElement.addEventListener("mouseleave", onMouseEnd);
-    transformElement.addEventListener("mouseup", onMouseEnd);
-    transformElement.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseleave", onStopDragging);
+    document.addEventListener("mouseup", onStopDragging);
+    document.addEventListener("contextmenu", onStopDragging);
 
     return () => {
       transformElement.removeEventListener("mousedown", onMouseDown);
-      transformElement.removeEventListener("mouseleave", onMouseEnd);
-      transformElement.removeEventListener("mouseup", onMouseEnd);
-      transformElement.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseleave", onStopDragging);
+      document.removeEventListener("mouseup", onStopDragging);
+      document.removeEventListener("contextmenu", onStopDragging);
     };
   }, [isZooming, offsetTransformXYStyle]);
 
