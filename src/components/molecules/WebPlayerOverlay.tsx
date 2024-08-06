@@ -3,6 +3,11 @@ import { useCallback } from "react";
 import CdnImage from "@/components/atoms/CdnImage";
 import CloseButton from "@/components/atoms/CloseButton";
 import CustomizableIcon from "@/components/atoms/CustomizableIcon";
+import ArrowRightIcon from "@/components/icons/ArrowRightIcon";
+import ExtendIcon from "@/components/icons/ExtendIcon";
+import GalleryIcon from "@/components/icons/GalleryIcon";
+import HotspotIcon from "@/components/icons/HotspotIcon";
+import ReduceIcon from "@/components/icons/ReduceIcon";
 import CategorySelect from "@/components/molecules/CategorySelect";
 import CustomizableButton from "@/components/molecules/CustomizableButton";
 import Gallery from "@/components/organisms/Gallery";
@@ -92,11 +97,7 @@ const WebPlayerOverlay: React.FC = () => {
             onClick={prevImage}
           >
             <CustomizableIcon customizationKey="CONTROLS_ARROW_LEFT">
-              <img
-                className="size-full rotate-180"
-                src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/arrow_forward.svg"
-                alt="Previous icon"
-              />
+              <ArrowRightIcon className="size-full rotate-180" />
             </CustomizableIcon>
           </Button>
           <Button
@@ -106,11 +107,7 @@ const WebPlayerOverlay: React.FC = () => {
             onClick={nextImage}
           >
             <CustomizableIcon customizationKey="CONTROLS_ARROW_RIGHT">
-              <img
-                className="size-full"
-                src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/arrow_forward.svg"
-                alt="Next icon"
-              />
+              <ArrowRightIcon className="size-full" />
             </CustomizableIcon>
           </Button>
         </>
@@ -131,11 +128,7 @@ const WebPlayerOverlay: React.FC = () => {
               onClick={toggleGallery}
             >
               <CustomizableIcon customizationKey="CONTROLS_GALLERY">
-                <img
-                  className="size-full"
-                  src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/motion.svg"
-                  alt="Gallery icon"
-                />
+                <GalleryIcon className="size-full" />
               </CustomizableIcon>
             </Button>
 
@@ -184,19 +177,11 @@ const WebPlayerOverlay: React.FC = () => {
           >
             {!extendMode ? (
               <CustomizableIcon customizationKey="CONTROLS_EXTEND">
-                <img
-                  className="size-full"
-                  src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/fullscreen.svg"
-                  alt="Extend icon"
-                />
+                <ExtendIcon className="size-full" />
               </CustomizableIcon>
             ) : (
               <CustomizableIcon customizationKey="CONTROLS_REDUCE">
-                <img
-                  className="size-full"
-                  src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/close_fullscreen.svg"
-                  alt="Extend icon"
-                />
+                <ReduceIcon className="size-full" />
               </CustomizableIcon>
             )}
           </Button>
@@ -210,11 +195,7 @@ const WebPlayerOverlay: React.FC = () => {
             onClick={toggleHotspots}
           >
             <CustomizableIcon customizationKey="CONTROLS_HOTSPOTS">
-              <img
-                className="size-full"
-                src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/info.svg"
-                alt="Hotspot icon"
-              />
+              <HotspotIcon className="size-full" />
             </CustomizableIcon>
           </Button>
         </div>
