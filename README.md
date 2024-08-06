@@ -7,17 +7,18 @@ It uses React.js with Vite.
 
 ### HTML-Attributes
 
-| Attribute             | Type    | Required | Description                                       |
-| --------------------- | ------- | -------- | ------------------------------------------------- |
-| `composition-url`     | string  | ✅       | URL to the composition data                       |
-| `flatten`             | boolean |          | Flatten the hierarchy of elements (no categories) |
-| `reverse360`          | boolean |          | Reverse the 360-degree rotation                   |
-| `min-image-width`     | number  |          | Force minimum image width (in pixels)             |
-| `max-image-width`     | number  |          | Force maximum image width (in pixels)             |
-| `image-load-strategy` | string  |          | Strategy for loading images. "quality" or "speed" |
-| `event-id`            | string  |          | ID of cc-player events                            |
-| `allow-full-screen`   | boolean |          | Whether to allow full screen mode                 |
-| `permanent-gallery`   | boolean |          | Display gallery under the carrousel               |
+| Attribute             | Type    | Required | Description                                               |
+| --------------------- | ------- | -------- | --------------------------------------------------------- |
+| `composition-url`     | string  | ✅       | URL to the composition data                               |
+| `flatten`             | boolean |          | Flatten the hierarchy of elements (no categories)         |
+| `infinite-carrousel`  | boolean |          | Allow to navigate from 1st to last image (and vice versa) |
+| `reverse360`          | boolean |          | Reverse the 360-degree rotation                           |
+| `min-image-width`     | number  |          | Force minimum image width (in pixels)                     |
+| `max-image-width`     | number  |          | Force maximum image width (in pixels)                     |
+| `image-load-strategy` | string  |          | Strategy for loading images. "quality" or "speed"         |
+| `event-id`            | string  |          | ID of cc-player events                                    |
+| `allow-full-screen`   | boolean |          | Whether to allow full screen mode                         |
+| `permanent-gallery`   | boolean |          | Display gallery under the carrousel                       |
 
 ### Customisation
 

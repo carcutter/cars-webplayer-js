@@ -8,6 +8,7 @@ type ProviderProps = Required<
     | "reverse360"
     | "imageLoadStrategy"
     | "flatten"
+    | "infiniteCarrousel"
     | "eventId"
     | "allowFullScreen"
     | "permanentGallery"

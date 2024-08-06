@@ -31,6 +31,7 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedCSS, {
     imageLoadStrategy: "string",
 
     flatten: "boolean",
+    infiniteCarrousel: "boolean",
 
     eventId: "string",
 

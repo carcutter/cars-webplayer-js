@@ -9,6 +9,7 @@ import {
   DEFAULT_EVENT_ID,
   DEFAULT_FLATTEN,
   DEFAULT_IMAGE_LOAD_STRATEGY,
+  DEFAULT_INFINITE_CARROUSEL,
   DEFAULT_PERMANENT_GALLERY,
   DEFAULT_REVERSE_360,
 } from "@/const/default";
@@ -25,6 +26,7 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   reverse360 = DEFAULT_REVERSE_360,
   imageLoadStrategy = DEFAULT_IMAGE_LOAD_STRATEGY,
   flatten = DEFAULT_FLATTEN,
+  infiniteCarrousel = DEFAULT_INFINITE_CARROUSEL,
   eventId = DEFAULT_EVENT_ID,
   allowFullScreen = DEFAULT_ALLOW_FULL_SCREEN,
   permanentGallery = DEFAULT_PERMANENT_GALLERY,
@@ -120,6 +122,7 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
           reverse360,
           imageLoadStrategy,
           flatten,
+          infiniteCarrousel,
           eventId,
           allowFullScreen,
           permanentGallery,

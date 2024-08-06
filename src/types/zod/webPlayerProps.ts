@@ -17,6 +17,7 @@ export const WebPlayerPropsSchema = z.object({
   imageLoadStrategy: ImageLoadStrategySchema.optional(),
 
   flatten: z.boolean().optional(),
+  infiniteCarrousel: z.boolean().optional(),
 
   eventId: z.string().optional(),
 

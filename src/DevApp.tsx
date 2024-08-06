@@ -57,6 +57,7 @@ const DevApp: React.FC = () => {
           // maxImageWidth={1000}
           // imageLoadStrategy="speed"
           flatten
+          infiniteCarrousel
           // eventId="cc-event"
           // allowFullScreen={false}
           // permanentGallery
