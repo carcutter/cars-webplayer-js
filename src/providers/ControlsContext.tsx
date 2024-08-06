@@ -22,6 +22,7 @@ type ContextType = {
   changeCategory: (categoryId: string) => void;
 
   displayedItems: Item[];
+  getItemInteraction: (index: number) => ItemInteraction;
   setItemInteraction: (index: number, value: ItemInteraction) => void;
   slidable: boolean;
 
@@ -123,6 +124,10 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const [itemInteractionList, setItemInteractionList] = useState<
     ItemInteraction[]
   >(initItemInteractionList);
+  const getItemInteraction = useCallback(
+    (index: number) => itemInteractionList[index],
+    [itemInteractionList]
+  );
   const setItemInteraction = useCallback(
     (index: number, value: ItemInteraction) => {
       setItemInteractionList(prev =>
@@ -371,6 +376,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         changeCategory,
 
         displayedItems,
+        getItemInteraction,
         setItemInteraction,
         slidable: displayedItems.length > 1,
 

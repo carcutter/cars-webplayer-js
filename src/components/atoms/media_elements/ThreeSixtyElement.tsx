@@ -277,16 +277,14 @@ const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = ({
   index,
   ...props
 }) => {
-  const { setItemInteraction } = useControlsContext();
+  const { getItemInteraction, setItemInteraction } = useControlsContext();
 
-  const [isReady, setIsReady] = useState(false);
+  const [isReady, setIsReady] = useState(
+    getItemInteraction(index) === "running"
+  );
 
   useEffect(() => {
     setItemInteraction(index, isReady ? "running" : "pending");
-
-    return () => {
-      setItemInteraction(index, null);
-    };
   }, [index, isReady, setItemInteraction]);
 
   if (!isReady) {
