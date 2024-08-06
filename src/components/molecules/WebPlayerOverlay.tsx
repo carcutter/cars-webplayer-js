@@ -80,11 +80,9 @@ const WebPlayerOverlay: React.FC = () => {
     <>
       {/* CategorySelect (on top) */}
       {!flatten && !isZooming && (
-        <div
-          className={`${sharedClassName} ${positionToClassName("top-center")}`}
-        >
-          <CategorySelect />
-        </div>
+        <CategorySelect
+          className={`${sharedClassName} ${positionToClassName("top")}`}
+        />
       )}
 
       {/* Next/Prev buttons */}
