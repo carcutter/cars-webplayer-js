@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { ZodError } from "zod";
 
 import CloseButton from "@/components/atoms/CloseButton";
@@ -13,7 +13,6 @@ import CompositionContextProvider, {
 import { useControlsContext } from "@/providers/ControlsContext";
 import ControlsContextProvider from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
-import { isSelfEvent } from "@/utils/web";
 
 const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
   const { permanentGallery } = useGlobalContext();
@@ -32,6 +31,45 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
     isZooming,
     resetZoom,
   } = useControlsContext();
+
+  // - Handle click on overlay to disable extend mode
+  const overlayRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!extendMode) {
+      return;
+    }
+
+    const overlay = overlayRef.current;
+
+    // DOM not ready
+    if (!overlay) {
+      return;
+    }
+
+    let mouseDownOnOverlay = false;
+
+    const handleMouseDown = () => {
+      mouseDownOnOverlay = true;
+    };
+
+    const handleMouseUp = () => {
+      if (mouseDownOnOverlay) {
+        disableExtendMode();
+      }
+
+      // Reset the ref
+      mouseDownOnOverlay = false;
+    };
+
+    overlay.addEventListener("mousedown", handleMouseDown);
+    overlay.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      overlay.removeEventListener("mousedown", handleMouseDown);
+      overlay.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [disableExtendMode, extendMode]);
 
   // -- Handle keys
   useEffect(() => {
@@ -74,24 +112,11 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
     resetZoom,
   ]);
 
-  // Handle click on overlay to disable extend mode
-  const handleCloseElementClick = useCallback(
-    (e: React.MouseEvent) => {
-      // Check if the click originated from the element itself (to avoid closing on children clicks)
-      if (!isSelfEvent(e)) {
-        return;
-      }
-
-      disableExtendMode();
-    },
-    [disableExtendMode]
-  );
-
   return (
     <div
       // Main Overlay (apply backdrop + close button)
+      ref={overlayRef}
       className={`relative ${!extendMode ? "" : "flex size-full items-center justify-center bg-foreground/75"}`}
-      onClick={handleCloseElementClick}
     >
       <div
         // Container : Space for the carrousel and gallery + center vertically in extend mode
@@ -100,7 +125,6 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
             ? "space-y-2"
             : "flex size-full flex-col justify-center gap-y-2 sm:gap-y-4"
         }
-        onClick={handleCloseElementClick}
       >
         <div
           // Carrousel Wrapper : Center horizontally and limit width
@@ -109,7 +133,6 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
               ? undefined
               : `mx-auto flex min-h-0 w-full max-w-screen-2xl ${aspectRatioClass} justify-center`
           }
-          onClick={handleCloseElementClick}
         >
           <WebPlayerCarrousel
             className={!extendMode ? undefined : "h-full min-w-0"}
