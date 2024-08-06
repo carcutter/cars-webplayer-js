@@ -257,7 +257,7 @@ const ThreeSixtyElementPlaceholder: React.FC<
         <ThreeSixtyIcon className="size-20 text-primary" />
 
         <Button color="neutral" shape="icon" onClick={fetchImages}>
-          <PlayIcon />
+          <PlayIcon className="size-full" />
         </Button>
 
         <div
