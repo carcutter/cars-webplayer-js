@@ -4,7 +4,7 @@ type Props = { className?: string };
 
 const PlayIcon: React.FC<Props> = ({ className }) => {
   return (
-    <CustomizableIcon className={className} customizationKey="PLAY">
+    <CustomizableIcon className={className} customizationKey="UI_PLAY">
       <svg
         className={className}
         viewBox="0 0 24 24"

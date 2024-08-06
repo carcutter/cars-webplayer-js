@@ -61,7 +61,7 @@ const DevApp: React.FC = () => {
           // allowFullScreen={false}
           // permanentGallery
         >
-          <WebPlayerIcon name="GASOLINESPIN" color="#ff00ff">
+          <WebPlayerIcon name="TIRESPIN" color="#ff00ff">
             <svg
               style={{ color: "white" }}
               xmlns="http://www.w3.org/2000/svg"

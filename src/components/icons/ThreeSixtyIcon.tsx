@@ -4,7 +4,7 @@ type Props = { className?: string };
 
 const ThreeSixtyIcon: React.FC<Props> = ({ className }) => {
   return (
-    <CustomizableIcon className={className} customizationKey="360">
+    <CustomizableIcon className={className} customizationKey="UI_360">
       <svg
         className={className}
         viewBox="0 0 56 56"
