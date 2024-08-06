@@ -52,7 +52,7 @@ const GalleryElement: React.FC<Props> = ({ item }) => {
     case "video":
       overlayIcon = (
         <div className="aspect-square h-3/5 rounded-full bg-foreground/50 p-1">
-          <PlayIcon className="invert" />
+          <PlayIcon className="size-full text-white" />
         </div>
       );
       break;

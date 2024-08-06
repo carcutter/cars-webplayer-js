@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import PlayButton from "@/components/atoms/PlayButton";
 import Button from "@/components/ui/Button";
 import ProgressBar from "@/components/ui/ProgressBar";
 import Spinner from "@/components/ui/Spinner";
@@ -180,13 +181,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
           // Overlay with play button
           className="absolute inset-0 flex items-center justify-center bg-foreground/25"
         >
-          <Button color="neutral" shape="icon" onClick={play}>
-            <img
-              className="size-full"
-              src="https://cdn.car-cutter.com/libs/web-player/v2/assets/icons/ui/play.svg"
-              alt="Play"
-            />
-          </Button>
+          <PlayButton onClick={play} />
         </div>
       ) : (
         <>
