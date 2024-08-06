@@ -1,6 +1,6 @@
 import CdnImage from "@/components/atoms/CdnImage";
-import PlayIcon from "@/components/atoms/icons/PlayIcon";
-import ThreeSixtyIcon from "@/components/atoms/icons/ThreeSixtyIcon";
+import PlayIcon from "@/components/icons/PlayIcon";
+import ThreeSixtyIcon from "@/components/icons/ThreeSixtyIcon";
 import { useCompositionContext } from "@/providers/CompositionContext";
 import type { Item } from "@/types/composition";
 
