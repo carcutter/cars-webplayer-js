@@ -191,10 +191,10 @@ const Gallery: React.FC<Props> = ({
   return (
     <div
       ref={sliderRef}
-      className={`relative h-12 w-full overflow-x-auto no-scrollbar ${!extendMode ? "" : "sm:h-20"} ${!isDragging ? "cursor-grab" : "cursor-grabbing"} ${className}`}
+      className={`relative w-full overflow-x-auto no-scrollbar ${!isDragging ? "cursor-grab" : "cursor-grabbing"} ${className}`}
     >
       <div
-        className={`flex h-full w-fit gap-2 ${!extendMode ? "" : "sm:gap-4"} ${containerClassName}`}
+        className={`flex h-10 w-fit gap-1 sm:h-12 sm:gap-2 ${!extendMode ? "" : "lg:h-20 lg:gap-4"} ${containerClassName}`}
       >
         {displayedItems.map((item, index) => (
           <div
