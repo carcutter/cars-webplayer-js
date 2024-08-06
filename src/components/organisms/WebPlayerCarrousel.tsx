@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import IndexIndicator from "@/components/atoms/IndexIndicator";
 import WebPlayerElement from "@/components/molecules/WebPlayerElement";
 import WebPlayerOverlay from "@/components/molecules/WebPlayerOverlay";
+import { RESIZE_TRANSITION_DURATION } from "@/const/browser";
 import { useCompositionContext } from "@/providers/CompositionContext";
 import { useControlsContext } from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
@@ -129,9 +130,11 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   useEffect(() => {
     const onResize = () => {
       clearTimeout(resizeTransitionTimeout);
+
+      // Block carrousel for a short time to avoid layer shift
       const timeout = setTimeout(() => {
         setResizeTransitionTimeout(undefined);
-      }, 500);
+      }, RESIZE_TRANSITION_DURATION);
       setResizeTransitionTimeout(timeout);
     };
 
@@ -248,15 +251,15 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       // Reset cursor
       setStyleCursor("grab");
       // Reset snap scrolling.
-      // NOTE: we are using setTimeout to avoid flickering because snap "mandatory" sets instantly the scroll position
-      //       If we could get ride of the flickering, we could remove the setTimeout
+      // NOTE: we are using a timeout to avoid flickering because snap "mandatory" sets instantly the scroll position
+      // TODO: Find a better way to handle this
       setTimeout(() => {
         //  but we have to handle the case where the user clicks again on the slider
         if (mouseIsDown.current) {
           return;
         }
         setStyleSnapState("mandatory");
-      }, 400);
+      }, 500);
 
       // Snap scrolling
       const closestSnapIndex = computeClosestIndex();
@@ -340,6 +343,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       return;
     }
 
+    // TODO: Find a way to handle this without setTimeout because it feels buggy and depends on the browser
     if (isCycling) {
       // Should go from first item to last item
       if (itemIndexCommand === items.length - 1) {

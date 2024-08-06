@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 
+import { RESIZE_TRANSITION_DURATION } from "@/const/browser";
 import { MAX_ZOOM, ZOOM_STEP } from "@/const/zoom";
 import { Item } from "@/types/composition";
 import { clamp } from "@/utils/math";
@@ -299,12 +300,12 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     [emitEvent, resetView]
   );
 
-  // Hack to refresh scroll position when switching from toggling full-screen
+  // The extend transition allows to freeze the UI while resizing to avoid layer shifts & flickering
   const triggerExtendTransition = useCallback(() => {
     clearTimeout(extendTransitionTimeout);
     const timeout = setTimeout(() => {
       setExtendTransitionTimeout(undefined);
-    }, 500);
+    }, RESIZE_TRANSITION_DURATION);
 
     setExtendTransitionTimeout(timeout);
   }, [extendTransitionTimeout]);

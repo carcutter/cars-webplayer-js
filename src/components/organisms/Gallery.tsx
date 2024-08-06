@@ -116,8 +116,8 @@ const Gallery: React.FC<Props> = ({
       });
     };
 
-    // Handle when the user releases the slider or leaves the dragging area
-    const onMouseEnd = () => {
+    // Handle when the user releases the slider
+    const onStopDragging = () => {
       // Check if the user was actually dragging
       if (!mouseIsDown.current) {
         return;
@@ -133,14 +133,16 @@ const Gallery: React.FC<Props> = ({
 
     slider.addEventListener("mousedown", onMouseDown);
     document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseleave", onMouseEnd);
-    document.addEventListener("mouseup", onMouseEnd);
+    document.addEventListener("mouseleave", onStopDragging);
+    document.addEventListener("mouseup", onStopDragging);
+    document.addEventListener("contextmenu", onStopDragging);
 
     return () => {
       slider.removeEventListener("mousedown", onMouseDown);
       document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseleave", onMouseEnd);
-      document.removeEventListener("mouseup", onMouseEnd);
+      document.removeEventListener("mouseleave", onStopDragging);
+      document.removeEventListener("mouseup", onStopDragging);
+      document.removeEventListener("contextmenu", onStopDragging);
     };
   }, [isDragging]);
 
