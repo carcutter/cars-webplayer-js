@@ -380,9 +380,11 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
 
   // - Listen to touch for zoom & pan
   useEffect(() => {
+    const container = containerRef.current;
     const transformElement = transformElementRef.current;
 
-    if (!transformElement) {
+    // DOM not ready yet
+    if (!container || !transformElement) {
       return;
     }
 
@@ -450,9 +452,12 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
 
         const distanceFactor = currentDistance / initialDistance;
 
+        const { left: parentOffsetX, top: parentOffsetY } =
+          container.getBoundingClientRect();
+
         setTransformZoom(distanceFactor * zoom, {
-          x: (touch1.clientX + touch2.clientX) / 2,
-          y: (touch1.clientY + touch2.clientY) / 2,
+          x: (touch1.clientX + touch2.clientX) / 2 - parentOffsetX,
+          y: (touch1.clientY + touch2.clientY) / 2 - parentOffsetY,
         });
 
         touchStartXYmapRef.set(touch1.identifier, touch1);
