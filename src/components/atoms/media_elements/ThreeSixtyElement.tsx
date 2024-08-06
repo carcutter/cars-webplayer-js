@@ -254,9 +254,7 @@ const ThreeSixtyElementPlaceholder: React.FC<
 
       <CdnImage className="size-full" src={imagesSrc[0]} />
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
-        <div className="size-20">
-          <ThreeSixtyIcon />
-        </div>
+        <ThreeSixtyIcon className="size-20 text-primary" />
 
         <CustomizableButton
           customizationKey="CONTROLS_PLAY"
