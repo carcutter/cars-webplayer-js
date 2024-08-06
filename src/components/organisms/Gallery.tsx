@@ -200,8 +200,8 @@ const Gallery: React.FC<Props> = ({
           <div
             key={index}
             className={
-              `relative h-full ${aspectRatioClass} ${!isDragging ? "cursor-pointer" : ""}` +
-              ` after:absolute after:inset-0 after:border-2 after:border-primary after:transition-opacity ${index === masterItemIndex ? "after:opacity-100" : "after:opacity-0 hover:after:opacity-70"}`
+              `relative h-full ${aspectRatioClass} rounded-gallery ${!isDragging ? "cursor-pointer" : ""}` +
+              ` after:absolute after:inset-0 after:border-2 after:border-primary after:rounded-gallery after:transition-opacity ${index === masterItemIndex ? "after:opacity-100" : "after:opacity-0 hover:after:opacity-70"}`
             }
             onClick={() => onItemClicked(item, index)}
           >

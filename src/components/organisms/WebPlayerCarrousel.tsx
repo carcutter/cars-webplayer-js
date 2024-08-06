@@ -366,7 +366,9 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   }, [finishCycling, isCycling, itemIndexCommand, items.length, scrollToIndex]);
 
   return (
-    <div className={`relative ${aspectRatioClass} ${className}`}>
+    <div
+      className={`relative overflow-hidden rounded-carrousel ${aspectRatioClass} ${className}`}
+    >
       <div
         ref={sliderRef}
         className={`flex size-full ${slidable ? "overflow-x-auto no-scrollbar *:snap-start *:snap-always" : "justify-center"} ${freezeCarrousel ? "!overflow-hidden" : ""}`}
