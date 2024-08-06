@@ -34,6 +34,8 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
 
   // - Handle click on overlay to disable extend mode
   const overlayRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!extendMode) {
@@ -41,20 +43,29 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
     }
 
     const overlay = overlayRef.current;
+    const container = containerRef.current;
+    const wrapper = wrapperRef.current;
 
     // DOM not ready
-    if (!overlay) {
+    if (!overlay || !container || !wrapper) {
       return;
     }
 
     let mouseDownOnOverlay = false;
 
-    const handleMouseDown = () => {
-      mouseDownOnOverlay = true;
+    const eventIsOnOverlay = (event: Event) =>
+      [overlay, container, wrapper].includes(event.target as HTMLDivElement);
+
+    const handleMouseDown = (event: MouseEvent) => {
+      mouseDownOnOverlay = eventIsOnOverlay(event);
     };
 
-    const handleMouseUp = () => {
-      if (mouseDownOnOverlay) {
+    const handleMouseUp = (event: MouseEvent) => {
+      if (!mouseDownOnOverlay) {
+        return;
+      }
+
+      if (eventIsOnOverlay(event)) {
         disableExtendMode();
       }
 
@@ -120,6 +131,7 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
     >
       <div
         // Container : Space for the carrousel and gallery + center vertically in extend mode
+        ref={containerRef}
         className={
           !extendMode
             ? "space-y-2"
@@ -128,6 +140,7 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
       >
         <div
           // Carrousel Wrapper : Center horizontally and limit width
+          ref={wrapperRef}
           className={
             !extendMode
               ? undefined
