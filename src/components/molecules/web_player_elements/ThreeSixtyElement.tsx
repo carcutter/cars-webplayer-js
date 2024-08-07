@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import CdnImage from "@/components/atoms/CdnImage";
-import ImageElement from "@/components/atoms/media_elements/ImageElement";
 import PlayIcon from "@/components/icons/PlayIcon";
 import ThreeSixtyIcon from "@/components/icons/ThreeSixtyIcon";
+import ImageElement from "@/components/molecules/web_player_elements/ImageElement";
 import Button from "@/components/ui/Button";
 import { useControlsContext } from "@/providers/ControlsContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
