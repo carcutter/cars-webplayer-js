@@ -2,16 +2,7 @@ import { useMemo } from "react";
 
 import { useCompositionContext } from "@/providers/CompositionContext";
 import { useGlobalContext } from "@/providers/GlobalContext";
-import type { ImageWidth } from "@/types/misc";
-
-function addWidthToCdnUrl(src: string, width: ImageWidth): string {
-  // Extract the file name
-  const split = src.split("/");
-  const fileName = split.pop();
-  const directoryName = split.join("/");
-
-  return [directoryName, width, fileName].join("/");
-}
+import { cdnImgSrcWithWidth } from "@/utils/car-cutter";
 
 export type CdnImageProps = Omit<
   React.ImgHTMLAttributes<HTMLImageElement>,
@@ -23,6 +14,11 @@ export type CdnImageProps = Omit<
     | { onlyThumbnail: true; imgInPlayerWidthRatio?: never }
   );
 
+/**
+ * CdnImage component renders an image with optimized loading strategies.
+ *
+ * This component generates the `srcSet` and `sizes` attributes for an <img/> element.
+ */
 const CdnImage: React.FC<CdnImageProps> = ({
   src,
   imgInPlayerWidthRatio = 1,
@@ -43,7 +39,7 @@ const CdnImage: React.FC<CdnImageProps> = ({
       .concat(imageHdWidth)
       .sort((a, b) => a - b);
 
-    // Filter out the widths that are not within the constraints
+    // Filter out composition' widths that are not within the attribute constraints
     const usedImageWidths = imageWidths.filter(width => {
       if (minImageWidth && width < minImageWidth) {
         return false;
@@ -60,11 +56,12 @@ const CdnImage: React.FC<CdnImageProps> = ({
 
     // - Generate the srcSet attribute (list of image URLs with their widths)
     const srcSetList = usedImageWidths.map(width => {
-      const url = width !== imageHdWidth ? addWidthToCdnUrl(src, width) : src;
+      const url = width !== imageHdWidth ? cdnImgSrcWithWidth(src, width) : src;
       return `${url} ${width}w`;
     });
 
-    // - Generate the sizes attribute (the web browser will choose the first matching rule, that's why we need to sort the widths in descending order for "speed" strategy)
+    // - Generate the sizes attribute
+    // NOTE: the web browser will choose the first matching rule, that's why we need to sort the widths in descending order for "speed" strategy
     let sizesList: string[];
 
     if (!onlyThumbnail) {

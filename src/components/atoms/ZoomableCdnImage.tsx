@@ -19,6 +19,11 @@ type TransformStyle = {
   scale: number;
 };
 
+/**
+ * ZoomableCdnImage component renders an CdnImage with zoom & pan capabilities.
+ *
+ * It adjusts the CdnImage's size according to the zoom level.
+ */
 const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
   onlyPreload,
   ...props
