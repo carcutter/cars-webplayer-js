@@ -191,7 +191,11 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
           <ImageElement {...images[imageIndex]} onlyPreload={onlyPreload} />
         </div>
         {/* Add space on both sides to allow scrolling */}
-        <div style={{ width: `calc(100% + ${4 * SCROLL_STEP_PX}px` }} />
+        {/* NOTE: We need the element to have an height, otherwise, Safari will ignore it */}
+        <div
+          className="pointer-events-none -mt-px h-px"
+          style={{ width: `calc(100% + ${8 * SCROLL_STEP_PX}px` }}
+        />
       </div>
     </div>
   );
