@@ -192,10 +192,8 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
         </div>
         {/* Add space on both sides to allow scrolling */}
         {/* NOTE: We need the element to have an height, otherwise, Safari will ignore it */}
-        <div
-          className="pointer-events-none -mt-px h-px"
-          style={{ width: `calc(100% + ${8 * SCROLL_STEP_PX}px` }}
-        />
+        {/*       We need a lot of extra space on the side, otherwise, the 360 will not have intertia on Safari */}
+        <div className="pointer-events-none -mt-px h-px w-[calc(100%+1024px)]" />
       </div>
     </div>
   );
