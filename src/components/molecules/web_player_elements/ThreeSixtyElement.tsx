@@ -275,6 +275,12 @@ const ThreeSixtyElementPlaceholder: React.FC<
   );
 };
 
+/**
+ * ThreeSixtyElement component renders a carrousel's 360
+ *
+ * @prop `onlyPreload`: If true, zoom will not affect the 360. It is useful to pre-fetch images.
+ * @prop `index`: The index of the item in the carrousel. Used to share state.
+ */
 const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = ({
   index,
   ...props

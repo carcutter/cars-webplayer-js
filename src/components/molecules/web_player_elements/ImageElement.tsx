@@ -7,6 +7,9 @@ import type { ImageWithHotspots } from "@/types/composition";
 
 type Props = Omit<ZoomableCdnImageProps, "className"> & ImageWithHotspots;
 
+/**
+ * ImageElement component renders a carrousel's image with hotspots
+ */
 const ImageElement: React.FC<Props> = ({ hotspots, ...props }) => {
   const { isShowingDetails, showHotspots } = useControlsContext();
 

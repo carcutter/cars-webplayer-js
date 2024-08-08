@@ -19,6 +19,13 @@ import { useGlobalContext } from "@/providers/GlobalContext";
 import { positionToClassName } from "@/utils/style";
 import { isSelfEvent } from "@/utils/web";
 
+/**
+ * WebPlayerOverlay component renders everything that is displayed on top of the carrousel.
+ * - Category selection
+ * - Controls (Next/Prev buttons, Zoom buttons, ...)
+ * - Gallery
+ * - Details overlay when an hotspot with image is clicked
+ */
 const WebPlayerOverlay: React.FC = () => {
   const { flatten, infiniteCarrousel, permanentGallery } = useGlobalContext();
 

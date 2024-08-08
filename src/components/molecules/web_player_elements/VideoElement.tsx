@@ -11,6 +11,11 @@ type Props = Extract<Item, { type: "video" }> & {
   index: number;
 };
 
+/**
+ * VideoElement component renders a carrousel's video with controls.
+ *
+ * @prop `index`: The index of the item in the carrousel. Used to share state.
+ */
 const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
   const { carrouselItemIndex, setItemInteraction } = useControlsContext();
 

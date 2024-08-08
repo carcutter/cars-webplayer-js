@@ -1,7 +1,27 @@
-export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "fill" | "ghost";
-  shape?: "button" | "icon";
-  color?: "primary" | "neutral";
+type Variant = "fill" | "ghost";
+type Shape = "button" | "icon";
+type Color = "primary" | "neutral";
+
+export type ButtonProps = React.ComponentPropsWithoutRef<"button"> & {
+  variant?: Variant;
+  shape?: Shape;
+  color?: Color;
+};
+
+const coloredVariantClassNames: Record<Variant, Record<Color, string>> = {
+  fill: {
+    primary: "bg-primary text-primary-foreground hover:opacity-80",
+    neutral: "bg-background text-neutral-foreground hover:opacity-80",
+  },
+  ghost: {
+    primary: "bg-transparent text-foreground hover:bg-primary/25",
+    neutral: "bg-transparent text-neutral hover:bg-neutral/25",
+  },
+};
+
+const shapeClassNames: Record<Shape, string> = {
+  button: "h-8 px-2",
+  icon: "size-8 p-2",
 };
 
 const Button: React.FC<React.PropsWithChildren<ButtonProps>> = ({
@@ -12,32 +32,12 @@ const Button: React.FC<React.PropsWithChildren<ButtonProps>> = ({
   children,
   ...props
 }) => {
-  let variantClassName: string;
-
-  switch (variant) {
-    case "fill":
-      if (color === "primary") {
-        variantClassName =
-          "bg-primary text-primary-foreground hover:opacity-80";
-      } else {
-        variantClassName =
-          "bg-background text-neutral-foreground hover:opacity-80";
-      }
-      break;
-    case "ghost":
-      if (color === "primary") {
-        variantClassName = "bg-transparent text-foreground hover:bg-primary/25";
-      } else {
-        variantClassName = "bg-transparent text-neutral hover:bg-neutral/25";
-      }
-      break;
-  }
-
-  const shapeClassName = shape === "button" ? "h-8 px-2" : "size-8 p-2";
+  const coloredVariantClassName = coloredVariantClassNames[variant][color];
+  const shapeClassName = shapeClassNames[shape];
 
   return (
     <button
-      className={`${variantClassName} ${shapeClassName} flex items-center justify-center rounded-ui text-sm transition disabled:opacity-60 ${className}`}
+      className={`${coloredVariantClassName} ${shapeClassName} flex items-center justify-center rounded-ui text-sm transition disabled:opacity-60 ${className}`}
       {...props}
     >
       {children}

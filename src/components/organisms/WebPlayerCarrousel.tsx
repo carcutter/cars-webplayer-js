@@ -13,6 +13,9 @@ type Props = {
   className?: string;
 };
 
+/**
+ * ThreeSixtyElement component renders the carrousel of items.
+ */
 const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   const { isFullScreen } = useGlobalContext();
   const { aspectRatioClass } = useCompositionContext();

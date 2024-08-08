@@ -20,6 +20,7 @@ const WebPlayerElement: React.FC<Props> = ({ index, item, isShown, lazy }) => {
   let Comp: React.ReactNode;
 
   if (!lazy) {
+    // NOTE: Currently giving "index" to children in order to share their state. If it becomes a problem, we can handle it from here.
     switch (type) {
       case "image":
         Comp = <ImageElement onlyPreload={!isShown} {...item} />;

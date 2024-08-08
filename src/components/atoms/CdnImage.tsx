@@ -5,7 +5,7 @@ import { useGlobalContext } from "@/providers/GlobalContext";
 import { cdnImgSrcWithWidth } from "@/utils/car-cutter";
 
 export type CdnImageProps = Omit<
-  React.ImgHTMLAttributes<HTMLImageElement>,
+  React.ComponentPropsWithoutRef<"img">,
   "sizes" | "srcSet"
 > & {
   src: string;
@@ -17,7 +17,12 @@ export type CdnImageProps = Omit<
 /**
  * CdnImage component renders an image with optimized loading strategies.
  *
- * This component generates the `srcSet` and `sizes` attributes for an <img/> element.
+ * This component renders  an <img/> element with dynamic `srcSet` and `sizes` attributes.
+ *
+ * @prop `imgInPlayerWidthRatio`: The ratio of the image width to the player width. It is used to know which sized image to load.
+ *    - 1 means the image is as wide as the player.
+ *    - 0.5 means the image is half as wide as the player.
+ * @prop `onlyThumbnail`: If true, the image will only be loaded at the smallest size. (useful for thumbnails in Gallery)
  */
 const CdnImage: React.FC<CdnImageProps> = ({
   src,
