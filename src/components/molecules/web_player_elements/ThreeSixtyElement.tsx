@@ -137,11 +137,12 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
 
     const getScrollerWidth = () => scroller.getBoundingClientRect().width;
 
-    const scollerCenterPosition =
+    const getScrollerCenterPosition = () =>
       scroller.scrollWidth / 2 - getScrollerWidth() / 2;
 
     const centerScroller = () => {
-      scroller.scrollLeft = scollerCenterPosition;
+      const target = getScrollerCenterPosition();
+      scroller.scrollLeft = target;
     };
 
     // When initializing, we want to center the scroller
@@ -149,7 +150,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
 
     // - Update the image when the user uses scrolling (and not dragging)
     const onScroll = () => {
-      const walk = scroller.scrollLeft - scollerCenterPosition;
+      const walk = scroller.scrollLeft - getScrollerCenterPosition();
 
       if (Math.abs(walk) < SCROLL_STEP_PX) {
         return;
