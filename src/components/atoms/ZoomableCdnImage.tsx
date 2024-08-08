@@ -23,6 +23,8 @@ type TransformStyle = {
  * ZoomableCdnImage component renders an CdnImage with zoom & pan capabilities.
  *
  * It adjusts the CdnImage's size according to the zoom level.
+ *
+ * @prop `onlyPreload`: If true, zoom will not affect the image. It is useful to pre-fetch images.
  */
 const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
   onlyPreload,
@@ -106,14 +108,25 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
 
       const animationId = ++currentAnimationIdRef.current;
 
-      const targetAlreadyReached =
-        startX === targetX && startY === targetY && startScale === targetScale;
-
-      if (!animationDuration || targetAlreadyReached) {
+      const finalizeAnimate = () => {
         setTransformStyle({ x: targetX, y: targetY, scale: targetScale });
+        // Update zoom value on ControlsContext
         setZoom(targetScale);
+      };
+
+      // NOTE: Add some tolerance to avoid decimal issues
+      const targetAlreadyReached =
+        Math.abs(targetX - startX) < 1 &&
+        Math.abs(targetY - startY) < 1 &&
+        Math.abs(targetScale - startScale) < 0.005;
+
+      // If no duration is specified or if the target is already reached, we apply the transform instantly
+      if (!animationDuration || targetAlreadyReached) {
+        finalizeAnimate();
         return;
       }
+
+      // - Animation
 
       const easeOut = (t: number) => 1 - Math.pow(1 - t, 2);
 
@@ -131,6 +144,12 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
 
         const currentTime = new Date().getTime();
         const timeElapsed = currentTime - startTime;
+
+        if (timeElapsed >= animationDuration) {
+          finalizeAnimate();
+          return;
+        }
+
         const progress = Math.min(timeElapsed / animationDuration, 1);
         const easedProgress = easeOut(progress);
 
@@ -140,11 +159,7 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
 
         setTransformStyle({ x: currentX, y: currentY, scale: currentScale });
 
-        if (timeElapsed < animationDuration) {
-          requestAnimationFrame(animateStep);
-        } else {
-          setZoom(targetScale);
-        }
+        requestAnimationFrame(animateStep);
       };
 
       requestAnimationFrame(animateStep);
@@ -251,7 +266,7 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
 
   // -- Listeners -- //
 
-  // - Update zoom when the ControlsContext's value changes
+  // - Update zoom when the ControlsContext's value changes (zoom buttons, reset with Escape, ...)
   useEffect(() => {
     // DOM not ready yet
     if (!transformElementRef.current) {
@@ -383,7 +398,7 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
     };
   }, [isZooming, offsetTransformXYStyle, setTransformZoom, zoom]);
 
-  // - Listen to touch for zoom & pan
+  // - Listen to touch for zoom (pinch with 2 finger) & pan (1 finger)
   useEffect(() => {
     const container = containerRef.current;
     const transformElement = transformElementRef.current;
