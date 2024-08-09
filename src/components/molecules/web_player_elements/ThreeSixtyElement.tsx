@@ -56,81 +56,26 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
       return;
     }
 
-    // -- Mouse events (click & drag)
-    // NOTE: As the useEffect should not re-render, we can use mutable variables. If it changes in the future, we should use useRef
-    let draggingStartX: number | null = null;
-    let lastMouseXs: { timestamp: number; value: number }[] = [];
+    type PosX = { timestamp: number; value: number };
+
+    let spinStartX: number | null = null;
+    let lastPosXs: PosX[] = [];
     let inertiaAnimationFrame: number | null = null;
 
-    // Handle when the user just clicked on the 360 to start spinning
-    const onMouseDown = (e: MouseEvent) => {
-      // Ignore event if the user is not using the main button
-      if (e.button !== 0) {
-        return;
+    const addPosX = (posX: PosX) => {
+      lastPosXs.push(posX);
+      if (lastPosXs.length > 20) {
+        lastPosXs.shift();
       }
-
-      e.preventDefault(); // Prevents native image dragging
-      e.stopPropagation(); // Prevents carrousel to slide
-
-      // Cancel any ongoing inertia animation
-      if (inertiaAnimationFrame !== null) {
-        cancelAnimationFrame(inertiaAnimationFrame);
-        inertiaAnimationFrame = null;
-      }
-
-      // Take snapshot of the starting state
-      const x = e.clientX;
-      draggingStartX = x;
-      lastMouseXs = [{ timestamp: Date.now(), value: x }];
     };
 
-    const onMouseMove = (e: MouseEvent) => {
-      // Check if the user was actually spinning
-      if (draggingStartX === null) {
-        return;
-      }
-
-      e.stopPropagation(); // Prevents parent slider from moving when rotating 360
-
-      // Take a snapshot of the current state
-      lastMouseXs.push({ timestamp: Date.now(), value: e.clientX });
-      // Limit the number of snapshots to avoid memory overload
-      if (lastMouseXs.length > 20) {
-        lastMouseXs.shift();
-      }
-
-      const walkX = e.clientX - draggingStartX;
-
-      // If the user did not move enough, we do not want to rotate
-      if (Math.abs(walkX) < DRAG_STEP_PX) {
-        return;
-      }
-
-      // XOR operation to reverse the logic
-      if (walkX > 0 !== reverse360) {
-        displayNextImage();
-      } else {
-        displayPreviousImage();
-      }
-
-      draggingStartX = e.clientX;
-    };
-
-    // Handle when the user releases the 360 or leaves the spinning area
-    const onStopDragging = () => {
-      // Check if the user was actually spinning
-      if (draggingStartX === null) {
-        return;
-      }
-
-      draggingStartX = null;
-
+    const startInertiaAnimation = () => {
       // -- Inertia
       const startTime = Date.now();
       const startVelocity = (() => {
         // Filter out points that are too old (to avoid inertia even after the user stopped)
         const now = Date.now();
-        const filteredMouseXs = lastMouseXs.filter(
+        const filteredMouseXs = lastPosXs.filter(
           point => now - point.timestamp < 50
         );
 
@@ -194,6 +139,81 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
       applyInertia();
     };
 
+    const cancelInertiaAnimation = () => {
+      if (!inertiaAnimationFrame) {
+        return;
+      }
+
+      cancelAnimationFrame(inertiaAnimationFrame);
+      inertiaAnimationFrame = null;
+    };
+
+    // -- Mouse events (click & drag)
+    // NOTE: As the useEffect should not re-render, we can use mutable variables. If it changes in the future, we should use useRef
+
+    // Handle when the user just clicked on the 360 to start spinning
+    const onMouseDown = (e: MouseEvent) => {
+      // Ignore event if the user is not using the main button
+      if (e.button !== 0) {
+        return;
+      }
+
+      e.preventDefault(); // Prevents native image dragging
+      e.stopPropagation(); // Prevents carrousel to slide
+
+      // Cancel any ongoing inertia animation
+      cancelInertiaAnimation();
+
+      // Take snapshot of the starting state
+      const x = e.clientX;
+      spinStartX = x;
+      lastPosXs = [{ timestamp: Date.now(), value: x }];
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+      // Check if the user was actually spinning
+      if (spinStartX === null) {
+        return;
+      }
+
+      e.stopPropagation(); // Prevents parent slider from moving when rotating 360
+
+      const { clientX: x } = e;
+
+      // Take a snapshot of the current state
+      addPosX({ timestamp: Date.now(), value: x });
+
+      const walkX = x - spinStartX;
+
+      // If the user did not move enough, we do not want to rotate
+      if (Math.abs(walkX) < DRAG_STEP_PX) {
+        return;
+      }
+
+      // XOR operation to reverse the logic
+      if (walkX > 0 !== reverse360) {
+        displayNextImage();
+      } else {
+        displayPreviousImage();
+      }
+
+      // Reset the starting point to the current position
+      spinStartX = x;
+    };
+
+    // Handle when the user releases the 360 or leaves the spinning area
+    const onStopDragging = () => {
+      // Check if the user was actually spinning
+      if (spinStartX === null) {
+        return;
+      }
+
+      // Clear the starting point
+      spinStartX = null;
+
+      startInertiaAnimation();
+    };
+
     container.addEventListener("mousedown", onMouseDown);
     document.addEventListener("mousemove", onMouseMove);
     document.addEventListener("mouseleave", onStopDragging);
@@ -236,38 +256,52 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
     scroller.addEventListener("scroll", onScroll);
 
     // - Touch events (only mandatory for Safari mobile)
+    // NOTE: It is due to Safari mobile not allowing to update the scrollLeft property while scrolling
+    //       If the behavior is updated, we can remove this part
 
-    let touchStart: { id: Touch["identifier"]; x: number } | null = null;
+    let mainTouchId: Touch["identifier"] | null = null;
 
     const onTouchStart = (e: TouchEvent) => {
       // Ignore other touches
-      if (touchStart) {
+      if (mainTouchId !== null) {
         return;
       }
 
-      const touch = e.touches[0];
-      touchStart = { id: touch.identifier, x: touch.clientX };
+      if (e.changedTouches.length !== 1) {
+        return;
+      }
+
+      // Take snapshot of the starting state
+      const { identifier: id, clientX: x } = e.changedTouches[0];
+      mainTouchId = id;
+
+      spinStartX = x;
+      lastPosXs = [{ timestamp: Date.now(), value: x }];
     };
 
     const onTouchMove = (e: TouchEvent) => {
-      if (!touchStart) {
+      // Check if the user was actually spinning
+      if (!spinStartX) {
         return;
       }
 
-      const { id: touchId, x: touchStartX } = touchStart;
-
-      const touch = Array.from(e.changedTouches).find(
-        ({ identifier }) => identifier === touchId
+      const mainTouch = Array.from(e.changedTouches).find(
+        ({ identifier }) => identifier === mainTouchId
       );
 
       // Ignore other touches
-      if (!touch) {
+      if (!mainTouch) {
         return;
       }
 
       e.preventDefault(); // Prevent scroll
 
-      const walkX = touch.clientX - touchStartX;
+      const { clientX: x } = mainTouch;
+
+      // Take a snapshot of the current state
+      addPosX({ timestamp: Date.now(), value: x });
+
+      const walkX = x - spinStartX;
 
       // If the user did not move enough, we do not want to rotate
       if (Math.abs(walkX) < DRAG_STEP_PX) {
@@ -281,18 +315,18 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
         displayPreviousImage();
       }
 
-      touchStart = { id: touchId, x: touch.clientX };
+      // Reset the starting point to the current position
+      spinStartX = x;
     };
 
     const onTouchEnd = (e: TouchEvent) => {
-      if (touchStart === null) {
+      // Check if the user was actually spinning
+      if (!spinStartX) {
         return;
       }
 
-      const { id: touchId } = touchStart;
-
       const isMainTouch = Array.from(e.changedTouches).some(
-        ({ identifier }) => identifier === touchId
+        ({ identifier }) => identifier === mainTouchId
       );
 
       // Ignore other touches
@@ -300,7 +334,11 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
         return;
       }
 
-      touchStart = null;
+      // Clear the starting point
+      mainTouchId = null;
+      spinStartX = null;
+
+      startInertiaAnimation();
     };
 
     scroller.addEventListener("touchstart", onTouchStart);
