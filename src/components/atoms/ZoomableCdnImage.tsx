@@ -53,7 +53,7 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
   const touchStartXYmap = useRef(new Map<Touch["identifier"], Touch>());
 
   const transformStyleRef = useRef<TransformStyle>({ x: 0, y: 0, scale: 1 });
-  const currentAnimationIdRef = useRef<number>(0);
+  const currentAnimationFrame = useRef<number | null>(null);
 
   // -- Transform methods -- //
 
@@ -106,9 +106,13 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
         ...target,
       };
 
-      const animationId = ++currentAnimationIdRef.current;
+      // If an animation is already running, we cancel it
+      if (currentAnimationFrame.current) {
+        cancelAnimationFrame(currentAnimationFrame.current);
+        currentAnimationFrame.current = null;
+      }
 
-      const finalizeAnimate = () => {
+      const setTargetState = () => {
         setTransformStyle({ x: targetX, y: targetY, scale: targetScale });
         // Update zoom value on ControlsContext
         setZoom(targetScale);
@@ -122,7 +126,7 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
 
       // If no duration is specified or if the target is already reached, we apply the transform instantly
       if (!animationDuration || targetAlreadyReached) {
-        finalizeAnimate();
+        setTargetState();
         return;
       }
 
@@ -132,37 +136,37 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
 
       const startTime = new Date().getTime();
 
-      const animateStep = () => {
-        // Check if a new animation has been requested in the meantime
-        if (animationId !== currentAnimationIdRef.current) {
-          return;
-        }
+      const animate = () => {
+        const animateStep = () => {
+          // linear interpolation
+          const lerp = (start: number, end: number, progress: number) =>
+            start + (end - start) * progress;
 
-        // linear interpolation
-        const lerp = (start: number, end: number, progress: number) =>
-          start + (end - start) * progress;
+          const currentTime = new Date().getTime();
+          const timeElapsed = currentTime - startTime;
 
-        const currentTime = new Date().getTime();
-        const timeElapsed = currentTime - startTime;
+          if (timeElapsed >= animationDuration) {
+            setTargetState();
+            currentAnimationFrame.current = null;
+            return;
+          }
 
-        if (timeElapsed >= animationDuration) {
-          finalizeAnimate();
-          return;
-        }
+          const progress = Math.min(timeElapsed / animationDuration, 1);
+          const easedProgress = easeOut(progress);
 
-        const progress = Math.min(timeElapsed / animationDuration, 1);
-        const easedProgress = easeOut(progress);
+          const currentX = lerp(startX, targetX, easedProgress);
+          const currentY = lerp(startY, targetY, easedProgress);
+          const currentScale = lerp(startScale, targetScale, easedProgress);
 
-        const currentX = lerp(startX, targetX, easedProgress);
-        const currentY = lerp(startY, targetY, easedProgress);
-        const currentScale = lerp(startScale, targetScale, easedProgress);
+          setTransformStyle({ x: currentX, y: currentY, scale: currentScale });
 
-        setTransformStyle({ x: currentX, y: currentY, scale: currentScale });
+          animate();
+        };
 
-        requestAnimationFrame(animateStep);
+        currentAnimationFrame.current = requestAnimationFrame(animateStep);
       };
 
-      requestAnimationFrame(animateStep);
+      animate();
     },
     [setTransformStyle, setZoom]
   );
