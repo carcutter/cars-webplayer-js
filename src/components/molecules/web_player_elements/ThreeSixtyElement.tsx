@@ -31,10 +31,6 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
 
-  // - value refs
-  const isMouseDown = useRef(false);
-  const mouseStartX = useRef<number | null>(null);
-
   // - Flip book image index & details
   const [imageIndex, setImageIndex] = useState(0);
   const length = images.length;
@@ -59,9 +55,14 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
       return;
     }
 
+    // NOTE: As the useEffect should not re-render, we can use mutable variables. If it changes in the future, we should use useRef
+    let draggingStartX: number | null = null;
+    let lastMouseXs: { timestamp: number; value: number }[] = [];
+    let inertiaAnimationFrame: number | null = null;
+
     // Handle when the user just clicked on the 360 to start spinning
     const onMouseDown = (e: MouseEvent) => {
-      // Ignore event if the user is not using left click
+      // Ignore event if the user is not using the main button
       if (e.button !== 0) {
         return;
       }
@@ -69,24 +70,34 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
       e.preventDefault(); // Prevents native image dragging
       e.stopPropagation(); // Prevents carrousel to slide
 
-      // Take snapshot of the current state
-      isMouseDown.current = true;
-      mouseStartX.current = e.clientX;
+      // Cancel any ongoing inertia animation
+      if (inertiaAnimationFrame !== null) {
+        cancelAnimationFrame(inertiaAnimationFrame);
+        inertiaAnimationFrame = null;
+      }
+
+      // Take snapshot of the starting state
+      const x = e.clientX;
+      draggingStartX = x;
+      lastMouseXs = [{ timestamp: Date.now(), value: x }];
     };
 
     const onMouseMove = (e: MouseEvent) => {
       // Check if the user was actually spinning
-      if (!isMouseDown.current) {
+      if (draggingStartX === null) {
         return;
-      }
-
-      if (!mouseStartX.current) {
-        throw new Error("mouseStartX.current is null");
       }
 
       e.stopPropagation(); // Prevents parent slider from moving when rotating 360
 
-      const walkX = e.clientX - mouseStartX.current;
+      // Take a snapshot of the current state
+      lastMouseXs.push({ timestamp: Date.now(), value: e.clientX });
+      // Limit the number of snapshots to avoid memory overload
+      if (lastMouseXs.length > 20) {
+        lastMouseXs.shift();
+      }
+
+      const walkX = e.clientX - draggingStartX;
 
       // If the user did not move enough, we do not want to rotate
       if (Math.abs(walkX) < DRAG_STEP_PX) {
@@ -99,12 +110,86 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
       } else {
         displayPreviousImage();
       }
-      mouseStartX.current = e.clientX;
+
+      draggingStartX = e.clientX;
     };
 
     // Handle when the user releases the 360 or leaves the spinning area
     const onStopDragging = () => {
-      isMouseDown.current = false;
+      // Check if the user was actually spinning
+      if (draggingStartX === null) {
+        return;
+      }
+
+      draggingStartX = null;
+
+      // -- Inertia
+      const startTime = Date.now();
+      const startVelocity = (() => {
+        // Filter out points that are too old (to avoid inertia even after the user stopped)
+        const now = Date.now();
+        const filteredMouseXs = lastMouseXs.filter(
+          point => now - point.timestamp < 50
+        );
+
+        if (filteredMouseXs.length < 2) {
+          return 0; // Not enough points to calculate velocity
+        }
+
+        const firstMouse = filteredMouseXs[0];
+        const lastMouse = filteredMouseXs[filteredMouseXs.length - 1];
+
+        // Compute mean velocity in px/s
+        return (
+          (lastMouse.value - firstMouse.value) /
+          (1e-3 * Math.max(lastMouse.timestamp - firstMouse.timestamp, 1))
+        );
+      })();
+
+      let walkX = 0;
+      let lastFrameTime = startTime;
+
+      const applyInertia = () => {
+        const applyInertiaStep = () => {
+          const now = Date.now();
+
+          // Apply friction
+          const elapsedSeconds = (now - startTime) / 1000;
+          const currentVelocity =
+            startVelocity * 0.5 * Math.pow(0.1, elapsedSeconds);
+
+          // Update walk
+          const timeSinceLastFrame = (now - lastFrameTime) / 1000;
+          walkX += currentVelocity * timeSinceLastFrame;
+
+          // The intertia is very low, we can stop it
+          if (
+            Math.abs(currentVelocity) < 5 * DRAG_STEP_PX &&
+            Math.abs(walkX) < DRAG_STEP_PX
+          ) {
+            inertiaAnimationFrame = null;
+            return;
+          }
+
+          if (Math.abs(walkX) >= DRAG_STEP_PX) {
+            if (walkX > 0 !== reverse360) {
+              displayNextImage();
+            } else {
+              displayPreviousImage();
+            }
+
+            walkX = 0;
+          }
+
+          lastFrameTime = now;
+
+          applyInertia();
+        };
+
+        inertiaAnimationFrame = requestAnimationFrame(applyInertiaStep);
+      };
+
+      applyInertia();
     };
 
     container.addEventListener("mousedown", onMouseDown);
