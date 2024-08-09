@@ -16,14 +16,19 @@ type ThreeSixtyElementProps = Extract<Item, { type: "360" }> & {
   index: number;
   onlyPreload: boolean;
 };
-type ThreeSixtyElementInteractive = Omit<ThreeSixtyElementProps, "index">;
 
-const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
+const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
+  index,
   images,
   onlyPreload,
 }) => {
   const { reverse360 } = useGlobalContext();
-  const { isShowingDetails, isZooming } = useControlsContext();
+  const {
+    getItemInteraction,
+    setItemInteraction,
+    isShowingDetails,
+    isZooming,
+  } = useControlsContext();
 
   const disabled = isZooming || isShowingDetails; // We do not want to do anything while zooming or showing a detail image
 
@@ -32,7 +37,18 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
   const scrollerRef = useRef<HTMLDivElement>(null);
 
   // - Flip book image index & details
-  const [imageIndex, setImageIndex] = useState(0);
+  const [imageIndex, setImageIndex] = useState(() => {
+    const interaction = getItemInteraction(index);
+    if (typeof interaction !== "number") {
+      return 0;
+    }
+    return interaction;
+  });
+
+  useEffect(() => {
+    setItemInteraction(index, imageIndex);
+  }, [imageIndex, index, setItemInteraction]);
+
   const length = images.length;
 
   const displayPreviousImage = useCallback(() => {
@@ -470,19 +486,12 @@ const ThreeSixtyElementPlaceholder: React.FC<
  * @prop `onlyPreload`: If true, zoom will not affect the 360. It is useful to pre-fetch images.
  * @prop `index`: The index of the item in the carrousel. Used to share state.
  */
-const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = ({
-  index,
-  ...props
-}) => {
-  const { getItemInteraction, setItemInteraction } = useControlsContext();
+const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = props => {
+  const { index } = props;
 
-  const [isReady, setIsReady] = useState(
-    getItemInteraction(index) === "running"
-  );
+  const { getItemInteraction } = useControlsContext();
 
-  useEffect(() => {
-    setItemInteraction(index, isReady ? "running" : "pending");
-  }, [index, isReady, setItemInteraction]);
+  const [isReady, setIsReady] = useState(getItemInteraction(index) !== null);
 
   if (!isReady) {
     return (

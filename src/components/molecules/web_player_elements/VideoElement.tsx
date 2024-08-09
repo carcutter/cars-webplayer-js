@@ -57,7 +57,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
   // Either the video ended or the user stopped it
   const handleOnStop = () => {
     setIsRunning(false);
-    setItemInteraction(index, "pending");
+    setItemInteraction(index, null);
   };
 
   // Video is ready to play (enough data has been loaded)

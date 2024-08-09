@@ -15,7 +15,8 @@ import { clamp } from "@/utils/math";
 import { useCompositionContext } from "./CompositionContext";
 import { useGlobalContext } from "./GlobalContext";
 
-type ItemInteraction = null | "pending" | "running";
+// TODO: Rework items interaction logic
+type ItemInteraction = null | "running" | number; // Index of the image in the carrousel
 type Details = { src: string; title?: string; text?: string };
 
 type ContextType = {
@@ -206,7 +207,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       case "image":
         return !!currentCarrouselItem.hotspots?.length;
       case "360":
-        return currentItemInteraction === "running";
+        return currentItemInteraction !== null;
       case "video":
       case "omni_directional":
         return false;
@@ -243,12 +244,12 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     switch (currentCarrouselItem.type) {
       case "image":
         return true;
+      case "360":
+        return currentItemInteraction !== null;
       case "video":
       case "omni_directional":
         return false;
     }
-
-    return currentItemInteraction === "running";
   }, [currentCarrouselItem.type, currentItemInteraction]);
   const [zoom, setZoom] = useState(1);
   const isZooming = zoom !== 1;
@@ -269,10 +270,12 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     }
     switch (currentCarrouselItem.type) {
       case "video":
-        return currentItemInteraction === "running";
+        return currentItemInteraction !== null;
+      case "image":
+      case "360":
+      case "omni_directional":
+        return false;
     }
-
-    return false;
   }, [
     shownDetails,
     isZooming,
