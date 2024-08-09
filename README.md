@@ -125,6 +125,6 @@ NOTE : the sourcemap seems to interfere with size calculation [GitHub issue](htt
 
 Use the command `yarn migrate_composition <COMPOSITION_V1_PATH>`. It will create a new file with the new type
 
-#### Convert composition from V1 to V2
+#### Convert composition from V2 to V3
 
 Use the command `yarn generate_json_schema`. It will create a file within the _schemas_ folder

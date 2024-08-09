@@ -89,6 +89,7 @@ const Hotspot: React.FC<HotspotProps> = ({ hotspot }) => {
 
   let IconComp: React.ReactNode;
 
+  // TODO: Add some ... or clean!
   switch (feature) {
     case "WINDOW STICKER":
       IconComp = (
