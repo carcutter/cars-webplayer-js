@@ -42,19 +42,21 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
     setImageIndex(currentIndex => (currentIndex + 1) % length);
   }, [length]);
 
-  // - Event listeners to handle spinning with mouse dragging
+  // - Event listeners to handle spinning
   useEffect(() => {
     if (disabled) {
       return;
     }
 
     const container = containerRef.current;
+    const scroller = scrollerRef.current;
 
     // DOM not ready yet
-    if (!container) {
+    if (!container || !scroller) {
       return;
     }
 
+    // -- Mouse events (click & drag)
     // NOTE: As the useEffect should not re-render, we can use mutable variables. If it changes in the future, we should use useRef
     let draggingStartX: number | null = null;
     let lastMouseXs: { timestamp: number; value: number }[] = [];
@@ -198,27 +200,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
     document.addEventListener("mouseup", onStopDragging);
     document.addEventListener("contextmenu", onStopDragging);
 
-    return () => {
-      container.removeEventListener("mousedown", onMouseDown);
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseleave", onStopDragging);
-      document.removeEventListener("mouseup", onStopDragging);
-      document.removeEventListener("contextmenu", onStopDragging);
-    };
-  }, [displayNextImage, displayPreviousImage, disabled, reverse360]);
-
-  // - Event listener to handle spinning with scrolling (thanks to the "invisible scroller")
-  useEffect(() => {
-    if (disabled) {
-      return;
-    }
-
-    const scroller = scrollerRef.current;
-
-    // DOM not ready yet
-    if (!scroller) {
-      return;
-    }
+    // - Scroll events to update the image thanks to the "invisible scroller"
 
     const getScrollerWidth = () => scroller.getBoundingClientRect().width;
 
@@ -233,7 +215,6 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
     // When initializing, we want to center the scroller
     centerScroller();
 
-    // - Update the image when the user uses scrolling (and not dragging)
     const onScroll = () => {
       const walk = scroller.scrollLeft - getScrollerCenterPosition();
 
@@ -254,8 +235,92 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementInteractive> = ({
 
     scroller.addEventListener("scroll", onScroll);
 
+    // - Touch events (only mandatory for Safari mobile)
+
+    let touchStart: { id: Touch["identifier"]; x: number } | null = null;
+
+    const onTouchStart = (e: TouchEvent) => {
+      // Ignore other touches
+      if (touchStart) {
+        return;
+      }
+
+      const touch = e.touches[0];
+      touchStart = { id: touch.identifier, x: touch.clientX };
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (!touchStart) {
+        return;
+      }
+
+      const { id: touchId, x: touchStartX } = touchStart;
+
+      const touch = Array.from(e.changedTouches).find(
+        ({ identifier }) => identifier === touchId
+      );
+
+      // Ignore other touches
+      if (!touch) {
+        return;
+      }
+
+      e.preventDefault(); // Prevent scroll
+
+      const walkX = touch.clientX - touchStartX;
+
+      // If the user did not move enough, we do not want to rotate
+      if (Math.abs(walkX) < DRAG_STEP_PX) {
+        return;
+      }
+
+      // XOR operation to reverse the logic
+      if (walkX > 0 !== reverse360) {
+        displayNextImage();
+      } else {
+        displayPreviousImage();
+      }
+
+      touchStart = { id: touchId, x: touch.clientX };
+    };
+
+    const onTouchEnd = (e: TouchEvent) => {
+      if (touchStart === null) {
+        return;
+      }
+
+      const { id: touchId } = touchStart;
+
+      const isMainTouch = Array.from(e.changedTouches).some(
+        ({ identifier }) => identifier === touchId
+      );
+
+      // Ignore other touches
+      if (!isMainTouch) {
+        return;
+      }
+
+      touchStart = null;
+    };
+
+    scroller.addEventListener("touchstart", onTouchStart);
+    scroller.addEventListener("touchmove", onTouchMove);
+    scroller.addEventListener("touchend", onTouchEnd);
+    scroller.addEventListener("touchcancel", onTouchEnd);
+
     return () => {
+      container.removeEventListener("mousedown", onMouseDown);
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseleave", onStopDragging);
+      document.removeEventListener("mouseup", onStopDragging);
+      document.removeEventListener("contextmenu", onStopDragging);
+
       scroller.removeEventListener("scroll", onScroll);
+
+      scroller.removeEventListener("touchstart", onTouchStart);
+      scroller.removeEventListener("touchmove", onTouchMove);
+      scroller.removeEventListener("touchend", onTouchEnd);
+      scroller.removeEventListener("touchcancel", onTouchEnd);
     };
   }, [displayNextImage, displayPreviousImage, disabled, reverse360]);
 
