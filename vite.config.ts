@@ -80,7 +80,14 @@ export default defineConfig(({ command, mode }) => {
       lib: {
         entry: "./src/index.wc.tsx",
         name: "cc-web-player",
-        fileName: format => `cc-web-player.${format}.js`,
+        fileName: format => {
+          switch (format) {
+            case "umd":
+              return "bundle.js";
+            default:
+              return `cc-web-player.${format}.js`;
+          }
+        },
       },
       target: "esnext",
       copyPublicDir: false, // The only public file is mock data
