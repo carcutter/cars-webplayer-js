@@ -118,8 +118,8 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
           // Apply friction
           const elapsedSeconds = (now - startTime) / 1000;
-          const currentVelocity =
-            startVelocity * 0.5 * Math.pow(0.1, elapsedSeconds);
+          const decayFactor = Math.pow(0.05, elapsedSeconds); // NOTE: could be configurable
+          const currentVelocity = startVelocity * decayFactor;
 
           // Update walk
           const timeSinceLastFrame = (now - lastFrameTime) / 1000;
