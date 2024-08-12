@@ -287,6 +287,9 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
         return;
       }
 
+      // Cancel any ongoing inertia animation
+      cancelInertiaAnimation();
+
       // Take snapshot of the starting state
       const { identifier: id, clientX: x } = e.changedTouches[0];
       mainTouchId = id;
