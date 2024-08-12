@@ -28,7 +28,7 @@ You can customise the WebPlayer CSS with CSS Variables
 
 | CSS Variable              | Description                        | Default Value     |
 | ------------------------- | ---------------------------------- | ----------------- |
-| `--cc-background`         | Background color                   | `0 0% 100%`       |
+| `--cc-background`         | Background color (contrast texts)  | `0 0% 100%`       |
 | `--cc-foreground`         | Foreground color (text color)      | `240 10% 3.9%`    |
 | `--cc-primary`            | Primary color (buttons)            | `216 100% 52%`    |
 | `--cc-primary-foreground` | Foreground color for primary items | `--cc-background` |
