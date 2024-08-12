@@ -403,6 +403,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
 
         {isCycling && (
           // Duplicate the first element to allow cycling
+          // TODO: Find a better way to handle this. Maybe put the list into a grid and shift/duplicate the first element?
           <WebPlayerElement
             index={0}
             item={items[0]}
