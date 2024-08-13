@@ -3,23 +3,10 @@ import r2wc from "@r2wc/react-to-web-component";
 import {
   WEB_PLAYER_CUSTOM_ELEMENTS_NAME,
   WEB_PLAYER_ICON_CUSTOM_ELEMENTS_NAME,
-} from "@/const/custom_elements";
-import WebPlayer from "@/lib/WebPlayer";
-import WebPlayerIcon from "@/lib/WebPlayerIcon";
-import type { WebPlayerProps } from "@/types/webPlayerProps";
+} from "@car-cutter/core-webplayer";
+import { WebPlayerIcon, WebPlayer } from "@car-cutter/react-webplayer";
 
-import styles from "./index.css?inline";
-
-const WebPlayerWithInjectedCSS = (props: WebPlayerProps) => {
-  return (
-    <>
-      <style>{styles}</style>
-      <WebPlayer {...props} />
-    </>
-  );
-};
-
-const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedCSS, {
+const WebPlayerWebComponent = r2wc(WebPlayer, {
   shadow: "open",
   props: {
     compositionUrl: "string",

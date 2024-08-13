@@ -26,6 +26,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@car-cutter/core-webplayer": "*",
     "@tanstack/eslint-plugin-query": "^5.47.0",
     "@types/eslint": "^9.6.0",
     "@types/node": "^20.14.7",

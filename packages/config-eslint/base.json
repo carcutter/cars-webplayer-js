@@ -10,7 +10,7 @@
   "plugins": ["import", "unused-imports"],
 
   "settings": {
-    "import/internal-regex": "^@/"
+    "import/internal-regex": "^(@/|@car-cutter/)"
   },
 
   "rules": {

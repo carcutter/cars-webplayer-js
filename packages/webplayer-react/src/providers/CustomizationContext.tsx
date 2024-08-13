@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useState } from "react";
 
-import { WEB_PLAYER_ICON_CUSTOM_ELEMENTS_NAME } from "@/const/custom_elements";
+import { WEB_PLAYER_ICON_CUSTOM_ELEMENTS_NAME } from "@car-cutter/core-webplayer";
 
 type IconConfig = {
   Icon: React.ReactNode;
