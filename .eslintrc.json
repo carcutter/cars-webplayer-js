@@ -1,75 +1,9 @@
 {
   "root": true,
-  "parser": "@typescript-eslint/parser",
-  "env": { "browser": true, "es2020": true },
 
-  "ignorePatterns": ["dist"],
+  "extends": "@car-cutter/eslint-config/base.json",
 
-  "extends": [
-    "eslint:recommended",
-    "plugin:prettier/recommended",
-    "plugin:react/recommended",
-    "plugin:tailwindcss/recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:@tanstack/eslint-plugin-query/recommended",
-    "prettier" // Last to keep priority: https://github.com/prettier/eslint-config-prettier?tab=readme-ov-file#installation
-  ],
-
-  "plugins": ["react-refresh", "import", "unused-imports"],
-
-  "settings": {
-    "react": {
-      "version": "detect"
-    },
-
-    "import/internal-regex": "^@/"
-  },
-
-  "rules": {
-    "no-console": "error",
-    "react/react-in-jsx-scope": "off", // Do not need to import React in JSX files
-    "react/display-name": "off",
-
-    "react-refresh/only-export-components": "warn",
-
-    "import/order": [
-      "error",
-      {
-        "newlines-between": "always",
-        "alphabetize": {
-          "order": "asc",
-          "caseInsensitive": true
-        },
-        "groups": [
-          "builtin",
-          "external",
-          "internal",
-          "parent",
-          "sibling",
-          "index"
-        ]
-      }
-    ],
-    "unused-imports/no-unused-imports": "error"
-  },
   "overrides": [
-    {
-      // -- TypeScript
-      "files": ["*.ts", "*.tsx"],
-
-      "extends": ["plugin:@typescript-eslint/recommended"],
-      "rules": {
-        "react/prop-types": "off", // prop-types are not needed in TypeScript
-
-        "@typescript-eslint/no-unused-vars": [
-          "error",
-          {
-            "argsIgnorePattern": "^_",
-            "varsIgnorePattern": "^_"
-          }
-        ]
-      }
-    },
     {
       // -- Script files
       "files": ["scripts/*.ts"],

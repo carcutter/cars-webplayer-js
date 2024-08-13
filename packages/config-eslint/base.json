@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json.schemastore.org/eslintrc.json",
+
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "env": { "browser": true, "es2020": true, "node": true },
+
+  "extends": ["eslint:recommended", "prettier"],
+
+  "plugins": ["import", "unused-imports"],
+
+  "settings": {
+    "import/internal-regex": "^@/"
+  },
+
+  "rules": {
+    "no-console": "error",
+
+    "import/order": [
+      "error",
+      {
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        },
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index"
+        ]
+      }
+    ],
+    "unused-imports/no-unused-imports": "error"
+  },
+
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+
+      "extends": ["plugin:@typescript-eslint/recommended"],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          {
+            "argsIgnorePattern": "^_",
+            "varsIgnorePattern": "^_"
+          }
+        ]
+      }
+    }
+  ]
+}
