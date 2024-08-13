@@ -11,7 +11,7 @@ import {
   DEFAULT_INFINITE_CARROUSEL,
   DEFAULT_PERMANENT_GALLERY,
   DEFAULT_REVERSE_360,
-} from "@/const/default";
+} from "@/const/default_props";
 import CustomizationContextProvider from "@/providers/CustomizationContext";
 import GlobalContextProvider from "@/providers/GlobalContext";
 import type { WebPlayerProps } from "@/types/webPlayerProps";
