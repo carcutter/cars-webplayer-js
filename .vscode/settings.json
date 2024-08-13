@@ -13,9 +13,5 @@
 
   "files.associations": {
     "*.css": "tailwindcss"
-  },
-
-  "importCost.smallPackageSize": 10,
-  "importCost.mediumPackageSize": 25,
-  "importCost.mediumPackageLightColor": "#d48340"
+  }
 }

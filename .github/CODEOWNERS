@@ -1,8 +1,0 @@
-#
-# Code owners listed in this wile will automatically be requested for review 
-# whenever a pull request touches the files they own.
-#
-# see: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
-#
-* @carcutter/web
-
