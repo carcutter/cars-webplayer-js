@@ -21,8 +21,19 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    // Paths
+    "paths": {
+      "@/components/*": ["./src/components/*"],
+      "@/const/*": ["./src/const/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/providers/*": ["./src/providers/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/utils/*": ["./src/utils/*"]
+    }
   },
 
-  "include": ["index.ts", "src", "lib", "dev"]
+  "include": ["src"]
 }

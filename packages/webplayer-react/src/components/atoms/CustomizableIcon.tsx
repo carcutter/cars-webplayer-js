@@ -1,4 +1,4 @@
-import { useCustomizationContext } from "@/providers/CustomizationContext";
+import { useCustomizationContext } from "../../providers/CustomizationContext";
 
 type Props = { customizationKey: string; className?: string };
 

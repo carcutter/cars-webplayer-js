@@ -1,4 +1,4 @@
-import CustomizableIcon from "@/components/atoms/CustomizableIcon";
+import CustomizableIcon from "../atoms/CustomizableIcon";
 
 type Props = { className?: string };
 

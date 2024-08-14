@@ -1,24 +1,12 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+:root {
+  /* --cc-background: 0 0% 100%; */
+  /* --cc-foreground: 240 10% 3.9%; */
+  /* --cc-primary: 42 100% 52%; */
+  /* --cc-primary-foreground:; */
+  /* --cc-neutral:; */
+  /* --cc-neutral-foreground:; */
 
-@layer base {
-  :root {
-    /* --cc-background: 0 0% 100%; */
-    /* --cc-foreground: 240 10% 3.9%; */
-    /* --cc-primary: 42 100% 52%; */
-    /* --cc-primary-foreground:; */
-    /* --cc-neutral:; */
-    /* --cc-neutral-foreground:; */
-
-    /* --cc-radius-ui: 0.55rem; */
-    /* --cc-radius-carrousel: 0.8rem; */
-    /* --cc-radius-gallery: 0.4rem; */
-  }
-}
-
-@layer base {
-  body {
-    @apply bg-background text-foreground;
-  }
+  /* --cc-radius-ui: 0.55rem; */
+  /* --cc-radius-carrousel: 0.8rem; */
+  /* --cc-radius-gallery: 0.4rem; */
 }

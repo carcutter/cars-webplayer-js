@@ -7,10 +7,10 @@ import {
   useState,
 } from "react";
 
-import { RESIZE_TRANSITION_DURATION } from "@/const/browser";
-import { MAX_ZOOM, ZOOM_STEP } from "@/const/zoom";
-import { Item } from "@/types/composition";
-import { clamp } from "@/utils/math";
+import { RESIZE_TRANSITION_DURATION } from "../const/browser";
+import { MAX_ZOOM, ZOOM_STEP } from "../const/zoom";
+import type { Item } from "../types/composition";
+import { clamp } from "../utils/math";
 
 import { useCompositionContext } from "./CompositionContext";
 import { useGlobalContext } from "./GlobalContext";

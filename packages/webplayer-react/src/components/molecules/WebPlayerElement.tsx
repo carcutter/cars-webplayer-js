@@ -1,9 +1,10 @@
-import ImageElement from "@/components/molecules/web_player_elements/ImageElement";
-import OmniDirectionElement from "@/components/molecules/web_player_elements/OmniDirectionElement";
-import ThreeSixtyElement from "@/components/molecules/web_player_elements/ThreeSixtyElement";
-import VideoElement from "@/components/molecules/web_player_elements/VideoElement";
-import { useCompositionContext } from "@/providers/CompositionContext";
-import type { Item } from "@/types/composition";
+import { useCompositionContext } from "../../providers/CompositionContext";
+import type { Item } from "../../types/composition";
+
+import ImageElement from "./web_player_elements/ImageElement";
+import OmniDirectionElement from "./web_player_elements/OmniDirectionElement";
+import ThreeSixtyElement from "./web_player_elements/ThreeSixtyElement";
+import VideoElement from "./web_player_elements/VideoElement";
 
 type Props = {
   index: number;

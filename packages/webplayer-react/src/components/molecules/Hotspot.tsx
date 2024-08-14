@@ -1,7 +1,7 @@
-import ImageIcon from "@/components/icons/ImageIcon";
-import { useControlsContext } from "@/providers/ControlsContext";
-import { useCustomizationContext } from "@/providers/CustomizationContext";
-import type { Hotspot as HotspotType } from "@/types/composition";
+import { useControlsContext } from "../../providers/ControlsContext";
+import { useCustomizationContext } from "../../providers/CustomizationContext";
+import type { Hotspot as HotspotType } from "../../types/composition";
+import ImageIcon from "../icons/ImageIcon";
 
 type HotspotProps = {
   hotspot: HotspotType;

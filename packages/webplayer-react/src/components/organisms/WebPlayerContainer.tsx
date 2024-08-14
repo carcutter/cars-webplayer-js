@@ -1,18 +1,20 @@
 import { useEffect, useRef } from "react";
 import { ZodError } from "zod";
 
-import CloseButton from "@/components/atoms/CloseButton";
-import Gallery from "@/components/organisms/Gallery";
-import WebPlayerCarrousel from "@/components/organisms/WebPlayerCarrousel";
-import ErrorTemplate from "@/components/template/ErrorTemplate";
-import Spinner from "@/components/ui/Spinner";
-import { useComposition } from "@/hooks/useComposition";
+import { useComposition } from "../../hooks/useComposition";
 import CompositionContextProvider, {
   useCompositionContext,
-} from "@/providers/CompositionContext";
-import { useControlsContext } from "@/providers/ControlsContext";
-import ControlsContextProvider from "@/providers/ControlsContext";
-import { useGlobalContext } from "@/providers/GlobalContext";
+} from "../../providers/CompositionContext";
+import ControlsContextProvider, {
+  useControlsContext,
+} from "../../providers/ControlsContext";
+import { useGlobalContext } from "../../providers/GlobalContext";
+import CloseButton from "../atoms/CloseButton";
+import ErrorTemplate from "../template/ErrorTemplate";
+import Spinner from "../ui/Spinner";
+
+import Gallery from "./Gallery";
+import WebPlayerCarrousel from "./WebPlayerCarrousel";
 
 const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
   const { permanentGallery } = useGlobalContext();

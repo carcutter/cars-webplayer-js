@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import IndexIndicator from "@/components/atoms/IndexIndicator";
-import WebPlayerElement from "@/components/molecules/WebPlayerElement";
-import WebPlayerOverlay from "@/components/molecules/WebPlayerOverlay";
-import { RESIZE_TRANSITION_DURATION } from "@/const/browser";
-import { useCompositionContext } from "@/providers/CompositionContext";
-import { useControlsContext } from "@/providers/ControlsContext";
-import { useGlobalContext } from "@/providers/GlobalContext";
-import { positionToClassName } from "@/utils/style";
+import { RESIZE_TRANSITION_DURATION } from "../../const/browser";
+import { useCompositionContext } from "../../providers/CompositionContext";
+import { useControlsContext } from "../../providers/ControlsContext";
+import { useGlobalContext } from "../../providers/GlobalContext";
+import { positionToClassName } from "../../utils/style";
+import IndexIndicator from "../atoms/IndexIndicator";
+import WebPlayerElement from "../molecules/WebPlayerElement";
+import WebPlayerOverlay from "../molecules/WebPlayerOverlay";
 
 type Props = {
   className?: string;

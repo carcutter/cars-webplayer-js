@@ -1,5 +1,5 @@
-import PlayIcon from "@/components/icons/PlayIcon";
-import Button, { ButtonProps } from "@/components/ui/Button";
+import PlayIcon from "../icons/PlayIcon";
+import Button, { ButtonProps } from "../ui/Button";
 
 type Props = ButtonProps;
 

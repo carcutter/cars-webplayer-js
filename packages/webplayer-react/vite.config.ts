@@ -54,20 +54,13 @@ export default defineConfig(({ command, mode }) => {
   }
 
   return {
-    resolve: {
-      alias: {
-        "@/components": pathToDir("./src/components"),
-        "@/const": pathToDir("./src/const"),
-        "@/hooks": pathToDir("./src/hooks"),
-        "@/lib": pathToDir("./src/lib"),
-        "@/providers": pathToDir("./src/providers"),
-        "@/types": pathToDir("./src/types"),
-        "@/utils": pathToDir("./src/utils"),
+    plugins: [
+      react(),
+      // dts(), // Generate the types. vite-plugin-dts
+    ],
 
-        ...mocksAlias,
-      },
-    },
-    plugins: [react()],
+    // TODO
+    // resolve: { alias : mocksAlias },
 
     // BUILD
     define: {
@@ -75,22 +68,17 @@ export default defineConfig(({ command, mode }) => {
         NODE_ENV: isBuild ? "production" : "development",
       },
     },
-    // TODO: Find a way to build in watch mode. The simple script "watch": "vite build --watch" does not work because it does not rebuild the TS.
+    // FUTURE: Find a way to build in watch mode. The simple script "watch": "vite build --watch" does not work because it does not rebuild the TS.
     build: {
       lib: {
-        entry: "./src/index.wc.tsx",
-        name: "cc-web-player",
-        fileName: format => {
-          switch (format) {
-            case "umd":
-              return "bundle.js";
-            default:
-              return `cc-web-player.${format}.js`;
-          }
-        },
+        name: "react-webplayer",
+        fileName: "index",
+        entry: pathToDir("./index.ts"),
       },
-      target: "esnext",
       copyPublicDir: false, // The only public file is mock data
+
+      // TODO: Add rollupOptions: { external: ["react"], output: { globals: { react: 'React' } } to avoid including React in the bundle
+      //       Maybe peerDependencies ? Find example on https://github.com/bitovi/react-to-web-component
     },
   };
 });

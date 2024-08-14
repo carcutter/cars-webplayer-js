@@ -1,6 +1,6 @@
-import Button from "@/components/ui/Button";
-import { useCompositionContext } from "@/providers/CompositionContext";
-import { useControlsContext } from "@/providers/ControlsContext";
+import { useCompositionContext } from "../../providers/CompositionContext";
+import { useControlsContext } from "../../providers/ControlsContext";
+import Button from "../ui/Button";
 
 type Props = {
   className?: string;

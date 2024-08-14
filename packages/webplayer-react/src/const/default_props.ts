@@ -1,4 +1,4 @@
-import type { ImageLoadStrategy } from "@/types/webPlayerProps";
+import { ImageLoadStrategy } from "../types/webPlayerProps";
 
 export const DEFAULT_REVERSE_360 = false;
 export const DEFAULT_IMAGE_LOAD_STRATEGY =

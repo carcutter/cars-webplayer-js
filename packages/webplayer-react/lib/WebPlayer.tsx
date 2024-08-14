@@ -1,7 +1,6 @@
-import WebPlayerTS from "@/lib/WebPlayerTS";
-import type { WebPlayerProps } from "@/types/webPlayerProps";
-
-import styles from "./index.css?inline";
+import styles from "../src/index.css?inline";
+import type { WebPlayerProps } from "../src/types/zod/webPlayerProps";
+import WebPlayerTS from "../src/WebPlayerTS";
 
 const WebPlayer = (props: WebPlayerProps) => {
   return (

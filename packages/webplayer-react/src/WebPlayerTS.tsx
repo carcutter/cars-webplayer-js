@@ -1,8 +1,10 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import withZodSchema from "@/components/hoc/withZodSchema";
-import WebPlayerContainer from "@/components/organisms/WebPlayerContainer";
+import { WEB_PLAYER_CUSTOM_ELEMENTS_NAME } from "@car-cutter/core-webplayer";
+
+import withZodSchema from "./components/hoc/withZodSchema";
+import WebPlayerContainer from "./components/organisms/WebPlayerContainer";
 import {
   DEFAULT_ALLOW_FULL_SCREEN,
   DEFAULT_EVENT_ID,
@@ -11,12 +13,11 @@ import {
   DEFAULT_INFINITE_CARROUSEL,
   DEFAULT_PERMANENT_GALLERY,
   DEFAULT_REVERSE_360,
-} from "@/const/default_props";
-import CustomizationContextProvider from "@/providers/CustomizationContext";
-import GlobalContextProvider from "@/providers/GlobalContext";
-import type { WebPlayerProps } from "@/types/webPlayerProps";
-import { WebPlayerPropsSchema } from "@/types/zod/webPlayerProps";
-import { WEB_PLAYER_CUSTOM_ELEMENTS_NAME } from "@car-cutter/core-webplayer";
+} from "./const/default_props";
+import CustomizationContextProvider from "./providers/CustomizationContext";
+import GlobalContextProvider from "./providers/GlobalContext";
+import type { WebPlayerProps } from "./types/webPlayerProps";
+import { WebPlayerPropsSchema } from "./types/zod/webPlayerProps";
 
 const queryClient = new QueryClient();
 

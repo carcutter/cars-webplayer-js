@@ -2,8 +2,13 @@
   "name": "@car-cutter/wc-webplayer",
   "version": "0.0.0",
   "license": "UNLICENSED",
-  "main": "index.ts",
-  "scripts": {},
+  "type": "module",
+  "main": "dist/index.umd.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b && vite build"
+  },
   "dependencies": {
     "@car-cutter/core-webplayer": "*",
     "@car-cutter/react-webplayer": "*",

@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import CdnImage from "@/components/atoms/CdnImage";
-import PlayIcon from "@/components/icons/PlayIcon";
-import ThreeSixtyIcon from "@/components/icons/ThreeSixtyIcon";
-import ImageElement from "@/components/molecules/web_player_elements/ImageElement";
-import Button from "@/components/ui/Button";
-import { useControlsContext } from "@/providers/ControlsContext";
-import { useGlobalContext } from "@/providers/GlobalContext";
-import type { ImageWithHotspots, Item } from "@/types/composition";
+import { useControlsContext } from "../../../providers/ControlsContext";
+import { useGlobalContext } from "../../../providers/GlobalContext";
+import type { ImageWithHotspots, Item } from "../../../types/composition";
+import CdnImage from "../../atoms/CdnImage";
+import PlayIcon from "../../icons/PlayIcon";
+import ThreeSixtyIcon from "../../icons/ThreeSixtyIcon";
+import Button from "../../ui/Button";
+
+import ImageElement from "./ImageElement";
 
 const DRAG_STEP_PX = 10;
 const SCROLL_STEP_PX = 15;

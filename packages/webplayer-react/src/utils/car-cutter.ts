@@ -1,6 +1,6 @@
-import type { Composition } from "@/types/composition";
-import type { ImageWidth } from "@/types/misc";
-import { CompositionSchema } from "@/types/zod/composition";
+import type { Composition } from "../types/composition";
+import type { ImageWidth } from "../types/misc";
+import { CompositionSchema } from "../types/zod/composition";
 
 export async function getComposition(url: string): Promise<Composition> {
   const res = await fetch(url);

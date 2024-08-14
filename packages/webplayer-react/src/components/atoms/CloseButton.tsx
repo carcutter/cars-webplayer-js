@@ -1,5 +1,5 @@
-import CloseIcon from "@/components/icons/CloseIcon";
-import Button, { ButtonProps } from "@/components/ui/Button";
+import CloseIcon from "../icons/CloseIcon";
+import Button, { ButtonProps } from "../ui/Button";
 
 type Props = ButtonProps;
 

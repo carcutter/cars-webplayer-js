@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import PlayButton from "@/components/atoms/PlayButton";
-import Button from "@/components/ui/Button";
-import ProgressBar from "@/components/ui/ProgressBar";
-import Spinner from "@/components/ui/Spinner";
-import { useControlsContext } from "@/providers/ControlsContext";
-import type { Item } from "@/types/composition";
+import { useControlsContext } from "../../../providers/ControlsContext";
+import type { Item } from "../../../types/composition";
+import PlayButton from "../../atoms/PlayButton";
+import Button from "../../ui/Button";
+import ProgressBar from "../../ui/ProgressBar";
+import Spinner from "../../ui/Spinner";
 
 type Props = Extract<Item, { type: "video" }> & {
   index: number;

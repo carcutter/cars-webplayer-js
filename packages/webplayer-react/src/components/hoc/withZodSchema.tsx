@@ -1,6 +1,6 @@
 import type { ZodSchema } from "zod";
 
-import ErrorTemplate from "@/components/template/ErrorTemplate";
+import ErrorTemplate from "../template/ErrorTemplate";
 
 function withZodSchema<T extends object, P extends React.PropsWithChildren<T>>(
   WrappedComponent: React.FC<P>,

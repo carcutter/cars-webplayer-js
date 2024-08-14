@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef } from "react";
 
-import CdnImage, { CdnImageProps } from "@/components/atoms/CdnImage";
-import { MAX_ZOOM } from "@/const/zoom";
-import { useControlsContext } from "@/providers/ControlsContext";
-import { clamp } from "@/utils/math";
-import { computeTouchesDistance } from "@/utils/touch";
+import { MAX_ZOOM } from "../../const/zoom";
+import { useControlsContext } from "../../providers/ControlsContext";
+import { clamp } from "../../utils/math";
+import { computeTouchesDistance } from "../../utils/touch";
+
+import CdnImage, { CdnImageProps } from "./CdnImage";
 
 export type ZoomableCdnImageProps = Omit<
   CdnImageProps,

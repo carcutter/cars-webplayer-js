@@ -1,6 +1,6 @@
-import type { AspectRatio } from "@/types/misc";
-import type { PositionX, PositionY, Position } from "@/types/position";
-import { extractPositions } from "@/utils/position";
+import type { AspectRatio } from "../types/misc";
+import type { PositionX, PositionY, Position } from "../types/position";
+import { extractPositions } from "../utils/position";
 
 export function positionXToClassName(positionX: PositionX): string {
   switch (positionX) {

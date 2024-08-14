@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
 
-import { DEFAULT_EVENT_ID } from "@/const/default_props";
-import WebPlayerIcon from "@/lib/WebPlayerIcon";
-import WebPlayerTS from "@/lib/WebPlayerTS";
+import WebPlayerIcon from "../lib/WebPlayerIcon";
+import { DEFAULT_EVENT_ID } from "../src/const/default_props";
+import WebPlayerTS from "../src/WebPlayerTS";
+
+// NOTE: We need to import the CSS file and not inject it because it would broke the HMR
+import "../src/index.css";
 
 const DevApp: React.FC = () => {
   useEffect(() => {

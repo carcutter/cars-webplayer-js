@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import GalleryElement from "@/components/molecules/GalleryElement";
-import { useCompositionContext } from "@/providers/CompositionContext";
-import { useControlsContext } from "@/providers/ControlsContext";
-import { useGlobalContext } from "@/providers/GlobalContext";
-import type { Item } from "@/types/composition";
-import { clamp } from "@/utils/math";
+import { useCompositionContext } from "../../providers/CompositionContext";
+import { useControlsContext } from "../../providers/ControlsContext";
+import { useGlobalContext } from "../../providers/GlobalContext";
+import type { Item } from "../../types/composition";
+import { clamp } from "../../utils/math";
+import GalleryElement from "../molecules/GalleryElement";
 
 type Props = {
   className?: string;

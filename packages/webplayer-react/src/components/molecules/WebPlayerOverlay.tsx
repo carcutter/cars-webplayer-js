@@ -1,23 +1,24 @@
 import { useCallback } from "react";
 
-import CdnImage from "@/components/atoms/CdnImage";
-import CloseButton from "@/components/atoms/CloseButton";
-import CustomizableIcon from "@/components/atoms/CustomizableIcon";
-import ArrowRightIcon from "@/components/icons/ArrowRightIcon";
-import ExtendIcon from "@/components/icons/ExtendIcon";
-import GalleryIcon from "@/components/icons/GalleryIcon";
-import HotspotsIcon from "@/components/icons/HotspotsIcon";
-import ReduceIcon from "@/components/icons/ReduceIcon";
-import CategorySelect from "@/components/molecules/CategorySelect";
-import Gallery from "@/components/organisms/Gallery";
-import Button from "@/components/ui/Button";
-import Separator from "@/components/ui/Separator";
-import { useEscapeKeyEffect } from "@/hooks/useEscapeKeyEffect";
-import { useCompositionContext } from "@/providers/CompositionContext";
-import { useControlsContext } from "@/providers/ControlsContext";
-import { useGlobalContext } from "@/providers/GlobalContext";
-import { positionToClassName } from "@/utils/style";
-import { isSelfEvent } from "@/utils/web";
+import { useEscapeKeyEffect } from "../../hooks/useEscapeKeyEffect";
+import { useCompositionContext } from "../../providers/CompositionContext";
+import { useControlsContext } from "../../providers/ControlsContext";
+import { useGlobalContext } from "../../providers/GlobalContext";
+import { positionToClassName } from "../../utils/style";
+import { isSelfEvent } from "../../utils/web";
+import CdnImage from "../atoms/CdnImage";
+import CloseButton from "../atoms/CloseButton";
+import CustomizableIcon from "../atoms/CustomizableIcon";
+import ArrowRightIcon from "../icons/ArrowRightIcon";
+import ExtendIcon from "../icons/ExtendIcon";
+import GalleryIcon from "../icons/GalleryIcon";
+import HotspotsIcon from "../icons/HotspotsIcon";
+import ReduceIcon from "../icons/ReduceIcon";
+import Gallery from "../organisms/Gallery";
+import Button from "../ui/Button";
+import Separator from "../ui/Separator";
+
+import CategorySelect from "./CategorySelect";
 
 /**
  * WebPlayerOverlay component renders everything that is displayed on top of the carrousel.

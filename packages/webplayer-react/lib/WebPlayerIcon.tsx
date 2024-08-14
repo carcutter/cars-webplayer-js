@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import {
   useCustomizationContext,
   useCustomizationContextSafe,
-} from "@/providers/CustomizationContext";
+} from "../src/providers/CustomizationContext";
 
 export type WebPlayerIconProps = {
   name: string;

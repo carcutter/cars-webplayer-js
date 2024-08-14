@@ -1,5 +1,5 @@
-import { positionXlist, positionYlist, positionList } from "@/const/position";
-import { Position, PositionX, PositionY } from "@/types/position";
+import { positionXlist, positionYlist, positionList } from "../const/position";
+import type { Position, PositionX, PositionY } from "../types/position";
 
 function isPositionX(str: string): str is PositionX {
   return positionXlist.includes(str as PositionX);

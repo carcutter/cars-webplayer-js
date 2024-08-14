@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-import { positionXlist, positionYlist, positionList } from "@/const/position";
+import {
+  positionXlist,
+  positionYlist,
+  positionList,
+} from "../../const/position";
 
 export const PositionXschema = z.enum(positionXlist);
 

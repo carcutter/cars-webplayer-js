@@ -1,9 +1,9 @@
+import { useControlsContext } from "../../../providers/ControlsContext";
+import type { ImageWithHotspots } from "../../../types/composition";
 import ZoomableCdnImage, {
-  ZoomableCdnImageProps,
-} from "@/components/atoms/ZoomableCdnImage";
-import Hotspot from "@/components/molecules/Hotspot";
-import { useControlsContext } from "@/providers/ControlsContext";
-import type { ImageWithHotspots } from "@/types/composition";
+  type ZoomableCdnImageProps,
+} from "../../atoms/ZoomableCdnImage";
+import Hotspot from "../Hotspot";
 
 type Props = Omit<ZoomableCdnImageProps, "className"> & ImageWithHotspots;
 
