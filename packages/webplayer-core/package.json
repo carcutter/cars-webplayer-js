@@ -1,7 +1,12 @@
 {
   "name": "@car-cutter/core-webplayer",
-  "private": true,
   "version": "0.0.0",
   "license": "UNLICENSED",
-  "main": "index.ts"
+  "type": "module",
+  "main": "dist/index.umd.cjs",
+  "module": "dist/index.js",
+  "types": "index.ts",
+  "scripts": {
+    "build": "tsc -b && vite build"
+  }
 }
