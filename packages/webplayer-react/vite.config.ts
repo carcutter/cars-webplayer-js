@@ -3,6 +3,7 @@ import path from "path";
 import react from "@vitejs/plugin-react";
 import chalk from "chalk";
 import { defineConfig } from "vite";
+import dts from "vite-plugin-dts";
 
 const logMock = (name: string, warn?: string) => {
   let msg = `🎭 using ${chalk.blue(name)} mock`;
@@ -56,7 +57,10 @@ export default defineConfig(({ command, mode }) => {
   return {
     plugins: [
       react(),
-      // dts(), // Generate the types. vite-plugin-dts
+      dts({
+        tsconfigPath: pathToDir("./tsconfig.app.json"),
+        rollupTypes: true,
+      }),
     ],
 
     // TODO
