@@ -40,19 +40,20 @@ export default defineConfig(({ command, mode }) => {
       throw new Error(`Unknown mode: ${mode}`);
   }
 
-  const mocksAlias: Record<string, string> = {};
-  if (mockZod) {
-    logMock("Zod", "Be sure that types are in sync with the Backend");
+  // TODO
+  // const mocksAlias: Record<string, string> = {};
+  // if (mockZod) {
+  //   logMock("Zod", "Be sure that types are in sync with the Backend");
 
-    mocksAlias["zod"] = pathToDir("./mock_modules/zod.mock.ts");
-  }
-  if (mockReactQuery) {
-    logMock("React-Query");
+  //   mocksAlias["zod"] = pathToDir("../../mock_modules/zod.mock.ts");
+  // }
+  // if (mockReactQuery) {
+  //   logMock("React-Query");
 
-    mocksAlias["@tanstack/react-query"] = pathToDir(
-      "./mock_modules/react-query.mock.tsx"
-    );
-  }
+  //   mocksAlias["@tanstack/react-query"] = pathToDir(
+  //     "../../mock_modules/react-query.mock.tsx"
+  //   );
+  // }
 
   return {
     plugins: [
@@ -64,7 +65,7 @@ export default defineConfig(({ command, mode }) => {
     ],
 
     // TODO
-    // resolve: { alias : mocksAlias },
+    // resolve: { alias: mocksAlias },
 
     // BUILD
     define: {
@@ -81,7 +82,16 @@ export default defineConfig(({ command, mode }) => {
       },
       copyPublicDir: false, // The only public file is mock data
 
-      // TODO: Add rollupOptions: { external: ["react"], output: { globals: { react: 'React' } } to avoid including React in the bundle
+      rollupOptions: {
+        external: ["react", "@tanstack/react-query", "zod"],
+        output: {
+          globals: {
+            react: "React",
+            "@tanstack/react-query": "ReactQuery",
+            zod: "Zod",
+          },
+        },
+      },
       //       Maybe peerDependencies ? Find example on https://github.com/bitovi/react-to-web-component
     },
   };

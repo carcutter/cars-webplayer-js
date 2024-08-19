@@ -17,24 +17,22 @@
     "analyze:light": "yarn analyze --mode light",
     "analyze:safe": "yarn analyze --mode safe",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "generate_json_schema": "tsx ./scripts/generate_json_schema.ts",
-    "migrate_composition": "tsx ./scripts/migrate_composition.ts"
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@r2wc/react-to-web-component": "^2.0.3",
-    "@tanstack/react-query": "^5.45.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "zod": "^3.23.8"
+    "@car-cutter/core-webplayer": "*"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": ">=4.0.0",
+    "react": ">=16.8.0",
+    "zod": ">=3.0.0"
   },
   "devDependencies": {
-    "@car-cutter/core-webplayer": "*",
-    "@tanstack/eslint-plugin-query": "^5.47.0",
+    "@tanstack/react-query": "^5.51.23",
+    "@tanstack/eslint-plugin-query": "^5.51.15",
     "@types/eslint": "^9.6.0",
     "@types/node": "^20.14.7",
     "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
     "chalk": "^5.3.0",
@@ -43,12 +41,14 @@
     "prettier": "^3.3.2",
     "prettier-eslint": "^16.3.0",
     "prettier-plugin-tailwindcss": "^0.6.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "tailwindcss": "^3.4.4",
-    "tsx": "^4.16.2",
-    "typescript": "^5.2.2",
-    "vite": "^5.3.1",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.1",
     "vite-bundle-visualizer": "^1.2.1",
     "vite-plugin-dts": "^4.0.3",
-    "zod-to-json-schema": "^3.23.1"
+    "zod": "^3.23.8",
+    "zod-to-json-schema": "^3.23.2"
   }
 }

@@ -5,10 +5,13 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "lint": "turbo lint"
+    "lint": "turbo lint",
+    "generate_json_schema": "tsx ./scripts/generate_json_schema.ts",
+    "migrate_composition": "tsx ./scripts/migrate_composition.ts"
   },
   "devDependencies": {
-    "turbo": "^2.0.12"
+    "tsx": "^4.16.2",
+    "turbo": "^2.0.14"
   },
   "packageManager": "yarn@1.22.22",
   "workspaces": [
