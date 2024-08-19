@@ -1,4 +1,5 @@
-import type { AspectRatio } from "../types/misc";
+import type { AspectRatio } from "@car-cutter/core-webplayer";
+
 import type { PositionX, PositionY, Position } from "../types/position";
 import { extractPositions } from "../utils/position";
 

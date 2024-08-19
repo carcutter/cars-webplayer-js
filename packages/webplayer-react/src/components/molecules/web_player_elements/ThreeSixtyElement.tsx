@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import type { ImageWithHotspots, Item } from "@car-cutter/core-webplayer";
+
 import { useControlsContext } from "../../../providers/ControlsContext";
 import { useGlobalContext } from "../../../providers/GlobalContext";
-import type { ImageWithHotspots, Item } from "../../../types/composition";
 import CdnImage from "../../atoms/CdnImage";
 import PlayIcon from "../../icons/PlayIcon";
 import ThreeSixtyIcon from "../../icons/ThreeSixtyIcon";

@@ -1,13 +1,12 @@
 import type { Composition, ImageWidth } from "./types";
+import { CompositionSchema } from "./types/zod/composition";
 
 export async function getComposition(url: string): Promise<Composition> {
   const res = await fetch(url);
   // TODO: Check if the response is valid ?
   const data: unknown = await res.json();
 
-  const parsedData = data as Composition;
-  // TODO: Check if the data is valid ?
-  // const parsedData = CompositionSchema.parse(data);
+  const parsedData = CompositionSchema.parse(data);
 
   return parsedData;
 }

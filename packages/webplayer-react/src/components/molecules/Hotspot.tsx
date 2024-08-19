@@ -1,6 +1,7 @@
+import type { Hotspot as HotspotType } from "@car-cutter/core-webplayer";
+
 import { useControlsContext } from "../../providers/ControlsContext";
 import { useCustomizationContext } from "../../providers/CustomizationContext";
-import type { Hotspot as HotspotType } from "../../types/composition";
 import ImageIcon from "../icons/ImageIcon";
 
 type HotspotProps = {

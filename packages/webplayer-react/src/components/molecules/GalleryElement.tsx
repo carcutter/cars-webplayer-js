@@ -1,5 +1,6 @@
+import type { Item } from "@car-cutter/core-webplayer";
+
 import { useCompositionContext } from "../../providers/CompositionContext";
-import type { Item } from "../../types/composition";
 import CdnImage from "../atoms/CdnImage";
 import PlayIcon from "../icons/PlayIcon";
 import ThreeSixtyIcon from "../icons/ThreeSixtyIcon";

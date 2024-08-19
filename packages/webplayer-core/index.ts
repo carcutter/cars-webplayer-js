@@ -8,13 +8,11 @@ export type {
   ImageWidth,
   Hotspot,
   ImageWithHotspots,
-  ImageItem,
-  VideoItem,
-  OmniDirectionalItem,
-  Item360,
   Item,
   Category,
   Composition,
 } from "./src/types";
+
+export { ImageWidthSchema } from "./src/types/zod/misc";
 
 export { getComposition, cdnImgSrcWithWidth } from "./src/utils";

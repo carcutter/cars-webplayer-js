@@ -1,5 +1,6 @@
+import type { ImageWithHotspots } from "@car-cutter/core-webplayer";
+
 import { useControlsContext } from "../../../providers/ControlsContext";
-import type { ImageWithHotspots } from "../../../types/composition";
 import ZoomableCdnImage, {
   type ZoomableCdnImageProps,
 } from "../../atoms/ZoomableCdnImage";

@@ -9,6 +9,9 @@
   "scripts": {
     "build": "tsc -b && vite build"
   },
+  "peerDependencies": {
+    "zod": ">=3.0.0"
+  },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",

@@ -1,8 +1,9 @@
 import { useMemo } from "react";
 
+import { cdnImgSrcWithWidth } from "@car-cutter/core-webplayer";
+
 import { useCompositionContext } from "../../providers/CompositionContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
-import { cdnImgSrcWithWidth } from "../../utils/car-cutter";
 
 export type CdnImageProps = Omit<
   React.ComponentPropsWithoutRef<"img">,

@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import type { Item } from "@car-cutter/core-webplayer";
+
 import { useCompositionContext } from "../../providers/CompositionContext";
 import { useControlsContext } from "../../providers/ControlsContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
-import type { Item } from "../../types/composition";
 import { clamp } from "../../utils/math";
 import GalleryElement from "../molecules/GalleryElement";
 

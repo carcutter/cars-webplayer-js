@@ -1,4 +1,4 @@
-import type { Item } from "../../../types/composition";
+import type { Item } from "@car-cutter/core-webplayer";
 
 type Props = { item: Extract<Item, { type: "omni_directional" }> };
 

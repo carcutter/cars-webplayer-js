@@ -1,5 +1,6 @@
+import type { Item } from "@car-cutter/core-webplayer";
+
 import { useCompositionContext } from "../../providers/CompositionContext";
-import type { Item } from "../../types/composition";
 
 import ImageElement from "./web_player_elements/ImageElement";
 import OmniDirectionElement from "./web_player_elements/OmniDirectionElement";

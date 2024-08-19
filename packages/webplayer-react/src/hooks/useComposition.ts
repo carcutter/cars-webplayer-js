@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { ZodError } from "zod";
 
-import { getComposition } from "../utils/car-cutter";
+import { getComposition } from "@car-cutter/core-webplayer";
 
 export const useComposition = (url: string) => {
   return useQuery({

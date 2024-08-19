@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { ImageWidthSchema } from "./misc";
+import { ImageWidthSchema } from "@car-cutter/core-webplayer";
 
 export const ImageLoadStrategySchema = z.union([
   z.literal("quality"),

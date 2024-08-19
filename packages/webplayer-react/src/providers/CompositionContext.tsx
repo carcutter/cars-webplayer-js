@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 
-import type { Composition } from "../types/composition";
+import type { Composition } from "@car-cutter/core-webplayer";
 
 type ContextType = Pick<
   Composition,

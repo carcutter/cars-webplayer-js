@@ -6,7 +6,8 @@
   "main": "dist/index.umd.cjs",
   "module": "dist/index.js",
   "scripts": {
-    "build": "tsc -b && vite build"
+    "build": "tsc -b && vite build",
+    "analyze": "vite-bundle-visualizer"
   },
   "dependencies": {
     "@car-cutter/core-webplayer": "*",
@@ -17,6 +18,7 @@
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
     "typescript": "^5.5.4",
-    "vite": "^5.4.1"
+    "vite": "^5.4.1",
+    "vite-bundle-visualizer": "^1.2.1"
   }
 }

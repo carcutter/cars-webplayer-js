@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import type { Item } from "@car-cutter/core-webplayer";
+
 import { useControlsContext } from "../../../providers/ControlsContext";
-import type { Item } from "../../../types/composition";
 import PlayButton from "../../atoms/PlayButton";
 import Button from "../../ui/Button";
 import ProgressBar from "../../ui/ProgressBar";
