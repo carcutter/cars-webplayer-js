@@ -1,0 +1,20 @@
+{
+  "name": "@car-cutter/vanilla-webplayer",
+  "version": "0.0.0",
+  "license": "UNLICENSED",
+  "type": "module",
+  "main": "dist/index.umd.cjs",
+  "module": "dist/index.js",
+  "scripts": {
+    "build": "tsc -b && vite build"
+  },
+  "dependencies": {
+    "@car-cutter/core-webplayer": "*",
+    "@car-cutter/react-webplayer": "*",
+    "@car-cutter/wc-webplayer": "*"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3",
+    "vite": "^5.4.1"
+  }
+}

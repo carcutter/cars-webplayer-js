@@ -1,3 +1,11 @@
-import { defineWebPlayerCustomElements } from "./src/lib";
+import {
+  checkCustomElementsDefinition,
+  defineCustomElements,
+  ensureCustomElementsDefinition,
+} from "./src/lib";
 
-export { defineWebPlayerCustomElements };
+export {
+  checkCustomElementsDefinition,
+  defineCustomElements,
+  ensureCustomElementsDefinition,
+};
