@@ -1,7 +1,8 @@
-import { Composition, ImageWidth } from "./types";
+import type { Composition, ImageWidth } from "./types";
 
 export async function getComposition(url: string): Promise<Composition> {
   const res = await fetch(url);
+  // TODO: Check if the response is valid ?
   const data: unknown = await res.json();
 
   const parsedData = data as Composition;

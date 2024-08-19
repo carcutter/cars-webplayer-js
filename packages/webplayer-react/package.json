@@ -28,6 +28,8 @@
     "zod": ">=3.0.0"
   },
   "devDependencies": {
+    "@car-cutter/eslint-config": "*",
+    "@car-cutter/typescript-config": "*",
     "@tanstack/react-query": "^5.51.23",
     "@tanstack/eslint-plugin-query": "^5.51.15",
     "@types/eslint": "^9.6.0",

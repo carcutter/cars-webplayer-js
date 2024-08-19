@@ -1,4 +1,4 @@
-import path from "path";
+import { resolve } from "path";
 
 import react from "@vitejs/plugin-react";
 import chalk from "chalk";
@@ -13,7 +13,7 @@ const logMock = (name: string, warn?: string) => {
   // eslint-disable-next-line no-console
   console.info(msg);
 };
-const pathToDir = (dir: string) => path.resolve(__dirname, dir);
+const pathToDir = (dir: string) => resolve(__dirname, dir);
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -33,7 +33,9 @@ export default defineConfig(({ command, mode }) => {
       mockReactQuery = true;
       break;
     case "production":
-      mockZod = true;
+      // TODO
+      // mockZod = true;
+      mockZod = false;
       mockReactQuery = false;
       break;
     default:
@@ -41,19 +43,19 @@ export default defineConfig(({ command, mode }) => {
   }
 
   // TODO
-  // const mocksAlias: Record<string, string> = {};
-  // if (mockZod) {
-  //   logMock("Zod", "Be sure that types are in sync with the Backend");
+  const mocksAlias: Record<string, string> = {};
+  if (mockZod) {
+    logMock("Zod", "Be sure that types are in sync with the Backend");
 
-  //   mocksAlias["zod"] = pathToDir("../../mock_modules/zod.mock.ts");
-  // }
-  // if (mockReactQuery) {
-  //   logMock("React-Query");
+    mocksAlias["zod"] = pathToDir("../../mock_modules/zod.mock.ts");
+  }
+  if (mockReactQuery) {
+    logMock("React-Query");
 
-  //   mocksAlias["@tanstack/react-query"] = pathToDir(
-  //     "../../mock_modules/react-query.mock.tsx"
-  //   );
-  // }
+    mocksAlias["@tanstack/react-query"] = pathToDir(
+      "../../mock_modules/react-query.mock.tsx"
+    );
+  }
 
   return {
     plugins: [
@@ -82,6 +84,7 @@ export default defineConfig(({ command, mode }) => {
       },
       copyPublicDir: false, // The only public file is mock data
 
+      // NOTE: Maybe smooth peerDependencies ? Find example on https://github.com/bitovi/react-to-web-components
       rollupOptions: {
         external: ["react", "@tanstack/react-query", "zod"],
         output: {
@@ -92,7 +95,6 @@ export default defineConfig(({ command, mode }) => {
           },
         },
       },
-      //       Maybe peerDependencies ? Find example on https://github.com/bitovi/react-to-web-component
     },
   };
 });

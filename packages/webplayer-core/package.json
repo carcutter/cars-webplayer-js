@@ -5,8 +5,14 @@
   "type": "module",
   "main": "dist/index.umd.cjs",
   "module": "dist/index.js",
-  "types": "index.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -b && vite build"
+  },
+  "devDependencies": {
+    "@car-cutter/eslint-config": "*",
+    "@car-cutter/typescript-config": "*",
+    "vite-plugin-dts": "^4.0.3",
+    "typescript": "^5.5.4"
   }
 }

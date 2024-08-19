@@ -10,6 +10,8 @@
     "build": "tsc -b && vite build"
   },
   "dependencies": {
+    "@car-cutter/eslint-config": "*",
+    "@car-cutter/typescript-config": "*",
     "@car-cutter/core-webplayer": "*",
     "@car-cutter/react-webplayer": "*",
     "@r2wc/react-to-web-component": "^2.0.3",
