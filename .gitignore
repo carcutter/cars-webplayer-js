@@ -1,5 +1,7 @@
 dist
 node_modules
+
 .turbo
+.next
 
 .DS_Store
