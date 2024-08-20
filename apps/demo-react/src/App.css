@@ -1,9 +1,15 @@
-/* Customize WebPlayer */
 :root {
-  --cc-primary: 189 100% 50%;
+  /* Brand's colors */
+  --brand-h: 189;
+  --brand-s: 100%;
+  --brand-l: 50%;
+  --primary: hsl(var(--brand-h), var(--brand-s), var(--brand-l));
 
-  --cc-radius-carrousel: 0.8rem;
-  --cc-radius-gallery: 0.4rem;
+  /* Customize WebPlayer */
+  --cc-webplayer-primary: var(--brand-h) var(--brand-s) var(--brand-l);
+
+  --cc-webplayer-radius-carrousel: 0.8rem;
+  --cc-webplayer-radius-gallery: 0.4rem;
 }
 
 /* Page Styles */
@@ -85,7 +91,7 @@ main {
       border-radius: 999px;
 
       &:first-child {
-        color: hsl(var(--cc-primary));
+        color: var(--primary);
         background: transparent;
         border-color: rgb(243, 243, 243);
       }
@@ -111,7 +117,7 @@ main {
       & .price {
         font-size: 36px;
         font-weight: 600;
-        color: hsl(var(--cc-primary));
+        color: var(--primary);
       }
     }
 
@@ -130,7 +136,7 @@ main {
         padding: 8px 16px;
         font-size: 16px;
 
-        border: 1px solid hsl(var(--cc-primary));
+        border: 1px solid var(--primary);
         border-radius: 4px;
 
         transition: transform 300ms;
@@ -141,7 +147,7 @@ main {
 
         &:nth-child(-n + 2) {
           background-color: white;
-          color: hsl(var(--cc-primary));
+          color: var(--primary);
         }
 
         &:nth-child(1) {
@@ -154,7 +160,7 @@ main {
         &:nth-child(3) {
           grid-area: achat;
 
-          background-color: hsl(var(--cc-primary));
+          background-color: var(--primary);
           color: white;
         }
       }
