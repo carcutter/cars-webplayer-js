@@ -1,12 +1,12 @@
 :root {
-  /* --cc-background: 0 0% 100%; */
-  /* --cc-foreground: 240 10% 3.9%; */
-  /* --cc-primary: 42 100% 52%; */
-  /* --cc-primary-foreground:; */
-  /* --cc-neutral:; */
-  /* --cc-neutral-foreground:; */
+  /* --cc-webplayer-background: 0 0% 100%; */
+  /* --cc-webplayer-foreground: 240 10% 3.9%; */
+  /* --cc-webplayer-primary: 42 100% 52%; */
+  /* --cc-webplayer-primary-foreground:; */
+  /* --cc-webplayer-neutral:; */
+  /* --cc-webplayer-neutral-foreground:; */
 
-  /* --cc-radius-ui: 0.55rem; */
-  /* --cc-radius-carrousel: 0.8rem; */
-  /* --cc-radius-gallery: 0.4rem; */
+  /* --cc-webplayer-radius-ui: 0.55rem; */
+  /* --cc-webplayer-radius-carrousel: 0.8rem; */
+  /* --cc-webplayer-radius-gallery: 0.4rem; */
 }

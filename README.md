@@ -26,28 +26,28 @@ It uses React.js with Vite.
 
 You can customise the WebPlayer CSS with CSS Variables
 
-| CSS Variable              | Description                        | Default Value     |
-| ------------------------- | ---------------------------------- | ----------------- |
-| `--cc-background`         | Background color (contrast texts)  | `0 0% 100%`       |
-| `--cc-foreground`         | Foreground color (text color)      | `240 10% 3.9%`    |
-| `--cc-primary`            | Primary color (buttons)            | `216 100% 52%`    |
-| `--cc-primary-foreground` | Foreground color for primary items | `--cc-background` |
-| `--cc-neutral`            | Neutral color                      | `0 0% 39%`        |
-| `--cc-neutral-foreground` | Foreground color for neutral items | `--cc-foreground` |
-| `--cc-radius-ui`          | UI element Border radius (buttons) | `9999px` (full)   |
-| `--cc-radius-carrousel`   | Carrousel border radius            | `0`               |
-| `--cc-radius-gallery`     | Gallery images border radius       | `0`               |
+| CSS Variable                        | Description                        | Default Value     |
+| ----------------------------------- | ---------------------------------- | ----------------- |
+| `--cc-webplayer-background`         | Background color (contrast texts)  | `0 0% 100%`       |
+| `--cc-webplayer-foreground`         | Foreground color (text color)      | `240 10% 3.9%`    |
+| `--cc-webplayer-primary`            | Primary color (buttons)            | `216 100% 52%`    |
+| `--cc-webplayer-primary-foreground` | Foreground color for primary items | `--cc-background` |
+| `--cc-webplayer-neutral`            | Neutral color                      | `0 0% 39%`        |
+| `--cc-webplayer-neutral-foreground` | Foreground color for neutral items | `--cc-foreground` |
+| `--cc-webplayer-radius-ui`          | UI element Border radius (buttons) | `9999px` (full)   |
+| `--cc-webplayer-radius-carrousel`   | Carrousel border radius            | `0`               |
+| `--cc-webplayer-radius-gallery`     | Gallery images border radius       | `0`               |
 
 ##### Example
 
 ```html
 <style>
-  cc-web-player {
-    --cc-background: 262 100% 95%;
-    --cc-foreground: 262 5% 0%;
-    --cc-primary: 262 88% 58%;
-    --cc-neutral: 262 10% 39%;
-    --cc-radius-ui: 0.8rem;
+  cc-webplayer {
+    --cc-webplayer-background: 262 100% 95%;
+    --cc-webplayer-foreground: 262 5% 0%;
+    --cc-webplayer-primary: 262 88% 58%;
+    --cc-webplayer-neutral: 262 10% 39%;
+    --cc-webplayer-radius-ui: 0.8rem;
   }
 </style>
 ```
