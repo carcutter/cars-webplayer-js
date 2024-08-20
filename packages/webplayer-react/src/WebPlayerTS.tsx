@@ -1,4 +1,3 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { WEB_PLAYER_CUSTOM_ELEMENTS_NAME } from "@car-cutter/core-webplayer";
@@ -16,8 +15,6 @@ import {
 import CustomizationContextProvider from "./providers/CustomizationContext";
 import GlobalContextProvider from "./providers/GlobalContext";
 import type { WebPlayerProps } from "./types/webPlayerProps";
-
-const queryClient = new QueryClient();
 
 const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   compositionUrl,
@@ -114,32 +111,30 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <GlobalContextProvider
-        {...{
-          ...props,
-          reverse360,
-          imageLoadStrategy,
-          flatten,
-          infiniteCarrousel,
-          eventId,
-          allowFullScreen,
-          permanentGallery,
+    <GlobalContextProvider
+      {...{
+        ...props,
+        reverse360,
+        imageLoadStrategy,
+        flatten,
+        infiniteCarrousel,
+        eventId,
+        allowFullScreen,
+        permanentGallery,
 
-          playerInViewportWidthRatio,
-          isFullScreen,
-          requestFullscreen,
-          exitFullscreen,
-        }}
-      >
-        <CustomizationContextProvider>
-          <div id="cc-webplayer-wrapper" ref={wrapperRef}>
-            <WebPlayerContainer compositionUrl={compositionUrl} />
-          </div>
-          {customizationChildren}
-        </CustomizationContextProvider>
-      </GlobalContextProvider>
-    </QueryClientProvider>
+        playerInViewportWidthRatio,
+        isFullScreen,
+        requestFullscreen,
+        exitFullscreen,
+      }}
+    >
+      <CustomizationContextProvider>
+        <div id="cc-webplayer-wrapper" ref={wrapperRef}>
+          <WebPlayerContainer compositionUrl={compositionUrl} />
+        </div>
+        {customizationChildren}
+      </CustomizationContextProvider>
+    </GlobalContextProvider>
   );
 };
 

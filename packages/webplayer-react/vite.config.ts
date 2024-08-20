@@ -1,67 +1,24 @@
 import { resolve } from "path";
 
 import react from "@vitejs/plugin-react";
-import chalk from "chalk";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
-const logMock = (name: string, warn?: string) => {
-  let msg = `🎭 using ${chalk.blue(name)} mock`;
-  if (warn) {
-    msg += ` ${chalk.yellow(warn)}`;
-  }
-  // eslint-disable-next-line no-console
-  console.info(msg);
-};
-const pathToDir = (dir: string) => resolve(__dirname, dir);
-
 // https://vitejs.dev/config/
-export default defineConfig(({ command, mode }) => {
-  const isBuild = command === "build";
-
-  let mockReactQuery: boolean;
-
-  switch (mode) {
-    case "development":
-    case "safe":
-      mockReactQuery = false;
-      break;
-    case "light":
-      mockReactQuery = true;
-      break;
-    case "production":
-      mockReactQuery = false;
-      break;
-    default:
-      throw new Error(`Unknown mode: ${mode}`);
-  }
-
-  // TODO
-  const mocksAlias: Record<string, string> = {};
-  if (mockReactQuery) {
-    logMock("React-Query");
-
-    mocksAlias["@tanstack/react-query"] = pathToDir(
-      "../../mock_modules/react-query.mock.tsx"
-    );
-  }
-
+export default defineConfig(({ mode }) => {
   return {
     plugins: [
       react(),
       dts({
-        tsconfigPath: pathToDir("./tsconfig.app.json"),
+        tsconfigPath: resolve(__dirname, "./tsconfig.app.json"),
         rollupTypes: true,
       }),
     ],
 
-    // TODO
-    // resolve: { alias: mocksAlias },
-
     // BUILD
     define: {
       "process.env": {
-        NODE_ENV: isBuild ? "production" : "development",
+        NODE_ENV: mode,
       },
     },
     // FUTURE: Find a way to build in watch mode. The simple script "watch": "vite build --watch" does not work because it does not rebuild the TS.
@@ -69,17 +26,16 @@ export default defineConfig(({ command, mode }) => {
       lib: {
         name: "react-webplayer",
         fileName: "index",
-        entry: pathToDir("./index.ts"),
+        entry: resolve(__dirname, "./index.ts"),
       },
       copyPublicDir: false, // The only public file is mock data
 
-      // NOTE: Maybe smooth peerDependencies ? Find example on https://github.com/bitovi/react-to-web-components
+      // React is an external dependency, it should be provided by the consumer
       rollupOptions: {
-        external: ["react", "@tanstack/react-query"],
+        external: ["react"],
         output: {
           globals: {
             react: "React",
-            "@tanstack/react-query": "ReactQuery",
           },
         },
       },

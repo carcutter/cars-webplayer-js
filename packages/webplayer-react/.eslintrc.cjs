@@ -5,7 +5,6 @@ module.exports = {
   extends: [
     "@car-cutter/eslint-config/react.json",
     "plugin:tailwindcss/recommended",
-    "plugin:@tanstack/eslint-plugin-query/recommended",
   ],
 
   settings: {

@@ -1,8 +1,14 @@
 import type { Composition, ImageWidth } from "./types";
 
-export async function getComposition(url: string): Promise<Composition> {
-  const res = await fetch(url);
-  // TODO: Check if the response is valid ?
+export async function getComposition(
+  url: string,
+  signal?: AbortSignal
+): Promise<Composition> {
+  const res = await fetch(url, { signal });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch composition: ${res.statusText}`);
+  }
 
   const data = (await res.json()) as Composition;
 
