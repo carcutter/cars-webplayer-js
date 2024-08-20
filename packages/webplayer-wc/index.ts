@@ -2,4 +2,6 @@ export {
   checkCustomElementsDefinition,
   defineCustomElements,
   ensureCustomElementsDefinition,
-} from "./src/lib";
+} from "./src/wc";
+
+export { camelToDashedCase, dashedToCamelCase } from "./src/utils";

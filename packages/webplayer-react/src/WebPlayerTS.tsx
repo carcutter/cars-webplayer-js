@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { WEB_PLAYER_CUSTOM_ELEMENTS_NAME } from "@car-cutter/core-webplayer";
+import { WEB_PLAYER_WC_TAG } from "@car-cutter/core-webplayer";
 
 import WebPlayerContainer from "./components/organisms/WebPlayerContainer";
 import {
@@ -82,7 +82,7 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
       setIsFullScreen(
         fullscreenElement === wrapper ||
           // NOTE: For custom element, the web browser is making the whole custom element full-screen and not only the wrapper
-          fullscreenElement?.localName === WEB_PLAYER_CUSTOM_ELEMENTS_NAME
+          fullscreenElement?.localName === WEB_PLAYER_WC_TAG
       );
     };
 

@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useState } from "react";
 
-import { WEB_PLAYER_ICON_CUSTOM_ELEMENTS_NAME } from "@car-cutter/core-webplayer";
+import { WEB_PLAYER_ICON_WC_TAG } from "@car-cutter/core-webplayer";
 
 type IconConfig = {
   Icon: React.ReactNode;
@@ -55,7 +55,7 @@ const CustomizationContextProvider: React.FC<
 
       // Check if the key has been customized in the DOM (CASE WHEN USING WEB COMPONENTS)
       const domElement = document.querySelector(
-        `${WEB_PLAYER_ICON_CUSTOM_ELEMENTS_NAME}[name="${key}"]`
+        `${WEB_PLAYER_ICON_WC_TAG}[name="${key}"]`
       );
 
       if (!domElement) {

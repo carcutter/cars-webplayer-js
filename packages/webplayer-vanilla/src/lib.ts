@@ -1,10 +1,9 @@
-import { WEB_PLAYER_CUSTOM_ELEMENTS_NAME } from "@car-cutter/core-webplayer";
+import { WEB_PLAYER_WC_TAG } from "@car-cutter/core-webplayer";
 import { WebPlayerProps } from "@car-cutter/react-webplayer";
-import { ensureCustomElementsDefinition } from "@car-cutter/wc-webplayer";
-
-function camelToKebabCase(str: string) {
-  return str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
-}
+import {
+  camelToDashedCase,
+  ensureCustomElementsDefinition,
+} from "@car-cutter/wc-webplayer";
 
 export function appendWebPlayerElement(
   parentElement: HTMLElement,
@@ -12,10 +11,11 @@ export function appendWebPlayerElement(
 ) {
   ensureCustomElementsDefinition();
 
-  const elmt = document.createElement(WEB_PLAYER_CUSTOM_ELEMENTS_NAME);
+  const elmt = document.createElement(WEB_PLAYER_WC_TAG);
 
+  // Set attributes (HTML attributes are using dashed-case)
   Object.entries(config).forEach(([key, value]) => {
-    elmt.setAttribute(camelToKebabCase(key), value.toString());
+    elmt.setAttribute(camelToDashedCase(key), value.toString());
   });
 
   parentElement.appendChild(elmt);
