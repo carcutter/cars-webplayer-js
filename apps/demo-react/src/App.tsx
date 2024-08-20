@@ -1,37 +1,85 @@
 import { WebPlayer } from "@car-cutter/react-webplayer";
 
-function App() {
-  return (
-    <div>
-      <div
-        style={{
-          padding: "1rem",
-          marginBottom: "1rem",
-          borderBottom: "1px solid #000",
-        }}
-      >
-        <h2
-          style={{
-            fontSize: "1.5rem",
-          }}
-        >
-          React-App
-        </h2>
-      </div>
+import reactLogo from "./assets/react.svg";
 
-      <div
-        style={{
-          maxWidth: "800px",
-          marginInline: "auto",
-        }}
-      >
-        <WebPlayer
-          compositionUrl="https://cdn.car-cutter.com/gallery/767f46375d752707fcb76a19b8b22bc0040bd3ff59abc43d1c19eb0c04785c68/TEST1/composition_v3.json"
-          flatten
-        />
-      </div>
-    </div>
+import "./App.css";
+
+const App = () => {
+  return (
+    <>
+      <header className="header">
+        <div className="header__container">
+          <div className="header__left">
+            <img
+              style={{ height: "40px" }}
+              src={reactLogo}
+              className="logo react"
+              alt="React logo"
+            />
+
+            <nav className="header__nav">
+              <a href="#">Prestation</a>
+              <a href="#">Succursale</a>
+            </nav>
+          </div>
+          <a href="#">Vers le site le plus proche</a>
+        </div>
+      </header>
+
+      <main className="main">
+        <div className="main__left">
+          <WebPlayer
+            compositionUrl="https://cdn.car-cutter.com/gallery/767f46375d752707fcb76a19b8b22bc0040bd3ff59abc43d1c19eb0c04785c68/TEST1/composition_v3.json"
+            flatten={true}
+            infiniteCarrousel={true}
+            permanentGallery={true}
+          />
+        </div>
+
+        <div className="main__right">
+          <div>
+            <div className="titles">
+              <h1>Volkswagen - Passat 2.0 TDI SCR DSG 4MOT Alltrack</h1>
+              <h2>Passat 2.0 TDI SCR DSG 4MOT Alltrack Servotronic</h2>
+            </div>
+          </div>
+
+          <div className="features">
+            <span>Eningen unter Achalm</span>
+            <span>occasion</span>
+            <span>108.000 km</span>
+            <span>EZ 08/2017</span>
+            <span>239 PS</span>
+            <span>Diesel</span>
+            <span>Vollleder</span>
+            <span>Regensensor</span>
+            <span>Leichtmetallfelgen</span>
+            <span>Bluetooth</span>
+            <span>Sitzheizung</span>
+            <span>+ 5 autres</span>
+          </div>
+
+          <p>
+            Consommation comb.: 6,0 l/100 km; Émissions de CO2: 157 g/km; Classe
+            CO2: F (WLTP)
+          </p>
+
+          <div className="payment">
+            <h3>Mode de paiement</h3>
+            <div className="price-infos">
+              <span>Price d&apos;achat</span>
+              <span className="price">23.860 €</span>
+            </div>
+            <div className="buttons">
+              <button>Demande de contact sans engagement</button>
+              <button>Vers le site</button>
+              <button>Vers la demande d&apos;achat</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </>
   );
-}
+};
 
 export default App;
