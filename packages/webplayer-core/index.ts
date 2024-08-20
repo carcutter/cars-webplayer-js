@@ -13,6 +13,4 @@ export type {
   Composition,
 } from "./src/types";
 
-export { ImageWidthSchema } from "./src/types/zod/misc";
-
 export { getComposition, cdnImgSrcWithWidth } from "./src/utils";

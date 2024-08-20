@@ -1,8 +1,10 @@
 import { z } from "zod";
 
+import { Category, Composition, Hotspot, Item } from "../composition";
+
 import { AspectRatioSchema, ImageWidthSchema } from "./misc";
 
-export const HotspotSchema = z.object({
+const HotspotSchema = z.object({
   feature: z.string(),
   position: z.object({
     x: z.number(),
@@ -20,14 +22,14 @@ export const HotspotSchema = z.object({
       src: z.string(),
     })
     .optional(),
-});
+}) satisfies z.ZodSchema<Hotspot>;
 
-export const ImageWithHotspotsSchema = z.object({
+const ImageWithHotspotsSchema = z.object({
   src: z.string(),
   hotspots: z.array(HotspotSchema).optional(),
 });
 
-export const ItemSchema = z.discriminatedUnion("type", [
+const ItemSchema = z.discriminatedUnion("type", [
   z
     .object({
       type: z.literal("image"),
@@ -46,17 +48,17 @@ export const ItemSchema = z.discriminatedUnion("type", [
     type: z.literal("omni_directional"),
     src: z.string(),
   }),
-]);
+]) satisfies z.ZodSchema<Item>;
 
-export const CategorySchema = z.object({
+const CategorySchema = z.object({
   id: z.string(),
   title: z.string(),
   items: z.array(ItemSchema),
-});
+}) satisfies z.ZodSchema<Category>;
 
 export const CompositionSchema = z.object({
   aspectRatio: AspectRatioSchema,
   imageHdWidth: ImageWidthSchema,
   imageSubWidths: z.array(ImageWidthSchema),
   categories: z.array(CategorySchema),
-});
+}) satisfies z.ZodSchema<Composition>;

@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-import { ImageWidthSchema } from "@car-cutter/core-webplayer";
-
 export const ImageLoadStrategySchema = z.union([
   z.literal("quality"),
   z.literal("speed"),
@@ -12,8 +10,8 @@ export const WebPlayerPropsSchema = z.object({
 
   reverse360: z.boolean().optional(),
 
-  minImageWidth: ImageWidthSchema.optional(),
-  maxImageWidth: ImageWidthSchema.optional(),
+  minImageWidth: z.number().optional(),
+  maxImageWidth: z.number().optional(),
   imageLoadStrategy: ImageLoadStrategySchema.optional(),
 
   flatten: z.boolean().optional(),

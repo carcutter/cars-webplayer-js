@@ -1,19 +1,55 @@
-import type { z } from "zod";
+import { AspectRatio, ImageWidth } from "./misc";
 
-import type {
-  CategorySchema,
-  CompositionSchema,
-  HotspotSchema,
-  ImageWithHotspotsSchema,
-  ItemSchema,
-} from "./zod/composition";
+export type Hotspot = {
+  feature: string;
+  position: {
+    x: number;
+    y: number;
+  };
+  description?: {
+    short: string;
+    long?: string;
+  };
+  detail?: {
+    type: "image" | "link" | "pdf";
+    src: string;
+  };
+};
 
-export type Hotspot = z.infer<typeof HotspotSchema>;
+export type ImageWithHotspots = {
+  src: string;
+  hotspots?: Hotspot[];
+};
 
-export type ImageWithHotspots = z.infer<typeof ImageWithHotspotsSchema>;
+type ImageItem = { type: "image" } & ImageWithHotspots;
 
-export type Item = z.infer<typeof ItemSchema>;
+type VideoItem = {
+  type: "video";
+  src: string;
+  poster: string;
+};
 
-export type Category = z.infer<typeof CategorySchema>;
+type ThreeSixtyItem = {
+  type: "360";
+  images: ImageWithHotspots[];
+};
 
-export type Composition = z.infer<typeof CompositionSchema>;
+type OmniDirectionalItem = {
+  type: "omni_directional";
+  src: string;
+};
+
+export type Item = ImageItem | VideoItem | ThreeSixtyItem | OmniDirectionalItem;
+
+export type Category = {
+  id: string;
+  title: string;
+  items: Item[];
+};
+
+export type Composition = {
+  aspectRatio: AspectRatio;
+  imageHdWidth: ImageWidth;
+  imageSubWidths: ImageWidth[];
+  categories: Category[];
+};

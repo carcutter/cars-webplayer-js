@@ -7,7 +7,8 @@
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -b && vite build"
+    "build": "tsc -b && vite build",
+    "analyze": "vite-bundle-visualizer"
   },
   "peerDependencies": {
     "zod": ">=3.0.0"
@@ -15,7 +16,9 @@
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
-    "vite-plugin-dts": "^4.0.3",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "vite": "^5.4.1",
+    "vite-bundle-visualizer": "^1.2.1",
+    "vite-plugin-dts": "^4.0.3"
   }
 }
