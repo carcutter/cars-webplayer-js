@@ -18,5 +18,15 @@ export default defineConfig({
       fileName: "index",
       entry: resolve(__dirname, "./index.ts"),
     },
+
+    // Vue is an external dependency, it should be provided by the consumer
+    rollupOptions: {
+      external: ["vue"],
+      output: {
+        globals: {
+          vue: "Vue",
+        },
+      },
+    },
   },
 });

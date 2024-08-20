@@ -8,11 +8,13 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -b && vite build",
+    "lint": "eslint . --ext ts --max-warnings 0",
     "analyze": "vite-bundle-visualizer"
   },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
+    "eslint": "^8.57.0",
     "typescript": "^5.5.4",
     "vite": "^5.4.1",
     "vite-bundle-visualizer": "^1.2.1",

@@ -9,9 +9,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "analyze": "vite-bundle-visualizer",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "lint": "eslint . --ext ts,tsx --max-warnings 0",
+    "analyze": "vite-bundle-visualizer"
   },
   "dependencies": {
     "@car-cutter/core-webplayer": "*"
