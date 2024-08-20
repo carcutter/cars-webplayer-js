@@ -1,4 +1,4 @@
-import path from "path";
+import { resolve } from "path";
 
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
@@ -15,7 +15,7 @@ export default defineConfig({
     lib: {
       name: "wc-webplayer",
       fileName: "index",
-      entry: path.resolve(__dirname, "./index.ts"),
+      entry: resolve(__dirname, "./index.ts"),
     },
   },
 });
