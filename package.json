@@ -1,16 +1,13 @@
 {
-  "name": "cars-webplayer-react",
+  "name": "cars-webplayer",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "lint": "turbo lint",
-    "generate_json_schema": "tsx ./scripts/generate_json_schema.ts",
-    "migrate_composition": "tsx ./scripts/migrate_composition.ts"
+    "lint": "turbo lint"
   },
   "devDependencies": {
-    "tsx": "^4.16.2",
     "turbo": "^2.0.14"
   },
   "packageManager": "yarn@1.22.22",

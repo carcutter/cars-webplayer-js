@@ -1,0 +1,9 @@
+{
+  "root": true,
+
+  "extends": "@car-cutter/eslint-config/base.json",
+
+  "rules": {
+    "no-console": "off"
+  }
+}

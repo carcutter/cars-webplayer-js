@@ -1,16 +1,5 @@
 {
   "root": true,
 
-  "extends": "@car-cutter/eslint-config/base.json",
-
-  "overrides": [
-    {
-      // -- Script files
-      "files": ["scripts/*.ts"],
-
-      "rules": {
-        "no-console": "off"
-      }
-    }
-  ]
+  "extends": "@car-cutter/eslint-config/base.json"
 }
