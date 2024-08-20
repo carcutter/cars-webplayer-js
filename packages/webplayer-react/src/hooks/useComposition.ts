@@ -29,7 +29,7 @@ type State =
       error: unknown;
     };
 
-export function useComposition(url: string) {
+export const useComposition = (url: string) => {
   const [state, setState] = useState<State>({
     status: "pending",
     isSuccess: false,
@@ -52,8 +52,6 @@ export function useComposition(url: string) {
       isSuccess: false,
     });
 
-    const controller = new AbortController();
-
     // Run the query
     (async function () {
       try {
@@ -63,7 +61,7 @@ export function useComposition(url: string) {
         if (cachedValue) {
           data = await cachedValue;
         } else {
-          const promise = getComposition(url, controller.signal);
+          const promise = getComposition(url);
           cache.set(url, promise);
 
           data = await promise;
@@ -75,15 +73,11 @@ export function useComposition(url: string) {
         setState({
           status: "error",
           isSuccess: false,
-          error: err as Error,
+          error: err,
         });
       }
     })();
-
-    return () => {
-      controller.abort();
-    };
   }, [url]);
 
   return state;
-}
+};
