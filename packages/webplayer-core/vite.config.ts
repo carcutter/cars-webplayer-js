@@ -22,13 +22,5 @@ export default defineConfig({
       fileName: "index",
       entry: resolve(__dirname, "./index.ts"),
     },
-    rollupOptions: {
-      external: ["zod"],
-      output: {
-        globals: {
-          zod: "Zod",
-        },
-      },
-    },
   },
 });

@@ -19,23 +19,17 @@ const pathToDir = (dir: string) => resolve(__dirname, dir);
 export default defineConfig(({ command, mode }) => {
   const isBuild = command === "build";
 
-  let mockZod: boolean;
   let mockReactQuery: boolean;
 
   switch (mode) {
     case "development":
     case "safe":
-      mockZod = false;
       mockReactQuery = false;
       break;
     case "light":
-      mockZod = true;
       mockReactQuery = true;
       break;
     case "production":
-      // TODO
-      // mockZod = true;
-      mockZod = false;
       mockReactQuery = false;
       break;
     default:
@@ -44,11 +38,6 @@ export default defineConfig(({ command, mode }) => {
 
   // TODO
   const mocksAlias: Record<string, string> = {};
-  if (mockZod) {
-    logMock("Zod", "Be sure that types are in sync with the Backend");
-
-    mocksAlias["zod"] = pathToDir("../../mock_modules/zod.mock.ts");
-  }
   if (mockReactQuery) {
     logMock("React-Query");
 
@@ -86,12 +75,11 @@ export default defineConfig(({ command, mode }) => {
 
       // NOTE: Maybe smooth peerDependencies ? Find example on https://github.com/bitovi/react-to-web-components
       rollupOptions: {
-        external: ["react", "@tanstack/react-query", "zod"],
+        external: ["react", "@tanstack/react-query"],
         output: {
           globals: {
             react: "React",
             "@tanstack/react-query": "ReactQuery",
-            zod: "Zod",
           },
         },
       },

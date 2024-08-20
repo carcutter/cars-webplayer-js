@@ -56,14 +56,14 @@ You can customise the WebPlayer CSS with CSS Variables
 
 To accommodate different needs, the WebPlayer offers various modes that allow excluding external libraries for a lighter bundle.
 
-| Modes       | React-Query | Zod  |
-| ----------- | ----------- | ---- |
-| Size        | 30kB        | 60kB |
-| Size (gzip) | 8kB         | 14kB |
-|             |             |      |
-| Production  | ✅          | ❌   |
-| Light       | ❌          | ❌   |
-| Safe / Dev' | ✅          | ✅   |
+| Modes       | React-Query |
+| ----------- | ----------- |
+| Size        | 30kB        |
+| Size (gzip) | 8kB         |
+|             |             |
+| Production  | ✅          |
+| Light       | ❌          |
+| Safe / Dev' | ✅          |
 
 ## Development
 

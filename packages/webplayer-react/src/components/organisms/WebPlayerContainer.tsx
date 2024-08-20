@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { ZodError } from "zod";
 
 import { useComposition } from "../../hooks/useComposition";
 import CompositionContextProvider, {
@@ -183,12 +182,7 @@ const WebPlayerContainer: React.FC<WebPlayerContainerProps> = ({
 
   if (error) {
     // TODO
-    return (
-      <ErrorTemplate
-        title="Failed to fetch composition"
-        error={error instanceof ZodError ? error.issues : error}
-      />
-    );
+    return <ErrorTemplate title="Failed to fetch composition" error={error} />;
   }
 
   if (!isSuccess) {

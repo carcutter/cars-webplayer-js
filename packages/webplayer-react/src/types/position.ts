@@ -1,11 +1,9 @@
-import type { z } from "zod";
-
 import type {
-  PositionSchema,
-  PositionXschema,
-  PositionYschema,
-} from "./zod/position";
+  positionList,
+  positionXlist,
+  positionYlist,
+} from "../const/position";
 
-export type PositionX = z.infer<typeof PositionXschema>;
-export type PositionY = z.infer<typeof PositionYschema>;
-export type Position = z.infer<typeof PositionSchema>;
+export type PositionX = (typeof positionXlist)[number];
+export type PositionY = (typeof positionYlist)[number];
+export type Position = (typeof positionList)[number];

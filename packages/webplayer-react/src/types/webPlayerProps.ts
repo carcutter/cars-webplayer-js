@@ -1,10 +1,20 @@
-import type { z } from "zod";
+export type ImageLoadStrategy = "quality" | "speed";
 
-import type {
-  ImageLoadStrategySchema,
-  WebPlayerPropsSchema,
-} from "./zod/webPlayerProps";
+export type WebPlayerProps = {
+  compositionUrl: string;
 
-export type ImageLoadStrategy = z.infer<typeof ImageLoadStrategySchema>;
+  reverse360?: boolean;
 
-export type WebPlayerProps = z.infer<typeof WebPlayerPropsSchema>;
+  minImageWidth?: number;
+  maxImageWidth?: number;
+  imageLoadStrategy?: ImageLoadStrategy;
+
+  flatten?: boolean;
+  infiniteCarrousel?: boolean;
+
+  eventId?: string;
+
+  allowFullScreen?: boolean;
+
+  permanentGallery?: boolean;
+};

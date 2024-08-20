@@ -3,7 +3,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { WEB_PLAYER_CUSTOM_ELEMENTS_NAME } from "@car-cutter/core-webplayer";
 
-import withZodSchema from "./components/hoc/withZodSchema";
 import WebPlayerContainer from "./components/organisms/WebPlayerContainer";
 import {
   DEFAULT_ALLOW_FULL_SCREEN,
@@ -17,11 +16,10 @@ import {
 import CustomizationContextProvider from "./providers/CustomizationContext";
 import GlobalContextProvider from "./providers/GlobalContext";
 import type { WebPlayerProps } from "./types/webPlayerProps";
-import { WebPlayerPropsSchema } from "./types/zod/webPlayerProps";
 
 const queryClient = new QueryClient();
 
-const WebPlayerUnsafe: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
+const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   compositionUrl,
 
   reverse360 = DEFAULT_REVERSE_360,
@@ -144,7 +142,5 @@ const WebPlayerUnsafe: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
     </QueryClientProvider>
   );
 };
-
-const WebPlayerTS = withZodSchema(WebPlayerUnsafe, WebPlayerPropsSchema);
 
 export default WebPlayerTS;
