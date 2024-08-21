@@ -58,6 +58,8 @@ main {
 .main__left {
   min-width: 0;
   flex: 7;
+
+  padding-inline: 0.5rem;
 }
 
 .main__right {
