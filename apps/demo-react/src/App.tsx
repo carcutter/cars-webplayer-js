@@ -10,12 +10,7 @@ const App = () => {
       <header className="header">
         <div className="header__container">
           <div className="header__left">
-            <img
-              style={{ height: "40px" }}
-              src={reactLogo}
-              className="logo react"
-              alt="React logo"
-            />
+            <img src={reactLogo} className="header__logo" alt="React logo" />
 
             <nav className="header__nav">
               <a href="#">Prestation</a>
@@ -30,9 +25,9 @@ const App = () => {
         <div className="main__left">
           <WebPlayer
             compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
-            flatten={true}
-            infiniteCarrousel={true}
-            permanentGallery={true}
+            flatten
+            infiniteCarrousel
+            permanentGallery
           />
         </div>
 

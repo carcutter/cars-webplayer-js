@@ -28,6 +28,14 @@
       display: flex;
       align-items: center;
       column-gap: 32px;
+
+      & .header__logo {
+        height: 36px;
+
+        color: var(--primary);
+
+        animation: rotate 16s linear infinite;
+      }
     }
 
     & .header__nav {
@@ -171,10 +179,8 @@ main {
 /* RESPONSIVE */
 
 @media (max-width: 1000px) {
-  header {
-    .header__nav {
-      display: none;
-    }
+  .header .header__container .header__nav {
+    display: none;
   }
 
   main {
@@ -208,8 +214,19 @@ main {
 }
 
 @media (min-width: 768px) {
-  header {
+  .header {
     margin-bottom: 20px;
     box-shadow: rgba(38, 38, 38, 0.15) 0px 0.4rem 2.4rem 0px;
+  }
+}
+
+/* Animation */
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
