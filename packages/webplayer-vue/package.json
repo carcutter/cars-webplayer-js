@@ -8,6 +8,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "vue-tsc -b && vite build",
+    "lint": "eslint . --ext ts --max-warnings 0",
     "analyze": "vite-bundle-visualizer"
   },
   "dependencies": {
@@ -19,6 +20,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.1.2",
+    "eslint": "^8.57.0",
     "typescript": "^5.5.3",
     "vite": "^5.4.1",
     "vite-bundle-visualizer": "^1.2.1",

@@ -64,7 +64,7 @@ Run `yarn build` to build all packages
 
 ### Linting
 
-Run `yarn lint`. You can also add the flag `--fix` to automatically fix "fixable" linting errors.
+Run `yarn lint`
 
 ### Useful scripts
 

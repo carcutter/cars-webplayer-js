@@ -5,7 +5,9 @@
   "type": "module",
   "main": "dist/bundle.js",
   "scripts": {
-    "build": "tsc -b && vite build"
+    "build": "tsc -b && vite build",
+    "lint": "eslint . --ext ts --max-warnings 0",
+    "analyze": "vite-bundle-visualizer"
   },
   "dependencies": {
     "@car-cutter/wc-webplayer": "*"
@@ -14,6 +16,7 @@
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
     "typescript": "^5.5.4",
-    "vite": "^5.4.1"
+    "vite": "^5.4.1",
+    "vite-bundle-visualizer": "^1.2.1"
   }
 }
