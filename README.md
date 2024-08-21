@@ -1,4 +1,4 @@
-# Car-Cutter Webplayer Monorepo
+# Car-Cutter WebPlayer Monorepo
 
 This monorepo hosts the WebPlayer project, which includes multiple demo applications and several packages for different web technologies. The project is structured to support various frameworks and libraries, enabling reusable components and configurations.
 
