@@ -3,6 +3,13 @@ import type { AspectRatio } from "@car-cutter/core-webplayer";
 import type { PositionX, PositionY, Position } from "../types/position";
 import { extractPositions } from "../utils/position";
 
+export function cn(...inputs: (string | false | null | undefined)[]): string {
+  return inputs
+    .filter((v): v is string => !!v)
+    .map(str => str.trim())
+    .join(" ");
+}
+
 export function positionXToClassName(positionX: PositionX): string {
   switch (positionX) {
     case "left":

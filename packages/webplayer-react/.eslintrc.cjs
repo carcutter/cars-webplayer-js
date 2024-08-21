@@ -10,6 +10,8 @@ module.exports = {
   settings: {
     tailwindcss: {
       config: path.join(__dirname, "./tailwind.config.ts"),
+
+      callees: ["cn"],
     },
   },
 };
