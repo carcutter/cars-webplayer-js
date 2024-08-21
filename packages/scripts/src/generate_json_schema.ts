@@ -6,7 +6,7 @@ import * as TJS from "typescript-json-schema";
 import { saveJsonToFile } from "./utils";
 
 const compositionTypeFilePath = resolve(
-  "../../packages/webplayer-core/src/types/composition.ts"
+  "../webplayer-core/src/types/composition.ts"
 );
 
 const program = TJS.getProgramFromFiles([compositionTypeFilePath]);
