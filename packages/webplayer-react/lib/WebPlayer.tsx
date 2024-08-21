@@ -1,5 +1,5 @@
 import styles from "../src/index.css?inline";
-import { WebPlayerProps } from "../src/types/webPlayerProps";
+import type { WebPlayerProps } from "../src/types/webPlayerProps";
 import WebPlayerTS from "../src/WebPlayerTS";
 
 const WebPlayer = (props: WebPlayerProps) => {
