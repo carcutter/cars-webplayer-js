@@ -1,0 +1,6 @@
+{
+  "extends": "@car-cutter/typescript-config/base.json",
+
+  "include": ["index.ts"],
+  "exclude": ["dist", "node_modules"]
+}

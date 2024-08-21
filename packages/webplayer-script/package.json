@@ -1,0 +1,19 @@
+{
+  "name": "@car-cutter/script-webplayer",
+  "version": "0.0.0",
+  "license": "UNLICENSED",
+  "type": "module",
+  "main": "dist/bundle.js",
+  "scripts": {
+    "build": "tsc -b && vite build"
+  },
+  "dependencies": {
+    "@car-cutter/wc-webplayer": "*"
+  },
+  "devDependencies": {
+    "@car-cutter/eslint-config": "*",
+    "@car-cutter/typescript-config": "*",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.1"
+  }
+}
