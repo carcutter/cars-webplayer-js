@@ -17,8 +17,8 @@ type ProviderProps = Required<
   Pick<WebPlayerProps, "minImageWidth" | "maxImageWidth"> & {
     playerInViewportWidthRatio: number;
     isFullScreen: boolean;
-    requestFullscreen: () => Promise<void>;
-    exitFullscreen: () => Promise<void>;
+    requestFullscreen: () => Promise<boolean>;
+    exitFullscreen: () => Promise<boolean>;
   };
 
 type ContextType = ProviderProps;

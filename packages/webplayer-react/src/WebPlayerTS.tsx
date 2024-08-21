@@ -93,20 +93,28 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
     };
   }, [allowFullScreen]);
 
-  const requestFullscreen = useCallback(() => {
+  const requestFullscreen = useCallback(async () => {
     const wrapper = wrapperRef.current;
     if (!wrapper) {
       throw new Error("Wrapper not found");
     }
 
-    return wrapper.requestFullscreen();
+    // Will throw error mainly for Safari iOS as it does not support requestFullscreen
+    try {
+      await wrapper.requestFullscreen();
+      return true;
+    } catch (error) {
+      return false;
+    }
   }, []);
 
   const exitFullscreen = useCallback(async () => {
+    // Will throw error if no element is in full-screen (e.g. We are on Safari iOS)
     try {
       await document.exitFullscreen();
+      return true;
     } catch (error) {
-      // Will throw error if, for some reason no element is in full-screen
+      return false;
     }
   }, []);
 

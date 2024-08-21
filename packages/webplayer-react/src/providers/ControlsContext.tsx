@@ -71,6 +71,7 @@ type ContextType = {
   disableExtendMode: () => void;
   toggleExtendMode: () => void;
   extendTransition: boolean;
+  fakeFullScreen: boolean;
 };
 
 const ControlsContext = createContext<ContextType | null>(null);
@@ -294,6 +295,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const [extendMode, setExtendMode] = useState(false);
   const [extendTransitionTimeout, setExtendTransitionTimeout] =
     useState<NodeJS.Timeout>();
+  const [fakeFullScreen, setFakeFullScreen] = useState(false);
 
   const changeExtendMode = useCallback(
     async (newValue: boolean) => {
@@ -318,10 +320,19 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     triggerExtendTransition();
 
     if (allowFullScreen) {
-      await requestFullscreen();
-    } else {
-      changeExtendMode(true);
+      const requestSucceed = await requestFullscreen();
+
+      setFakeFullScreen(!requestSucceed);
+
+      if (requestSucceed) {
+        return;
+      }
     }
+
+    // We reach this point:
+    // - If user disabled fullscreen through props
+    // - if fullscreen request failed (mainly Safari iOS)
+    changeExtendMode(true);
   }, [
     allowFullScreen,
     changeExtendMode,
@@ -333,10 +344,19 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     triggerExtendTransition();
 
     if (allowFullScreen) {
-      await exitFullscreen();
-    } else {
-      changeExtendMode(false);
+      setFakeFullScreen(false);
+
+      const exitSucceed = await exitFullscreen();
+
+      if (exitSucceed) {
+        return;
+      }
     }
+
+    // We reach this point:
+    // - If user disabled fullscreen through props
+    // - If fullscreen exit request failed (mainly Safari iOS)
+    changeExtendMode(false);
   }, [
     allowFullScreen,
     changeExtendMode,
@@ -358,6 +378,11 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       return;
     }
 
+    // In case of Safari iOS, we cannot rely on the fullscreenchange event
+    if (fakeFullScreen && extendMode) {
+      return;
+    }
+
     // Already handled
     if (isFullScreen === extendMode) {
       return;
@@ -370,6 +395,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     allowFullScreen,
     changeExtendMode,
     extendMode,
+    fakeFullScreen,
     isFullScreen,
     triggerExtendTransition,
   ]);
@@ -427,6 +453,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         disableExtendMode,
         toggleExtendMode,
         extendTransition: !!extendTransitionTimeout,
+        fakeFullScreen,
       }}
     >
       {children}
