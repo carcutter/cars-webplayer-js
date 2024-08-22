@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Item } from "@car-cutter/core-webplayer";
 
 import { useControlsContext } from "../../../providers/ControlsContext";
+import { cn } from "../../../utils/style";
 import PlayButton from "../../atoms/PlayButton";
 import Button from "../../ui/Button";
 import ProgressBar from "../../ui/ProgressBar";
@@ -23,6 +24,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
   const isActiveIndex = carrouselItemIndex === index;
 
   // - Ref
+  const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const getVideoElmtOrThrow = useCallback(() => {
     if (!videoRef.current) {
@@ -169,14 +171,77 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   };
 
+  // -- Controls
+  const [showControls, setShowControls] = useState(false);
+
+  const hideControlsTimeout = useRef<NodeJS.Timeout | undefined>(undefined);
+  const clearHideControlsTimeout = useCallback(
+    () => clearTimeout(hideControlsTimeout.current),
+    [],
+  );
+  const restartHideControlsTimeout = useCallback(() => {
+    clearHideControlsTimeout();
+    hideControlsTimeout.current = setTimeout(() => {
+      setShowControls(false);
+    }, 3000);
+  }, [clearHideControlsTimeout]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const video = videoRef.current;
+
+    // DOM not ready
+    if (!container || !video) {
+      return;
+    }
+
+    const showControls = () => {
+      restartHideControlsTimeout();
+      setShowControls(true);
+    };
+    const hideControls = () => {
+      clearHideControlsTimeout();
+      setShowControls(false);
+    };
+
+    // Touch is used to toggle controls
+    const onTouchStart = (e: TouchEvent) => {
+      e.preventDefault(); // Prevent the click event
+
+      const nbrTouches = e.touches.length;
+
+      if (nbrTouches !== 1) {
+        return;
+      }
+
+      restartHideControlsTimeout();
+      setShowControls(state => !state);
+    };
+
+    container.addEventListener("mouseenter", showControls);
+    container.addEventListener("mousemove", showControls);
+    container.addEventListener("mouseleave", hideControls);
+
+    video.addEventListener("touchstart", onTouchStart);
+
+    return () => {
+      container.removeEventListener("mouseenter", showControls);
+      container.removeEventListener("mousemove", showControls);
+      container.removeEventListener("mouseleave", hideControls);
+
+      video.removeEventListener("touchstart", onTouchStart);
+    };
+  }, [clearHideControlsTimeout, restartHideControlsTimeout]);
+
   return (
-    <div className="group relative size-full">
+    <div ref={containerRef} className="relative size-full">
       <video
         ref={videoRef}
         className="size-full"
         src={src}
         poster={poster}
-        disablePictureInPicture={true}
+        disablePictureInPicture
+        playsInline
         onPlay={handleOnPlay}
         onPause={handleOnStop}
         onEnded={handleOnStop}
@@ -195,7 +260,10 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
         <>
           <div
             // Controls
-            className="pointer-events-none absolute inset-x-0 bottom-0 space-y-2 bg-gradient-to-t from-foreground to-transparent p-4 pr-12 pt-8 opacity-0 transition-opacity *:pointer-events-auto group-hover:opacity-100"
+            className={cn(
+              "pointer-events-none absolute inset-x-0 bottom-0 space-y-2 bg-gradient-to-t from-foreground to-transparent p-4 pr-12 pt-8 opacity-0 transition-opacity duration-300",
+              showControls && "opacity-100 *:pointer-events-auto",
+            )}
           >
             <div className="flex items-center justify-between">
               <div
