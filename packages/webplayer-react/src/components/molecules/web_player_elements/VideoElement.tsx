@@ -77,7 +77,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
     isMuted: boolean;
   } | null>(null);
 
-  const handlleVolumeClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleVolumeClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const videoElmt = getVideoElmtOrThrow();
 
     const rect = e.currentTarget.getBoundingClientRect();
@@ -96,7 +96,9 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
   // Listen to volume changes
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video) {
+      return;
+    }
 
     const refreshVideoVolume = () => {
       setVideoVolumeInfos({
@@ -224,7 +226,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
                     // Wrap the progress bar to make the click easier
                     // NOTE: we could/should use an input "range" instead of a progress bar
                     className={`w-12 cursor-pointer py-1 opacity-0 transition-opacity ${!videoVolumeInfos.isMuted ? "group-hover/volume:opacity-100" : "group-hover/volume:opacity-50"}`}
-                    onClick={handlleVolumeClick}
+                    onClick={handleVolumeClick}
                   >
                     <ProgressBar progress={videoVolumeInfos.volume} />
                   </div>

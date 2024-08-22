@@ -4,7 +4,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev",
+    "dev": "cd packages/webplayer-react && yarn dev",
+    "dev:all": "turbo dev",
     "lint": "turbo lint"
   },
   "devDependencies": {

@@ -7,6 +7,8 @@ export function preloadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
-export function isSelfEvent(event: React.MouseEvent) {
+export function isSelfEvent(
+  event: Pick<Event, "target" | "currentTarget">,
+): boolean {
   return event.target === event.currentTarget;
 }
