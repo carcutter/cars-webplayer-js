@@ -4,6 +4,7 @@ import type { ImageWithHotspots, Item } from "@car-cutter/core-webplayer";
 
 import { useControlsContext } from "../../../providers/ControlsContext";
 import { useGlobalContext } from "../../../providers/GlobalContext";
+import { cn } from "../../../utils/style";
 import CdnImage from "../../atoms/CdnImage";
 import PlayIcon from "../../icons/PlayIcon";
 import ThreeSixtyIcon from "../../icons/ThreeSixtyIcon";
@@ -385,20 +386,22 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
   return (
     <div ref={containerRef} className="cursor-ew-resize">
-      <div className="hidden">
-        {/* Take the 2 prev & 2 next images and insert them on the DOM to ensure preload */}
-        {[-2, -1, 1, 2].map(offset => {
-          const index = (imageIndex + offset + length) % length;
-          const { src } = images[index];
-          return <CdnImage key={src} src={src} />;
-        })}
-      </div>
-
       {/* Scroller is element larger than the image to capture scroll event and then, make the 360 spin */}
       {/* NOTE: ImageElement is within so that it can capture events first */}
       <div ref={scrollerRef} className="overflow-x-scroll no-scrollbar">
         <div className="sticky left-0 top-0">
-          <ImageElement {...images[imageIndex]} onlyPreload={onlyPreload} />
+          {/* Flip book */}
+          {images.map((image, index) => (
+            <ImageElement
+              key={image.src}
+              {...image}
+              className={cn(
+                index !== imageIndex &&
+                  "pointer-events-none !absolute left-0 top-0 -z-10"
+              )}
+              onlyPreload={index !== imageIndex || onlyPreload}
+            />
+          ))}
         </div>
         {/* Add space on both sides to allow scrolling */}
         {/* NOTE: We need the element to have an height, otherwise, Safari will ignore it */}
