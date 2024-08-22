@@ -149,7 +149,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const finishCycling = useCallback(() => setIsCycling(false), []);
 
   const prevImage = useCallback(() => {
-    if (isCycling) {
+    // Command still running
+    if (isCycling || itemIndexCommand !== null) {
       return;
     }
 
@@ -161,10 +162,11 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     } else {
       setItemIndexCommand(target);
     }
-  }, [carrouselItemIndex, displayedItems.length, isCycling]);
+  }, [carrouselItemIndex, displayedItems.length, isCycling, itemIndexCommand]);
 
   const nextImage = useCallback(() => {
-    if (isCycling) {
+    // Command still running
+    if (isCycling || itemIndexCommand !== null) {
       return;
     }
 
@@ -176,7 +178,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     } else {
       setItemIndexCommand(target);
     }
-  }, [carrouselItemIndex, displayedItems.length, isCycling]);
+  }, [carrouselItemIndex, displayedItems.length, isCycling, itemIndexCommand]);
 
   const changeCategory = useCallback(
     (categoryId: string) => {
