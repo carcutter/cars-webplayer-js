@@ -35,8 +35,6 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     extendTransition,
 
     isZooming,
-
-    freezeCarrousel,
   } = useControlsContext();
 
   // -- Refs -- //
@@ -181,7 +179,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   // -- Event listeners to handle the slider dragging -- //
   useEffect(() => {
     // Sliding is disabled
-    if (!slidable || freezeCarrousel || isCycling) {
+    if (!slidable || isCycling) {
       setStyleCursor("auto");
       return;
     }
@@ -284,7 +282,6 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     };
   }, [
     computeClosestIndex,
-    freezeCarrousel,
     isCycling,
     scrollToIndex,
     setStyleCursor,
@@ -378,7 +375,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     >
       <div
         ref={sliderRef}
-        className={`flex size-full ${slidable ? "overflow-x-auto no-scrollbar *:snap-start *:snap-always" : "justify-center"} ${freezeCarrousel ? "!overflow-hidden" : ""}`}
+        className={`flex size-full ${slidable ? "overflow-x-auto no-scrollbar *:snap-start *:snap-always" : "justify-center"}`}
       >
         {items.map((item, index) => {
           const imgSrc = item.type === "360" ? item.images[0] : item.src;

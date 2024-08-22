@@ -297,6 +297,7 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
     // - Handle when the user just clicked
     const onMouseDown = (e: MouseEvent) => {
       e.preventDefault(); // Prevents native image dragging
+      e.stopPropagation(); // Prevents carrousel to slide
 
       // Take snapshot of the current state
       isMouseDown.current = true;

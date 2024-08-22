@@ -177,7 +177,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
   const hideControlsTimeout = useRef<NodeJS.Timeout | undefined>(undefined);
   const clearHideControlsTimeout = useCallback(
     () => clearTimeout(hideControlsTimeout.current),
-    [],
+    []
   );
   const restartHideControlsTimeout = useCallback(() => {
     clearHideControlsTimeout();
@@ -204,6 +204,26 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
       setShowControls(false);
     };
 
+    // Click is used to pause the video but we do not want to consider a click if the user starts to move the carrousel
+    let isClicking = false;
+    const onMouseDown = () => {
+      isClicking = true;
+    };
+    const onMouseUp = () => {
+      if (!isClicking) {
+        return;
+      }
+
+      isClicking = false;
+
+      pause();
+    };
+
+    const onMouseMove = () => {
+      isClicking = false;
+      showControls();
+    };
+
     // Touch is used to toggle controls
     const onTouchStart = (e: TouchEvent) => {
       e.preventDefault(); // Prevent the click event
@@ -218,20 +238,26 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
       setShowControls(state => !state);
     };
 
+    container.addEventListener("mousedown", onMouseDown);
+    container.addEventListener("mouseup", onMouseUp);
+
     container.addEventListener("mouseenter", showControls);
-    container.addEventListener("mousemove", showControls);
+    container.addEventListener("mousemove", onMouseMove);
     container.addEventListener("mouseleave", hideControls);
 
     video.addEventListener("touchstart", onTouchStart);
 
     return () => {
+      container.removeEventListener("mousedown", onMouseDown);
+      container.removeEventListener("mouseup", onMouseUp);
+
       container.removeEventListener("mouseenter", showControls);
       container.removeEventListener("mousemove", showControls);
       container.removeEventListener("mouseleave", hideControls);
 
       video.removeEventListener("touchstart", onTouchStart);
     };
-  }, [clearHideControlsTimeout, restartHideControlsTimeout]);
+  }, [clearHideControlsTimeout, pause, restartHideControlsTimeout]);
 
   return (
     <div ref={containerRef} className="relative size-full">
@@ -247,7 +273,6 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
         onEnded={handleOnStop}
         onCanPlay={handleOnCanPlay}
         onWaiting={handleOnWaiting}
-        onClick={pause}
       />
       {!isRunning ? (
         <div
@@ -261,9 +286,12 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
           <div
             // Controls
             className={cn(
-              "pointer-events-none absolute inset-x-0 bottom-0 space-y-2 bg-gradient-to-t from-foreground to-transparent p-4 pr-12 pt-8 opacity-0 transition-opacity duration-300",
-              showControls && "opacity-100 *:pointer-events-auto",
+              "absolute inset-x-0 bottom-0 cursor-auto space-y-2 bg-gradient-to-t from-foreground to-transparent p-4 pr-12 pt-8 transition-opacity duration-300",
+              !showControls
+                ? "pointer-events-none opacity-0"
+                : "pointer-events-auto opacity-100"
             )}
+            onMouseDownCapture={e => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
               <div
