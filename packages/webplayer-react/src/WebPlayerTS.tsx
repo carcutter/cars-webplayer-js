@@ -32,8 +32,9 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   ...props
 }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const [wrapperWidth, setWrapperWidth] = useState<number>();
   const [playerInViewportWidthRatio, setPlayerInViewportWidthRatio] =
-    useState(0.5); // TODO: Should not be hardcoded
+    useState(0.5); // NOTE: Hardcoded for typing convenience, but will be updated in the useEffect
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   // Compute player width ratio in viewport (to handle imgs' srcSet)
@@ -49,19 +50,26 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
 
     const wrapper = wrapperRef.current;
 
-    const onResize = () => {
+    const update = () => {
       const viewportWidth = window.innerWidth;
-      const playerWidth = wrapper.clientWidth;
 
-      setPlayerInViewportWidthRatio(playerWidth / viewportWidth);
+      // NOTE: We need to get the margin to have the correct width (e.g. including decimals)
+      const playerStyle = getComputedStyle(wrapper);
+      const wrapperWidth =
+        wrapper.getBoundingClientRect().width +
+        parseFloat(playerStyle.marginLeft) +
+        parseFloat(playerStyle.marginRight);
+
+      setWrapperWidth(wrapperWidth);
+      setPlayerInViewportWidthRatio(wrapperWidth / viewportWidth);
     };
 
-    onResize();
+    update();
 
-    addEventListener("resize", onResize);
+    addEventListener("resize", update);
 
     return () => {
-      removeEventListener("resize", onResize);
+      removeEventListener("resize", update);
     };
   }, [isFullScreen]);
 
@@ -137,7 +145,13 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
       }}
     >
       <CustomizationContextProvider>
-        <div id="cc-webplayer-wrapper" ref={wrapperRef}>
+        <div
+          id="cc-webplayer-wrapper"
+          ref={wrapperRef}
+          // Hack to avoid the player to have a decimal width (e.g. 800.6px) which cause issue on scroll snap
+          className="mx-auto"
+          style={{ maxWidth: wrapperWidth && Math.floor(wrapperWidth) }}
+        >
           <WebPlayerContainer compositionUrl={compositionUrl} />
         </div>
         {customizationChildren}
