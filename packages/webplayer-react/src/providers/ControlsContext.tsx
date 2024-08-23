@@ -18,6 +18,9 @@ import { useGlobalContext } from "./GlobalContext";
 
 // TODO: Rework items interaction logic
 type ItemInteraction = null | "running" | number; // Index of the image in the carrousel
+
+type CycleDirection = "first_to_last" | "last_to_first";
+
 type Details = { src: string; title?: string; text?: string };
 
 type ContextType = {
@@ -34,6 +37,7 @@ type ContextType = {
   itemIndexCommand: number | null;
   setItemIndexCommand: (index: number | null) => void;
   masterItemIndex: number;
+  cycling: CycleDirection | null;
   isCycling: boolean;
   finishCycling: () => void;
   prevImage: () => void;
@@ -145,40 +149,40 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const currentItemInteraction = itemInteractionList[carrouselItemIndex];
   const [itemIndexCommand, setItemIndexCommand] = useState<number | null>(null);
   const masterItemIndex = itemIndexCommand ?? carrouselItemIndex;
-  const [isCycling, setIsCycling] = useState(false); // Used to handle cycling (prev/next) when reaching the end of the list
-  const finishCycling = useCallback(() => setIsCycling(false), []);
+  const [cycling, setCycling] = useState<CycleDirection | null>(null);
+  const finishCycling = useCallback(() => setCycling(null), []);
 
   const prevImage = useCallback(() => {
     // Command still running
-    if (isCycling || itemIndexCommand !== null) {
+    if (cycling || itemIndexCommand !== null) {
       return;
     }
 
     const target = carrouselItemIndex - 1;
     // Check if we need to cycle
     if (target < 0) {
-      setIsCycling(true);
+      setCycling("first_to_last");
       setItemIndexCommand(displayedItems.length - 1);
     } else {
       setItemIndexCommand(target);
     }
-  }, [carrouselItemIndex, displayedItems.length, isCycling, itemIndexCommand]);
+  }, [carrouselItemIndex, displayedItems.length, cycling, itemIndexCommand]);
 
   const nextImage = useCallback(() => {
     // Command still running
-    if (isCycling || itemIndexCommand !== null) {
+    if (cycling || itemIndexCommand !== null) {
       return;
     }
 
     const target = carrouselItemIndex + 1;
     // Check if we need to cycle
     if (target > displayedItems.length - 1) {
-      setIsCycling(true);
+      setCycling("last_to_first");
       setItemIndexCommand(0);
     } else {
       setItemIndexCommand(target);
     }
-  }, [carrouselItemIndex, displayedItems.length, isCycling, itemIndexCommand]);
+  }, [carrouselItemIndex, displayedItems.length, cycling, itemIndexCommand]);
 
   const changeCategory = useCallback(
     (categoryId: string) => {
@@ -399,7 +403,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         itemIndexCommand,
         setItemIndexCommand,
         masterItemIndex,
-        isCycling,
+        cycling,
+        isCycling: !!cycling,
         finishCycling,
         prevImage,
         nextImage,

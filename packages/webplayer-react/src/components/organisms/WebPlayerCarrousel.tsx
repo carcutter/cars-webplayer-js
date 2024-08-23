@@ -4,6 +4,8 @@ import { RESIZE_TRANSITION_DURATION } from "../../const/browser";
 import { useCompositionContext } from "../../providers/CompositionContext";
 import { useControlsContext } from "../../providers/ControlsContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
+import { easeOut } from "../../utils/animation";
+import { clamp, lerp, modulo } from "../../utils/math";
 import { positionToClassName } from "../../utils/style";
 import IndexIndicator from "../atoms/IndexIndicator";
 import WebPlayerElement from "../molecules/WebPlayerElement";
@@ -28,6 +30,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     setCarrouselItemIndex,
     itemIndexCommand,
     setItemIndexCommand,
+    cycling,
     isCycling,
     finishCycling,
 
@@ -54,6 +57,15 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   const startScrollLeft = useRef<number | null>(null);
 
   // -- Slider's functions -- //
+  const scrollAnimationFrame = useRef<number | null>(null);
+  const cancelScrollAnimation = useCallback(() => {
+    if (!scrollAnimationFrame.current) {
+      return;
+    }
+    cancelAnimationFrame(scrollAnimationFrame.current);
+    scrollAnimationFrame.current = null;
+  }, []);
+
   const computeClosestIndex = useCallback(() => {
     const slider = getSliderOrThrow("computeClosestSnapIndex");
     const children = Array.from(slider.children) as HTMLElement[];
@@ -76,8 +88,16 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       0
     );
 
-    return closestIndex % items.length; // Cycle the index
-  }, [getSliderOrThrow, items.length]);
+    if (cycling === "first_to_last") {
+      // The very last item is the first one (as we moved it to the end)
+      return modulo(closestIndex, items.length);
+    } else if (cycling === "last_to_first") {
+      // The very first item is the last one (as we moved it to the start). It shifts the index by 1
+      return modulo(closestIndex - 1, items.length);
+    } else {
+      return closestIndex;
+    }
+  }, [cycling, getSliderOrThrow, items.length]);
 
   const setStyleCursor = useCallback(
     (cursor: "auto" | "grab" | "grabbing") => {
@@ -101,26 +121,75 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   );
 
   const scrollToIndex = useCallback(
-    (index: number, behavior: "instant" | "smooth") => {
-      const scroll = () => {
-        const slider = getSliderOrThrow("scrollToSnapIndex");
-        const children = Array.from(slider.children) as HTMLElement[];
+    (
+      index: number,
+      behavior: "instant" | "smooth",
+      callback?: () => unknown
+    ) => {
+      cancelScrollAnimation();
 
-        const targetScroll = children[index].offsetLeft;
+      const slider = getSliderOrThrow("scrollToIndex");
+      const children = Array.from(slider.children) as HTMLElement[];
 
+      const startScroll = slider.scrollLeft;
+      const targetScroll = children[index].offsetLeft;
+
+      const setScrollInstant = (scroll: number) => {
         slider.scrollTo({
-          left: targetScroll,
-          behavior,
+          left: scroll,
+          behavior: "instant",
         });
       };
 
-      if (behavior === "instant") {
-        scroll();
-      } else {
-        requestAnimationFrame(scroll);
+      const distance = Math.abs(startScroll - targetScroll);
+
+      if (distance < 1 || behavior === "instant") {
+        setScrollInstant(targetScroll);
+        callback?.();
+        return;
       }
+
+      // - Animation
+
+      const animationDuration = clamp(distance / 2.5, 300, 1000);
+
+      const startTime = new Date().getTime();
+
+      setStyleSnapState("none");
+
+      const animate = () => {
+        const animateStep = () => {
+          const currentTime = new Date().getTime();
+          const timeElapsed = currentTime - startTime;
+
+          if (timeElapsed >= animationDuration) {
+            setScrollInstant(targetScroll);
+
+            callback?.();
+
+            scrollAnimationFrame.current = requestAnimationFrame(() => {
+              setStyleSnapState("mandatory");
+              scrollAnimationFrame.current = null;
+            });
+            return;
+          }
+
+          const progress = Math.min(timeElapsed / animationDuration, 1);
+          const easedProgress = easeOut(progress);
+
+          const currentScroll = lerp(startScroll, targetScroll, easedProgress);
+
+          setScrollInstant(currentScroll);
+
+          animate();
+        };
+
+        scrollAnimationFrame.current = requestAnimationFrame(animateStep);
+      };
+
+      animate();
     },
-    [getSliderOrThrow]
+    [cancelScrollAnimation, getSliderOrThrow, setStyleSnapState]
   );
 
   // - Listen to resizing to avoid layer shift
@@ -211,9 +280,9 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       startX.current = e.pageX - slider.offsetLeft;
       startScrollLeft.current = slider.scrollLeft;
 
-      // Set cursor
+      // - Apply animation settings
+      cancelScrollAnimation();
       setStyleCursor("grabbing");
-      // Disable snap scrolling
       setStyleSnapState("none");
     };
 
@@ -251,18 +320,8 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
 
       // Reset cursor
       setStyleCursor("grab");
-      // Reset snap scrolling.
-      // NOTE: we are using a timeout to avoid flickering because snap "mandatory" sets instantly the scroll position
-      // TODO: Find a better way to handle this
-      setTimeout(() => {
-        //  but we have to handle the case where the user clicks again on the slider
-        if (mouseIsDown.current) {
-          return;
-        }
-        setStyleSnapState("mandatory");
-      }, 500);
 
-      // Snap scrolling
+      // Snap scrolling (it will reset the snap behavior to mandatory)
       const closestSnapIndex = computeClosestIndex();
       scrollToIndex(closestSnapIndex, "smooth");
     };
@@ -281,6 +340,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       document.removeEventListener("contextmenu", onStopDragging);
     };
   }, [
+    cancelScrollAnimation,
     computeClosestIndex,
     isCycling,
     scrollToIndex,
@@ -343,31 +403,22 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       return;
     }
 
-    // TODO: Find a way to handle this without setTimeout because it feels buggy and depends on the browser
-    if (isCycling) {
-      // Should go from first item to last item
-      if (itemIndexCommand === items.length - 1) {
-        // Instantly go to the duplicate of the first item
-        scrollToIndex(items.length, "instant");
-        scrollToIndex(itemIndexCommand, "smooth");
-        setTimeout(() => {
-          finishCycling();
-        }, 700);
-      } else {
-        // Smoothly go to the duplicate of the first item
-        scrollToIndex(items.length, "smooth");
-        setTimeout(() => {
-          // Instantly go back to the real first item
-          scrollToIndex(itemIndexCommand, "instant");
-          finishCycling();
-        }, 700);
-      }
-    }
-    // Standard case
-    else {
+    if (cycling === "first_to_last") {
+      // Go to the "moved" first item instantly
+      scrollToIndex(items.length, "instant");
+
+      // Move to the last item
+      scrollToIndex(items.length - 1, "smooth", () => finishCycling());
+    } else if (cycling === "last_to_first") {
+      // Go to the "moved" last item instantly
+      scrollToIndex(0, "instant");
+
+      // Move to the first item (it shifted by 1 due to the "moved" last item)
+      scrollToIndex(1, "smooth", () => finishCycling());
+    } else {
       scrollToIndex(itemIndexCommand, "smooth");
     }
-  }, [finishCycling, isCycling, itemIndexCommand, items.length, scrollToIndex]);
+  }, [cycling, finishCycling, itemIndexCommand, items.length, scrollToIndex]);
 
   return (
     <div
@@ -377,36 +428,57 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
         ref={sliderRef}
         className={`flex size-full ${slidable ? "overflow-x-auto no-scrollbar *:snap-start *:snap-always" : "justify-center"}`}
       >
+        {cycling === "last_to_first" && (
+          // Empty element to allow cycling
+          <div className={`h-full ${aspectRatioClass}`} />
+        )}
+
         {items.map((item, index) => {
           const imgSrc = item.type === "360" ? item.images[0] : item.src;
 
           const isShown = index === carrouselItemIndex;
+          const isFirst = index === 0;
+          const lastIsShown = carrouselItemIndex === items.length - 1;
+          const isLast = index === items.length - 1;
+          const firstIsShown = carrouselItemIndex === 0;
+
           // Lazy param avoids loading images that are too far from the current one
           const lazy =
             Math.abs(index - carrouselItemIndex) > 1 && // Not next to the current one
-            !(carrouselItemIndex === 0 && index === items.length - 1) && // Not the last one when the first one is shown
-            !(carrouselItemIndex === items.length - 1 && index === 0); // Not the first one when the last one is shown
+            !(isFirst && lastIsShown) && // Not the last one when the first one is shown
+            !(isLast && firstIsShown); // Not the first one when the last one is shown
+
+          const style = (() => {
+            if (cycling === "first_to_last" && isFirst) {
+              return {
+                transform: `translateX(${100 * items.length}%)`,
+              };
+            } else if (cycling === "last_to_first" && isLast) {
+              return {
+                transform: `translateX(-${100 * items.length}%)`,
+              };
+            }
+          })();
 
           return (
-            <WebPlayerElement
+            <div
               key={`${index}_${imgSrc}`}
-              index={index}
-              item={item}
-              isShown={isShown}
-              lazy={lazy}
-            />
+              className={`relative h-full bg-foreground/50 ${aspectRatioClass}`}
+              style={style}
+            >
+              <WebPlayerElement
+                index={index}
+                item={item}
+                isShown={isShown}
+                lazy={lazy}
+              />
+            </div>
           );
         })}
 
-        {isCycling && (
-          // Duplicate the first element to allow cycling
-          // TODO: Find a better way to handle this. Maybe put the list into a grid and shift/duplicate the first element?
-          <WebPlayerElement
-            index={0}
-            item={items[0]}
-            isShown={carrouselItemIndex === 0}
-            lazy={false}
-          />
+        {cycling === "first_to_last" && (
+          // Empty element to allow cycling
+          <div className={`h-full ${aspectRatioClass}`} />
         )}
       </div>
 

@@ -1,7 +1,5 @@
 import type { Item } from "@car-cutter/core-webplayer";
 
-import { useCompositionContext } from "../../providers/CompositionContext";
-
 import ImageElement from "./web_player_elements/ImageElement";
 import OmniDirectionElement from "./web_player_elements/OmniDirectionElement";
 import ThreeSixtyElement from "./web_player_elements/ThreeSixtyElement";
@@ -15,8 +13,6 @@ type Props = {
 };
 
 const WebPlayerElement: React.FC<Props> = ({ index, item, isShown, lazy }) => {
-  const { aspectRatioClass } = useCompositionContext();
-
   const { type } = item;
 
   let Comp: React.ReactNode;
@@ -45,11 +41,7 @@ const WebPlayerElement: React.FC<Props> = ({ index, item, isShown, lazy }) => {
     Comp = null;
   }
 
-  return (
-    <div className={`relative h-full ${aspectRatioClass} bg-foreground/50`}>
-      {Comp}
-    </div>
-  );
+  return Comp;
 };
 
 export default WebPlayerElement;

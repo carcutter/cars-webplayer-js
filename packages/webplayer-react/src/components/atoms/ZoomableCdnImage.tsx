@@ -2,7 +2,8 @@ import { useCallback, useEffect, useRef } from "react";
 
 import { MAX_ZOOM } from "../../const/zoom";
 import { useControlsContext } from "../../providers/ControlsContext";
-import { clamp } from "../../utils/math";
+import { easeOut } from "../../utils/animation";
+import { clamp, lerp } from "../../utils/math";
 import { computeTouchesDistance } from "../../utils/touch";
 
 import CdnImage, { CdnImageProps } from "./CdnImage";
@@ -133,16 +134,10 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
 
       // - Animation
 
-      const easeOut = (t: number) => 1 - Math.pow(1 - t, 2);
-
       const startTime = new Date().getTime();
 
       const animate = () => {
         const animateStep = () => {
-          // linear interpolation
-          const lerp = (start: number, end: number, progress: number) =>
-            start + (end - start) * progress;
-
           const currentTime = new Date().getTime();
           const timeElapsed = currentTime - startTime;
 
