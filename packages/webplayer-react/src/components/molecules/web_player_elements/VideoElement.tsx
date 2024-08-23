@@ -9,6 +9,8 @@ import Button from "../../ui/Button";
 import ProgressBar from "../../ui/ProgressBar";
 import Spinner from "../../ui/Spinner";
 
+const HIDE_CONTROLS_DELAY = 3000;
+
 type Props = Extract<Item, { type: "video" }> & {
   index: number;
 };
@@ -183,7 +185,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
     clearHideControlsTimeout();
     hideControlsTimeout.current = setTimeout(() => {
       setShowControls(false);
-    }, 3000);
+    }, HIDE_CONTROLS_DELAY);
   }, [clearHideControlsTimeout]);
 
   useEffect(() => {

@@ -127,9 +127,9 @@ const Gallery: React.FC<Props> = ({
       mouseIsDown.current = false;
 
       // As the mouseup event is triggered before the click event, we need to wait a bit before resetting the dragging state
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         setIsDragging(false);
-      }, 0);
+      });
     };
 
     slider.addEventListener("mousedown", onMouseDown);
