@@ -19,7 +19,7 @@ type Props = {
  * ThreeSixtyElement component renders the carrousel of items.
  */
 const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
-  const { isFullScreen } = useGlobalContext();
+  const { infiniteCarrousel, isFullScreen } = useGlobalContext();
   const { aspectRatioClass } = useCompositionContext();
 
   const {
@@ -445,8 +445,8 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
           // Lazy param avoids loading images that are too far from the current one
           const lazy =
             Math.abs(index - carrouselItemIndex) > 1 && // Not next to the current one
-            !(isFirst && lastIsShown) && // Not the last one when the first one is shown
-            !(isLast && firstIsShown); // Not the first one when the last one is shown
+            !(infiniteCarrousel && isFirst && lastIsShown) && // Not the last one when the first one is shown (only for infinite carrousel)
+            !(infiniteCarrousel && isLast && firstIsShown); // Not the first one when the last one is shown (only for infinite carrousel)
 
           const style = (() => {
             if (cycling === "first_to_last" && isFirst) {
