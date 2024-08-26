@@ -36,12 +36,10 @@ CARS-WEBPLAYER/
 1. Install Node v20. Tuto for macOS [here](https://sukiphan.medium.com/how-to-install-nvm-node-version-manager-on-macos-d9fe432cc7db)
 2. Install Yarn v1 : `brew install yarn`.
 3. Install the node modules with the command `yarn`.
-4. Build the packages with `yarn build`.
 
 ### Developing the React WebPlayer
 
-1. Go in the `webplayer-react` package : `cd packages/webplayer-react`
-2. Run `yarn dev` to start the app in development mode.
+Simply run `yarn dev` from the workspace root to start the app in development mode.
 
 #### Using Local Composition
 
