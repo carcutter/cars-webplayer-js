@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/next-webplayer",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "license": "UNLICENSED",
   "type": "module",
   "main": "dist/index.umd.cjs",
@@ -12,7 +12,7 @@
     "analyze": "vite-bundle-visualizer"
   },
   "dependencies": {
-    "@car-cutter/react-webplayer": "*"
+    "@car-cutter/react-webplayer": "0.1.0"
   },
   "peerDependencies": {
     "react": ">=16.8.0",
