@@ -4,7 +4,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev --filter=@car-cutter/react-webplayer",
+    "dev": "turbo dev --filter=@car-cutter/react-webplayer --",
     "dev:all": "turbo dev",
     "lint": "turbo lint"
   },
