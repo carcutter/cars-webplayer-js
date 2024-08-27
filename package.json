@@ -6,9 +6,11 @@
     "build": "turbo build",
     "dev": "turbo dev --filter=@car-cutter/react-webplayer --",
     "dev:all": "turbo dev",
-    "lint": "turbo lint"
+    "lint": "turbo lint",
+    "publish-packages": "turbo run build lint && changeset version && changeset publish"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.7",
     "turbo": "^2.0.14"
   },
   "packageManager": "yarn@1.22.22",
