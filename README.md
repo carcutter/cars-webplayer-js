@@ -76,6 +76,34 @@ Use the command `yarn migrate_composition <COMPOSITION_V1_PATH>`. It will create
 
 Use the command `yarn generate_json_schema`. It will create a file within the _schemas_ folder
 
+## Publication
+
+This repository uses the Changesets CLI to handle versioning and publication to NPM registry. Follow the steps below to publish new versions of your packages:
+
+### 1. Create a Changeset
+
+To propose a new version for one or more packages, you need to create a changeset. Run the command `yarn commit-packages` and follow the prompts.
+
+You will be prompted to select the packages that should be affected and to specify the type of change (patch, minor, or major). This will create a changeset file that describes the changes.
+
+### 2. Version Packages
+
+Once changesets have been added and merged into your base branch (e.g., `main`), you can version the packages. This step updates the version numbers in your `package.json` files and generates changelogs based on your changesets: `yarn version-packages`
+
+This command will:
+
+- Update the version numbers in the affected `package.json` files.
+- Generate or update changelog files.
+- Prepare the packages for publishing.
+
+### 3. Publish to npm
+
+After versioning the packages, you can publish them to npm. This command will publish all packages that have changed since the last release:
+
+`yarn publish-packages`
+
+Make sure you are logged in to npm with the correct credentials before running this command. The packages will be published according to the access level specified in your `changesets` configuration (`config.json`).
+
 ## Use the WebPlayer on your App
 
 ### Props
