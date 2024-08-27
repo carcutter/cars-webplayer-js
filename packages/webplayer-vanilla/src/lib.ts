@@ -1,5 +1,7 @@
-import { WEB_PLAYER_WC_TAG } from "@car-cutter/core-webplayer";
-import type { WebPlayerProps } from "@car-cutter/react-webplayer";
+import {
+  WEB_PLAYER_WC_TAG,
+  type WebPlayerProps,
+} from "@car-cutter/core-webplayer";
 import {
   camelToDashedCase,
   ensureCustomElementsDefinition,

@@ -2,10 +2,8 @@
 
 import { useEffect, useState } from "react";
 
-import {
-  WebPlayer as WebPlayerReact,
-  type WebPlayerProps,
-} from "@car-cutter/react-webplayer";
+import type { WebPlayerProps } from "@car-cutter/core-webplayer";
+import { WebPlayer as WebPlayerReact } from "@car-cutter/react-webplayer";
 
 const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = props => {
   const [isClient, setIsClient] = useState(false);

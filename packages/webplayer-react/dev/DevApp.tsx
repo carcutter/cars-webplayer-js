@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 
+import { DEFAULT_EVENT_ID } from "@car-cutter/core-webplayer";
+
 import WebPlayerIcon from "../lib/WebPlayerIcon";
-import { DEFAULT_EVENT_ID } from "../src/const/default_props";
 import WebPlayerTS from "../src/WebPlayerTS";
 
 // NOTE: We need to import the CSS file and not inject it because it would broke the HMR

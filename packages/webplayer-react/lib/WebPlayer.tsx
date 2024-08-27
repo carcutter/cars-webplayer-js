@@ -1,5 +1,6 @@
+import type { WebPlayerProps } from "@car-cutter/core-webplayer";
+
 import styles from "../src/index.css?inline";
-import type { WebPlayerProps } from "../src/types/webPlayerProps";
 import WebPlayerTS from "../src/WebPlayerTS";
 
 const WebPlayer = (props: WebPlayerProps) => {

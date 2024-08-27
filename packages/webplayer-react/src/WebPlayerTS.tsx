@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { WEB_PLAYER_WC_TAG } from "@car-cutter/core-webplayer";
-
-import WebPlayerContainer from "./components/organisms/WebPlayerContainer";
 import {
   DEFAULT_ALLOW_FULL_SCREEN,
   DEFAULT_EVENT_ID,
@@ -11,10 +9,12 @@ import {
   DEFAULT_INFINITE_CARROUSEL,
   DEFAULT_PERMANENT_GALLERY,
   DEFAULT_REVERSE_360,
-} from "./const/default_props";
+  type WebPlayerProps,
+} from "@car-cutter/core-webplayer";
+
+import WebPlayerContainer from "./components/organisms/WebPlayerContainer";
 import CustomizationContextProvider from "./providers/CustomizationContext";
 import GlobalContextProvider from "./providers/GlobalContext";
-import type { WebPlayerProps } from "./types/webPlayerProps";
 
 const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   compositionUrl,

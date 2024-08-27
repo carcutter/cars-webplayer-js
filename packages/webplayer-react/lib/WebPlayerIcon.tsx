@@ -1,14 +1,11 @@
 import { useEffect } from "react";
 
+import type { WebPlayerIconProps } from "@car-cutter/core-webplayer";
+
 import {
   useCustomizationContext,
   useCustomizationContextSafe,
 } from "../src/providers/CustomizationContext";
-
-export type WebPlayerIconProps = {
-  name: string;
-  color?: string;
-};
 
 const WebPlayerIconReact: React.FC<
   React.PropsWithChildren<WebPlayerIconProps>
