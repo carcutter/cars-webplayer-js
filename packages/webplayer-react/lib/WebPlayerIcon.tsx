@@ -1,4 +1,8 @@
-import { useEffect } from "react";
+import {
+  useEffect,
+  type FC as ReactFC,
+  type PropsWithChildren as ReactPropsWithChildren,
+} from "react";
 
 import type { WebPlayerIconProps } from "@car-cutter/core-webplayer";
 
@@ -7,8 +11,8 @@ import {
   useCustomizationContextSafe,
 } from "../src/providers/CustomizationContext";
 
-const WebPlayerIconReact: React.FC<
-  React.PropsWithChildren<WebPlayerIconProps>
+const WebPlayerIconReact: ReactFC<
+  ReactPropsWithChildren<WebPlayerIconProps>
 > = ({ name, color, children: Icon }) => {
   const { setIconConfig, resetIconConfig } = useCustomizationContext();
 
@@ -30,8 +34,8 @@ const WebPlayerIconReact: React.FC<
   return null;
 };
 
-const WebPlayerIcon: React.FC<
-  React.PropsWithChildren<WebPlayerIconProps>
+const WebPlayerIcon: ReactFC<
+  ReactPropsWithChildren<WebPlayerIconProps>
 > = props => {
   const customizationCtx = useCustomizationContextSafe();
 

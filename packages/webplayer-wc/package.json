@@ -1,6 +1,7 @@
 {
   "name": "@car-cutter/wc-webplayer",
-  "version": "0.1.0",
+  "version": "0.0.0",
+  "private": true,
   "license": "UNLICENSED",
   "type": "module",
   "main": "dist/index.umd.cjs",
@@ -24,6 +25,7 @@
     "eslint": "^8.57.0",
     "typescript": "^5.5.4",
     "vite": "^5.4.1",
-    "vite-bundle-visualizer": "^1.2.1"
+    "vite-bundle-visualizer": "^1.2.1",
+    "vite-plugin-dts": "^4.0.3"
   }
 }

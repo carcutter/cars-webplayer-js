@@ -1,6 +1,7 @@
 {
   "name": "@car-cutter/next-webplayer",
-  "version": "0.1.0",
+  "version": "0.0.0",
+  "private": true,
   "license": "UNLICENSED",
   "type": "module",
   "main": "dist/index.umd.cjs",

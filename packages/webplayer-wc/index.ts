@@ -4,4 +4,4 @@ export {
   ensureCustomElementsDefinition,
 } from "./src/wc";
 
-export { camelToDashedCase, dashedToCamelCase } from "./src/utils";
+export { camelToDashedCase } from "./src/utils";

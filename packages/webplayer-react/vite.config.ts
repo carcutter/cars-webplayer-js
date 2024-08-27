@@ -4,7 +4,6 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
-// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   return {
     plugins: [
@@ -12,6 +11,7 @@ export default defineConfig(({ mode }) => {
       dts({
         tsconfigPath: resolve(__dirname, "./tsconfig.app.json"),
         rollupTypes: true,
+        bundledPackages: ["@car-cutter/core-webplayer"],
       }),
     ],
 
