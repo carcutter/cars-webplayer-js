@@ -1,11 +1,16 @@
 {
   "name": "@car-cutter/react-webplayer",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "UNLICENSED",
   "type": "module",
   "main": "dist/index.umd.cjs",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
