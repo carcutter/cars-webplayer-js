@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { WebPlayerProps } from "@car-cutter/core-webplayer";
+import type { WebPlayerProps } from "@car-cutter/core-ui";
 import { ensureCustomElementsDefinition } from "@car-cutter/wc-webplayer";
 
 ensureCustomElementsDefinition();

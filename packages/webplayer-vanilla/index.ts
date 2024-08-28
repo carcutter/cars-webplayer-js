@@ -1,3 +1,1 @@
-import { appendWebPlayerElement } from "./src/lib";
-
-export { appendWebPlayerElement };
+export { appendWebPlayerElement } from "./src/lib";

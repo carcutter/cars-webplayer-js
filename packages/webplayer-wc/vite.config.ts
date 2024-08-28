@@ -10,6 +10,7 @@ export default defineConfig({
     dts({
       tsconfigPath: resolve(__dirname, "./tsconfig.app.json"),
       rollupTypes: true,
+      bundledPackages: ["@car-cutter/core-wc"],
     }),
   ],
 
@@ -24,5 +25,7 @@ export default defineConfig({
       fileName: "index",
       entry: resolve(__dirname, "./index.ts"),
     },
+
+    chunkSizeWarningLimit: 350,
   },
 });

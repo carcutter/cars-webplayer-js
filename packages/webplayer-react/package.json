@@ -1,11 +1,16 @@
 {
   "name": "@car-cutter/react-webplayer",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "license": "UNLICENSED",
   "type": "module",
   "main": "dist/index.umd.cjs",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -13,10 +18,11 @@
     "analyze": "vite-bundle-visualizer"
   },
   "peerDependencies": {
-    "react": ">=16.8.0"
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
   },
   "devDependencies": {
-    "@car-cutter/core-webplayer": "*",
+    "@car-cutter/core-wc": "*",
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
     "@types/eslint": "^9.6.0",

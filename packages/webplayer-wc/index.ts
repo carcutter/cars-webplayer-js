@@ -1,7 +1,8 @@
+// Expose ancestors package
 export {
   checkCustomElementsDefinition,
   defineCustomElements,
   ensureCustomElementsDefinition,
-} from "./src/wc";
-
-export { camelToDashedCase } from "./src/utils";
+  type WebPlayerProps,
+  type WebPlayerIconProps,
+} from "@car-cutter/core-wc";
