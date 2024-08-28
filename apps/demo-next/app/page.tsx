@@ -1,5 +1,3 @@
-"use client";
-
 import { WebPlayer } from "@car-cutter/next-webplayer";
 
 export default function Home() {

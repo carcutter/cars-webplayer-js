@@ -1,21 +1,45 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-import {
-  WebPlayer as WebPlayerReact,
-  type WebPlayerProps,
-} from "@car-cutter/react-webplayer";
+import type { WebPlayerProps } from "@car-cutter/core-wc";
 
-const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = props => {
-  const [isClient, setIsClient] = useState(false);
-  useEffect(() => setIsClient(true), []);
+const WebPlayer: React.FC<WebPlayerProps> = ({
+  compositionUrl,
+  reverse360,
+  minImageWidth,
+  maxImageWidth,
+  imageLoadStrategy,
+  flatten,
+  infiniteCarrousel,
+  eventId,
+  allowFullScreen,
+  permanentGallery,
+}) => {
+  useEffect(() => {
+    (async () => {
+      const { ensureCustomElementsDefinition } = await import(
+        "@car-cutter/core-wc"
+      );
+      ensureCustomElementsDefinition();
+    })();
+  }, []);
 
-  if (!isClient) {
-    return null;
-  }
-
-  return <WebPlayerReact {...props} />;
+  return (
+    // @ts-expect-error: Should define into the JSX.IntrinsicElements (.d.ts)
+    <cc-webplayer
+      composition-url={compositionUrl}
+      reverse360={reverse360}
+      min-image-width={minImageWidth}
+      max-image-width={maxImageWidth}
+      image-load-strategy={imageLoadStrategy}
+      flatten={flatten}
+      infinite-carrousel={infiniteCarrousel}
+      event-id={eventId}
+      allow-full-screen={allowFullScreen}
+      permanent-gallery={permanentGallery}
+    />
+  );
 };
 
 export default WebPlayer;

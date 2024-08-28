@@ -19,7 +19,7 @@ export default defineConfig({
       NODE_ENV: "production",
     },
   },
-  // FUTURE: Find a way to build in watch mode. The simple script "watch": "vite build --watch" does not work because it does not rebuild the TS.
+
   build: {
     lib: {
       name: "react-webplayer",
