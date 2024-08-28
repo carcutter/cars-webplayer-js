@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/react-webplayer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "UNLICENSED",
   "type": "module",
   "main": "dist/index.umd.cjs",
