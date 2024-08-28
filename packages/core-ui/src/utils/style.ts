@@ -1,6 +1,7 @@
 import type { AspectRatio } from "@car-cutter/core";
 
 import type { PositionX, PositionY, Position } from "../types/position";
+
 import { extractPositions } from "./position";
 
 export function cn(...inputs: (string | false | null | undefined)[]): string {
