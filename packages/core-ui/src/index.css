@@ -24,9 +24,3 @@
     --radius-gallery: var(--cc-webplayer-radius-gallery, 0);
   }
 }
-
-@layer base {
-  #cc-webplayer-wrapper {
-    @apply text-foreground select-none;
-  }
-}

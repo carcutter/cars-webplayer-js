@@ -29,12 +29,12 @@ export default defineConfig(({ mode }) => {
       },
       copyPublicDir: false, // The only public file is mock data
 
-      // React is an external dependency, it should be provided by the consumer
+      chunkSizeWarningLimit: 100,
+
       rollupOptions: {
-        external: ["@r2wc/react-to-web-component", "react", "react-dom"],
+        external: ["react", "react-dom"],
         output: {
           globals: {
-            "@r2wc/react-to-web-component": "r2wc",
             react: "React",
             "react-dom": "ReactDOM",
           },

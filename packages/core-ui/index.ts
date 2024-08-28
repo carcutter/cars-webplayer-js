@@ -1,5 +1,5 @@
-export { default as WebPlayer } from "./lib/WebPlayer";
-export { default as WebPlayerIcon } from "./lib/WebPlayerIcon";
+export { default as WebPlayer } from "./src/WebPlayer";
+export { default as WebPlayerIcon } from "./src/WebPlayerIcon";
 
 export type {
   ImageLoadStrategy,

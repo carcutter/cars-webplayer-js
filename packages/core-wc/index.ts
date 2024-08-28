@@ -4,4 +4,8 @@ export {
   ensureCustomElementsDefinition,
 } from "./src/wc";
 
-export { camelToDashedCase } from "./src/utils";
+// Expose parent package
+export {
+  type WebPlayerProps,
+  type WebPlayerIconProps,
+} from "@car-cutter/core-ui";

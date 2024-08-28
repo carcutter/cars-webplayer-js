@@ -15,5 +15,7 @@ export default defineConfig({
       entry: resolve(__dirname, "./index.ts"),
       formats: ["umd"],
     },
+
+    chunkSizeWarningLimit: 300,
   },
 });

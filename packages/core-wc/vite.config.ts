@@ -10,6 +10,7 @@ export default defineConfig({
     dts({
       tsconfigPath: resolve(__dirname, "./tsconfig.app.json"),
       rollupTypes: true,
+      bundledPackages: ["@car-cutter/core-ui"],
     }),
   ],
 
@@ -20,12 +21,13 @@ export default defineConfig({
   },
   build: {
     lib: {
-      name: "wc-webplayer",
+      name: "core-wc",
       fileName: "index",
       entry: resolve(__dirname, "./index.ts"),
     },
 
-    // Peer dependencies are external dependencies, they should be provided by the consumer
+    chunkSizeWarningLimit: 120,
+
     rollupOptions: {
       external: ["react", "react-dom"],
       output: {

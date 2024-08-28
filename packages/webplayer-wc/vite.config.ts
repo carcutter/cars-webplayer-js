@@ -25,5 +25,7 @@ export default defineConfig({
       fileName: "index",
       entry: resolve(__dirname, "./index.ts"),
     },
+
+    chunkSizeWarningLimit: 350,
   },
 });

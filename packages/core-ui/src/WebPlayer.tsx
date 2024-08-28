@@ -16,7 +16,9 @@ import CustomizationContextProvider from "./providers/CustomizationContext";
 import GlobalContextProvider from "./providers/GlobalContext";
 import { WebPlayerProps } from "./types/WebPlayer.props";
 
-const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
+import "./index.css";
+
+const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   compositionUrl,
 
   reverse360 = DEFAULT_REVERSE_360,
@@ -148,9 +150,12 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
         <div
           id="cc-webplayer-wrapper"
           ref={wrapperRef}
+          className="select-none text-foreground"
           // Hack to avoid the player to have a decimal width (e.g. 800.6px) which cause issue on scroll snap
-          className="mx-auto"
-          style={{ maxWidth: wrapperWidth && Math.floor(wrapperWidth) }}
+          style={{
+            marginInline: "auto",
+            maxWidth: wrapperWidth && Math.floor(wrapperWidth),
+          }}
         >
           <WebPlayerContainer compositionUrl={compositionUrl} />
         </div>
@@ -160,4 +165,4 @@ const WebPlayerTS: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   );
 };
 
-export default WebPlayerTS;
+export default WebPlayer;

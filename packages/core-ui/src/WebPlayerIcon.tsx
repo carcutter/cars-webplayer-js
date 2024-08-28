@@ -7,8 +7,8 @@ import {
 import {
   useCustomizationContext,
   useCustomizationContextSafe,
-} from "../src/providers/CustomizationContext";
-import { WebPlayerIconProps } from "../src/types/WebPlayerIcon.props";
+} from "./providers/CustomizationContext";
+import { WebPlayerIconProps } from "./types/WebPlayerIcon.props";
 
 const WebPlayerIconReact: ReactFC<
   ReactPropsWithChildren<WebPlayerIconProps>

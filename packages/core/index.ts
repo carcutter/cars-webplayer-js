@@ -10,4 +10,4 @@ export type {
   Composition,
 } from "./src/types";
 
-export { cdnImgSrcWithWidth } from "./src/utils";
+export { cdnImgSrcWithWidth, camelToDashedCase } from "./src/utils";

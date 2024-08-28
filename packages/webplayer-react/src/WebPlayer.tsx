@@ -1,5 +1,7 @@
-import type { WebPlayerProps } from "@car-cutter/core-ui";
-import { ensureCustomElementsDefinition } from "@car-cutter/core-wc";
+import {
+  ensureCustomElementsDefinition,
+  type WebPlayerProps,
+} from "@car-cutter/core-wc";
 
 ensureCustomElementsDefinition();
 
