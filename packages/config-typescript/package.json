@@ -1,6 +1,9 @@
 {
   "name": "@car-cutter/typescript-config",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "typescript": "^5.5.4"
+  }
 }

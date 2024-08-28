@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/wc-webplayer",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
@@ -17,9 +17,9 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@car-cutter/core-wc": "*",
-    "@car-cutter/eslint-config": "*",
-    "@car-cutter/typescript-config": "*",
+    "@car-cutter/core-wc": "0.1.0",
+    "@car-cutter/eslint-config": "0.1.0",
+    "@car-cutter/typescript-config": "0.1.0",
     "eslint": "^8.57.0",
     "typescript": "^5.5.4",
     "vite": "^5.4.1",

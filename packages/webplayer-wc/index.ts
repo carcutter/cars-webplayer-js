@@ -1,4 +1,4 @@
-// Expose ancestors package
+// Expose parent package
 export {
   checkCustomElementsDefinition,
   defineCustomElements,

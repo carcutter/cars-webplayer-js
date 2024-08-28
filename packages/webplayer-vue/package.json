@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/vue-webplayer",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
@@ -13,13 +13,13 @@
     "analyze": "vite-bundle-visualizer"
   },
   "dependencies": {
-    "@car-cutter/wc-webplayer": "0.0.0"
+    "@car-cutter/wc-webplayer": "0.1.0"
   },
   "peerDependencies": {
-    "vue": ">=3.0.0"
+    "vue": ">=3"
   },
   "devDependencies": {
-    "@car-cutter/core-ui": "*",
+    "@car-cutter/core-ui": "0.1.0",
     "@vitejs/plugin-vue": "^5.1.2",
     "eslint": "^8.57.0",
     "typescript": "^5.5.3",
