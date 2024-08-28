@@ -26,7 +26,7 @@ const WebPlayer: React.FC<WebPlayerProps> = ({
   }, []);
 
   return (
-    // @ts-expect-error: Should define into the JSX.IntrinsicElements (.d.ts)
+    // @ts-expect-error: [TODO] Should define into JSX.IntrinsicElements
     <cc-webplayer
       composition-url={compositionUrl}
       reverse360={reverse360}

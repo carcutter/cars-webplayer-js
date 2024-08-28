@@ -6,10 +6,8 @@ import {
 ensureCustomElementsDefinition();
 
 const WebPlayer: React.FC<WebPlayerIconProps> = ({ name, color }) => {
-  return (
-    // @ts-expect-error: Should define into the JSX.IntrinsicElements (.d.ts)
-    <cc-webplayer-icon name={name} color={color} />
-  );
+  // @ts-expect-error: [TODO] Should define into JSX.IntrinsicElements
+  return <cc-webplayer-icon name={name} color={color} />;
 };
 
 export default WebPlayer;
