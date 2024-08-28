@@ -10,7 +10,6 @@ export default defineConfig({
     dts({
       tsconfigPath: resolve(__dirname, "./tsconfig.app.json"),
       rollupTypes: true,
-      bundledPackages: ["@car-cutter/core"],
     }),
   ],
 
@@ -21,16 +20,18 @@ export default defineConfig({
   },
   build: {
     lib: {
-      name: "next-webplayer",
+      name: "wc-webplayer",
       fileName: "index",
       entry: resolve(__dirname, "./index.ts"),
     },
 
+    // Peer dependencies are external dependencies, they should be provided by the consumer
     rollupOptions: {
-      external: ["react"],
+      external: ["react", "react-dom"],
       output: {
         globals: {
           react: "React",
+          "react-dom": "ReactDOM",
         },
       },
     },

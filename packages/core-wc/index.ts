@@ -2,4 +2,6 @@ export {
   checkCustomElementsDefinition,
   defineCustomElements,
   ensureCustomElementsDefinition,
-} from "@car-cutter/core-wc";
+} from "./src/wc";
+
+export { camelToDashedCase } from "./src/utils";

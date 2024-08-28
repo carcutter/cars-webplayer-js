@@ -1,11 +1,6 @@
-import {
-  WEB_PLAYER_WC_TAG,
-  type WebPlayerProps,
-} from "@car-cutter/core-webplayer";
-import {
-  camelToDashedCase,
-  ensureCustomElementsDefinition,
-} from "@car-cutter/wc-webplayer";
+import { WEB_PLAYER_WC_TAG, type WebPlayerProps } from "@car-cutter/core";
+import { camelToDashedCase } from "@car-cutter/core-wc";
+import { ensureCustomElementsDefinition } from "@car-cutter/wc-webplayer";
 
 export function appendWebPlayerElement(
   parentElement: HTMLElement,

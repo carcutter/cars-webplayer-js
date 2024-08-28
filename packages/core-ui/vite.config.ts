@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => {
     // FUTURE: Find a way to build in watch mode. The simple script "watch": "vite build --watch" does not work because it does not rebuild the TS.
     build: {
       lib: {
-        name: "react-webplayer",
+        name: "core-ui",
         fileName: "index",
         entry: resolve(__dirname, "./index.ts"),
       },
@@ -31,10 +31,12 @@ export default defineConfig(({ mode }) => {
 
       // React is an external dependency, it should be provided by the consumer
       rollupOptions: {
-        external: ["react"],
+        external: ["@r2wc/react-to-web-component", "react", "react-dom"],
         output: {
           globals: {
+            "@r2wc/react-to-web-component": "r2wc",
             react: "React",
+            "react-dom": "ReactDOM",
           },
         },
       },

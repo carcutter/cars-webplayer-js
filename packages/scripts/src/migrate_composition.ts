@@ -9,7 +9,7 @@ import type {
   Composition as CompositionV3,
   Hotspot as HotspotV3,
   Item as ItemV3,
-} from "@car-cutter/core-webplayer";
+} from "@car-cutter/core";
 
 import { saveJsonToFile } from "./utils";
 

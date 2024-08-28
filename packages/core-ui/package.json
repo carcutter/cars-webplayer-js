@@ -1,7 +1,7 @@
 {
-  "name": "@car-cutter/react-webplayer",
-  "version": "0.1.0",
-  "license": "UNLICENSED",
+  "name": "@car-cutter/core-ui",
+  "version": "0.0.0",
+  "private": true,
   "type": "module",
   "main": "dist/index.umd.cjs",
   "module": "dist/index.js",
@@ -13,11 +13,10 @@
     "analyze": "vite-bundle-visualizer"
   },
   "peerDependencies": {
-    "react": ">=16.8.0",
-    "react-dom": ">=16.8.0"
+    "react": ">=16.8.0"
   },
   "devDependencies": {
-    "@car-cutter/core-wc": "*",
+    "@car-cutter/core": "*",
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
     "@types/eslint": "^9.6.0",

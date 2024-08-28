@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import type { WebPlayerProps } from "@car-cutter/core-webplayer";
+import type { WebPlayerProps } from "@car-cutter/core";
 import { WebPlayer as WebPlayerReact } from "@car-cutter/react-webplayer";
 
 const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = props => {
