@@ -6,15 +6,15 @@ import type { WebPlayerProps } from "@car-cutter/core-wc";
 
 const WebPlayer: React.FC<WebPlayerProps> = ({
   compositionUrl,
-  reverse360,
-  minImageWidth,
-  maxImageWidth,
-  imageLoadStrategy,
   flatten,
   infiniteCarrousel,
-  eventId,
-  allowFullScreen,
   permanentGallery,
+  imageLoadStrategy,
+  minImageWidth,
+  maxImageWidth,
+  allowFullScreen,
+  eventId,
+  reverse360,
 }) => {
   useEffect(() => {
     (async () => {
@@ -29,15 +29,15 @@ const WebPlayer: React.FC<WebPlayerProps> = ({
     // @ts-expect-error: [TODO] Should define into JSX.IntrinsicElements
     <cc-webplayer
       composition-url={compositionUrl}
-      reverse360={reverse360}
-      min-image-width={minImageWidth}
-      max-image-width={maxImageWidth}
-      image-load-strategy={imageLoadStrategy}
       flatten={flatten}
       infinite-carrousel={infiniteCarrousel}
-      event-id={eventId}
-      allow-full-screen={allowFullScreen}
       permanent-gallery={permanentGallery}
+      image-load-strategy={imageLoadStrategy}
+      min-image-width={minImageWidth}
+      max-image-width={maxImageWidth}
+      allow-full-screen={allowFullScreen}
+      event-id={eventId}
+      reverse360={reverse360}
     />
   );
 };

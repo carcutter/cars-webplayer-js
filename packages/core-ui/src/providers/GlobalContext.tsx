@@ -5,13 +5,13 @@ import type { WebPlayerProps } from "../types/WebPlayer.props";
 type ProviderProps = Required<
   Pick<
     WebPlayerProps,
-    | "reverse360"
-    | "imageLoadStrategy"
     | "flatten"
     | "infiniteCarrousel"
-    | "eventId"
-    | "allowFullScreen"
     | "permanentGallery"
+    | "imageLoadStrategy"
+    | "allowFullScreen"
+    | "eventId"
+    | "reverse360"
   >
 > &
   Pick<WebPlayerProps, "minImageWidth" | "maxImageWidth"> & {

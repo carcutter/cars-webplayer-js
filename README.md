@@ -16,10 +16,12 @@ CARS-WEBPLAYER/
 │   .
 │   .
 ├── packages/                # Shared packages for different frameworks
-│   ├── webplayer-core/      # Core logic for the web player (fetch composition, constants, ...)
-│   ├── webplayer-react/     # WebPlayer implementation (carrousel, 360, hotspots, ...)
-│   ├── webplayer-wc/        # Adapt the React WebPlayer into a WebComponent
+│   ├── core/                # Core logic for the web player (Composition typing, utils functions, ...)
+│   ├── core-ui/             # WebPlayer implementation (carrousel, 360, hotspots, ...)
+│   ├── core-wc/             # Wraps the WebPlayer in a WebComponent
+│   ├── webplayer-react/     # Adapt the WC WebPlayer for React
 │   ├── webplayer-next/      # Adapt the WC WebPlayer for Next.js
+│   ├── webplayer-wc/        # Expose the WC from core-wc and add React & ReactDOM
 │   .
 │   .
 └── schemas/                 # JSON schemas
@@ -108,18 +110,18 @@ Make sure you are logged in to npm with the correct credentials before running t
 
 ### Props
 
-| Attribute           | Type    | Required | Description                                               |
-| ------------------- | ------- | -------- | --------------------------------------------------------- |
-| `compositionUrl`    | string  | ✅       | URL to the composition data                               |
-| `flatten`           | boolean |          | Flatten the hierarchy of elements (no categories)         |
-| `infiniteCarrousel` | boolean |          | Allow to navigate from 1st to last image (and vice versa) |
-| `reverse360`        | boolean |          | Reverse the 360-degree rotation                           |
-| `minImageWidth`     | number  |          | Force minimum image width (in pixels)                     |
-| `maxImageWidth`     | number  |          | Force maximum image width (in pixels)                     |
-| `imageLoadStrategy` | string  |          | Strategy for loading images. "quality" or "speed"         |
-| `eventId`           | string  |          | ID of cc-player events                                    |
-| `allowFullScreen`   | boolean |          | Whether to allow full screen mode                         |
-| `permanentGallery`  | boolean |          | Display gallery under the carrousel                       |
+| Attribute           | Type                | Required | Default              | Description                                               |
+| ------------------- | ------------------- | -------- | -------------------- | --------------------------------------------------------- |
+| `compositionUrl`    | string              | ✅       | -                    | URL to the composition data                               |
+| `flatten`           | boolean             |          | false                | Flatten the hierarchy of elements (no categories)         |
+| `infiniteCarrousel` | boolean             |          | false                | Allow to navigate from 1st to last image (and vice versa) |
+| `permanentGallery`  | boolean             |          | false                | Display gallery under the carrousel                       |
+| `imageLoadStrategy` | "quality" / "speed" |          | "quality"            | Strategy for loading images. "quality" or "speed"         |
+| `minImageWidth`     | number              |          | -                    | Force minimum image width (in pixels)                     |
+| `maxImageWidth`     | number              |          | -                    | Force maximum image width (in pixels)                     |
+| `allowFullScreen`   | boolean             |          | true                 | Whether to allow full screen mode                         |
+| `eventId`           | string              |          | "cc-webplayer-event" | ID of cc-player events                                    |
+| `reverse360`        | boolean             |          | false                | Reverse the 360-degree rotation                           |
 
 _NOTE: If you are using the WebComponent directly, you need to transform the props to HTML attributes
 (which are in kebab case and take `string` as value type)_

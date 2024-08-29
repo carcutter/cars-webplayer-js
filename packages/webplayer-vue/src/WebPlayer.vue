@@ -1,6 +1,8 @@
 <script lang="ts" setup>
-import type { WebPlayerProps } from "@car-cutter/core-ui";
-import { ensureCustomElementsDefinition } from "@car-cutter/wc-webplayer";
+import {
+  ensureCustomElementsDefinition,
+  type WebPlayerProps,
+} from "@car-cutter/wc-webplayer";
 
 ensureCustomElementsDefinition();
 
@@ -10,15 +12,15 @@ defineProps<WebPlayerProps>();
 <template>
   <cc-webplayer
     :composition-url="compositionUrl"
-    :reverse360="reverse360"
+    :infinite-carrousel="infiniteCarrousel"
+    :permanent-gallery="permanentGallery"
+    :image-load-strategy="imageLoadStrategy"
     :min-image-width="minImageWidth"
     :max-image-width="maxImageWidth"
-    :image-load-strategy="imageLoadStrategy"
     :flatten="flatten"
-    :infinite-carrousel="infiniteCarrousel"
-    :event-id="eventId"
     :allow-full-screen="allowFullScreen"
-    :permanent-gallery="permanentGallery"
+    :event-id="eventId"
+    :reverse360="reverse360"
   >
   </cc-webplayer>
 </template>

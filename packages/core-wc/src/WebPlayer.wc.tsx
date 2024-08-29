@@ -17,20 +17,17 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedStyles, {
   props: {
     compositionUrl: "string",
 
-    reverse360: "boolean",
+    flatten: "boolean",
+    infiniteCarrousel: "boolean",
+    permanentGallery: "boolean",
 
     minImageWidth: "number",
     maxImageWidth: "number",
     imageLoadStrategy: "string",
 
-    flatten: "boolean",
-    infiniteCarrousel: "boolean",
-
-    eventId: "string",
-
     allowFullScreen: "boolean",
-
-    permanentGallery: "boolean",
+    eventId: "string",
+    reverse360: "boolean",
   },
 });
 

@@ -21,13 +21,15 @@ import "./index.css";
 const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   compositionUrl,
 
-  reverse360 = DEFAULT_REVERSE_360,
-  imageLoadStrategy = DEFAULT_IMAGE_LOAD_STRATEGY,
   flatten = DEFAULT_FLATTEN,
   infiniteCarrousel = DEFAULT_INFINITE_CARROUSEL,
-  eventId = DEFAULT_EVENT_ID,
-  allowFullScreen = DEFAULT_ALLOW_FULL_SCREEN,
   permanentGallery = DEFAULT_PERMANENT_GALLERY,
+
+  imageLoadStrategy = DEFAULT_IMAGE_LOAD_STRATEGY,
+
+  allowFullScreen = DEFAULT_ALLOW_FULL_SCREEN,
+  eventId = DEFAULT_EVENT_ID,
+  reverse360 = DEFAULT_REVERSE_360,
 
   children: customizationChildren, // NOTE: use to customize the player, not to display the content
 

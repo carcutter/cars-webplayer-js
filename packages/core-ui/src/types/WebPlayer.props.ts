@@ -3,18 +3,18 @@ export type ImageLoadStrategy = "quality" | "speed";
 export type WebPlayerProps = {
   compositionUrl: string;
 
-  reverse360?: boolean;
-
-  minImageWidth?: number;
-  maxImageWidth?: number;
-  imageLoadStrategy?: ImageLoadStrategy;
-
+  // Layout
   flatten?: boolean;
   infiniteCarrousel?: boolean;
-
-  eventId?: string;
-
-  allowFullScreen?: boolean;
-
   permanentGallery?: boolean;
+
+  // Images loading
+  imageLoadStrategy?: ImageLoadStrategy;
+  minImageWidth?: number;
+  maxImageWidth?: number;
+
+  // Miscelaneous
+  allowFullScreen?: boolean;
+  eventId?: string;
+  reverse360?: boolean;
 };

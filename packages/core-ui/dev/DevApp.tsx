@@ -50,15 +50,15 @@ const DevApp: React.FC = () => {
         <WebPlayer
           // compositionUrl="/composition_mock_1.json"
           compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
-          // reverse360
-          // minImageWidth={300}
-          // maxImageWidth={1000}
-          // imageLoadStrategy="speed"
           flatten
           infiniteCarrousel
-          // eventId="cc-event"
+          permanentGallery
+          // imageLoadStrategy="speed"
+          // minImageWidth={300}
+          // maxImageWidth={1000}
           // allowFullScreen={false}
-          // permanentGallery
+          // eventId="cc-event"
+          // reverse360
         >
           <WebPlayerIcon name="TIRESPIN" color="#ff00ff">
             <svg

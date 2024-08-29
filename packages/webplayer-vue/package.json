@@ -19,7 +19,6 @@
     "vue": ">=3"
   },
   "devDependencies": {
-    "@car-cutter/core-ui": "0.1.0",
     "@vitejs/plugin-vue": "^5.1.2",
     "eslint": "^8.57.0",
     "typescript": "^5.5.3",
