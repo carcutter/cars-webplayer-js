@@ -1,8 +1,0 @@
-{
-  "extends": "@car-cutter/typescript-config/base.json",
-
-  "compilerOptions": {
-    "jsx": "preserve"
-  },
-  "include": ["index.ts", "src/**/*.vue"]
-}

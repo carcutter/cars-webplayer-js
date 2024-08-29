@@ -1,1 +1,0 @@
-export const RESIZE_TRANSITION_DURATION = 500;
