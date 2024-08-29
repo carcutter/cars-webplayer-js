@@ -1,21 +1,25 @@
-import { WEB_PLAYER_WC_TAG, camelToDashedCase } from "@car-cutter/core";
+import { WEB_PLAYER_WC_TAG } from "@car-cutter/core";
 import {
   ensureCustomElementsDefinition,
+  webPlayerPropsToAttributes,
   type WebPlayerProps,
 } from "@car-cutter/wc-webplayer";
 
 export function appendWebPlayerElement(
   parentElement: HTMLElement,
-  config: WebPlayerProps
+  props: WebPlayerProps
 ) {
+  const attributes = webPlayerPropsToAttributes(props);
+
   ensureCustomElementsDefinition();
 
+  // -- Append Element to Dom
+  // Create
   const elmt = document.createElement(WEB_PLAYER_WC_TAG);
-
-  // Set attributes (HTML attributes are using dashed-case)
-  Object.entries(config).forEach(([key, value]) => {
-    elmt.setAttribute(camelToDashedCase(key), value.toString());
-  });
-
+  // Set attributes
+  Object.entries(attributes).forEach(([key, value]) =>
+    elmt.setAttribute(key, value)
+  );
+  // Append
   parentElement.appendChild(elmt);
 }

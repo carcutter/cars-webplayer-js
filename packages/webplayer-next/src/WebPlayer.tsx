@@ -1,45 +1,30 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import type { WebPlayerProps } from "@car-cutter/core-wc";
+import type { WebPlayerProps, WebPlayerAttributes } from "@car-cutter/core-wc";
 
-const WebPlayer: React.FC<WebPlayerProps> = ({
-  compositionUrl,
-  flatten,
-  infiniteCarrousel,
-  permanentGallery,
-  imageLoadStrategy,
-  minImageWidth,
-  maxImageWidth,
-  allowFullScreen,
-  eventId,
-  reverse360,
-}) => {
+const WebPlayer: React.FC<WebPlayerProps> = props => {
+  const [attributes, setAttributes] = useState<WebPlayerAttributes>();
+
   useEffect(() => {
     (async () => {
-      const { ensureCustomElementsDefinition } = await import(
-        "@car-cutter/core-wc"
-      );
+      const { ensureCustomElementsDefinition, webPlayerPropsToAttributes } =
+        await import("@car-cutter/core-wc");
+
+      // NOTE: Cannot be used in the top level of a module because of the dynamic import
+      setAttributes(webPlayerPropsToAttributes(props));
+
       ensureCustomElementsDefinition();
     })();
-  }, []);
+  }, [props]);
 
-  return (
-    // @ts-expect-error: [TODO] Should define into JSX.IntrinsicElements
-    <cc-webplayer
-      composition-url={compositionUrl}
-      flatten={flatten}
-      infinite-carrousel={infiniteCarrousel}
-      permanent-gallery={permanentGallery}
-      image-load-strategy={imageLoadStrategy}
-      min-image-width={minImageWidth}
-      max-image-width={maxImageWidth}
-      allow-full-screen={allowFullScreen}
-      event-id={eventId}
-      reverse360={reverse360}
-    />
-  );
+  if (!attributes) {
+    return null;
+  }
+
+  // @ts-expect-error: [TODO] Should define into JSX.IntrinsicElements
+  return <cc-webplayer {...attributes} />;
 };
 
 export default WebPlayer;
