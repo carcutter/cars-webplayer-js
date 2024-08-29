@@ -30,7 +30,7 @@ import CategorySelect from "./CategorySelect";
 const WebPlayerOverlay: React.FC = () => {
   const { flatten, infiniteCarrousel, permanentGallery } = useGlobalContext();
 
-  const { aspectRatioClass } = useCompositionContext();
+  const { aspectRatioStyle } = useCompositionContext();
 
   const {
     displayedItems: { length: dataLength },
@@ -212,7 +212,8 @@ const WebPlayerOverlay: React.FC = () => {
           {!!shownDetails && (
             <>
               <CdnImage
-                className={`w-full ${aspectRatioClass} bg-foreground/65`}
+                className="w-full bg-foreground/65"
+                style={aspectRatioStyle}
                 src={shownDetails.src}
                 imgInPlayerWidthRatio={0.6}
               />

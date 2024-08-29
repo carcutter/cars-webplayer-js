@@ -25,10 +25,6 @@ const config = {
         neutral: "hsl(var(--neutral))",
         "neutral-foreground": "hsl(var(--neutral-foreground))",
       },
-      aspectRatio: {
-        "4/3": "4 / 3",
-        "16/9": "16 / 9",
-      },
       borderRadius: {
         "ui-sm": "calc(var(--radius-ui) - 2px)",
         ui: "var(--radius-ui)",

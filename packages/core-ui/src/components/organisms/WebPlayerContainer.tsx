@@ -19,7 +19,7 @@ import WebPlayerCarrousel from "./WebPlayerCarrousel";
 const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
   const { permanentGallery } = useGlobalContext();
 
-  const { aspectRatioClass } = useCompositionContext();
+  const { aspectRatioStyle } = useCompositionContext();
 
   const {
     prevImage,
@@ -149,18 +149,16 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
         <div
           // Carrousel Wrapper : Center horizontally and limit width
           ref={wrapperRef}
-          className={
-            !extendMode
-              ? undefined
-              : `mx-auto flex min-h-0 w-full max-w-screen-2xl ${aspectRatioClass} justify-center`
-          }
+          className={cn(
+            extendMode &&
+              "mx-auto flex min-h-0 w-full max-w-screen-2xl justify-center"
+          )}
+          style={aspectRatioStyle}
         >
-          <WebPlayerCarrousel
-            className={!extendMode ? undefined : "h-full min-w-0"}
-          />
+          <WebPlayerCarrousel className={cn(extendMode && "h-full min-w-0")} />
         </div>
         {permanentGallery && (
-          <Gallery className={!extendMode ? undefined : "my-4 shrink-0"} />
+          <Gallery className={cn(extendMode && "my-4 shrink-0")} />
         )}
       </div>
 
@@ -195,7 +193,7 @@ const WebPlayerContainer: React.FC<WebPlayerContainerProps> = ({
   if (!isSuccess) {
     // TODO
     return (
-      <div className="flex aspect-4/3 size-full flex-col items-center justify-center gap-y-4">
+      <div className="flex aspect-video size-full flex-col items-center justify-center gap-y-4">
         <div className="text-xl">Loading WebPlayer...</div>
         <Spinner color="primary" />
       </div>

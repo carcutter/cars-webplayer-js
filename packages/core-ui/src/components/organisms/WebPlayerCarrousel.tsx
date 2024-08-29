@@ -6,7 +6,7 @@ import { useControlsContext } from "../../providers/ControlsContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
 import { easeOut } from "../../utils/animation";
 import { clamp, lerp, modulo } from "../../utils/math";
-import { positionToClassName } from "../../utils/style";
+import { cn, positionToClassName } from "../../utils/style";
 import IndexIndicator from "../atoms/IndexIndicator";
 import WebPlayerElement from "../molecules/WebPlayerElement";
 import WebPlayerOverlay from "../molecules/WebPlayerOverlay";
@@ -20,7 +20,7 @@ type Props = {
  */
 const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   const { infiniteCarrousel, isFullScreen } = useGlobalContext();
-  const { aspectRatioClass } = useCompositionContext();
+  const { aspectRatioStyle } = useCompositionContext();
 
   const {
     displayedItems: items,
@@ -420,18 +420,21 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     }
   }, [cycling, finishCycling, itemIndexCommand, items.length, scrollToIndex]);
 
+  const CyclePlaceholder = () => (
+    <div className="h-full" style={aspectRatioStyle} />
+  );
+
   return (
     <div
-      className={`relative overflow-hidden rounded-carrousel ${aspectRatioClass} ${className}`}
+      className={cn("relative overflow-hidden rounded-carrousel", className)}
+      style={aspectRatioStyle}
     >
       <div
         ref={sliderRef}
         className={`flex size-full ${slidable ? "overflow-x-auto no-scrollbar *:snap-start *:snap-always" : "justify-center"}`}
       >
-        {cycling === "last_to_first" && (
-          // Empty element to allow cycling
-          <div className={`h-full ${aspectRatioClass}`} />
-        )}
+        {/* Empty element to allow cycling */}
+        {cycling === "last_to_first" && <CyclePlaceholder />}
 
         {items.map((item, index) => {
           const imgSrc = item.type === "360" ? item.images[0] : item.src;
@@ -448,7 +451,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
             !(infiniteCarrousel && isFirst && lastIsShown) && // Not the last one when the first one is shown (only for infinite carrousel)
             !(infiniteCarrousel && isLast && firstIsShown); // Not the first one when the last one is shown (only for infinite carrousel)
 
-          const style = (() => {
+          const transformStyle = (() => {
             if (cycling === "first_to_last" && isFirst) {
               return {
                 transform: `translateX(${100 * items.length}%)`,
@@ -463,8 +466,8 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
           return (
             <div
               key={`${index}_${imgSrc}`}
-              className={`relative h-full bg-foreground/50 ${aspectRatioClass}`}
-              style={style}
+              className="relative h-full bg-foreground/50"
+              style={{ ...aspectRatioStyle, ...transformStyle }}
             >
               <WebPlayerElement
                 index={index}
@@ -476,10 +479,8 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
           );
         })}
 
-        {cycling === "first_to_last" && (
-          // Empty element to allow cycling
-          <div className={`h-full ${aspectRatioClass}`} />
-        )}
+        {/*Empty element to allow cycling */}
+        {cycling === "first_to_last" && <CyclePlaceholder />}
       </div>
 
       {slidable && !isZooming && (

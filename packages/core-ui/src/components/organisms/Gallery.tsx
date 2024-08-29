@@ -6,6 +6,7 @@ import { useCompositionContext } from "../../providers/CompositionContext";
 import { useControlsContext } from "../../providers/ControlsContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
 import { clamp } from "../../utils/math";
+import { cn } from "../../utils/style";
 import GalleryElement from "../molecules/GalleryElement";
 
 type Props = {
@@ -19,7 +20,7 @@ const Gallery: React.FC<Props> = ({
 }) => {
   const { isFullScreen } = useGlobalContext();
 
-  const { aspectRatioClass } = useCompositionContext();
+  const { aspectRatioStyle } = useCompositionContext();
 
   const {
     displayedItems,
@@ -202,10 +203,15 @@ const Gallery: React.FC<Props> = ({
         {displayedItems.map((item, index) => (
           <div
             key={index}
-            className={
-              `relative h-full ${aspectRatioClass} rounded-gallery ${!isDragging ? "cursor-pointer" : ""}` +
-              ` after:absolute after:inset-0 after:border-2 after:border-primary after:rounded-gallery after:transition-opacity ${index === masterItemIndex ? "after:opacity-100" : "after:opacity-0 hover:after:opacity-70"}`
-            }
+            className={cn(
+              "relative h-full rounded-gallery ",
+              !isDragging && "cursor-pointer",
+              "after:absolute after:inset-0 after:rounded-gallery after:border-2 after:border-primary after:transition-opacity",
+              index === masterItemIndex
+                ? "after:opacity-100"
+                : "after:opacity-0 hover:after:opacity-70"
+            )}
+            style={aspectRatioStyle}
             onClick={() => onItemClicked(item, index)}
           >
             <GalleryElement item={item} />

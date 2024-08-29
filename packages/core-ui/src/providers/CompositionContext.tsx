@@ -6,7 +6,7 @@ type ContextType = Pick<
   Composition,
   "categories" | "aspectRatio" | "imageHdWidth" | "imageSubWidths"
 > & {
-  aspectRatioClass: string;
+  aspectRatioStyle: React.CSSProperties;
 };
 
 const CompositionContext = createContext<ContextType | null>(null);
@@ -32,15 +32,16 @@ const CompositionContextProvider: React.FC<
 > = ({ composition, children }) => {
   const { aspectRatio } = composition;
 
-  // Compute aspectRatioClass based on aspectRatio
-  const aspectRatioClass = aspectRatio === "4:3" ? "aspect-4/3" : "aspect-16/9";
+  const aspectRatioStyle: React.CSSProperties = {
+    aspectRatio: aspectRatio.replace(":", " / "),
+  };
 
   return (
     <CompositionContext.Provider
       value={{
         ...composition,
 
-        aspectRatioClass,
+        aspectRatioStyle,
       }}
     >
       {children}

@@ -8,7 +8,7 @@ import ThreeSixtyIcon from "../icons/ThreeSixtyIcon";
 type Props = { item: Item };
 
 const GalleryElement: React.FC<Props> = ({ item }) => {
-  const { aspectRatioClass } = useCompositionContext();
+  const { aspectRatioStyle } = useCompositionContext();
 
   const { type } = item;
 
@@ -61,7 +61,8 @@ const GalleryElement: React.FC<Props> = ({ item }) => {
 
   return (
     <div
-      className={`relative ${aspectRatioClass} overflow-hidden rounded-gallery bg-foreground/50`}
+      className="relative overflow-hidden rounded-gallery bg-foreground/50"
+      style={aspectRatioStyle}
     >
       {imgNode}
       {overlayIcon && (
