@@ -6,4 +6,6 @@
 2. Import: `import { WebPlayer } from "@car-cutter/next-webplayer"`
 3. Use: `<WebPlayer compositionUrl={url} />`
 
-For more customisation, take a look at available **props** in the main README.md
+### Next Steps
+
+For more customisation, take a look at the **[Online Documentation](https://carcutter.github.io/cars-webplayer-js/)**

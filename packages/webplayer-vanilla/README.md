@@ -6,12 +6,14 @@
 2. Import: `import { appendWebPlayerElement } from "@car-cutter/vanilla-webplayer"`
 3. Use:
 
-```
-  const targetElement = document.getElementById("target");
+```js
+const targetElement = document.getElementById("target");
 
-  appendWebPlayerElement(targetElement, {
-    compositionUrl: url,
-  });
+appendWebPlayerElement(targetElement, {
+  compositionUrl: url,
+});
 ```
 
-For more customisation, take a look at available **props** in the main README.md
+### Next Steps
+
+For more customisation, take a look at the **[Online Documentation](https://carcutter.github.io/cars-webplayer-js/)**

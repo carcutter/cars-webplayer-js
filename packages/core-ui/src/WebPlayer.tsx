@@ -153,6 +153,7 @@ const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
           id="cc-webplayer-wrapper"
           ref={wrapperRef}
           className="select-none text-foreground"
+          // TODO: Find a better way as it is very bad with reload
           // Hack to avoid the player to have a decimal width (e.g. 800.6px) which cause issue on scroll snap
           style={{
             marginInline: "auto",
