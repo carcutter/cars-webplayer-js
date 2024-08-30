@@ -1,0 +1,54 @@
+---
+sidebar_position: 3
+sidebar_label: <script/>
+
+description: "Use the WebPlayer without any package manager"
+---
+
+# WebPlayer with `<script/>` tag
+
+## Usage
+
+1. Import script in `<head>`
+
+```html
+<script src="https://cdn.car-cutter.com/libs/web-player/v3/bundle.js"></script>
+```
+
+2. Use the custom element : `cc-webplayer`
+
+```html
+<cc-webplayer composition-url="..." />
+```
+
+### Default Script implementation example
+
+```html title="index.html"
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebPlayer Demo</title>
+
+    // highlight-next-line
+    <script src="https://cdn.car-cutter.com/libs/web-player/v3/bundle.js"></script>
+  </head>
+
+  <body>
+    <main>
+      <div style="max-width: 1200px; marginInline: auto">
+        // highlight-start
+        <cc-webplayer
+          composition-url="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
+        >
+        </cc-webplayer>
+        // highlight-end
+      </div>
+    </main>
+  </body>
+</html>
+```
+
+## Next steps
+
+For more customisation, take a look at available **props** in the **[Customisation](../customisation.md)** section

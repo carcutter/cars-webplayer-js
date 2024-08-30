@@ -1,7 +1,16 @@
+# Production
+build
 dist
 node_modules
 
-.turbo
+# Cache
+.cache-loader
+.docusaurus
 .next
+.turbo
 
+# Misc
 .DS_Store
+
+yarn-debug.log*
+yarn-error.log*
