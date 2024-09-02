@@ -4,7 +4,7 @@ import { useEscapeKeyEffect } from "../../hooks/useEscapeKeyEffect";
 import { useCompositionContext } from "../../providers/CompositionContext";
 import { useControlsContext } from "../../providers/ControlsContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
-import { positionToClassName } from "../../utils/style";
+import { cn, positionToClassName } from "../../utils/style";
 import { isSelfEvent } from "../../utils/web";
 import CdnImage from "../atoms/CdnImage";
 import CloseButton from "../atoms/CloseButton";
@@ -17,6 +17,7 @@ import ReduceIcon from "../icons/ReduceIcon";
 import Gallery from "../organisms/Gallery";
 import Button from "../ui/Button";
 import Separator from "../ui/Separator";
+import Switch from "../ui/Switch";
 
 import CategorySelect from "./CategorySelect";
 
@@ -150,7 +151,7 @@ const WebPlayerOverlay: React.FC = () => {
             )}
           </>
         )}
-        <div className="col-start-3 flex flex-col gap-y-1 sm:gap-y-2">
+        <div className="col-start-3 flex flex-col items-end gap-y-1 sm:gap-y-2">
           {/* Zoom buttons */}
           {showZoomControls && (
             <div className="max-sm:hidden">
@@ -191,15 +192,19 @@ const WebPlayerOverlay: React.FC = () => {
           </Button>
 
           {/* Hotspot button */}
-          <Button
-            variant="fill"
-            color={showHotspots ? "primary" : "neutral"}
-            shape="icon"
-            disabled={!enableHotspotsControl || isZooming}
-            onClick={toggleHotspots}
-          >
-            <HotspotsIcon className="size-full" />
-          </Button>
+          {!isZooming && (
+            <Switch
+              className={cn(
+                "transition-opacity duration-150",
+                enableHotspotsControl ? "opacity-100" : "opacity-0"
+              )}
+              label={showHotspots ? "Hotspots" : undefined}
+              enabled={showHotspots}
+              onToggle={toggleHotspots}
+            >
+              <HotspotsIcon className="size-3" />
+            </Switch>
+          )}
         </div>
       </div>
 
