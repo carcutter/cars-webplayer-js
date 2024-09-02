@@ -8,13 +8,14 @@
     "dev:all": "turbo dev",
     "lint": "turbo lint",
     "build-lint": "turbo run build lint",
+    "lint-build": "turbo run lint build",
     "commit-packages": "changeset",
     "version-packages": "changeset version",
     "publish-packages": "turbo run build lint && changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.7",
-    "turbo": "^2.1.0"
+    "turbo": "^2.1.1"
   },
   "packageManager": "yarn@1.22.22",
   "workspaces": [
