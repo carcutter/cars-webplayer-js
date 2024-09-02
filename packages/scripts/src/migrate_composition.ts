@@ -93,9 +93,10 @@ const transformComposition = (composition: CompositionV2): CompositionV3 => {
           : undefined;
 
         return {
-          feature: hotspot.feature,
+          title: description?.short ?? hotspot.feature,
+          icon: hotspot.feature,
           position: hotspot.position,
-          description,
+          description: description?.long,
           detail,
         };
       };

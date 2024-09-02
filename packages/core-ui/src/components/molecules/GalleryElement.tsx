@@ -12,32 +12,17 @@ const GalleryElement: React.FC<Props> = ({ item }) => {
 
   const { type } = item;
 
-  let imgSrc: string;
-
-  switch (type) {
-    case "image":
-      imgSrc = item.src;
-      break;
-    case "video":
-      imgSrc = item.poster;
-      break;
-    case "360":
-      imgSrc = item.images[0].src;
-      break;
-    case "omni_directional":
-      imgSrc = item.src;
-      break;
-    default:
-      throw new Error(`Unsupported item type: ${type}`);
-  }
-
   let imgNode: React.ReactNode;
 
-  if (["360", "image"].includes(type)) {
+  if (type === "360" || type === "image") {
+    const imgSrc = type === "360" ? item.images[0].src : item.src;
+
     imgNode = (
       <CdnImage className="size-full object-cover" src={imgSrc} onlyThumbnail />
     );
   } else {
+    const imgSrc = type === "video" ? item.poster : item.src;
+
     // FUTURE : Add srcSet for video and omni_directional
     imgNode = <img className="size-full object-cover" src={imgSrc} />;
   }

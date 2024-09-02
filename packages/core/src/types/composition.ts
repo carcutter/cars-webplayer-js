@@ -1,14 +1,12 @@
 import { AspectRatio, ImageWidth } from "./misc";
 
 export type Hotspot = {
-  feature: string;
+  title: string;
+  icon?: string;
+  description?: string;
   position: {
     x: number;
     y: number;
-  };
-  description?: {
-    short: string;
-    long?: string;
   };
   detail?: {
     type: "image" | "link" | "pdf";
@@ -26,7 +24,7 @@ type ImageItem = { type: "image" } & ImageWithHotspots;
 type VideoItem = {
   type: "video";
   src: string;
-  poster: string;
+  poster?: string;
 };
 
 type ThreeSixtyItem = {

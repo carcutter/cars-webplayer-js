@@ -2,7 +2,8 @@
   "type": "object",
   "properties": {
     "aspectRatio": {
-      "$ref": "#/definitions/AspectRatio"
+      "type": "string",
+      "pattern": "^[0-9]*:[0-9]*$"
     },
     "imageHdWidth": {
       "type": "number"
@@ -46,13 +47,6 @@
     "imageSubWidths"
   ],
   "definitions": {
-    "AspectRatio": {
-      "enum": [
-        "16:9",
-        "4:3"
-      ],
-      "type": "string"
-    },
     "Item": {
       "anyOf": [
         {
@@ -73,7 +67,6 @@
             }
           },
           "required": [
-            "poster",
             "src",
             "type"
           ]
@@ -98,7 +91,13 @@
                     "items": {
                       "type": "object",
                       "properties": {
-                        "feature": {
+                        "title": {
+                          "type": "string"
+                        },
+                        "icon": {
+                          "type": "string"
+                        },
+                        "description": {
                           "type": "string"
                         },
                         "position": {
@@ -114,20 +113,6 @@
                           "required": [
                             "x",
                             "y"
-                          ]
-                        },
-                        "description": {
-                          "type": "object",
-                          "properties": {
-                            "short": {
-                              "type": "string"
-                            },
-                            "long": {
-                              "type": "string"
-                            }
-                          },
-                          "required": [
-                            "short"
                           ]
                         },
                         "detail": {
@@ -152,8 +137,8 @@
                         }
                       },
                       "required": [
-                        "feature",
-                        "position"
+                        "position",
+                        "title"
                       ]
                     }
                   }
@@ -212,7 +197,13 @@
               "items": {
                 "type": "object",
                 "properties": {
-                  "feature": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "icon": {
+                    "type": "string"
+                  },
+                  "description": {
                     "type": "string"
                   },
                   "position": {
@@ -228,20 +219,6 @@
                     "required": [
                       "x",
                       "y"
-                    ]
-                  },
-                  "description": {
-                    "type": "object",
-                    "properties": {
-                      "short": {
-                        "type": "string"
-                      },
-                      "long": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "short"
                     ]
                   },
                   "detail": {
@@ -266,8 +243,8 @@
                   }
                 },
                 "required": [
-                  "feature",
-                  "position"
+                  "position",
+                  "title"
                 ]
               }
             }

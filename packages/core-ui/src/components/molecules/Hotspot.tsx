@@ -11,10 +11,10 @@ type HotspotProps = {
 type IconHotspotProps = HotspotProps;
 
 const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
-  const { feature, position, description, detail } = hotspot;
+  const { title, icon, description, position, detail } = hotspot;
 
   const { getIconConfig } = useCustomizationContext();
-  const hotspotConfig = getIconConfig(feature);
+  const hotspotConfig = icon ? getIconConfig(icon) : undefined;
 
   const { setShownDetails } = useControlsContext();
 
@@ -35,8 +35,8 @@ const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
 
     setShownDetails({
       src: detail.src,
-      title: description?.short,
-      text: description?.long,
+      title: title,
+      text: description,
     });
   };
 
@@ -77,10 +77,8 @@ const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
           )}
         >
           <div className="space-y-1">
-            <div className="text-sm">{description.short}</div>
-            {description.long && (
-              <div className="text-xs">{description.long}</div>
-            )}
+            <div className="text-sm">{title}</div>
+            {description && <div className="text-xs">{description}</div>}
           </div>
         </div>
       )}
@@ -89,12 +87,12 @@ const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
 };
 
 const Hotspot: React.FC<HotspotProps> = ({ hotspot }) => {
-  const { feature, detail } = hotspot;
+  const { icon, detail } = hotspot;
 
   let IconComp: React.ReactNode;
 
   // TODO: Add some ... or clean!
-  switch (feature) {
+  switch (icon) {
     case "WINDOW STICKER":
       IconComp = (
         <img

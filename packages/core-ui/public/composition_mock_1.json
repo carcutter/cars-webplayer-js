@@ -14,14 +14,12 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-034-036_e2401b9b2ad65929de39ad07b14663f429158048_a.jpg",
               "hotspots": [
                 {
-                  "feature": "GASOLINESPIN",
+                  "title": "Gasoline",
+                  "icon": "GASOLINESPIN",
+                  "description": "Gasoline",
                   "position": {
                     "x": 0.45736512541770935,
                     "y": 0.6035209894180298
-                  },
-                  "description": {
-                    "short": "Gasoline",
-                    "long": "Gasoline"
                   },
                   "detail": {
                     "type": "image",
@@ -34,14 +32,12 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-033-036_f21f78eac563900aa0057e77e81e8462a3414920_a.jpg",
               "hotspots": [
                 {
-                  "feature": "GASOLINESPIN",
+                  "title": "Gasoline",
+                  "icon": "GASOLINESPIN",
+                  "description": "Gasoline",
                   "position": {
                     "x": 0.4722556930303352,
                     "y": 0.6117953656480584
-                  },
-                  "description": {
-                    "short": "Gasoline",
-                    "long": "Gasoline"
                   },
                   "detail": {
                     "type": "image",
@@ -54,14 +50,12 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-032-036_a3394673c3ece46d564e3bf2df2bddacf1d3e4ca_a.jpg",
               "hotspots": [
                 {
-                  "feature": "GASOLINESPIN",
+                  "title": "Gasoline",
+                  "icon": "GASOLINESPIN",
+                  "description": "Gasoline",
                   "position": {
                     "x": 0.4941811316200162,
                     "y": 0.6058386269673196
-                  },
-                  "description": {
-                    "short": "Gasoline",
-                    "long": "Gasoline"
                   },
                   "detail": {
                     "type": "image",
@@ -74,14 +68,12 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-031-036_8a39996aedd516e0583581bb747238bff1faa7b2_a.jpg",
               "hotspots": [
                 {
-                  "feature": "GASOLINESPIN",
+                  "title": "Gasoline",
+                  "icon": "GASOLINESPIN",
+                  "description": "Gasoline",
                   "position": {
                     "x": 0.4818680432189073,
                     "y": 0.6181622525899897
-                  },
-                  "description": {
-                    "short": "Gasoline",
-                    "long": "Gasoline"
                   },
                   "detail": {
                     "type": "image",
@@ -94,14 +86,12 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-030-036_0cefb7e3939390019270400fca263890543a33e2_a.jpg",
               "hotspots": [
                 {
-                  "feature": "GASOLINESPIN",
+                  "title": "Gasoline",
+                  "icon": "GASOLINESPIN",
+                  "description": "Gasoline",
                   "position": {
                     "x": 0.49124271596295754,
                     "y": 0.6158681846795188
-                  },
-                  "description": {
-                    "short": "Gasoline",
-                    "long": "Gasoline"
                   },
                   "detail": {
                     "type": "image",
@@ -114,14 +104,12 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-029-036_b6a84e46f8f65828c648323b570371abfc5959cb_a.jpg",
               "hotspots": [
                 {
-                  "feature": "GASOLINESPIN",
+                  "title": "Gasoline",
+                  "icon": "GASOLINESPIN",
+                  "description": "Gasoline",
                   "position": {
                     "x": 0.500217415363171,
                     "y": 0.6082235037747297
-                  },
-                  "description": {
-                    "short": "Gasoline",
-                    "long": "Gasoline"
                   },
                   "detail": {
                     "type": "image",
@@ -155,13 +143,11 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-021-036_751d087e5a648f796e3113458beff4f96106cd98_a.jpg",
               "hotspots": [
                 {
-                  "feature": "TIRESPIN",
+                  "title": "19` AMG rim",
+                  "icon": "TIRESPIN",
                   "position": {
                     "x": 0.49090328353318696,
                     "y": 0.7221150491556888
-                  },
-                  "description": {
-                    "short": "19` AMG rim"
                   },
                   "detail": {
                     "type": "image",
@@ -174,13 +160,11 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-020-036_476fc162f3cf91cb63ec23fd5f907442d5f2de79_a.jpg",
               "hotspots": [
                 {
-                  "feature": "TIRESPIN",
+                  "title": "19` AMG rim",
+                  "icon": "TIRESPIN",
                   "position": {
                     "x": 0.5521289918241348,
                     "y": 0.7364130142030825
-                  },
-                  "description": {
-                    "short": "19` AMG rim"
                   },
                   "detail": {
                     "type": "image",
@@ -193,13 +177,11 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-019-036_5af3628fcadf16e16d6beae08285157bf3c26a89_a.jpg",
               "hotspots": [
                 {
-                  "feature": "TIRESPIN",
+                  "title": "19` AMG rim",
+                  "icon": "TIRESPIN",
                   "position": {
                     "x": 0.6126975551321324,
                     "y": 0.73642437012916
-                  },
-                  "description": {
-                    "short": "19` AMG rim"
                   },
                   "detail": {
                     "type": "image",
@@ -212,13 +194,11 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-018-036_ffd41f754c48c298a596d2db9877da80f572219b_a.jpg",
               "hotspots": [
                 {
-                  "feature": "TIRESPIN",
+                  "title": "19` AMG rim",
+                  "icon": "TIRESPIN",
                   "position": {
                     "x": 0.6801587232421663,
                     "y": 0.7214140131151539
-                  },
-                  "description": {
-                    "short": "19` AMG rim"
                   },
                   "detail": {
                     "type": "image",
@@ -231,13 +211,11 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-017-036_0015f6d8ba5af8fc433ab0aa5b8a9864d7f48869_a.jpg",
               "hotspots": [
                 {
-                  "feature": "TIRESPIN",
+                  "title": "19` AMG rim",
+                  "icon": "TIRESPIN",
                   "position": {
                     "x": 0.715137545994463,
                     "y": 0.7009529843570999
-                  },
-                  "description": {
-                    "short": "19` AMG rim"
                   },
                   "detail": {
                     "type": "image",
@@ -250,13 +228,11 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-016-036_1411e6d76c1009a40bdc540b876730efbc09072d_a.jpg",
               "hotspots": [
                 {
-                  "feature": "TIRESPIN",
+                  "title": "19` AMG rim",
+                  "icon": "TIRESPIN",
                   "position": {
                     "x": 0.7370831370353699,
                     "y": 0.6660497188568115
-                  },
-                  "description": {
-                    "short": "19` AMG rim"
                   },
                   "detail": {
                     "type": "image",
@@ -269,13 +245,11 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-015-036_77f70aab958425b7c64333edcb552b20d31dd2d2_a.jpg",
               "hotspots": [
                 {
-                  "feature": "TIRESPIN",
+                  "title": "19` AMG rim",
+                  "icon": "TIRESPIN",
                   "position": {
                     "x": 0.7488639506790886,
                     "y": 0.6395006884115236
-                  },
-                  "description": {
-                    "short": "19` AMG rim"
                   },
                   "detail": {
                     "type": "image",
@@ -288,13 +262,11 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-014-036_77691b984fde6923b57c28c3ee24b884ecaef19b_a.jpg",
               "hotspots": [
                 {
-                  "feature": "TIRESPIN",
+                  "title": "19` AMG rim",
+                  "icon": "TIRESPIN",
                   "position": {
                     "x": 0.7509570112263481,
                     "y": 0.6277425359863598
-                  },
-                  "description": {
-                    "short": "19` AMG rim"
                   },
                   "detail": {
                     "type": "image",
@@ -307,13 +279,11 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-013-036_4c2147f1c310df365e72c61712abcfa60cb3a100_a.jpg",
               "hotspots": [
                 {
-                  "feature": "TIRESPIN",
+                  "title": "19` AMG rim",
+                  "icon": "TIRESPIN",
                   "position": {
                     "x": 0.7292800505023872,
                     "y": 0.5936811545989862
-                  },
-                  "description": {
-                    "short": "19` AMG rim"
                   },
                   "detail": {
                     "type": "image",
@@ -326,13 +296,11 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-012-036_82180f208091f78a4ea593ab9f008dd7910de1b6_a.jpg",
               "hotspots": [
                 {
-                  "feature": "TIRESPIN",
+                  "title": "19` AMG rim",
+                  "icon": "TIRESPIN",
                   "position": {
                     "x": 0.7286003468157156,
                     "y": 0.5930681672081478
-                  },
-                  "description": {
-                    "short": "19` AMG rim"
                   },
                   "detail": {
                     "type": "image",
@@ -345,13 +313,11 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-011-036_2836bbdb875f6427fb5999001106b3bcdd67215e_a.jpg",
               "hotspots": [
                 {
-                  "feature": "TIRESPIN",
+                  "title": "19` AMG rim",
+                  "icon": "TIRESPIN",
                   "position": {
                     "x": 0.7007637039277661,
                     "y": 0.5756041825868813
-                  },
-                  "description": {
-                    "short": "19` AMG rim"
                   },
                   "detail": {
                     "type": "image",
@@ -364,13 +330,11 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-010-036_846483369aecd2cdad244b859315b4c3c25d0ce9_a.jpg",
               "hotspots": [
                 {
-                  "feature": "TIRESPIN",
+                  "title": "19` AMG rim",
+                  "icon": "TIRESPIN",
                   "position": {
                     "x": 0.6801363356349155,
                     "y": 0.5653885501581558
-                  },
-                  "description": {
-                    "short": "19` AMG rim"
                   },
                   "detail": {
                     "type": "image",
@@ -398,14 +362,12 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-004-036_66c4fe3330394c34b69f84a4ab94fa977bfb8a06_a.jpg",
               "hotspots": [
                 {
-                  "feature": "GASOLINESPIN",
+                  "title": "Gasoline",
+                  "icon": "GASOLINESPIN",
+                  "description": "Gasoline",
                   "position": {
                     "x": 0.32961751058056366,
                     "y": 0.5865890831187293
-                  },
-                  "description": {
-                    "short": "Gasoline",
-                    "long": "Gasoline"
                   },
                   "detail": {
                     "type": "image",
@@ -418,14 +380,12 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-003-036_4f5f05257a259507690c5e9b9c6a3a6be8c2509b_a.jpg",
               "hotspots": [
                 {
-                  "feature": "GASOLINESPIN",
+                  "title": "Gasoline",
+                  "icon": "GASOLINESPIN",
+                  "description": "Gasoline",
                   "position": {
                     "x": 0.3360652396582917,
                     "y": 0.5823941929282609
-                  },
-                  "description": {
-                    "short": "Gasoline",
-                    "long": "Gasoline"
                   },
                   "detail": {
                     "type": "image",
@@ -438,15 +398,13 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-002-036_62375a61168857c21a158204bdf2053b536eb60c_a.jpg",
               "hotspots": [
                 {
-                  "feature": "GASOLINESPIN",
+                  "title": "Gasoline",
+                  "icon": "GASOLINESPIN",
                   "position": {
                     "x": 0.359702507514938,
                     "y": 0.5864073459887665
                   },
-                  "description": {
-                    "short": "Gasoline",
-                    "long": "Gasoline"
-                  },
+                  "description": "Gasoline",
                   "detail": {
                     "type": "image",
                     "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_09_enter-driver-codriver_15dc945feadb4d2a5de84b0719fb7b01d3d41005_a.jpg"
@@ -458,15 +416,13 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-001-036_20ad4842a581ac27b4b21577028832ac8a21fe12_a.jpg",
               "hotspots": [
                 {
-                  "feature": "GASOLINESPIN",
+                  "title": "Gasoline",
+                  "icon": "GASOLINESPIN",
                   "position": {
                     "x": 0.3796723896534001,
                     "y": 0.5916986048914383
                   },
-                  "description": {
-                    "short": "Gasoline",
-                    "long": "Gasoline"
-                  },
+                  "description": "Gasoline",
                   "detail": {
                     "type": "image",
                     "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_09_enter-driver-codriver_15dc945feadb4d2a5de84b0719fb7b01d3d41005_a.jpg"
@@ -478,14 +434,12 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-000-036_8597027d4e9083dd8a671f6339f583584d3df598_a.jpg",
               "hotspots": [
                 {
-                  "feature": "GASOLINESPIN",
+                  "title": "Gasoline",
+                  "icon": "GASOLINESPIN",
+                  "description": "Gasoline",
                   "position": {
                     "x": 0.40993777092112327,
                     "y": 0.592693638500474
-                  },
-                  "description": {
-                    "short": "Gasoline",
-                    "long": "Gasoline"
                   },
                   "detail": {
                     "type": "image",
@@ -498,14 +452,12 @@
               "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_00_spin-0-360-035-036_1fa5554dcc928034d42e4573d3f684e4f54d0b51_a.jpg",
               "hotspots": [
                 {
-                  "feature": "GASOLINESPIN",
+                  "title": "Gasoline",
+                  "icon": "GASOLINESPIN",
+                  "description": "Gasoline",
                   "position": {
                     "x": 0.4307895958277498,
                     "y": 0.598488930307688
-                  },
-                  "description": {
-                    "short": "Gasoline",
-                    "long": "Gasoline"
                   },
                   "detail": {
                     "type": "image",
@@ -531,14 +483,12 @@
           "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_02_side-left_cebbec2fec7df4017885727050781845d4593c96_a.jpg",
           "hotspots": [
             {
-              "feature": "HEATING_DOOR",
+              "title": "Heating door",
+              "icon": "HEATING_DOOR",
+              "description": "The heating door is a feature that allows you to heat the car before you get in.",
               "position": {
                 "x": 0.45539142191410065,
                 "y": 0.5876933932304382
-              },
-              "description": {
-                "short": "Heating door",
-                "long": "The heating door is a feature that allows you to heat the car before you get in."
               }
             }
           ]
@@ -556,13 +506,11 @@
           "src": "https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/TMBEP9PJ0P4089138_05_side-right_b32657b5d54a044e34da505abf7465fe4e512096_a.jpg",
           "hotspots": [
             {
-              "feature": "TIRESPIN",
+              "title": "19` AMG rim",
+              "icon": "TIRESPIN",
               "position": {
                 "x": 0.7561693787574768,
                 "y": 0.6620954871177673
-              },
-              "description": {
-                "short": "19` AMG rim"
               },
               "detail": {
                 "type": "image",
