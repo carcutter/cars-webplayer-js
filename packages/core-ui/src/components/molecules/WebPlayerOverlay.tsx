@@ -4,7 +4,11 @@ import { useEscapeKeyEffect } from "../../hooks/useEscapeKeyEffect";
 import { useCompositionContext } from "../../providers/CompositionContext";
 import { useControlsContext } from "../../providers/ControlsContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
-import { cn, positionToClassName } from "../../utils/style";
+import {
+  cn,
+  positionToClassName,
+  positionYToClassName,
+} from "../../utils/style";
 import { isSelfEvent } from "../../utils/web";
 import CdnImage from "../atoms/CdnImage";
 import CloseButton from "../atoms/CloseButton";
@@ -92,7 +96,7 @@ const WebPlayerOverlay: React.FC = () => {
       {/* CategorySelect (on top) */}
       {!flatten && !isZooming && (
         <CategorySelect
-          className={`${sharedClassName} ${positionToClassName("top")}`}
+          className={cn(sharedClassName, positionYToClassName("top"))}
         />
       )}
 

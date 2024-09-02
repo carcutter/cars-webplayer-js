@@ -11,6 +11,8 @@ export function cn(...inputs: (string | false | null | undefined)[]): string {
     .join(" ");
 }
 
+// TODO: use CSS variables instead of Tailwind 1 and 2
+
 export function positionXToClassName(positionX: PositionX): string {
   switch (positionX) {
     case "left":
