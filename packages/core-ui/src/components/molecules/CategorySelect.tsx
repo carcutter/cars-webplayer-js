@@ -50,13 +50,13 @@ const CategorySelect: React.FC<Props> = ({ className }) => {
         </Button>
 
         {isMenuOpen && (
-          <div className="rounded-lg bg-background">
+          <div className="rounded-ui-md bg-background">
             <ul className="space-y-0.5 p-1">
               {categories.map(({ id, title }) => (
                 <li
                   key={id}
                   className={cn(
-                    "cursor-pointer rounded-md px-2 py-1 text-sm font-bold transition-colors hover:bg-primary/30",
+                    "cursor-pointer rounded-ui px-2 py-1 text-sm font-bold transition-colors hover:bg-primary/30",
                     id === displayedCategoryId && "bg-primary/50"
                   )}
                   onClick={() => {
@@ -74,7 +74,7 @@ const CategorySelect: React.FC<Props> = ({ className }) => {
 
       {/* Non-mobile */}
       <div className={cn("w-full overflow-x-auto max-sm:hidden", className)}>
-        <div className="mx-auto flex w-fit gap-x-1 rounded-ui-lg bg-background p-1 shadow sm:gap-x-2 sm:p-2">
+        <div className="mx-auto flex w-fit gap-x-1 rounded-ui-md bg-background p-1 shadow">
           {categories.map(({ id, title }) => (
             <Button
               key={id}

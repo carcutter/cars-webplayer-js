@@ -19,7 +19,7 @@
       var(--foreground)
     );
 
-    --radius-ui: var(--cc-webplayer-radius-ui, 9999px);
+    --radius-ui: var(--cc-webplayer-radius-ui, 1rem);
     --radius-carrousel: var(--cc-webplayer-radius-carrousel, 0);
     --radius-gallery: var(--cc-webplayer-radius-gallery, 0);
   }

@@ -318,7 +318,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
               {videoVolumeInfos && (
                 <div
                   // Volume
-                  className="group/volume flex items-center gap-x-4 rounded-full p-2 transition-colors hover:bg-foreground/25"
+                  className="group/volume flex items-center gap-x-4 rounded-ui-md p-2 transition-colors hover:bg-foreground/25"
                 >
                   <div
                     // Wrap the progress bar to make the click easier

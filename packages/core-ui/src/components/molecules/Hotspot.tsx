@@ -2,6 +2,7 @@ import type { Hotspot as HotspotType } from "@car-cutter/core";
 
 import { useControlsContext } from "../../providers/ControlsContext";
 import { useCustomizationContext } from "../../providers/CustomizationContext";
+import { cn } from "../../utils/style";
 import ImageIcon from "../icons/ImageIcon";
 
 type HotspotProps = {
@@ -68,10 +69,12 @@ const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
       </div>
       {!withImage && description && (
         <div
-          className={
-            `absolute -z-10 ${position.y < 0.55 ? "-top-0.5" : "-bottom-0.5"} ${position.x < 0.55 ? "-left-0.5" : "-right-0.5"} w-max max-w-40 rounded-lg bg-background p-2 pl-6 sm:pl-8 sm:max-w-48` +
-            ` pointer-events-none opacity-0 transition-opacity duration-300 group-hover:pointer-events-auto group-hover:opacity-100`
-          }
+          className={cn(
+            "absolute -z-10 w-max max-w-40 rounded-ui-lg bg-background p-2 pl-6 sm:max-w-48 sm:pl-8",
+            position.y < 0.55 ? "-top-0.5" : "-bottom-0.5",
+            position.x < 0.55 ? "-left-0.5" : "-right-0.5",
+            "pointer-events-none opacity-0 transition-opacity duration-300 group-hover:pointer-events-auto group-hover:opacity-100"
+          )}
         >
           <div className="space-y-1">
             <div className="text-sm">{description.short}</div>

@@ -140,7 +140,7 @@ You can customise the WebPlayer CSS with CSS Variables
 | `--cc-webplayer-primary-foreground` | Foreground color for primary items | `--cc-background` |
 | `--cc-webplayer-neutral`            | Neutral color                      | `0 0% 39%`        |
 | `--cc-webplayer-neutral-foreground` | Foreground color for neutral items | `--cc-foreground` |
-| `--cc-webplayer-radius-ui`          | UI element Border radius (buttons) | `9999px` (full)   |
+| `--cc-webplayer-radius-ui`          | UI element Border radius (buttons) | `1rem`            |
 | `--cc-webplayer-radius-carrousel`   | Carrousel border radius            | `0`               |
 | `--cc-webplayer-radius-gallery`     | Gallery images border radius       | `0`               |
 

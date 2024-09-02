@@ -47,13 +47,13 @@ const GalleryElement: React.FC<Props> = ({ item }) => {
   switch (type) {
     case "360":
       overlayIcon = (
-        <ThreeSixtyIcon className="size-3/4 text-white grayscale" />
+        <ThreeSixtyIcon className="size-3/4 text-background grayscale" />
       );
       break;
     case "video":
       overlayIcon = (
         <div className="aspect-square h-3/5 rounded-full bg-foreground/50 p-1">
-          <PlayIcon className="size-full text-white" />
+          <PlayIcon className="size-full text-background" />
         </div>
       );
       break;

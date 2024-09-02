@@ -16,23 +16,29 @@ const noScrollbarPlugin: PluginCreator = ({ addUtilities }) =>
 const config = {
   content: ["./src/*/**/*.{ts,tsx}"],
   theme: {
+    colors: {
+      transparent: "transparent",
+
+      background: "hsl(var(--background))",
+      foreground: "hsl(var(--foreground))",
+      primary: "hsl(var(--primary))",
+      "primary-foreground": "hsl(var(--primary-foreground))",
+      neutral: "hsl(var(--neutral))",
+      "neutral-foreground": "hsl(var(--neutral-foreground))",
+    },
+    borderRadius: {
+      none: "0",
+      full: "9999px",
+
+      "ui-sm": "calc(var(--radius-ui) - 0.125rem)",
+      ui: "var(--radius-ui)",
+      "ui-md": "calc(var(--radius-ui) + 0.125rem)",
+      "ui-lg": "calc(var(--radius-ui) + 0.25rem)",
+      carrousel: "var(--radius-carrousel)",
+      gallery: "var(--radius-gallery)",
+    },
+
     extend: {
-      colors: {
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: "hsl(var(--primary))",
-        "primary-foreground": "hsl(var(--primary-foreground))",
-        neutral: "hsl(var(--neutral))",
-        "neutral-foreground": "hsl(var(--neutral-foreground))",
-      },
-      borderRadius: {
-        "ui-sm": "calc(var(--radius-ui) - 2px)",
-        ui: "var(--radius-ui)",
-        "ui-md": "calc(var(--radius-ui) + 2px)",
-        "ui-lg": "calc(var(--radius-ui) + 4px)",
-        carrousel: "var(--radius-carrousel)",
-        gallery: "var(--radius-gallery)",
-      },
       transitionDuration: {
         details: "350ms",
       },
