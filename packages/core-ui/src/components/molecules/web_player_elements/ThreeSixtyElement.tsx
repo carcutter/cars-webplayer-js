@@ -21,17 +21,11 @@ type ThreeSixtyElementProps = Extract<Item, { type: "360" }> & {
 };
 
 const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
-  index,
   images,
   onlyPreload,
 }) => {
   const { reverse360 } = useGlobalContext();
-  const {
-    getItemInteraction,
-    setItemInteraction,
-    isShowingDetails,
-    isZooming,
-  } = useControlsContext();
+  const { isShowingDetails, isZooming } = useControlsContext();
 
   const disabled = isZooming || isShowingDetails; // We do not want to do anything while zooming or showing a detail image
 
@@ -40,17 +34,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   const scrollerRef = useRef<HTMLDivElement>(null);
 
   // - Flip book image index & details
-  const [imageIndex, setImageIndex] = useState(() => {
-    const interaction = getItemInteraction(index);
-    if (typeof interaction !== "number") {
-      return 0;
-    }
-    return interaction;
-  });
-
-  useEffect(() => {
-    setItemInteraction(index, imageIndex);
-  }, [imageIndex, index, setItemInteraction]);
+  const [imageIndex, setImageIndex] = useState(0);
 
   const length = images.length;
 
@@ -497,9 +481,21 @@ const ThreeSixtyElementPlaceholder: React.FC<
 const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = props => {
   const { index } = props;
 
-  const { getItemInteraction } = useControlsContext();
+  const { setItemInteraction } = useControlsContext();
 
-  const [isReady, setIsReady] = useState(getItemInteraction(index) !== null);
+  const [isReady, setIsReady] = useState(false);
+
+  // Update the item interaction state according to the readiness of the 360
+  useEffect(() => {
+    setItemInteraction(index, isReady ? "running" : null);
+  }, [index, isReady, setItemInteraction]);
+
+  // Clean up the item interaction state when the component is unmounted
+  useEffect(() => {
+    return () => {
+      setItemInteraction(index, null);
+    };
+  }, [index, setItemInteraction]);
 
   if (!isReady) {
     return (

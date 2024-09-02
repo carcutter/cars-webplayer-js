@@ -15,14 +15,13 @@ import { useCompositionContext } from "./CompositionContext";
 import { useGlobalContext } from "./GlobalContext";
 
 // TODO: Rework items interaction logic
-type ItemInteraction = null | "running" | number; // Index of the image in the carrousel
+type ItemInteraction = null | "running";
 
 type CycleDirection = "first_to_last" | "last_to_first";
 
 type Details = { src: string; title?: string; text?: string };
 
 type ContextType = {
-  getItemInteraction: (index: number) => ItemInteraction;
   setItemInteraction: (index: number, value: ItemInteraction) => void;
   slidable: boolean;
 
@@ -113,10 +112,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const [itemInteractionList, setItemInteractionList] = useState<
     ItemInteraction[]
   >(initItemInteractionList);
-  const getItemInteraction = useCallback(
-    (index: number) => itemInteractionList[index],
-    [itemInteractionList]
-  );
+
   const setItemInteraction = useCallback(
     (index: number, value: ItemInteraction) => {
       setItemInteractionList(prev =>
@@ -379,7 +375,6 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   return (
     <ControlsContext.Provider
       value={{
-        getItemInteraction,
         setItemInteraction,
         slidable: items.length > 1,
 
