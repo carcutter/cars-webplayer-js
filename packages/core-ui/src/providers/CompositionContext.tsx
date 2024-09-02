@@ -1,11 +1,13 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useMemo } from "react";
 
-import type { Composition } from "@car-cutter/core";
+import type { Composition, Item } from "@car-cutter/core";
 
 type ContextType = Pick<
   Composition,
   "categories" | "aspectRatio" | "imageHdWidth" | "imageSubWidths"
 > & {
+  items: Item[];
+
   aspectRatioStyle: React.CSSProperties;
 };
 
@@ -30,7 +32,12 @@ type ProviderProps = {
 const CompositionContextProvider: React.FC<
   React.PropsWithChildren<ProviderProps>
 > = ({ composition, children }) => {
-  const { aspectRatio } = composition;
+  const { aspectRatio, categories } = composition;
+
+  const items: Item[] = useMemo(
+    () => categories.flatMap(({ items }) => items),
+    [categories]
+  );
 
   const aspectRatioStyle: React.CSSProperties = {
     aspectRatio: aspectRatio.replace(":", " / "),
@@ -40,6 +47,8 @@ const CompositionContextProvider: React.FC<
     <CompositionContext.Provider
       value={{
         ...composition,
+
+        items,
 
         aspectRatioStyle,
       }}

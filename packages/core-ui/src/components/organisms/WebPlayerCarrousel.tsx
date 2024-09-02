@@ -20,10 +20,9 @@ type Props = {
  */
 const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   const { infiniteCarrousel, isFullScreen } = useGlobalContext();
-  const { aspectRatioStyle } = useCompositionContext();
+  const { items, aspectRatioStyle } = useCompositionContext();
 
   const {
-    displayedItems: items,
     slidable,
 
     carrouselItemIndex,

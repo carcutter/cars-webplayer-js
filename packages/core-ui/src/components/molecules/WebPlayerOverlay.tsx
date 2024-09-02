@@ -30,10 +30,12 @@ import CategorySelect from "./CategorySelect";
 const WebPlayerOverlay: React.FC = () => {
   const { flatten, infiniteCarrousel, permanentGallery } = useGlobalContext();
 
-  const { aspectRatioStyle } = useCompositionContext();
+  const {
+    items: { length: dataLength },
+    aspectRatioStyle,
+  } = useCompositionContext();
 
   const {
-    displayedItems: { length: dataLength },
     slidable,
 
     masterItemIndex,

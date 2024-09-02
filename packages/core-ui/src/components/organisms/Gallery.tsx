@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  Fragment as ReactFragment,
+} from "react";
 
 import type { Item } from "@car-cutter/core";
 
@@ -8,6 +15,7 @@ import { useGlobalContext } from "../../providers/GlobalContext";
 import { clamp } from "../../utils/math";
 import { cn } from "../../utils/style";
 import GalleryElement from "../molecules/GalleryElement";
+import Separator from "../ui/Separator";
 
 type Props = {
   className?: string;
@@ -18,13 +26,11 @@ const Gallery: React.FC<Props> = ({
   className = "",
   containerClassName = "",
 }) => {
-  const { isFullScreen } = useGlobalContext();
+  const { flatten, isFullScreen } = useGlobalContext();
 
-  const { aspectRatioStyle } = useCompositionContext();
+  const { categories, items, aspectRatioStyle } = useCompositionContext();
 
   const {
-    displayedItems,
-
     extendMode,
     extendTransition,
 
@@ -33,6 +39,25 @@ const Gallery: React.FC<Props> = ({
 
     resetView,
   } = useControlsContext();
+
+  const separatorIndexes = useMemo(() => {
+    if (flatten) {
+      return [];
+    }
+
+    const indexes = new Array<number>();
+
+    let offset = 0;
+
+    for (let i = 0; i < categories.length - 1; i++) {
+      const length = categories[i].items.length;
+
+      indexes.push(offset + length);
+      offset += length;
+    }
+
+    return indexes;
+  }, [categories, flatten]);
 
   const sliderRef = useRef<HTMLDivElement>(null);
   const getSliderOrThrow = useCallback(() => {
@@ -55,7 +80,7 @@ const Gallery: React.FC<Props> = ({
 
       // Scroll the gallery to have the target in view
       const containerWidth = slider.clientWidth;
-      const itemWidth = slider.scrollWidth / displayedItems.length;
+      const itemWidth = slider.scrollWidth / items.length;
       const targetScrollLeft = (index + 1 / 2) * itemWidth - containerWidth / 2;
 
       const maxScroll = slider.scrollWidth - slider.clientWidth;
@@ -65,7 +90,7 @@ const Gallery: React.FC<Props> = ({
         behavior,
       });
     },
-    [displayedItems.length, getSliderOrThrow]
+    [items.length, getSliderOrThrow]
   );
 
   // -- Effects
@@ -200,22 +225,29 @@ const Gallery: React.FC<Props> = ({
       <div
         className={`flex h-10 w-fit gap-1 sm:h-12 sm:gap-2 ${!extendMode ? "" : "lg:h-20 lg:gap-4"} ${containerClassName}`}
       >
-        {displayedItems.map((item, index) => (
-          <div
-            key={index}
-            className={cn(
-              "relative h-full rounded-gallery ",
-              !isDragging && "cursor-pointer",
-              "after:absolute after:inset-0 after:rounded-gallery after:border-2 after:border-primary after:transition-opacity",
-              index === masterItemIndex
-                ? "after:opacity-100"
-                : "after:opacity-0 hover:after:opacity-70"
+        {items.map((item, index) => (
+          <ReactFragment key={index}>
+            {separatorIndexes.includes(index) && (
+              <div className="my-2">
+                <Separator orientation="vertical" />
+              </div>
             )}
-            style={aspectRatioStyle}
-            onClick={() => onItemClicked(item, index)}
-          >
-            <GalleryElement item={item} />
-          </div>
+
+            <div
+              className={cn(
+                "relative h-full rounded-gallery ",
+                !isDragging && "cursor-pointer",
+                "after:absolute after:inset-0 after:rounded-gallery after:border-2 after:border-primary after:transition-opacity",
+                index === masterItemIndex
+                  ? "after:opacity-100"
+                  : "after:opacity-0 hover:after:opacity-70"
+              )}
+              style={aspectRatioStyle}
+              onClick={() => onItemClicked(item, index)}
+            >
+              <GalleryElement item={item} />
+            </div>
+          </ReactFragment>
         ))}
       </div>
     </div>

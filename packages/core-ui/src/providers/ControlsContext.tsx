@@ -7,8 +7,6 @@ import {
   useState,
 } from "react";
 
-import type { Item } from "@car-cutter/core";
-
 import { RESIZE_TRANSITION_DURATION } from "../const/browser";
 import { MAX_ZOOM, ZOOM_STEP } from "../const/zoom";
 import { clamp } from "../utils/math";
@@ -24,10 +22,6 @@ type CycleDirection = "first_to_last" | "last_to_first";
 type Details = { src: string; title?: string; text?: string };
 
 type ContextType = {
-  displayedCategoryId: string;
-  changeCategory: (categoryId: string) => void;
-
-  displayedItems: Item[];
   getItemInteraction: (index: number) => ItemInteraction;
   setItemInteraction: (index: number, value: ItemInteraction) => void;
   slidable: boolean;
@@ -43,12 +37,14 @@ type ContextType = {
   prevImage: () => void;
   nextImage: () => void;
 
-  showGalleryControls: boolean;
+  displayedCategoryId: string;
+  changeCategory: (categoryId: string) => void;
 
   enableHotspotsControl: boolean;
   showHotspots: boolean;
   toggleHotspots: () => void;
 
+  showGalleryControls: boolean;
   showGallery: boolean;
   toggleGallery: () => void;
 
@@ -96,37 +92,23 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 }) => {
   const {
     eventId,
-    flatten,
 
     isFullScreen,
     allowFullScreen,
     requestFullscreen,
     exitFullscreen,
   } = useGlobalContext();
-  const { categories } = useCompositionContext();
+  const { categories, items } = useCompositionContext();
 
-  const [displayedCategoryId, setDisplayedCategoryId] = useState(
-    categories[0].id
+  const emitEvent = useCallback(
+    (detail: string) => {
+      document.dispatchEvent(new CustomEvent(eventId, { detail }));
+    },
+    [eventId]
   );
-
-  const displayedItems: Item[] = useMemo(() => {
-    if (flatten) {
-      return categories.flatMap(({ items }) => items);
-    }
-
-    const displayedCategory = categories.find(
-      ({ id }) => id === displayedCategoryId
-    );
-    if (!displayedCategory) {
-      throw new Error(`Element ${displayedCategory} not found`);
-    }
-
-    return displayedCategory.items;
-  }, [flatten, categories, displayedCategoryId]);
-
   const initItemInteractionList = useCallback(() => {
-    return displayedItems.map(() => null);
-  }, [displayedItems]);
+    return items.map(() => null);
+  }, [items]);
 
   const [itemInteractionList, setItemInteractionList] = useState<
     ItemInteraction[]
@@ -145,7 +127,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   );
 
   const [carrouselItemIndex, setCarrouselItemIndex] = useState(0);
-  const currentCarrouselItem = displayedItems[carrouselItemIndex];
+  const currentCarrouselItem = items[carrouselItemIndex];
   const currentItemInteraction = itemInteractionList[carrouselItemIndex];
   const [itemIndexCommand, setItemIndexCommand] = useState<number | null>(null);
   const masterItemIndex = itemIndexCommand ?? carrouselItemIndex;
@@ -162,11 +144,11 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     // Check if we need to cycle
     if (target < 0) {
       setCycling("first_to_last");
-      setItemIndexCommand(displayedItems.length - 1);
+      setItemIndexCommand(items.length - 1);
     } else {
       setItemIndexCommand(target);
     }
-  }, [carrouselItemIndex, displayedItems.length, cycling, itemIndexCommand]);
+  }, [carrouselItemIndex, items.length, cycling, itemIndexCommand]);
 
   const nextImage = useCallback(() => {
     // Command still running
@@ -176,39 +158,41 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
     const target = carrouselItemIndex + 1;
     // Check if we need to cycle
-    if (target > displayedItems.length - 1) {
+    if (target > items.length - 1) {
       setCycling("last_to_first");
       setItemIndexCommand(0);
     } else {
       setItemIndexCommand(target);
     }
-  }, [carrouselItemIndex, displayedItems.length, cycling, itemIndexCommand]);
+  }, [carrouselItemIndex, items.length, cycling, itemIndexCommand]);
+
+  // -- Categories
+  const displayedCategoryId = useMemo(() => {
+    for (const category of categories) {
+      if (category.items.includes(currentCarrouselItem)) {
+        return category.id;
+      }
+    }
+
+    throw new Error("Current item not found in any category");
+  }, [categories, currentCarrouselItem]);
 
   const changeCategory = useCallback(
     (categoryId: string) => {
-      // Reset everything
-      setCarrouselItemIndex(0);
-      setItemIndexCommand(null);
-      setItemInteractionList(initItemInteractionList());
+      const target = categories.find(({ id }) => id === categoryId)?.items[0];
 
-      // Change category
-      setDisplayedCategoryId(categoryId);
+      if (target === undefined) {
+        throw new Error("Failed to find target category");
+      }
+
+      const targetIndex = items.findIndex(item => item === target);
+
+      setItemIndexCommand(targetIndex);
     },
-    [initItemInteractionList]
+    [categories, items]
   );
 
-  const showGalleryControls = useMemo(() => {
-    switch (currentCarrouselItem.type) {
-      case "image":
-      case "360":
-      case "omni_directional":
-        return true;
-      case "video":
-        return currentItemInteraction !== "running";
-    }
-  }, [currentCarrouselItem, currentItemInteraction]);
-
-  const [showHotspots, setShowHotspots] = useState(true);
+  // -- Hotspots
   const enableHotspotsControl = useMemo(() => {
     switch (currentCarrouselItem.type) {
       case "image":
@@ -221,21 +205,26 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     }
   }, [currentCarrouselItem, currentItemInteraction]);
 
-  const [showGallery, setShowGallery] = useState(false);
-
-  const emitEvent = useCallback(
-    (detail: string) => {
-      document.dispatchEvent(new CustomEvent(eventId, { detail }));
-    },
-    [eventId]
-  );
-
+  const [showHotspots, setShowHotspots] = useState(true);
   const toggleHotspots = useCallback(() => {
     const newValue = !showHotspots;
     setShowHotspots(newValue);
     emitEvent(`hotspots-${newValue ? "on" : "off"}`);
   }, [emitEvent, showHotspots]);
 
+  // -- Gallery
+  const showGalleryControls = useMemo(() => {
+    switch (currentCarrouselItem.type) {
+      case "image":
+      case "360":
+      case "omni_directional":
+        return true;
+      case "video":
+        return currentItemInteraction !== "running";
+    }
+  }, [currentCarrouselItem, currentItemInteraction]);
+
+  const [showGallery, setShowGallery] = useState(false);
   const toggleGallery = useCallback(() => {
     const newValue = !showGallery;
 
@@ -390,13 +379,9 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   return (
     <ControlsContext.Provider
       value={{
-        displayedCategoryId,
-        changeCategory,
-
-        displayedItems,
         getItemInteraction,
         setItemInteraction,
-        slidable: displayedItems.length > 1,
+        slidable: items.length > 1,
 
         carrouselItemIndex,
         setCarrouselItemIndex,
@@ -409,12 +394,14 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         prevImage,
         nextImage,
 
-        showGalleryControls,
+        displayedCategoryId,
+        changeCategory,
 
         enableHotspotsControl,
         showHotspots,
         toggleHotspots,
 
+        showGalleryControls,
         showGallery,
         toggleGallery,
 

@@ -50,7 +50,7 @@ const DevApp: React.FC = () => {
         <WebPlayer
           // compositionUrl="/composition_mock_1.json"
           compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
-          flatten
+          // flatten
           infiniteCarrousel
           permanentGallery
           // imageLoadStrategy="speed"
