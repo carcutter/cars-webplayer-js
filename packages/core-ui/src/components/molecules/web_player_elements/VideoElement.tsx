@@ -303,6 +303,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
                 <Button shape="icon" variant="ghost" onClick={pause}>
                   <img
                     className="size-full invert"
+                    // TODO: use Icon directly
                     src="https://cdn.car-cutter.com/libs/web-player/v3/assets/icons/ui/pause.svg"
                     alt="Pause"
                   />
@@ -335,6 +336,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
                   >
                     <img
                       className="size-full invert"
+                      // TODO: use Icons directly
                       src={
                         !videoVolumeInfos.isMuted
                           ? "https://cdn.car-cutter.com/libs/web-player/v3/assets/icons/ui/volume.svg"
