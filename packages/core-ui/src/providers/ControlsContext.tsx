@@ -123,10 +123,11 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   );
 
   const [carrouselItemIndex, setCarrouselItemIndex] = useState(0);
-  const currentCarrouselItem = items[carrouselItemIndex];
-  const currentItemInteraction = itemInteractionList[carrouselItemIndex];
   const [itemIndexCommand, setItemIndexCommand] = useState<number | null>(null);
   const masterItemIndex = itemIndexCommand ?? carrouselItemIndex;
+  const currentItem = items[masterItemIndex];
+  const currentItemInteraction = itemInteractionList[masterItemIndex];
+
   const [cycling, setCycling] = useState<CycleDirection | null>(null);
   const finishCycling = useCallback(() => setCycling(null), []);
 
@@ -165,13 +166,13 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   // -- Categories
   const displayedCategoryId = useMemo(() => {
     for (const category of categories) {
-      if (category.items.includes(currentCarrouselItem)) {
+      if (category.items.includes(currentItem)) {
         return category.id;
       }
     }
 
     throw new Error("Current item not found in any category");
-  }, [categories, currentCarrouselItem]);
+  }, [categories, currentItem]);
 
   const changeCategory = useCallback(
     (categoryId: string) => {
@@ -190,16 +191,16 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
   // -- Hotspots
   const enableHotspotsControl = useMemo(() => {
-    switch (currentCarrouselItem.type) {
+    switch (currentItem.type) {
       case "image":
-        return !!currentCarrouselItem.hotspots?.length;
+        return !!currentItem.hotspots?.length;
       case "360":
         return currentItemInteraction !== null;
       case "video":
       case "omni_directional":
         return false;
     }
-  }, [currentCarrouselItem, currentItemInteraction]);
+  }, [currentItem, currentItemInteraction]);
 
   const [showHotspots, setShowHotspots] = useState(true);
   const toggleHotspots = useCallback(() => {
@@ -210,7 +211,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
   // -- Gallery
   const showGalleryControls = useMemo(() => {
-    switch (currentCarrouselItem.type) {
+    switch (currentItem.type) {
       case "image":
       case "360":
       case "omni_directional":
@@ -218,7 +219,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       case "video":
         return currentItemInteraction !== "running";
     }
-  }, [currentCarrouselItem, currentItemInteraction]);
+  }, [currentItem, currentItemInteraction]);
 
   const [showGallery, setShowGallery] = useState(false);
   const toggleGallery = useCallback(() => {
@@ -233,7 +234,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const isShowingDetails = !!shownDetails;
 
   const showZoomControls = useMemo(() => {
-    switch (currentCarrouselItem.type) {
+    switch (currentItem.type) {
       case "image":
         return true;
       case "360":
@@ -242,7 +243,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       case "omni_directional":
         return false;
     }
-  }, [currentCarrouselItem.type, currentItemInteraction]);
+  }, [currentItem.type, currentItemInteraction]);
   const [zoom, setZoom] = useState(1);
   const isZooming = zoom !== 1;
   const canZoomIn = zoom < MAX_ZOOM;
