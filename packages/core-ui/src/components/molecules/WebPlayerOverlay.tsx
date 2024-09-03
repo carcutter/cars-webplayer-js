@@ -17,6 +17,8 @@ import ArrowRightIcon from "../icons/ArrowRightIcon";
 import ExtendIcon from "../icons/ExtendIcon";
 import GalleryIcon from "../icons/GalleryIcon";
 import HotspotsIcon from "../icons/HotspotsIcon";
+import MinusIcon from "../icons/MinusIcon";
+import PlusIcon from "../icons/PlusIcon";
 import ReduceIcon from "../icons/ReduceIcon";
 import Gallery from "../organisms/Gallery";
 import Button from "../ui/Button";
@@ -166,7 +168,7 @@ const WebPlayerOverlay: React.FC = () => {
                 disabled={!canZoomIn}
                 onClick={zoomIn}
               >
-                {/* TODO: Use ICON */}+
+                <PlusIcon className="size-full" />
               </Button>
               <Separator color="background" />
               <Button
@@ -176,7 +178,7 @@ const WebPlayerOverlay: React.FC = () => {
                 disabled={!canZoomOut}
                 onClick={zoomOut}
               >
-                {/* TODO: Use ICON */}-
+                <MinusIcon className="size-full" />
               </Button>
             </div>
           )}
