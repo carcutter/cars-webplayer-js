@@ -158,6 +158,13 @@ const WebPlayerOverlay: React.FC = () => {
           </>
         )}
         <div className="col-start-3 flex flex-col items-end gap-y-1 sm:gap-y-2">
+          {/* Hotspot button */}
+          {enableHotspotsControl && !isZooming && (
+            <Switch enabled={showHotspots} onToggle={toggleHotspots}>
+              <HotspotsIcon className="size-full" />
+            </Switch>
+          )}
+
           {/* Zoom buttons */}
           {showZoomControls && (
             <div className="max-sm:hidden">
@@ -196,21 +203,6 @@ const WebPlayerOverlay: React.FC = () => {
               <ReduceIcon className="size-full" />
             )}
           </Button>
-
-          {/* Hotspot button */}
-          {!isZooming && (
-            <Switch
-              className={cn(
-                "transition-opacity duration-150",
-                enableHotspotsControl ? "opacity-100" : "opacity-0"
-              )}
-              label={showHotspots ? "Hotspots" : undefined}
-              enabled={showHotspots}
-              onToggle={toggleHotspots}
-            >
-              <HotspotsIcon className="size-3" />
-            </Switch>
-          )}
         </div>
       </div>
 

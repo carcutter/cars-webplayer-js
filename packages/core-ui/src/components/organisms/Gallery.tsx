@@ -26,7 +26,7 @@ const Gallery: React.FC<Props> = ({
   className = "",
   containerClassName = "",
 }) => {
-  const { flatten, isFullScreen } = useGlobalContext();
+  const { flatten, isFullScreen, permanentGallery } = useGlobalContext();
 
   const { categories, items, aspectRatioStyle } = useCompositionContext();
 
@@ -229,7 +229,10 @@ const Gallery: React.FC<Props> = ({
           <ReactFragment key={index}>
             {separatorIndexes.includes(index) && (
               <div className="my-2">
-                <Separator orientation="vertical" />
+                <Separator
+                  color={permanentGallery ? "neutral" : "background"}
+                  orientation="vertical"
+                />
               </div>
             )}
 

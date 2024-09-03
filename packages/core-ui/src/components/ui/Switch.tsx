@@ -32,16 +32,16 @@ const Switch: React.FC<React.PropsWithChildren<Props>> = ({
 
       <div
         className={cn(
-          "flex h-6 w-10 items-center justify-center rounded-full transition-colors",
-          enabled ? "bg-primary" : "bg-neutral"
+          "flex h-5 w-8 items-center justify-center rounded-full transition-colors",
+          enabled ? "bg-primary" : "bg-background/60"
         )}
       >
         <div
           className={cn(
-            "flex size-5 items-center justify-center rounded-full bg-background transition-transform",
+            "flex size-4 items-center justify-center rounded-full p-0.5 transition",
             enabled
-              ? "translate-x-2 text-primary"
-              : "-translate-x-2 text-neutral"
+              ? "translate-x-1.5 bg-primary-foreground text-primary"
+              : "-translate-x-1.5 bg-background text-foreground"
           )}
         >
           {children}
