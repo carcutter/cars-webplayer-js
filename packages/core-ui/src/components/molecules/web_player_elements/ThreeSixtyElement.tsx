@@ -8,6 +8,7 @@ import { cn } from "../../../utils/style";
 import CdnImage from "../../atoms/CdnImage";
 import PlayIcon from "../../icons/PlayIcon";
 import ThreeSixtyIcon from "../../icons/ThreeSixtyIcon";
+import ErrorTemplate from "../../template/ErrorTemplate";
 import Button from "../../ui/Button";
 
 import ImageElement from "./ImageElement";
@@ -399,11 +400,12 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 type ThreeSixtyElementPlaceholderProps = {
   images: ImageWithHotspots[];
   onReady: () => void;
+  onError?: () => void;
 };
 
 const ThreeSixtyElementPlaceholder: React.FC<
   ThreeSixtyElementPlaceholderProps
-> = ({ images, onReady }) => {
+> = ({ images, onReady, onError }) => {
   const imagesSrc = useMemo(() => images.map(({ src }) => src), [images]);
 
   const [loadingStatusMap, setLoadingStatusMap] = useState<Map<
@@ -423,8 +425,6 @@ const ThreeSixtyElementPlaceholder: React.FC<
     }
 
     setLoadingStatusMap(new Map(imagesSrc.map(src => [src, false])));
-
-    // TODO: add a timeout to handle error ?
   }, [imagesSrc, loadingProgress]);
 
   const onImageLoaded = useCallback((image: string) => {
@@ -444,9 +444,15 @@ const ThreeSixtyElementPlaceholder: React.FC<
   return (
     <div className="relative size-full">
       {loadingProgress !== null && loadingProgress !== 100 && (
+        // Add images to DOM to preload them
         <div className="hidden">
           {imagesSrc.map(src => (
-            <CdnImage key={src} src={src} onLoad={() => onImageLoaded(src)} />
+            <CdnImage
+              key={src}
+              src={src}
+              onLoad={() => onImageLoaded(src)}
+              onError={onError}
+            />
           ))}
         </div>
       )}
@@ -460,11 +466,15 @@ const ThreeSixtyElementPlaceholder: React.FC<
         </Button>
 
         <div
-          className={`relative h-1 w-3/5 overflow-hidden rounded-full bg-background ${loadingProgress !== null ? "" : "invisible"}`}
+          // Progress bar (invisible when not loading to avoid layout shift)
+          className={cn(
+            "relative h-1 w-3/5 overflow-hidden rounded-full bg-background",
+            loadingProgress === null && "invisible"
+          )}
         >
           <div
-            className="absolute inset-0 bg-primary transition-[right]"
-            style={{ right: `${100 - (loadingProgress ?? 0)}%` }}
+            className="h-full bg-primary transition-[width]"
+            style={{ width: `${loadingProgress ?? 0}%` }}
           />
         </div>
       </div>
@@ -483,12 +493,14 @@ const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = props => {
 
   const { setItemInteraction } = useControlsContext();
 
-  const [isReady, setIsReady] = useState(false);
+  const [status, setStatus] = useState<"placeholder" | "ready" | "error">(
+    "placeholder"
+  );
 
   // Update the item interaction state according to the readiness of the 360
   useEffect(() => {
-    setItemInteraction(index, isReady ? "running" : null);
-  }, [index, isReady, setItemInteraction]);
+    setItemInteraction(index, status === "ready" ? "running" : null);
+  }, [index, setItemInteraction, status]);
 
   // Clean up the item interaction state when the component is unmounted
   useEffect(() => {
@@ -497,16 +509,20 @@ const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = props => {
     };
   }, [index, setItemInteraction]);
 
-  if (!isReady) {
+  // TODO: Implement error state
+  if (status === "error") {
+    return <ErrorTemplate title="Failed to fetch 360" />;
+  } else if (status === "placeholder") {
     return (
       <ThreeSixtyElementPlaceholder
         {...props}
-        onReady={() => setIsReady(true)}
+        onReady={() => setStatus("ready")}
+        onError={() => setStatus("error")}
       />
     );
+  } else {
+    return <ThreeSixtyElementInteractive {...props} />;
   }
-
-  return <ThreeSixtyElementInteractive {...props} />;
 };
 
 export default ThreeSixtyElement;

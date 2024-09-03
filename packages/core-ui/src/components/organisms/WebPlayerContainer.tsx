@@ -204,12 +204,12 @@ const WebPlayerContainer: React.FC<WebPlayerContainerProps> = ({
   }, [emitEvent, error, isSuccess, status]);
 
   if (error) {
-    // TODO
+    // TODO: Implement error state
     return <ErrorTemplate title="Failed to fetch composition" error={error} />;
   }
 
   if (!isSuccess) {
-    // TODO
+    // TODO: Implement loading state
     return (
       <div className="flex aspect-video size-full flex-col items-center justify-center gap-y-4">
         <div className="text-xl">Loading WebPlayer...</div>

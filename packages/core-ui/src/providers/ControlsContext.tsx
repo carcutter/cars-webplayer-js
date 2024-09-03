@@ -22,7 +22,6 @@ import { clamp } from "../utils/math";
 import { useCompositionContext } from "./CompositionContext";
 import { useGlobalContext } from "./GlobalContext";
 
-// TODO: Rework items interaction logic
 type ItemInteraction = null | "running";
 
 type CycleDirection = "first_to_last" | "last_to_first";

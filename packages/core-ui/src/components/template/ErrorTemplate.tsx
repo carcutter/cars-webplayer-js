@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-type Props = { title: string; error: unknown };
+type Props = { title: string; error?: unknown };
 
 const ErrorTemplate: React.FC<React.PropsWithChildren<Props>> = ({
   title,
