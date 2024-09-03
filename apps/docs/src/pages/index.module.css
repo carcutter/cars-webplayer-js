@@ -25,3 +25,10 @@
   width: 100%;
   aspect-ratio: 4 / 3;
 }
+
+.spinnerWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}

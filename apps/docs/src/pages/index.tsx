@@ -6,6 +6,8 @@ import Heading from "@theme/Heading";
 import Layout from "@theme/Layout";
 import clsx from "clsx";
 
+import Spinner from "../components/ui/Spinner";
+
 import styles from "./index.module.css";
 
 export default function Home(): JSX.Element {
@@ -39,7 +41,13 @@ export default function Home(): JSX.Element {
         </div>
 
         <div className={styles.webplayerWrapper}>
-          <BrowserOnly fallback={<div>Loading...</div>}>
+          <BrowserOnly
+            fallback={
+              <div className={styles.spinnerWrapper}>
+                <Spinner color="primary" size="lg" />
+              </div>
+            }
+          >
             {() => {
               const WebPlayer =
                 // eslint-disable-next-line @typescript-eslint/no-var-requires

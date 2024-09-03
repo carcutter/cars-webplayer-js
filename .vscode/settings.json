@@ -12,6 +12,7 @@
   "prettier.configPath": ".prettierrc",
 
   "files.associations": {
-    "*.css": "tailwindcss"
+    "**/packages/core-ui/**/*.css": "tailwindcss",
+    "**/apps/demo-next/**/*.css": "tailwindcss"
   }
 }

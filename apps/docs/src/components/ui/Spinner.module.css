@@ -1,0 +1,42 @@
+.spinner {
+  border-radius: 9999px;
+  border-style: solid;
+  animation: spin 1s linear infinite;
+  border-color: transparent;
+  border-bottom-color: var(--border-color);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.sizeSm {
+  width: 16px;
+  height: 16px;
+  border-width: 1px;
+}
+
+.sizeMd {
+  width: 32px;
+  height: 32px;
+  border-width: 2px;
+}
+
+.sizeLg {
+  width: 48px;
+  height: 48px;
+  border-width: 4px;
+}
+
+.colorPrimary {
+  --border-color: var(--ifm-color-primary);
+}
+
+.colorNeutral {
+  --border-color: var(--ifm-background-color);
+}
