@@ -9,7 +9,7 @@ export type {
 export type { WebPlayerIconProps } from "./src/types/WebPlayerIcon.props";
 
 // - Events
-export { DEFAULT_EVENT_ID } from "./src/const/default_props";
+export { DEFAULT_EVENT_PREFIX } from "./src/const/default_props";
 export {
   EVENT_COMPOSITION_LOADING,
   EVENT_COMPOSITION_LOADED,

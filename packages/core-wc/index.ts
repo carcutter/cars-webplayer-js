@@ -19,7 +19,7 @@ export {
   type WebPlayerProps,
   type WebPlayerIconProps,
   // - Events
-  DEFAULT_EVENT_ID,
+  DEFAULT_EVENT_PREFIX,
   EVENT_COMPOSITION_LOADING,
   EVENT_COMPOSITION_LOADED,
   EVENT_COMPOSITION_LOAD_ERROR,

@@ -1,26 +1,7 @@
-import React, { useEffect } from "react";
-
-import { DEFAULT_EVENT_ID } from "../src/const/default_props";
 import WebPlayer from "../src/WebPlayer";
 import WebPlayerIcon from "../src/WebPlayerIcon";
 
 const DevApp: React.FC = () => {
-  useEffect(() => {
-    const onEvent = (e: Event) => {
-      const { detail } = e as CustomEvent;
-
-      // eslint-disable-next-line no-console
-      console.info("Event received:", detail);
-    };
-
-    // Listen for the custom event
-    document.addEventListener(DEFAULT_EVENT_ID, onEvent);
-
-    return () => {
-      document.removeEventListener(DEFAULT_EVENT_ID, onEvent);
-    };
-  }, []);
-
   return (
     <div>
       {/* FUTURE: Add some stuff to make it appear like a real app */}
@@ -57,7 +38,7 @@ const DevApp: React.FC = () => {
           // minImageWidth={300}
           // maxImageWidth={1000}
           // allowFullScreen={false}
-          // eventId="cc-event"
+          // eventPrefix="cc-event:"
           // reverse360
         >
           <WebPlayerIcon name="TIRESPIN" color="#ff00ff">

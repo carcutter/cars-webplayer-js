@@ -1,3 +1,7 @@
 {
-  "extends": "@car-cutter/eslint-config/react.json"
+  "extends": "@car-cutter/eslint-config/react.json",
+
+  "rules": {
+    "no-console": "off"
+  }
 }

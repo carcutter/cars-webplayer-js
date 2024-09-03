@@ -10,12 +10,11 @@ type ProviderProps = Required<
     | "permanentGallery"
     | "imageLoadStrategy"
     | "allowFullScreen"
-    | "eventId"
     | "reverse360"
   >
 > &
   Pick<WebPlayerProps, "minImageWidth" | "maxImageWidth"> & {
-    emitEvent: (detail: string) => void;
+    emitEvent: (name: string, detail?: unknown) => void;
 
     playerInViewportWidthRatio: number;
     isFullScreen: boolean;

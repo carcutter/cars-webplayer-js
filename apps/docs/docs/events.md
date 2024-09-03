@@ -74,14 +74,14 @@ export default App;
 
 ## Event Handling Directly with Listeners
 
-In addition to using the provided callback functions, you can also handle events directly by adding event listeners. You can use the `details` property from `CustomEvent` to determine which event corresponds to the `CustomEvent`.
+In addition to using the provided callback functions, you can also handle events directly by adding event listeners.
 
 :::info
 
-The default name of the WebPlayer event is `cc-webplayer-event`.
+The default prefix for all WebPlayer events is `"cc-webplayer:"`. This prefix helps to avoid potential conflicts with other events in your application.
 
-- If you do not want to hardcode this variable, you can access it through the constant `DEFAULT_EVENT_ID`
-- You can change the event name by setting the property `eventId`
+- If you do not want to hardcode the prefix, you can access it through the constant `DEFAULT_EVENT_PREFIX`.
+- You can customize the event prefix by setting the property `eventPrefix`.
 
 :::
 
@@ -101,34 +101,22 @@ The default name of the WebPlayer event is `cc-webplayer-event`.
 
 ### Example Usage with JavaScript
 
+Here's how you can add event listeners for these events:
+
 ```js
 import {
-  DEFAULT_EVENT_ID,
+  DEFAULT_EVENT_PREFIX,
   EVENT_COMPOSITION_LOADED,
-  EVENT_EXTEND_MODE_ON,
 } from "@car-cutter/core-wc";
 
-document.addEventListener("DOMContentLoaded", () => {
-  const eventId = DEFAULT_EVENT_ID; // Customize this as needed
+document.addEventListener(
+  DEFAULT_EVENT_PREFIX + EVENT_COMPOSITION_LOADED,
+  function (event) {
+    console.log("WebPlayer Composition is loading");
+  }
+);
 
-  const handleEvent = event => {
-    const { details } = event;
-    switch (details) {
-      case EVENT_COMPOSITION_LOADED:
-        console.log("Composition loaded");
-        break;
-      case EVENT_EXTEND_MODE_ON:
-        console.log("Extend mode on");
-        break;
-      // Add other cases as needed
-    }
-  };
-
-  document.addEventListener(eventId, handleEvent);
-
-  // Clean up event listener when no longer needed
-  window.addEventListener("beforeunload", () => {
-    document.removeEventListener(eventId, handleEvent);
-  });
+document.addEventListener("cc-webplayer:gallery-open", function (event) {
+  console.log("WebPlayer Gallery opened");
 });
 ```

@@ -25,9 +25,9 @@ const App = () => {
         <div className="main__left">
           <WebPlayer
             compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
-            flatten
             infiniteCarrousel
-            permanentGallery
+            onCompositionLoaded={() => console.log("Composition loaded")}
+            onExtendModeOn={() => console.log("Extend mode on")}
           />
         </div>
 

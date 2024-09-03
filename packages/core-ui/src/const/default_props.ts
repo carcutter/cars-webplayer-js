@@ -10,5 +10,5 @@ export const DEFAULT_IMAGE_LOAD_STRATEGY =
   "quality" satisfies ImageLoadStrategy;
 
 export const DEFAULT_ALLOW_FULL_SCREEN = true;
-export const DEFAULT_EVENT_ID = `${WEB_PLAYER_WC_TAG}-event`;
+export const DEFAULT_EVENT_PREFIX = `${WEB_PLAYER_WC_TAG}:`;
 export const DEFAULT_REVERSE_360 = false;

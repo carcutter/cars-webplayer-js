@@ -5,7 +5,7 @@ import { WEB_PLAYER_WC_TAG } from "@car-cutter/core";
 import WebPlayerContainer from "./components/organisms/WebPlayerContainer";
 import {
   DEFAULT_ALLOW_FULL_SCREEN,
-  DEFAULT_EVENT_ID,
+  DEFAULT_EVENT_PREFIX,
   DEFAULT_FLATTEN,
   DEFAULT_IMAGE_LOAD_STRATEGY,
   DEFAULT_INFINITE_CARROUSEL,
@@ -28,7 +28,7 @@ const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   imageLoadStrategy = DEFAULT_IMAGE_LOAD_STRATEGY,
 
   allowFullScreen = DEFAULT_ALLOW_FULL_SCREEN,
-  eventId = DEFAULT_EVENT_ID,
+  eventPrefix = DEFAULT_EVENT_PREFIX,
   reverse360 = DEFAULT_REVERSE_360,
 
   children: customizationChildren, // NOTE: use to customize the player, not to display the content
@@ -42,10 +42,13 @@ const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   const emitEvent = useCallback(
-    (detail: string) => {
-      document.dispatchEvent(new CustomEvent(eventId, { detail }));
+    (eventId: string, detail?: unknown) => {
+      const eventName = eventPrefix + eventId;
+      const event = new CustomEvent(eventName, { detail });
+
+      document.dispatchEvent(event);
     },
-    [eventId]
+    [eventPrefix]
   );
 
   // Compute player width ratio in viewport (to handle imgs' srcSet)
@@ -145,7 +148,6 @@ const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
         imageLoadStrategy,
         flatten,
         infiniteCarrousel,
-        eventId,
         allowFullScreen,
         permanentGallery,
 

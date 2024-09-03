@@ -15,6 +15,6 @@ export type WebPlayerProps = {
 
   // Miscelaneous
   allowFullScreen?: boolean;
-  eventId?: string;
+  eventPrefix?: string;
   reverse360?: boolean;
 };

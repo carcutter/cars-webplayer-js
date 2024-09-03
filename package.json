@@ -3,7 +3,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "turbo build --ui tui",
+    "build": "turbo build --ui tui --continue --",
     "dev": "turbo dev --filter=@car-cutter/core-ui --",
     "dev:all": "turbo dev",
     "lint": "turbo lint",

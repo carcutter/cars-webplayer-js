@@ -52,7 +52,7 @@ const WebPlayer: React.FC<WebPlayerProps> = ({
 
     (async () => {
       const {
-        DEFAULT_EVENT_ID,
+        DEFAULT_EVENT_PREFIX,
         EVENT_COMPOSITION_LOADING,
         EVENT_COMPOSITION_LOADED,
         EVENT_COMPOSITION_LOAD_ERROR,
@@ -64,38 +64,42 @@ const WebPlayer: React.FC<WebPlayerProps> = ({
         EVENT_GALLERY_CLOSE,
       } = await import("@car-cutter/core-wc");
 
-      const eventId = props.eventId ?? DEFAULT_EVENT_ID;
+      const eventPrefix = props.eventPrefix ?? DEFAULT_EVENT_PREFIX;
 
-      const onWebPlayerEvent = (event: Event) => {
-        const eventListenerMap = new Map([
-          [EVENT_COMPOSITION_LOADING, onCompositionLoading],
-          [EVENT_COMPOSITION_LOADED, onCompositionLoaded],
-          [EVENT_COMPOSITION_LOAD_ERROR, onCompositionLoadError],
-          [EVENT_EXTEND_MODE_ON, onExtendModeOn],
-          [EVENT_EXTEND_MODE_OFF, onExtendModeOff],
-          [EVENT_HOTSPOTS_ON, onHotspotsOn],
-          [EVENT_HOTSPOTS_OFF, onHotspotsOff],
-          [EVENT_GALLERY_OPEN, onGalleryOpen],
-          [EVENT_GALLERY_CLOSE, onGalleryClose],
-        ]);
+      const generateEventName = (event: string) => `${eventPrefix}${event}`;
 
-        const { detail } = event as CustomEvent;
+      const eventListenerMap = new Map([
+        [EVENT_COMPOSITION_LOADING, onCompositionLoading],
+        [EVENT_COMPOSITION_LOADED, onCompositionLoaded],
+        [EVENT_COMPOSITION_LOAD_ERROR, onCompositionLoadError],
+        [EVENT_EXTEND_MODE_ON, onExtendModeOn],
+        [EVENT_EXTEND_MODE_OFF, onExtendModeOff],
+        [EVENT_HOTSPOTS_ON, onHotspotsOn],
+        [EVENT_HOTSPOTS_OFF, onHotspotsOff],
+        [EVENT_GALLERY_OPEN, onGalleryOpen],
+        [EVENT_GALLERY_CLOSE, onGalleryClose],
+      ]);
 
-        const listener = eventListenerMap.get(detail);
-
-        listener?.();
-      };
-
-      document.addEventListener(eventId, onWebPlayerEvent);
+      eventListenerMap.forEach((listener, event) => {
+        if (listener) {
+          const eventName = generateEventName(event);
+          document.addEventListener(eventName, listener);
+        }
+      });
 
       effectCb = () => {
-        document.removeEventListener(eventId, onWebPlayerEvent);
+        eventListenerMap.forEach((listener, event) => {
+          if (listener) {
+            const eventName = generateEventName(event);
+            document.removeEventListener(eventName, listener);
+          }
+        });
       };
     })();
 
     return effectCb;
   }, [
-    props.eventId,
+    props.eventPrefix,
 
     onCompositionLoading,
     onCompositionLoaded,

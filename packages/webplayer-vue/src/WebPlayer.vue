@@ -19,7 +19,7 @@ defineProps<WebPlayerProps>();
     :max-image-width="maxImageWidth"
     :flatten="flatten"
     :allow-full-screen="allowFullScreen"
-    :event-id="eventId"
+    :eventPrefix="eventPrefix"
     :reverse360="reverse360"
   >
   </cc-webplayer>

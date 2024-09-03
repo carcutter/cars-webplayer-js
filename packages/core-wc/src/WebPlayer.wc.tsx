@@ -28,7 +28,7 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedStyles, {
     imageLoadStrategy: "string",
 
     allowFullScreen: "boolean",
-    eventId: "string",
+    eventPrefix: "string",
     reverse360: "boolean",
   },
 });
