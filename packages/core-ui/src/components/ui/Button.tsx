@@ -15,7 +15,7 @@ const coloredVariantClassNames: Record<Variant, Record<Color, string>> = {
   },
   ghost: {
     primary: "bg-transparent text-foreground hover:bg-primary/25",
-    neutral: "bg-transparent text-neutral hover:bg-neutral/25",
+    neutral: "bg-transparent text-background hover:bg-foreground/25",
   },
 };
 

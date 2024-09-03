@@ -5,6 +5,9 @@ import type { Item } from "@car-cutter/core";
 import { useControlsContext } from "../../../providers/ControlsContext";
 import { cn } from "../../../utils/style";
 import PlayButton from "../../atoms/PlayButton";
+import PauseIcon from "../../icons/PauseIcon";
+import VolumeIcon from "../../icons/VolumeIcon";
+import VolumeOffIcon from "../../icons/VolumeOffIcon";
 import Button from "../../ui/Button";
 import ProgressBar from "../../ui/ProgressBar";
 import Spinner from "../../ui/Spinner";
@@ -295,21 +298,21 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
             )}
             onMouseDownCapture={e => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between text-background">
               <div
                 // Play and time
                 className="flex items-center gap-x-4"
               >
-                <Button shape="icon" variant="ghost" onClick={pause}>
-                  <img
-                    className="size-full invert"
-                    // TODO: use Icon directly
-                    src="https://cdn.car-cutter.com/libs/web-player/v3/assets/icons/ui/pause.svg"
-                    alt="Pause"
-                  />
+                <Button
+                  shape="icon"
+                  variant="ghost"
+                  color="neutral"
+                  onClick={pause}
+                >
+                  <PauseIcon className="size-full" />
                 </Button>
                 {videoTimeInfos && (
-                  <span className="text-sm text-background">
+                  <span className="text-sm">
                     {formatTime(videoTimeInfos.currentTime)} /{" "}
                     {formatTime(videoTimeInfos.duration)}
                   </span>
@@ -334,16 +337,11 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
                     className="size-5 cursor-pointer"
                     onClick={() => setMutedAttribute(!videoVolumeInfos.isMuted)}
                   >
-                    <img
-                      className="size-full invert"
-                      // TODO: use Icons directly
-                      src={
-                        !videoVolumeInfos.isMuted
-                          ? "https://cdn.car-cutter.com/libs/web-player/v3/assets/icons/ui/volume.svg"
-                          : "https://cdn.car-cutter.com/libs/web-player/v3/assets/icons/ui/volume-x.svg"
-                      }
-                      alt="Volume"
-                    />
+                    {!videoVolumeInfos.isMuted ? (
+                      <VolumeIcon className="size-full" />
+                    ) : (
+                      <VolumeOffIcon className="size-full" />
+                    )}
                   </div>
                 </div>
               )}
