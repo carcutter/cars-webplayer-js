@@ -8,6 +8,14 @@ import {
 } from "react";
 
 import { RESIZE_TRANSITION_DURATION } from "../const/browser";
+import {
+  EVENT_EXTEND_MODE_OFF,
+  EVENT_EXTEND_MODE_ON,
+  EVENT_GALLERY_CLOSE,
+  EVENT_GALLERY_OPEN,
+  EVENT_HOTSPOTS_OFF,
+  EVENT_HOTSPOTS_ON,
+} from "../const/event";
 import { MAX_ZOOM, ZOOM_STEP } from "../const/zoom";
 import { clamp } from "../utils/math";
 
@@ -90,8 +98,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const {
-    eventId,
-
+    emitEvent,
     isFullScreen,
     allowFullScreen,
     requestFullscreen,
@@ -99,12 +106,6 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   } = useGlobalContext();
   const { categories, items } = useCompositionContext();
 
-  const emitEvent = useCallback(
-    (detail: string) => {
-      document.dispatchEvent(new CustomEvent(eventId, { detail }));
-    },
-    [eventId]
-  );
   const initItemInteractionList = useCallback(() => {
     return items.map(() => null);
   }, [items]);
@@ -205,7 +206,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const toggleHotspots = useCallback(() => {
     const newValue = !showHotspots;
     setShowHotspots(newValue);
-    emitEvent(`hotspots-${newValue ? "on" : "off"}`);
+    emitEvent(newValue ? EVENT_HOTSPOTS_ON : EVENT_HOTSPOTS_OFF);
   }, [emitEvent, showHotspots]);
 
   // -- Gallery
@@ -225,7 +226,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     const newValue = !showGallery;
 
     setShowGallery(newValue);
-    emitEvent(`gallery-${newValue ? "on" : "off"}`);
+    emitEvent(newValue ? EVENT_GALLERY_OPEN : EVENT_GALLERY_CLOSE);
   }, [emitEvent, showGallery]);
 
   const [shownDetails, setShownDetails] = useState<Details | null>(null);
@@ -273,7 +274,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     async (newValue: boolean) => {
       resetView();
       setExtendMode(newValue);
-      emitEvent(`extend-mode-${newValue ? "on" : "off"}`);
+      emitEvent(newValue ? EVENT_EXTEND_MODE_ON : EVENT_EXTEND_MODE_OFF);
     },
     [emitEvent, resetView]
   );

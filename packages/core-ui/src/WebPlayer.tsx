@@ -41,6 +41,13 @@ const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
     useState(0.5); // NOTE: Hardcoded for typing convenience, but will be updated in the useEffect
   const [isFullScreen, setIsFullScreen] = useState(false);
 
+  const emitEvent = useCallback(
+    (detail: string) => {
+      document.dispatchEvent(new CustomEvent(eventId, { detail }));
+    },
+    [eventId]
+  );
+
   // Compute player width ratio in viewport (to handle imgs' srcSet)
   useEffect(() => {
     if (isFullScreen) {
@@ -141,6 +148,8 @@ const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
         eventId,
         allowFullScreen,
         permanentGallery,
+
+        emitEvent,
 
         playerInViewportWidthRatio,
         isFullScreen,

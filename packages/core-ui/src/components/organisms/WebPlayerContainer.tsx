@@ -1,5 +1,10 @@
 import { useEffect, useRef } from "react";
 
+import {
+  EVENT_COMPOSITION_LOAD_ERROR,
+  EVENT_COMPOSITION_LOADED,
+  EVENT_COMPOSITION_LOADING,
+} from "../../const/event";
 import { useComposition } from "../../hooks/useComposition";
 import CompositionContextProvider, {
   useCompositionContext,
@@ -179,11 +184,24 @@ type WebPlayerContainerProps = {
 const WebPlayerContainer: React.FC<WebPlayerContainerProps> = ({
   compositionUrl,
 }) => {
+  const { emitEvent } = useGlobalContext();
+
   const {
     data: composition,
+    status,
     isSuccess,
     error,
   } = useComposition(compositionUrl);
+
+  useEffect(() => {
+    if (error) {
+      emitEvent(EVENT_COMPOSITION_LOAD_ERROR);
+    } else if (isSuccess) {
+      emitEvent(EVENT_COMPOSITION_LOADED);
+    } else if (status === "fetching") {
+      emitEvent(EVENT_COMPOSITION_LOADING);
+    }
+  }, [emitEvent, error, isSuccess, status]);
 
   if (error) {
     // TODO
