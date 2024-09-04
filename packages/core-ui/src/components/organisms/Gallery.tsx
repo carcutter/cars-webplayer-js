@@ -237,7 +237,9 @@ const Gallery: React.FC<Props> = ({
             {separatorIndexes.includes(index) && (
               <div className="my-2">
                 <Separator
-                  color={permanentGallery ? "neutral" : "background"}
+                  color={
+                    permanentGallery && !isFullScreen ? "neutral" : "background"
+                  }
                   orientation="vertical"
                 />
               </div>

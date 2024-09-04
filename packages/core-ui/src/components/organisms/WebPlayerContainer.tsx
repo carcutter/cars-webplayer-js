@@ -163,7 +163,7 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
           <WebPlayerCarrousel className={cn(extendMode && "h-full min-w-0")} />
         </div>
         {permanentGallery && (
-          <Gallery className={cn(extendMode && "my-4 shrink-0")} />
+          <Gallery className={cn(extendMode && "my-2 shrink-0 small:my-4")} />
         )}
       </div>
 
