@@ -13,7 +13,8 @@
     "lint-build": "turbo run lint build --ui tui --continue",
     "commit-packages": "changeset",
     "version-packages": "changeset version",
-    "publish-packages": "turbo run build lint && changeset publish"
+    "publish-packages": "turbo run build lint && changeset publish",
+    "publish-doc": "turbo build --filter=@car-cutter/webplayer-docs && cd apps/docs && yarn deploy"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.7",
