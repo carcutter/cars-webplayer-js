@@ -5,9 +5,19 @@ import CdnImage from "../atoms/CdnImage";
 import PlayIcon from "../icons/PlayIcon";
 import ThreeSixtyIcon from "../icons/ThreeSixtyIcon";
 
-type Props = { item: Item };
+const GalleryIconWrapper: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  return (
+    <div className="flex aspect-square h-3/4 items-center justify-center rounded-full bg-foreground/50 p-1">
+      {children}
+    </div>
+  );
+};
 
-const GalleryElement: React.FC<Props> = ({ item }) => {
+type GalleryElementProps = { item: Item };
+
+const GalleryElement: React.FC<GalleryElementProps> = ({ item }) => {
   const { aspectRatioStyle } = useCompositionContext();
 
   const { type } = item;
@@ -32,14 +42,16 @@ const GalleryElement: React.FC<Props> = ({ item }) => {
   switch (type) {
     case "360":
       overlayIcon = (
-        <ThreeSixtyIcon className="size-3/4 text-background grayscale" />
+        <GalleryIconWrapper>
+          <ThreeSixtyIcon className="size-full text-primary" />
+        </GalleryIconWrapper>
       );
       break;
     case "video":
       overlayIcon = (
-        <div className="aspect-square h-3/5 rounded-full bg-foreground/50 p-1">
-          <PlayIcon className="size-full text-background" />
-        </div>
+        <GalleryIconWrapper>
+          <PlayIcon className="size-full p-0.5 text-background" />
+        </GalleryIconWrapper>
       );
       break;
   }
