@@ -148,7 +148,7 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
         className={
           !extendMode
             ? "space-y-2"
-            : "flex size-full flex-col justify-center gap-y-2 sm:gap-y-4"
+            : "flex size-full flex-col justify-center gap-y-2 small:gap-y-4"
         }
       >
         <div
@@ -156,7 +156,7 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
           ref={wrapperRef}
           className={cn(
             extendMode &&
-              "mx-auto flex min-h-0 w-full max-w-screen-2xl justify-center"
+              "mx-auto flex min-h-0 w-full max-w-[1600px] justify-center"
           )}
           style={aspectRatioStyle}
         >
@@ -169,7 +169,7 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
 
       {extendMode && (
         <CloseButton
-          className={`absolute right-2 top-2 lg:right-4 lg:top-4`}
+          className="absolute right-2 top-2 small:right-4 small:top-4"
           onClick={disableExtendMode}
         />
       )}

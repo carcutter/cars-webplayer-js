@@ -13,9 +13,34 @@ const noScrollbarPlugin: PluginCreator = ({ addUtilities }) =>
     },
   });
 
-const config = {
+const BREAKPOINT_SMALL_PORTRAIT = 768;
+const BREAKPOINT_SMALL_LANDSCAPE = 1024;
+const BREAKPOINT_LARGE = 1280;
+
+const joinMediaQueries = (...queries: string[]) =>
+  queries.map(query => `(${query})`).join(" or ");
+
+const config: Config = {
   content: ["./src/*/**/*.{ts,tsx}"],
   theme: {
+    screens: {
+      "max-small": {
+        raw: joinMediaQueries(
+          `(orientation: portrait) and (max-width: ${BREAKPOINT_SMALL_PORTRAIT - 1}px)`,
+          `(orientation: landscape) and (max-width: ${BREAKPOINT_SMALL_LANDSCAPE - 1}px)`
+        ),
+      },
+      small: {
+        raw: joinMediaQueries(
+          `(orientation: portrait) and (min-width: ${BREAKPOINT_SMALL_PORTRAIT}px)`,
+          `(orientation: landscape) and (min-width: ${BREAKPOINT_SMALL_LANDSCAPE}px)`
+        ),
+      },
+      "max-large": {
+        max: `${BREAKPOINT_LARGE - 1}px`,
+      },
+      large: `${BREAKPOINT_LARGE}px`,
+    },
     colors: {
       transparent: "transparent",
 

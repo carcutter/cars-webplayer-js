@@ -220,10 +220,17 @@ const Gallery: React.FC<Props> = ({
   return (
     <div
       ref={sliderRef}
-      className={`relative w-full overflow-x-auto no-scrollbar ${!isDragging ? "cursor-grab" : "cursor-grabbing"} ${className}`}
+      className={cn(
+        "relative w-full overflow-x-auto no-scrollbar",
+        isDragging ? "cursor-grab" : "cursor-grabbing",
+        className
+      )}
     >
       <div
-        className={`flex h-10 w-fit gap-1 sm:h-12 sm:gap-2 ${!extendMode ? "" : "lg:h-20 lg:gap-4"} ${containerClassName}`}
+        className={cn(
+          "flex h-10 w-fit gap-1 small:h-12 small:gap-2 large:h-20 large:gap-4",
+          containerClassName
+        )}
       >
         {items.map((item, index) => (
           <ReactFragment key={index}>

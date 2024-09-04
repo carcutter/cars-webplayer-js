@@ -70,7 +70,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
       {!withImage && description && (
         <div
           className={cn(
-            "absolute -z-10 w-max max-w-40 rounded-ui-lg bg-background p-2 pl-6 sm:max-w-48 sm:pl-8",
+            "absolute -z-10 w-max max-w-40 rounded-ui-lg bg-background p-2 pl-6 small:max-w-48 small:pl-8",
             position.y < 0.55 ? "-top-0.5" : "-bottom-0.5",
             position.x < 0.55 ? "-left-0.5" : "-right-0.5",
             "pointer-events-none opacity-0 transition-opacity duration-300 group-hover:pointer-events-auto group-hover:opacity-100"

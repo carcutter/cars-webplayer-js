@@ -14,26 +14,26 @@ export function cn(...inputs: (string | false | null | undefined)[]): string {
 export function positionXToClassName(positionX: PositionX): string {
   switch (positionX) {
     case "left":
-      return "left-1 sm:left-2";
+      return "left-1 small:left-2";
     case "right":
-      return "right-1 sm:right-2";
+      return "right-1 small:right-2";
     case "center":
       return "left-1/2 -translate-x-1/2";
     case "fullW":
-      return "inset-x-1 sm:inset-x-2";
+      return "inset-x-1 small:inset-x-2";
   }
 }
 
 export function positionYToClassName(positionY: PositionY): string {
   switch (positionY) {
     case "top":
-      return "top-1 sm:top-2";
+      return "top-1 small:top-2";
     case "bottom":
-      return "bottom-1 sm:bottom-2";
+      return "bottom-1 small:bottom-2";
     case "middle":
       return "top-1/2 -translate-y-1/2";
     case "fullH":
-      return "inset-y-1 sm:inset-y-2";
+      return "inset-y-1 small:inset-y-2";
   }
 }
 

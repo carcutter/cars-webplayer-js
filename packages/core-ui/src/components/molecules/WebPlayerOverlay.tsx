@@ -4,11 +4,7 @@ import { useEscapeKeyEffect } from "../../hooks/useEscapeKeyEffect";
 import { useCompositionContext } from "../../providers/CompositionContext";
 import { useControlsContext } from "../../providers/ControlsContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
-import {
-  cn,
-  positionToClassName,
-  positionYToClassName,
-} from "../../utils/style";
+import { cn, positionToClassName } from "../../utils/style";
 import { isSelfEvent } from "../../utils/web";
 import CdnImage from "../atoms/CdnImage";
 import CloseButton from "../atoms/CloseButton";
@@ -97,9 +93,7 @@ const WebPlayerOverlay: React.FC = () => {
     <>
       {/* CategorySelect (on top) */}
       {!flatten && !isZooming && (
-        <CategorySelect
-          className={cn(sharedClassName, positionYToClassName("top"))}
-        />
+        <CategorySelect sharedClassName={sharedClassName} />
       )}
 
       {/* Next/Prev buttons */}
@@ -108,7 +102,7 @@ const WebPlayerOverlay: React.FC = () => {
           <Button
             shape="icon"
             color="neutral"
-            className={`${sharedClassName} ${positionToClassName("middle-left")}`}
+            className={cn(sharedClassName, positionToClassName("middle-left"))}
             onClick={prevImage}
             disabled={!infiniteCarrousel && masterItemIndex <= 0}
           >
@@ -119,7 +113,7 @@ const WebPlayerOverlay: React.FC = () => {
           <Button
             shape="icon"
             color="neutral"
-            className={`${sharedClassName} ${positionToClassName("middle-right")}`}
+            className={cn(sharedClassName, positionToClassName("middle-right"))}
             onClick={nextImage}
             disabled={!infiniteCarrousel && masterItemIndex >= dataLength - 1}
           >
@@ -132,7 +126,11 @@ const WebPlayerOverlay: React.FC = () => {
 
       {/* Bottom overlay : Gallery, Hotspots toggle, ... We need to disable pointer-event to allow the propagation to parent elements */}
       <div
-        className={`${sharedClassName} ${positionToClassName("bottom-fullW")} pointer-events-none grid grid-cols-[auto,1fr,auto] items-end *:pointer-events-auto sm:gap-x-2`}
+        className={cn(
+          sharedClassName,
+          positionToClassName("bottom-fullW"),
+          "pointer-events-none grid grid-cols-[auto,1fr,auto] items-end *:pointer-events-auto small:gap-x-2"
+        )}
       >
         {/* Gallery's toogle button & Gallery */}
         {!permanentGallery && dataLength > 1 && !isZooming && (
@@ -151,13 +149,16 @@ const WebPlayerOverlay: React.FC = () => {
 
             {showGallery && (
               <Gallery
-                className={`[mask-image:linear-gradient(to_left,transparent_0px,black_4px,black_calc(100%-4px),transparent_100%)] ${galleryControlsClassName}`}
+                className={cn(
+                  galleryControlsClassName,
+                  "[mask-image:linear-gradient(to_left,transparent_0px,black_4px,black_calc(100%-4px),transparent_100%)]"
+                )}
                 containerClassName="mx-1"
               />
             )}
           </>
         )}
-        <div className="col-start-3 flex flex-col items-end gap-y-1 sm:gap-y-2">
+        <div className="col-start-3 flex flex-col items-end gap-y-1 small:gap-y-2">
           {/* Hotspot button */}
           {enableHotspotsControl && !isZooming && (
             <Switch enabled={showHotspots} onToggle={toggleHotspots}>
@@ -167,7 +168,7 @@ const WebPlayerOverlay: React.FC = () => {
 
           {/* Zoom buttons */}
           {showZoomControls && (
-            <div className="max-sm:hidden">
+            <div className="max-small:hidden">
               <Button
                 className="rounded-b-none"
                 color="neutral"
@@ -208,11 +209,18 @@ const WebPlayerOverlay: React.FC = () => {
 
       {/* Details overlay */}
       <div
-        className={`${sharedClassName} inset-0 flex justify-end overflow-hidden bg-foreground/60 transition-opacity duration-details ${isShowingDetails ? "opacity-100" : "pointer-events-none opacity-0"}`}
+        className={cn(
+          sharedClassName,
+          "inset-0 flex justify-end overflow-hidden bg-foreground/60 transition-opacity duration-details",
+          isShowingDetails ? "opacity-100" : "pointer-events-none opacity-0"
+        )}
         onClick={handleDetailsOverlayClick}
       >
         <div
-          className={`h-full w-3/5 bg-background transition-transform duration-details ${isShowingDetails ? "translate-x-0" : "translate-x-full"}`}
+          className={cn(
+            "h-full w-3/5 bg-background transition-transform duration-details",
+            isShowingDetails ? "translate-x-0" : "translate-x-full"
+          )}
         >
           {!!shownDetails && (
             <>
@@ -235,7 +243,7 @@ const WebPlayerOverlay: React.FC = () => {
       {/* Close button */}
       {(isZooming || isShowingDetails) && (
         <CloseButton
-          className={`${sharedClassName} ${positionToClassName("top-right")}`}
+          className={cn(sharedClassName, positionToClassName("top-right"))}
           onClick={resetView}
         />
       )}
