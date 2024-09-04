@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type FC as ReactFC,
+  type PropsWithChildren as ReactPropsWithChildren,
+} from "react";
 
 import { WEB_PLAYER_WC_TAG } from "@car-cutter/core";
 
@@ -18,7 +25,7 @@ import { WebPlayerProps } from "./types/WebPlayer.props";
 
 import "./index.css";
 
-const WebPlayer: React.FC<React.PropsWithChildren<WebPlayerProps>> = ({
+const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   compositionUrl,
 
   flatten = DEFAULT_FLATTEN,

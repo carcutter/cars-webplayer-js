@@ -14,8 +14,11 @@ export {
   webPlayerIconPropsToAttributes,
 } from "./src/WebPlayerIcon.wc";
 
-// Expose parent package
+// -- Expose ancestor packages -- //
+export { WEB_PLAYER_WC_TAG, WEB_PLAYER_ICON_WC_TAG } from "@car-cutter/core";
+
 export {
+  // - Components
   type WebPlayerProps,
   type WebPlayerIconProps,
   // - Events

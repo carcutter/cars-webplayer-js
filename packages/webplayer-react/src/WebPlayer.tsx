@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, type FC as ReactFC } from "react";
 
 import {
   ensureCustomElementsDefinition,
@@ -31,7 +31,7 @@ export type WebPlayerProps = WebPlayerPropsWC & {
   onGalleryClose?: () => void;
 };
 
-const WebPlayer: React.FC<WebPlayerProps> = ({
+const WebPlayer: ReactFC<WebPlayerProps> = ({
   onCompositionLoading,
   onCompositionLoaded,
   onCompositionLoadError,

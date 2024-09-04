@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/next-webplayer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "UNLICENSED",
   "type": "module",
   "main": "dist/index.umd.cjs",
@@ -22,9 +22,9 @@
     "next": ">=10"
   },
   "devDependencies": {
-    "@car-cutter/core-wc": "0.1.0",
-    "@car-cutter/eslint-config": "0.1.0",
-    "@car-cutter/typescript-config": "0.1.0",
+    "@car-cutter/core-wc": "0.2.0",
+    "@car-cutter/eslint-config": "*",
+    "@car-cutter/typescript-config": "*",
     "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^8.57.0",
     "rollup-preserve-directives": "^1.1.1",

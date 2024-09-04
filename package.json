@@ -3,12 +3,14 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "turbo build --ui tui --continue --",
+    "build": "turbo build --ui tui --continue",
     "dev": "turbo dev --filter=@car-cutter/core-ui --",
     "dev:all": "turbo dev",
+    "dev:demo-react": "turbo dev --filter=demo-react",
+    "dev:demo-next": "turbo dev --filter=demo-next",
     "lint": "turbo lint",
-    "build-lint": "turbo run build lint",
-    "lint-build": "turbo run lint build",
+    "build-lint": "turbo run build lint --ui tui --continue",
+    "lint-build": "turbo run lint build --ui tui --continue",
     "commit-packages": "changeset",
     "version-packages": "changeset version",
     "publish-packages": "turbo run build lint && changeset publish"

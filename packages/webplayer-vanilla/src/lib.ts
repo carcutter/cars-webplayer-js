@@ -1,5 +1,5 @@
-import { WEB_PLAYER_WC_TAG } from "@car-cutter/core";
 import {
+  WEB_PLAYER_WC_TAG,
   ensureCustomElementsDefinition,
   webPlayerPropsToAttributes,
   type WebPlayerProps,

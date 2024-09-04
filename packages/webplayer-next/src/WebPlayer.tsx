@@ -1,6 +1,6 @@
 "use client";
 
-import { EffectCallback, useEffect, useState } from "react";
+import { EffectCallback, useEffect, useState, type FC as ReactFC } from "react";
 
 import type {
   WebPlayerProps as WebPlayerPropsWC,
@@ -19,7 +19,7 @@ export type WebPlayerProps = WebPlayerPropsWC & {
   onGalleryClose?: () => void;
 };
 
-const WebPlayer: React.FC<WebPlayerProps> = ({
+const WebPlayer: ReactFC<WebPlayerProps> = ({
   onCompositionLoading,
   onCompositionLoaded,
   onCompositionLoadError,

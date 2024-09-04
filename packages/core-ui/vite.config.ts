@@ -32,9 +32,10 @@ export default defineConfig(({ mode }) => {
       chunkSizeWarningLimit: 100,
 
       rollupOptions: {
-        external: ["react", "react-dom"],
+        external: ["@car-cutter/core", "react", "react-dom"],
         output: {
           globals: {
+            "@car-cutter/core": "CarCutterCore",
             react: "React",
             "react-dom": "ReactDOM",
           },

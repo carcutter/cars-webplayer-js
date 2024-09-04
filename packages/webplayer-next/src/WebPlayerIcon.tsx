@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, type FC as ReactFC } from "react";
 
 import type { WebPlayerIconProps } from "@car-cutter/core-wc";
 
-const WebPlayer: React.FC<WebPlayerIconProps> = ({ name, color }) => {
+const WebPlayer: ReactFC<WebPlayerIconProps> = ({ name, color }) => {
   useEffect(() => {
     (async () => {
       const { ensureCustomElementsDefinition } = await import(

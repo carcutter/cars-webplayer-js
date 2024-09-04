@@ -8,6 +8,7 @@ export default defineConfig({
     dts({
       tsconfigPath: resolve(__dirname, "./tsconfig.app.json"),
       rollupTypes: true,
+      bundledPackages: ["@car-cutter/wc-webplayer"],
     }),
   ],
 
