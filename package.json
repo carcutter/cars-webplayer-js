@@ -9,8 +9,8 @@
     "dev:demo-react": "turbo dev --filter=demo-react",
     "dev:demo-next": "turbo dev --filter=demo-next",
     "lint": "turbo lint",
-    "ci": "turbo run build lint --ui tui --continue",
-    "commit-packages": "changeset",
+    "ci": "yarn && turbo run build lint --ui tui --continue",
+    "commit-packages": "changeset add",
     "version-packages": "changeset version",
     "publish-packages": "turbo run build lint && changeset publish",
     "publish-doc": "turbo build --filter=@car-cutter/webplayer-docs && cd apps/docs && yarn deploy"
