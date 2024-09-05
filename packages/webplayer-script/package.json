@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/script-webplayer",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
@@ -11,7 +11,7 @@
     "analyze": "vite-bundle-visualizer"
   },
   "dependencies": {
-    "@car-cutter/wc-webplayer": "0.1.0"
+    "@car-cutter/wc-webplayer": "0.3.0"
   },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",

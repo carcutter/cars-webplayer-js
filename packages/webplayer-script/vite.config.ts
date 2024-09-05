@@ -2,6 +2,8 @@ import { resolve } from "path";
 
 import { defineConfig } from "vite";
 
+import { version } from "./package.json";
+
 export default defineConfig({
   define: {
     "process.env": {
@@ -11,7 +13,7 @@ export default defineConfig({
   build: {
     lib: {
       name: "script-webplayer",
-      fileName: () => "bundle.js",
+      fileName: () => `bundle-${version}.js`,
       entry: resolve(__dirname, "./index.ts"),
       formats: ["umd"],
     },
