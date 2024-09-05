@@ -1,6 +1,8 @@
 import type { Item } from "@car-cutter/core";
 
 import { useCompositionContext } from "../../providers/CompositionContext";
+import { useControlsContext } from "../../providers/ControlsContext";
+import { cn } from "../../utils/style";
 import CdnImage from "../atoms/CdnImage";
 import PlayIcon from "../icons/PlayIcon";
 import ThreeSixtyIcon from "../icons/ThreeSixtyIcon";
@@ -8,8 +10,15 @@ import ThreeSixtyIcon from "../icons/ThreeSixtyIcon";
 const GalleryIconWrapper: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
+  const { extendMode } = useControlsContext();
+
   return (
-    <div className="flex aspect-square h-3/4 items-center justify-center rounded-full bg-foreground/50 p-1">
+    <div
+      className={cn(
+        "flex aspect-square h-3/4 items-center justify-center rounded-full bg-foreground/50 p-1",
+        extendMode && "large:h-3/5 large:p-2"
+      )}
+    >
       {children}
     </div>
   );
