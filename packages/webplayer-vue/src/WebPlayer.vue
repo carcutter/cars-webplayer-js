@@ -75,7 +75,7 @@ onUnmounted(() => {
     :min-image-width="minImageWidth"
     :max-image-width="maxImageWidth"
     :flatten="flatten"
-    :allow-full-screen="allowFullScreen"
+    :prevent-full-screen="preventFullScreen"
     :eventPrefix="eventPrefix"
     :reverse360="reverse360"
   >

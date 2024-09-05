@@ -15,7 +15,7 @@ sidebar_position: 2
 | `imageLoadStrategy` | `"quality"` or `"speed"` |          | `"quality"`       | Strategy for loading images.                              |
 | `minImageWidth`     | `number`                 |          | `0`               | Force minimum image width (in pixels)                     |
 | `maxImageWidth`     | `number`                 |          | `Infinity`        | Force maximum image width (in pixels)                     |
-| `allowFullScreen`   | `boolean`                |          | `true`            | Whether to allow full screen mode                         |
+| `preventFullScreen` | `boolean`                |          | `false`           | Whether to prevent full screen mode                       |
 | `eventPrefix`       | `string`                 |          | `"cc-webplayer:"` | Prefix of cc-player events                                |
 | `reverse360`        | `boolean`                |          | `false`           | Reverse the 360-degree rotation                           |
 
@@ -36,7 +36,7 @@ If you are using the WebComponent directly, you need to transform the props to H
 | `imageLoadStrategy` | `image-load-strategy` |
 | `minImageWidth`     | `min-image-width`     |
 | `maxImageWidth`     | `max-image-width`     |
-| `allowFullScreen`   | `allow-full-screen`   |
+| `preventFullScreen` | `prevent-full-screen` |
 | `eventPrefix`       | `event-prefix`        |
 | `reverse360`        | `reverse360`          |
 

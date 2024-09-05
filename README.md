@@ -119,7 +119,7 @@ Make sure you are logged in to npm with the correct credentials before running t
 | `imageLoadStrategy` | `"quality"` or `"speed"` |          | `"quality"`       | Strategy for loading images.                              |
 | `minImageWidth`     | `number`                 |          | -                 | Force minimum image width (in pixels)                     |
 | `maxImageWidth`     | `number`                 |          | -                 | Force maximum image width (in pixels)                     |
-| `allowFullScreen`   | `boolean`                |          | true              | Whether to allow full screen mode                         |
+| `preventFullScreen` | `boolean`                |          | false             | Whether to prevent full screen mode                       |
 | `eventPrefix`       | `string`                 |          | `"cc-webplayer:"` | Prefix of cc-player events                                |
 | `reverse360`        | `boolean`                |          | false             | Reverse the 360-degree rotation                           |
 

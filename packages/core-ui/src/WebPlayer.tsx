@@ -9,7 +9,7 @@ import {
 
 import {
   WEB_PLAYER_WC_TAG,
-  DEFAULT_ALLOW_FULL_SCREEN,
+  DEFAULT_PREVENT_FULL_SCREEN,
   DEFAULT_EVENT_PREFIX,
   DEFAULT_FLATTEN,
   DEFAULT_IMAGE_LOAD_STRATEGY,
@@ -34,7 +34,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
 
   imageLoadStrategy = DEFAULT_IMAGE_LOAD_STRATEGY,
 
-  allowFullScreen = DEFAULT_ALLOW_FULL_SCREEN,
+  preventFullScreen = DEFAULT_PREVENT_FULL_SCREEN,
   eventPrefix = DEFAULT_EVENT_PREFIX,
   reverse360 = DEFAULT_REVERSE_360,
 
@@ -96,7 +96,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
 
   // Handle fullscreen
   useEffect(() => {
-    if (!allowFullScreen) {
+    if (preventFullScreen) {
       return;
     }
 
@@ -120,7 +120,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
     return () => {
       document.removeEventListener("fullscreenchange", onFullscreenChange);
     };
-  }, [allowFullScreen]);
+  }, [preventFullScreen]);
 
   const requestFullscreen = useCallback(async () => {
     const wrapper = wrapperRef.current;
@@ -155,7 +155,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
         imageLoadStrategy,
         flatten,
         infiniteCarrousel,
-        allowFullScreen,
+        preventFullScreen,
         permanentGallery,
 
         emitEvent,

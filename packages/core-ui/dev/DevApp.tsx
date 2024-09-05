@@ -37,7 +37,7 @@ const DevApp: React.FC = () => {
           // imageLoadStrategy="speed"
           // minImageWidth={300}
           // maxImageWidth={1000}
-          // allowFullScreen={false}
+          // preventFullScreen
           // eventPrefix="cc-event:"
           // reverse360
         >

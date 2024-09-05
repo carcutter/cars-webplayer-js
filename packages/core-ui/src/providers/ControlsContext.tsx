@@ -100,7 +100,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const {
     emitEvent,
     isFullScreen,
-    allowFullScreen,
+    preventFullScreen,
     requestFullscreen,
     exitFullscreen,
   } = useGlobalContext();
@@ -293,7 +293,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const enableExtendMode = useCallback(async () => {
     triggerExtendTransition();
 
-    if (allowFullScreen) {
+    if (!preventFullScreen) {
       const requestSucceed = await requestFullscreen();
 
       setFakeFullScreen(!requestSucceed);
@@ -308,7 +308,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     // - if fullscreen request failed (mainly Safari iOS)
     changeExtendMode(true);
   }, [
-    allowFullScreen,
+    preventFullScreen,
     changeExtendMode,
     requestFullscreen,
     triggerExtendTransition,
@@ -317,7 +317,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const disableExtendMode = useCallback(async () => {
     triggerExtendTransition();
 
-    if (allowFullScreen) {
+    if (!preventFullScreen) {
       setFakeFullScreen(false);
 
       const exitSucceed = await exitFullscreen();
@@ -332,7 +332,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     // - If fullscreen exit request failed (mainly Safari iOS)
     changeExtendMode(false);
   }, [
-    allowFullScreen,
+    preventFullScreen,
     changeExtendMode,
     exitFullscreen,
     triggerExtendTransition,
@@ -348,7 +348,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
   // Listen to fullscreen changes (mandatory to get the full screen close with Echap)
   useEffect(() => {
-    if (!allowFullScreen) {
+    if (preventFullScreen) {
       return;
     }
 
@@ -366,7 +366,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
     changeExtendMode(isFullScreen);
   }, [
-    allowFullScreen,
+    preventFullScreen,
     changeExtendMode,
     extendMode,
     fakeFullScreen,

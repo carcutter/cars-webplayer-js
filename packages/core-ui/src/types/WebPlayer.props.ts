@@ -14,7 +14,7 @@ export type WebPlayerProps = {
   maxImageWidth?: number;
 
   // Miscelaneous
-  allowFullScreen?: boolean;
+  preventFullScreen?: boolean;
   eventPrefix?: string;
   reverse360?: boolean;
 };
