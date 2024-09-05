@@ -1,3 +1,34 @@
+---
+sidebar_position: 5
+sidebar_label: Vanilla JS
+
+description: "Use the WebPlayer with Vanilla JavaScript/TypsScript"
+---
+
+# WebPlayer with Vanilla JS/TS
+
+## Installation
+
+```bash npm2yarn
+npm install @car-cutter/vanilla-webplayer
+```
+
+## Usage
+
+1. Import: `import { appendWebPlayerElement } from "@car-cutter/vanilla-webplayer"`
+
+2. Use the `appendWebPlayerElement` function to add the WebPlayer to your target element.
+
+```js
+appendWebPlayerElement(document.getElementById("webplayer-wrapper"), {
+  compositionUrl:
+    "https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json",
+});
+```
+
+### Vanilla implementation example
+
+```html title="/index.html"
 <!doctype html>
 <html lang="en">
   <head>
@@ -41,3 +72,8 @@
     </div>
   </body>
 </html>
+```
+
+## Next steps
+
+For more customisation, take a look at available **props** in the **Customisation** section.

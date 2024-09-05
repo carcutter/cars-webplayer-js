@@ -1,3 +1,5 @@
+"use client"; // Mandatory only if we use events handlers
+
 import { WebPlayer } from "@car-cutter/next-webplayer";
 
 export default function Home() {
@@ -7,9 +9,9 @@ export default function Home() {
       <div className="mx-auto max-w-4xl">
         <WebPlayer
           compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
-          flatten={true}
-          infiniteCarrousel={true}
-          permanentGallery={true}
+          infiniteCarrousel
+          // eslint-disable-next-line no-console
+          onCompositionLoaded={() => console.log("Composition loaded")}
         />
       </div>
     </main>

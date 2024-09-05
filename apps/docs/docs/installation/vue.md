@@ -18,23 +18,25 @@ npm install @car-cutter/vue-webplayer
 1. Import: `import { WebPlayer } from "@car-cutter/vue-webplayer"`
 2. Use: `<WebPlayer :compositionUrl={url} />`
 
-### Default Vue implementation example
+### Vue implementation example
 
-```vue title="/src/App.vue"
+```html title="/src/App.vue"
 <script setup lang="ts">
+// highlight-next-line
 import { WebPlayer } from "@car-cutter/vue-webplayer";
 </script>
 
 <template>
-  <div>
+  <main>
     <h1>Vue App</h1>
     <div class="webplayer-wrapper">
+      // highlight-start
       <WebPlayer
         compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
-        :flatten="true"
+        :infiniteCarrousel="true"
         @compositionLoaded="() => console.log('Composition loaded')"
-        @extendModeOn="() => console.log('Extend mode on')"
       />
+      // highlight-end
     </div>
   </div>
 </template>

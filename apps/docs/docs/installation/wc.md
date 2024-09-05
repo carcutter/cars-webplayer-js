@@ -1,3 +1,33 @@
+---
+sidebar_position: 4
+sidebar_label: WebComponent
+
+description: "Use the WebPlayer as a WebComponent"
+---
+
+# WebPlayer as a WebComponent
+
+## Installation
+
+```bash npm2yarn
+npm install @car-cutter/wc-webplayer
+```
+
+## Usage
+
+1. Import and define the custom elements:
+
+```js
+import { defineCustomElements } from "@car-cutter/wc-webplayer";
+
+defineCustomElements();
+```
+
+2. Use the `<cc-webplayer>` element in your HTML.
+
+### WebComponent implementation example
+
+```html title="/index.html"
 <!doctype html>
 <html lang="en">
   <head>
@@ -36,3 +66,8 @@
     </div>
   </body>
 </html>
+```
+
+## Next steps
+
+For more customisation, take a look at available **props** in the **Customisation** section.

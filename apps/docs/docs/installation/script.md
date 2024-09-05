@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 6
 sidebar_label: <script/>
 
 description: "Use the WebPlayer without any package manager"
@@ -9,7 +9,7 @@ description: "Use the WebPlayer without any package manager"
 
 ## Usage
 
-1. Import script in `<head>`
+1. Import script in `<head>` :
 
 ```html
 <script src="https://cdn.car-cutter.com/libs/web-player/v3/bundle.js"></script>
