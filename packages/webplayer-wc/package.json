@@ -17,6 +17,8 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@car-cutter/core": "0.2.0",
+    "@car-cutter/core-ui": "0.2.0",
     "@car-cutter/core-wc": "0.2.0",
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",

@@ -13,10 +13,10 @@
     "analyze": "vite-bundle-visualizer"
   },
   "peerDependencies": {
+    "@car-cutter/core": "0.2.0",
     "react": ">=16.8"
   },
   "devDependencies": {
-    "@car-cutter/core": "0.2.0",
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
     "@types/node": "^20.14.7",

@@ -1,13 +1,42 @@
-export { WEB_PLAYER_WC_TAG, WEB_PLAYER_ICON_WC_TAG } from "./src/const";
+// - Const
+export { WEB_PLAYER_WC_TAG, WEB_PLAYER_ICON_WC_TAG } from "./src/const/wc";
 
+export {
+  EVENT_COMPOSITION_LOADING,
+  EVENT_COMPOSITION_LOADED,
+  EVENT_COMPOSITION_LOAD_ERROR,
+  EVENT_EXTEND_MODE_ON,
+  EVENT_EXTEND_MODE_OFF,
+  EVENT_HOTSPOTS_ON,
+  EVENT_HOTSPOTS_OFF,
+  EVENT_GALLERY_OPEN,
+  EVENT_GALLERY_CLOSE,
+} from "./src/const/event";
+
+export {
+  DEFAULT_FLATTEN,
+  DEFAULT_INFINITE_CARROUSEL,
+  DEFAULT_PERMANENT_GALLERY,
+  DEFAULT_IMAGE_LOAD_STRATEGY,
+  DEFAULT_ALLOW_FULL_SCREEN,
+  DEFAULT_EVENT_PREFIX,
+  DEFAULT_REVERSE_360,
+} from "./src/const/default_props";
+
+// - Types
 export type {
-  AspectRatio,
-  ImageWidth,
   Hotspot,
   ImageWithHotspots,
   Item,
   Category,
   Composition,
-} from "./src/types";
+} from "./src/types/composition";
 
+export type {
+  AspectRatio,
+  ImageWidth,
+  ImageLoadStrategy,
+} from "./src/types/misc";
+
+// - Utils
 export { cdnImgSrcWithWidth } from "./src/utils";

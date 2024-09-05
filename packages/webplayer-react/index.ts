@@ -1,12 +1,14 @@
 export { default as WebPlayer, type WebPlayerProps } from "./src/WebPlayer";
-export { default as WebPlayerIcon } from "./src/WebPlayerIcon";
+export {
+  default as WebPlayerIcon,
+  type WebPlayerIconProps,
+} from "./src/WebPlayerIcon";
 
-// -- Expose parent package
+// -- Expose ancestors package
 export {
   // - Components
   WEB_PLAYER_WC_TAG,
   WEB_PLAYER_ICON_WC_TAG,
-  type WebPlayerIconProps,
   // - Events
   DEFAULT_EVENT_PREFIX,
   EVENT_COMPOSITION_LOADING,
@@ -18,4 +20,4 @@ export {
   EVENT_HOTSPOTS_OFF,
   EVENT_GALLERY_OPEN,
   EVENT_GALLERY_CLOSE,
-} from "@car-cutter/core-wc";
+} from "@car-cutter/core";

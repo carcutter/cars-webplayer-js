@@ -10,7 +10,11 @@ export default defineConfig({
     dts({
       tsconfigPath: resolve(__dirname, "./tsconfig.app.json"),
       rollupTypes: true,
-      bundledPackages: ["@car-cutter/core-wc"],
+      bundledPackages: [
+        "@car-cutter/core",
+        "@car-cutter/core-ui",
+        "@car-cutter/core-wc",
+      ],
     }),
   ],
 
@@ -27,7 +31,7 @@ export default defineConfig({
       entry: resolve(__dirname, "./index.ts"),
     },
 
-    chunkSizeWarningLimit: 120,
+    chunkSizeWarningLimit: 125,
 
     rollupOptions: {
       external: ["react", "react-dom"],

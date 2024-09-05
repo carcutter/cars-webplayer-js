@@ -26,12 +26,17 @@ export default defineConfig({
       entry: resolve(__dirname, "./index.ts"),
     },
 
-    chunkSizeWarningLimit: 120,
-
     rollupOptions: {
-      external: ["react", "react-dom"],
+      external: [
+        "@car-cutter/core",
+        "@car-cutter/core-ui",
+        "react",
+        "react-dom",
+      ],
       output: {
         globals: {
+          "@car-cutter/core": "CarCutterCore",
+          "@car-cutter/core-ui": "CarCutterCoreUI",
           react: "React",
           "react-dom": "ReactDOM",
         },

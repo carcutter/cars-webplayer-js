@@ -4,7 +4,8 @@ import {
   EVENT_COMPOSITION_LOAD_ERROR,
   EVENT_COMPOSITION_LOADED,
   EVENT_COMPOSITION_LOADING,
-} from "../../const/event";
+} from "@car-cutter/core";
+
 import { useComposition } from "../../hooks/useComposition";
 import CompositionContextProvider, {
   useCompositionContext,

@@ -29,15 +29,12 @@ export default defineConfig(({ mode }) => {
       },
       copyPublicDir: false, // The only public file is mock data
 
-      chunkSizeWarningLimit: 100,
-
       rollupOptions: {
-        external: ["@car-cutter/core", "react", "react-dom"],
+        external: ["@car-cutter/core", "react"],
         output: {
           globals: {
             "@car-cutter/core": "CarCutterCore",
             react: "React",
-            "react-dom": "ReactDOM",
           },
         },
       },

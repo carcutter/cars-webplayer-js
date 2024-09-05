@@ -1,20 +1,9 @@
-// Expose parent package
+// -- Expose ancestors package
+
 export {
-  // - Utils
-  checkCustomElementsDefinition,
-  defineCustomElements,
-  ensureCustomElementsDefinition,
-  // - Components
-  // WebPlayer
+  // - WebComponents
   WEB_PLAYER_WC_TAG,
-  webPlayerPropsToAttributes,
-  type WebPlayerProps,
-  type WebPlayerAttributes,
-  // WebPlayerIcon
   WEB_PLAYER_ICON_WC_TAG,
-  webPlayerIconPropsToAttributes,
-  type WebPlayerIconProps,
-  type WebPlayerIconAttributes,
   // - Events
   DEFAULT_EVENT_PREFIX,
   EVENT_COMPOSITION_LOADING,
@@ -26,4 +15,21 @@ export {
   EVENT_HOTSPOTS_OFF,
   EVENT_GALLERY_OPEN,
   EVENT_GALLERY_CLOSE,
+} from "@car-cutter/core";
+
+export {
+  type WebPlayerProps,
+  type WebPlayerIconProps,
+} from "@car-cutter/core-ui";
+
+export {
+  // - Utils
+  checkCustomElementsDefinition,
+  defineCustomElements,
+  ensureCustomElementsDefinition,
+  // - Components
+  webPlayerPropsToAttributes,
+  type WebPlayerAttributes,
+  webPlayerIconPropsToAttributes,
+  type WebPlayerIconAttributes,
 } from "@car-cutter/core-wc";

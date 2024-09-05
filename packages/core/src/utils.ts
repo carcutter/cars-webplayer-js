@@ -1,4 +1,4 @@
-import type { ImageWidth } from "./types";
+import type { ImageWidth } from "./types/misc";
 
 /**
  * Adds a specified width to a CDN Image source.

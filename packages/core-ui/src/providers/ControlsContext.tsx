@@ -7,7 +7,6 @@ import {
   useState,
 } from "react";
 
-import { RESIZE_TRANSITION_DURATION } from "../const/browser";
 import {
   EVENT_EXTEND_MODE_OFF,
   EVENT_EXTEND_MODE_ON,
@@ -15,7 +14,9 @@ import {
   EVENT_GALLERY_OPEN,
   EVENT_HOTSPOTS_OFF,
   EVENT_HOTSPOTS_ON,
-} from "../const/event";
+} from "@car-cutter/core";
+
+import { RESIZE_TRANSITION_DURATION } from "../const/browser";
 import { MAX_ZOOM, ZOOM_STEP } from "../const/zoom";
 import { clamp } from "../utils/math";
 

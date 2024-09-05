@@ -1,11 +1,21 @@
 "use client";
 
-import { EffectCallback, useEffect, useState, type FC as ReactFC } from "react";
+import { useEffect, useState, type FC as ReactFC } from "react";
 
-import type {
-  WebPlayerProps as WebPlayerPropsWC,
-  WebPlayerAttributes,
-} from "@car-cutter/core-wc";
+import {
+  DEFAULT_EVENT_PREFIX,
+  EVENT_COMPOSITION_LOADING,
+  EVENT_COMPOSITION_LOADED,
+  EVENT_COMPOSITION_LOAD_ERROR,
+  EVENT_EXTEND_MODE_ON,
+  EVENT_EXTEND_MODE_OFF,
+  EVENT_HOTSPOTS_ON,
+  EVENT_HOTSPOTS_OFF,
+  EVENT_GALLERY_OPEN,
+  EVENT_GALLERY_CLOSE,
+} from "@car-cutter/core";
+import type { WebPlayerProps as WebPlayerPropsWC } from "@car-cutter/core-ui";
+import type { WebPlayerAttributes } from "@car-cutter/core-wc";
 
 export type WebPlayerProps = WebPlayerPropsWC & {
   onCompositionLoading?: () => void;
@@ -48,56 +58,37 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
 
   // Listen to WebPlayer events
   useEffect(() => {
-    let effectCb: EffectCallback | undefined = undefined;
+    const eventPrefix = props.eventPrefix ?? DEFAULT_EVENT_PREFIX;
 
-    (async () => {
-      const {
-        DEFAULT_EVENT_PREFIX,
-        EVENT_COMPOSITION_LOADING,
-        EVENT_COMPOSITION_LOADED,
-        EVENT_COMPOSITION_LOAD_ERROR,
-        EVENT_EXTEND_MODE_ON,
-        EVENT_EXTEND_MODE_OFF,
-        EVENT_HOTSPOTS_ON,
-        EVENT_HOTSPOTS_OFF,
-        EVENT_GALLERY_OPEN,
-        EVENT_GALLERY_CLOSE,
-      } = await import("@car-cutter/core-wc");
+    const generateEventName = (event: string) => `${eventPrefix}${event}`;
 
-      const eventPrefix = props.eventPrefix ?? DEFAULT_EVENT_PREFIX;
+    const eventListenerMap = new Map([
+      [EVENT_COMPOSITION_LOADING, onCompositionLoading],
+      [EVENT_COMPOSITION_LOADED, onCompositionLoaded],
+      [EVENT_COMPOSITION_LOAD_ERROR, onCompositionLoadError],
+      [EVENT_EXTEND_MODE_ON, onExtendModeOn],
+      [EVENT_EXTEND_MODE_OFF, onExtendModeOff],
+      [EVENT_HOTSPOTS_ON, onHotspotsOn],
+      [EVENT_HOTSPOTS_OFF, onHotspotsOff],
+      [EVENT_GALLERY_OPEN, onGalleryOpen],
+      [EVENT_GALLERY_CLOSE, onGalleryClose],
+    ]);
 
-      const generateEventName = (event: string) => `${eventPrefix}${event}`;
+    eventListenerMap.forEach((listener, event) => {
+      if (listener) {
+        const eventName = generateEventName(event);
+        document.addEventListener(eventName, listener);
+      }
+    });
 
-      const eventListenerMap = new Map([
-        [EVENT_COMPOSITION_LOADING, onCompositionLoading],
-        [EVENT_COMPOSITION_LOADED, onCompositionLoaded],
-        [EVENT_COMPOSITION_LOAD_ERROR, onCompositionLoadError],
-        [EVENT_EXTEND_MODE_ON, onExtendModeOn],
-        [EVENT_EXTEND_MODE_OFF, onExtendModeOff],
-        [EVENT_HOTSPOTS_ON, onHotspotsOn],
-        [EVENT_HOTSPOTS_OFF, onHotspotsOff],
-        [EVENT_GALLERY_OPEN, onGalleryOpen],
-        [EVENT_GALLERY_CLOSE, onGalleryClose],
-      ]);
-
+    return () => {
       eventListenerMap.forEach((listener, event) => {
         if (listener) {
           const eventName = generateEventName(event);
-          document.addEventListener(eventName, listener);
+          document.removeEventListener(eventName, listener);
         }
       });
-
-      effectCb = () => {
-        eventListenerMap.forEach((listener, event) => {
-          if (listener) {
-            const eventName = generateEventName(event);
-            document.removeEventListener(eventName, listener);
-          }
-        });
-      };
-    })();
-
-    return effectCb;
+    };
   }, [
     props.eventPrefix,
 

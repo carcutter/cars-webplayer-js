@@ -7,10 +7,8 @@ import {
   type PropsWithChildren as ReactPropsWithChildren,
 } from "react";
 
-import { WEB_PLAYER_WC_TAG } from "@car-cutter/core";
-
-import WebPlayerContainer from "./components/organisms/WebPlayerContainer";
 import {
+  WEB_PLAYER_WC_TAG,
   DEFAULT_ALLOW_FULL_SCREEN,
   DEFAULT_EVENT_PREFIX,
   DEFAULT_FLATTEN,
@@ -18,7 +16,9 @@ import {
   DEFAULT_INFINITE_CARROUSEL,
   DEFAULT_PERMANENT_GALLERY,
   DEFAULT_REVERSE_360,
-} from "./const/default_props";
+} from "@car-cutter/core";
+
+import WebPlayerContainer from "./components/organisms/WebPlayerContainer";
 import CustomizationContextProvider from "./providers/CustomizationContext";
 import GlobalContextProvider from "./providers/GlobalContext";
 import { WebPlayerProps } from "./types/WebPlayer.props";

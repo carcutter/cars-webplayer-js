@@ -1,10 +1,6 @@
 import { useEffect, type FC as ReactFC } from "react";
 
 import {
-  ensureCustomElementsDefinition,
-  webPlayerPropsToAttributes,
-  type WebPlayerProps as WebPlayerPropsWC,
-  // - Events
   DEFAULT_EVENT_PREFIX,
   EVENT_COMPOSITION_LOADING,
   EVENT_COMPOSITION_LOADED,
@@ -15,6 +11,11 @@ import {
   EVENT_HOTSPOTS_OFF,
   EVENT_GALLERY_OPEN,
   EVENT_GALLERY_CLOSE,
+} from "@car-cutter/core";
+import { type WebPlayerProps as WebPlayerPropsWC } from "@car-cutter/core-ui";
+import {
+  ensureCustomElementsDefinition,
+  webPlayerPropsToAttributes,
 } from "@car-cutter/core-wc";
 
 ensureCustomElementsDefinition();
