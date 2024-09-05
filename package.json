@@ -5,15 +5,16 @@
   "scripts": {
     "build": "turbo build --ui tui --continue",
     "dev": "turbo dev --filter=@car-cutter/core-ui --",
-    "dev:all": "turbo dev",
+    "dev:docs": "cd apps/docs && yarn start",
     "dev:demo-react": "turbo dev --filter=demo-react",
     "dev:demo-next": "turbo dev --filter=demo-next",
+    "dev:demo-vue": "turbo dev --filter=demo-vue",
     "lint": "turbo lint",
     "ci": "yarn && turbo run build lint --ui tui --continue",
     "commit-packages": "changeset add",
     "version-packages": "changeset version",
     "publish-packages": "turbo run build lint && changeset publish",
-    "publish-doc": "turbo build --filter=@car-cutter/webplayer-docs && cd apps/docs && yarn deploy"
+    "publish-docs": "turbo build --filter=@car-cutter/webplayer-docs && cd apps/docs && yarn deploy"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.7",
