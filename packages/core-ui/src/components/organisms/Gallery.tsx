@@ -228,7 +228,8 @@ const Gallery: React.FC<Props> = ({
     >
       <div
         className={cn(
-          "flex h-10 w-fit gap-1 small:h-12 small:gap-2 large:h-20 large:gap-4",
+          "flex h-10 w-fit gap-1 small:h-12 small:gap-2",
+          extendMode && "large:h-20 large:gap-4",
           containerClassName
         )}
       >
