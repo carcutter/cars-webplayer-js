@@ -6,11 +6,22 @@ import dts from "vite-plugin-dts";
 
 export default defineConfig({
   plugins: [
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: tag => ["cc-webplayer"].includes(tag),
+        },
+      },
+    }),
     dts({
       tsconfigPath: resolve(__dirname, "./tsconfig.app.json"),
       rollupTypes: true,
-      bundledPackages: ["@car-cutter/wc-webplayer"],
+      bundledPackages: [
+        "@car-cutter/core",
+        "@car-cutter/core-ui",
+        "@car-cutter/core-wc",
+        "@car-cutter/wc-webplayer",
+      ],
     }),
   ],
 

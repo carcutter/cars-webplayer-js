@@ -1,11 +1,14 @@
-export { default as WebPlayer } from "./src/WebPlayer.vue";
+export {
+  default as WebPlayer,
+  type WebPlayerProps,
+  type WebPlayerEvents,
+} from "./src/WebPlayer.vue";
 
 // Expose parent package
 export {
   // - Components
   WEB_PLAYER_WC_TAG,
   WEB_PLAYER_ICON_WC_TAG,
-  type WebPlayerProps,
   // - Events
   DEFAULT_EVENT_PREFIX,
   EVENT_COMPOSITION_LOADING,
