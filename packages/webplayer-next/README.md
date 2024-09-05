@@ -1,5 +1,7 @@
 # Next WebPlayer
 
+Use CarCutter WebPlayer in your Next.js app
+
 ## Usage
 
 1. Install package: `npm install @car-cutter/next-webplayer`

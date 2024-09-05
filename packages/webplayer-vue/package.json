@@ -1,23 +1,28 @@
 {
   "name": "@car-cutter/vue-webplayer",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "license": "UNLICENSED",
   "type": "module",
   "main": "dist/index.umd.cjs",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
   "scripts": {
     "build": "vue-tsc -b && vite build",
     "lint": "eslint . --ext ts --max-warnings 0",
     "analyze": "vite-bundle-visualizer"
   },
-  "dependencies": {
-    "@car-cutter/wc-webplayer": "0.3.0"
-  },
   "peerDependencies": {
     "vue": ">=3"
   },
   "devDependencies": {
+    "@car-cutter/eslint-config": "*",
+    "@car-cutter/typescript-config": "*",
+    "@car-cutter/wc-webplayer": "0.3.1",
     "@vitejs/plugin-vue": "^5.1.2",
     "eslint": "^8.57.0",
     "typescript": "^5.5.3",

@@ -1,5 +1,7 @@
 # Vue WebPlayer
 
+Use CarCutter WebPlayer in your Vue.js app
+
 ## Usage
 
 1. Install package: `npm install @car-cutter/vue-webplayer`

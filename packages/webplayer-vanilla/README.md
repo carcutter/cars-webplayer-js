@@ -1,5 +1,7 @@
 # Vanilla WebPlayer
 
+Use CarCutter WebPlayer with Vanilla JS/TS
+
 ## Usage
 
 1. Install package: `npm install @car-cutter/vanilla-webplayer`

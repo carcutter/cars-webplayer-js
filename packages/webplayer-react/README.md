@@ -1,5 +1,7 @@
 # React WebPlayer
 
+Use CarCutter WebPlayer in your React app
+
 ## Usage
 
 1. Install package: `npm install @car-cutter/react-webplayer`

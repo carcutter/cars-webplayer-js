@@ -1,15 +1,17 @@
-# React WebPlayer
+# WebPlayer WebComponent
+
+Use CarCutter WebPlayer as a WebComponent
 
 ## Usage
 
 1. Install package: `npm install @car-cutter/wc-webplayer`
 2. Define custom elements:
 
-   ```
-   import { defineCustomElements } from "@car-cutter/wc-webplayer";
+```js
+import { defineCustomElements } from "@car-cutter/wc-webplayer";
 
-   defineCustomElements();
-   ```
+defineCustomElements();
+```
 
 3. Use: `<cc-webplayer composition-url="..." />`
 
