@@ -137,9 +137,9 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
       // Main Overlay (apply backdrop + close button)
       ref={overlayRef}
       className={cn(
-        !extendMode
-          ? "relative"
-          : "flex size-full items-center justify-center bg-foreground/75",
+        "relative",
+        extendMode &&
+          "flex size-full items-center justify-center bg-foreground/75",
         fakeFullScreen && "fixed inset-0 z-overlay"
       )}
     >
