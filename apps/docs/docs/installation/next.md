@@ -20,8 +20,9 @@ npm install @car-cutter/next-webplayer
 
 ### Next.js implementation example
 
-```tsx title="/app/page.tsx"
+```jsx title="/app/page.tsx"
 "use client"; // Mandatory only if we use events handlers
+
 // highlight-next-line
 import { WebPlayer } from "@car-cutter/next-webplayer";
 
@@ -29,7 +30,7 @@ export default function Home() {
   return (
     <main>
       <h1>Next App</h1>
-      <div style={{ maxWidth: "1200px"; marginInline: "auto" }}>
+      <div style={{ maxWidth: "800px", marginInline: "auto" }}>
         // highlight-start
         <WebPlayer
           compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"

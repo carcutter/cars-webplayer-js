@@ -22,8 +22,8 @@ npm install @car-cutter/vue-webplayer
 
 ```html title="/src/App.vue"
 <script setup lang="ts">
-// highlight-next-line
-import { WebPlayer } from "@car-cutter/vue-webplayer";
+  // highlight-next-line
+  import { WebPlayer } from "@car-cutter/vue-webplayer";
 </script>
 
 <template>
@@ -38,14 +38,14 @@ import { WebPlayer } from "@car-cutter/vue-webplayer";
       />
       // highlight-end
     </div>
-  </div>
+  </main>
 </template>
 
 <style scoped>
-.webplayer-wrapper {
-  max-width: 800px;
-  margin-inline: auto;
-}
+  .webplayer-wrapper {
+    max-width: 800px;
+    margin-inline: auto;
+  }
 </style>
 ```
 

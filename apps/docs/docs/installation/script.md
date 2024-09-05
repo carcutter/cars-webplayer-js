@@ -36,7 +36,7 @@ description: "Use the WebPlayer without any package manager"
 
   <body>
     <main>
-      <div style="max-width: 1200px; marginInline: auto">
+      <div style="max-width: 800px; marginInline: auto">
         // highlight-start
         <cc-webplayer
           composition-url="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"

@@ -28,7 +28,7 @@ const App = () => {
   return (
     <main>
       <h1>React App</h1>
-      <div style={{ maxWidth: "1200px"; marginInline: "auto" }}>
+      <div style={{ maxWidth: "800px", marginInline: "auto" }}>
         // highlight-start
         <WebPlayer
           compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
@@ -39,7 +39,7 @@ const App = () => {
       </div>
     </main>
   );
-}
+};
 
 export default App;
 ```
