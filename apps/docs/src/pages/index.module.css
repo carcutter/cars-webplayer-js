@@ -1,5 +1,5 @@
 .header {
-  padding: 2rem;
+  padding: 1rem 2rem;
   text-align: center;
 }
 
@@ -18,17 +18,36 @@
   gap: 1rem;
 }
 
-.webplayerWrapper {
+.container {
   max-width: 600px;
   margin-inline: auto;
 
   width: 100%;
-  aspect-ratio: 4 / 3;
 }
 
 .spinnerWrapper {
+  width: 100%;
+  aspect-ratio: 1;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+}
+
+.playerWrapper {
+  margin-bottom: 0.5rem;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.input {
+  width: 100%;
+  max-width: 448px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
 }

@@ -10,6 +10,9 @@ import Spinner from "../components/ui/Spinner";
 
 import styles from "./index.module.css";
 
+const DEFAULT_COMPOSITION_URL =
+  "https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json";
+
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
@@ -40,28 +43,70 @@ export default function Home(): JSX.Element {
           </Link>
         </div>
 
-        <div className={styles.webplayerWrapper}>
-          <BrowserOnly
-            fallback={
-              <div className={styles.spinnerWrapper}>
-                <Spinner color="primary" size="lg" />
-              </div>
-            }
-          >
-            {() => {
-              const WebPlayer =
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                require("@car-cutter/react-webplayer").WebPlayer;
+        <BrowserOnly
+          fallback={
+            <div className={`${styles.container} ${styles.spinnerWrapper}`}>
+              <Spinner color="primary" size="lg" />
+            </div>
+          }
+        >
+          {() => {
+            /* eslint-disable @typescript-eslint/no-var-requires */
+            const WebPlayer = require("@car-cutter/react-webplayer").WebPlayer;
+            const useState = require("react").useState;
+            /* eslint-enable @typescript-eslint/no-var-requires */
 
-              return (
-                <WebPlayer compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json" />
-              );
-            }}
-          </BrowserOnly>
-        </div>
-        <CodeBlock className="container" language="tsx">
-          {`<WebPlayer compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json" />`}
-        </CodeBlock>
+            const [compositionUrl, setCompositionUrl] = useState(
+              DEFAULT_COMPOSITION_URL
+            );
+            const [inputValue, setInputValue] = useState(compositionUrl);
+
+            const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+              e.preventDefault();
+              setCompositionUrl(inputValue);
+            };
+
+            const handleReset = () => {
+              setInputValue(DEFAULT_COMPOSITION_URL);
+              setCompositionUrl(DEFAULT_COMPOSITION_URL);
+            };
+
+            return (
+              <div>
+                <div className={`${styles.container} ${styles.playerWrapper}`}>
+                  <WebPlayer compositionUrl={compositionUrl} />
+                </div>
+                <CodeBlock className="container" language="tsx">
+                  {`<WebPlayer compositionUrl="${compositionUrl}" />`}
+                </CodeBlock>
+                <form className={styles.form} onSubmit={handleSubmit}>
+                  <input
+                    className={styles.input}
+                    type="text"
+                    value={inputValue}
+                    onChange={e => setInputValue(e.target.value)}
+                  />
+                  <div className={styles.ctas}>
+                    <button
+                      className="button button--primary"
+                      type="submit"
+                      disabled={inputValue === compositionUrl}
+                    >
+                      Use my composition
+                    </button>
+                    <button
+                      className="button button--secondary"
+                      type="button"
+                      onClick={handleReset}
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </form>
+              </div>
+            );
+          }}
+        </BrowserOnly>
       </main>
     </Layout>
   );
