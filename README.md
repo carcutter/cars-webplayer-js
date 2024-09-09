@@ -8,7 +8,7 @@ This monorepo hosts the WebPlayer project, which includes multiple demo applicat
 
 The structure of this monorepo is organized as follows:
 
-```
+```bash
 CARS-WEBPLAYER/
 ├── apps/                    # Demo applications for different frameworks
 │   ├── demo-next/           # Demo app using Next.js
@@ -39,44 +39,35 @@ CARS-WEBPLAYER/
 2. Install Yarn v1 : `brew install yarn`.
 3. Install the node modules with the command `yarn`.
 
-### Developing the React WebPlayer
+### Developing the WebPlayer Core
 
 Simply run `yarn dev` from the workspace root to start the app in development mode.
 
 #### Using Local Composition
 
-Vite serves all assets in the `/public` directory at the root path `/` during development. For instance, `/public/composition_mock.json` can be accessed at `/composition_mock.json`. Use that URL as the `compositionURL`.
+Vite serves all assets in the `/public` directory at the root path `/` during development. For instance, `/public/composition_mock.json` can be accessed at `/composition_mock.json`. Use that URL as the `compositionUrl`.
 
-#### Analyze Bundle Size
+### Developing the Documentation
 
-Run `yarn analyze` to analyze the bundle.
-
-NOTE : the sourcemap seems to interfere with size calculation [GitHub issue](https://github.com/KusStar/vite-bundle-visualizer/issues/8). More info [here](https://www.npmjs.com/package/vite-bundle-visualizer).
+Simply run `yarn dev:docs` from the workspace root to start the documentation in development mode.
 
 ### Building
 
 Run `yarn build` to build all packages
 
-### Run demos
+#### Analyze Bundle Size
 
-1. Go on any demo's directory : `cd apps/demo-XX`
-2. Run `yarn dev` to start the app
+Go in any package and run `yarn analyze` to analyze the bundle.
+
+NOTE : the sourcemap seems to interfere with size calculation [GitHub issue](https://github.com/KusStar/vite-bundle-visualizer/issues/8). More info [here](https://www.npmjs.com/package/vite-bundle-visualizer).
 
 ### Linting
 
 Run `yarn lint`
 
-### Useful scripts
+### Run demos
 
-Scripts are available in the `scripts` directory
-
-#### Generate JSON schema
-
-Use the command `yarn migrate_composition <COMPOSITION_V1_PATH>`. It will create a new file with the new type
-
-#### Convert composition from V2 to V3
-
-Use the command `yarn generate_json_schema`. It will create a file within the _schemas_ folder
+Run `yarn demo:XX` to start any demo app
 
 ## Publication
 
@@ -84,13 +75,13 @@ This repository uses the Changesets CLI to handle versioning and publication to 
 
 ### 1. Create a Changeset
 
-To propose a new version for one or more packages, you need to create a changeset. Run the command `yarn commit-packages` and follow the prompts.
+To propose a new version for one or more packages, you need to create a changeset. Run the command `yarn version:commit` and follow the prompts.
 
 You will be prompted to select the packages that should be affected and to specify the type of change (patch, minor, or major). This will create a changeset file that describes the changes.
 
 ### 2. Version Packages
 
-Once changesets have been added and merged into your base branch (e.g., `main`), you can version the packages. This step updates the version numbers in your `package.json` files and generates changelogs based on your changesets: `yarn version-packages`
+Once changesets have been added and merged into your base branch (e.g., `main`), you can version the packages. This step updates the version numbers in your `package.json` files and generates changelogs based on your changesets: `yarn version:apply`
 
 This command will:
 
@@ -98,13 +89,21 @@ This command will:
 - Generate or update changelog files.
 - Prepare the packages for publishing.
 
-### 3. Publish to npm
+### 3. Ensure every thing is working as expected
 
-After versioning the packages, you can publish them to npm. This command will publish all packages that have changed since the last release:
+Run `yarn ci` to run both `build` and `lint` commands. It will also run `yarn` to be sure dependencies are correct.
 
-`yarn publish-packages`
+_NOTE: at this point, if you see a change in the yarn.lock file, it is certainly because all version have not been properly updated._
+
+### 4. Publish to npm
+
+After versioning the packages, you can publish them to npm. This command will publish all packages that have changed since the last release: `yarn publish:packages`
 
 Make sure you are logged in to npm with the correct credentials before running this command. The packages will be published according to the access level specified in your `changesets` configuration (`config.json`).
+
+### 5. Publish documentation
+
+Run `yarn publish:docs`
 
 ## Use the WebPlayer on your App
 
@@ -147,3 +146,15 @@ You can customise the WebPlayer CSS with CSS Variables
 ### More customisation
 
 For more customisation, take a look at the **[Online Documentation](https://carcutter.github.io/cars-webplayer-js/)**
+
+## Useful scripts
+
+Scripts are available in the `scripts` directory
+
+### Generate JSON schema
+
+Use the command `yarn migrate_composition <COMPOSITION_V1_PATH>`. It will create a new file with the new type
+
+### Convert composition from V2 to V3
+
+Use the command `yarn generate_json_schema`. It will create a file within the _schemas_ folder
