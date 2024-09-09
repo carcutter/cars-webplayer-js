@@ -33,16 +33,28 @@ const GalleryElement: React.FC<GalleryElementProps> = ({ item }) => {
 
   let imgNode: React.ReactNode;
 
-  if (type === "360" || type === "image") {
-    const imgSrc = type === "360" ? item.images[0].src : item.src;
+  if (type !== "omni_directional") {
+    let imgSrc: string;
+
+    switch (type) {
+      case "360":
+        imgSrc = item.images[0].src;
+        break;
+      case "image":
+        imgSrc = item.src;
+        break;
+      case "video":
+        imgSrc = item.poster;
+        break;
+    }
 
     imgNode = (
       <CdnImage className="size-full object-cover" src={imgSrc} onlyThumbnail />
     );
   } else {
-    const imgSrc = type === "video" ? item.poster : item.src;
+    // FUTURE : Add srcSet for omni_directional
+    const imgSrc = item.src;
 
-    // FUTURE : Add srcSet for video and omni_directional
     imgNode = <img className="size-full object-cover" src={imgSrc} />;
   }
 
@@ -67,7 +79,7 @@ const GalleryElement: React.FC<GalleryElementProps> = ({ item }) => {
 
   return (
     <div
-      className="relative overflow-hidden rounded-gallery bg-foreground/50"
+      className="relative overflow-hidden rounded-gallery bg-foreground/30"
       style={aspectRatioStyle}
     >
       {imgNode}
