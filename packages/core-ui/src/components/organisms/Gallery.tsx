@@ -26,7 +26,8 @@ const Gallery: React.FC<Props> = ({
   className = "",
   containerClassName = "",
 }) => {
-  const { flatten, isFullScreen, permanentGallery } = useGlobalContext();
+  const { flatten, infiniteCarrousel, permanentGallery, isFullScreen } =
+    useGlobalContext();
 
   const { categories, items, aspectRatioStyle } = useCompositionContext();
 
@@ -35,7 +36,9 @@ const Gallery: React.FC<Props> = ({
     extendTransition,
 
     masterItemIndex,
-    setItemIndexCommand,
+    prevItem,
+    nextItem,
+    scrollToItemIndex,
 
     resetView,
   } = useControlsContext();
@@ -207,13 +210,29 @@ const Gallery: React.FC<Props> = ({
     extendTransition,
   ]);
 
-  const onItemClicked = (_item: Item, index: number) => {
+  const onItemClicked = (_item: Item, targetIndex: number) => {
     // User is dragging the slider, ignore the click
     if (isDragging) {
       return;
     }
 
-    setItemIndexCommand(index);
+    // Handle infinite carrousel
+    if (
+      infiniteCarrousel &&
+      targetIndex === items.length - 1 &&
+      masterItemIndex === 0
+    ) {
+      prevItem();
+    } else if (
+      infiniteCarrousel &&
+      targetIndex === 0 &&
+      masterItemIndex === items.length - 1
+    ) {
+      nextItem();
+    } else {
+      scrollToItemIndex(targetIndex);
+    }
+
     resetView();
   };
 

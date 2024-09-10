@@ -20,14 +20,20 @@ const WebPlayerElement: React.FC<Props> = ({ index, item, isShown, lazy }) => {
     // NOTE: Currently giving "index" to children in order to share their state. If it becomes a problem, we can handle it from here.
     switch (type) {
       case "image":
-        Comp = <ImageElement onlyPreload={!isShown} {...item} />;
+        Comp = (
+          <ImageElement itemIndex={index} onlyPreload={!isShown} {...item} />
+        );
         break;
       case "video":
-        Comp = <VideoElement index={index} {...item} />;
+        Comp = <VideoElement itemIndex={index} {...item} />;
         break;
       case "360":
         Comp = (
-          <ThreeSixtyElement index={index} onlyPreload={!isShown} {...item} />
+          <ThreeSixtyElement
+            itemIndex={index}
+            onlyPreload={!isShown}
+            {...item}
+          />
         );
         break;
     }

@@ -15,7 +15,7 @@ import Spinner from "../../ui/Spinner";
 const HIDE_CONTROLS_DELAY = 3000;
 
 type Props = Extract<Item, { type: "video" }> & {
-  index: number;
+  itemIndex: number;
 };
 
 /**
@@ -23,10 +23,8 @@ type Props = Extract<Item, { type: "video" }> & {
  *
  * @prop `index`: The index of the item in the carrousel. Used to share state.
  */
-const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
+const VideoElement: React.FC<Props> = ({ src, poster, itemIndex }) => {
   const { carrouselItemIndex, setItemInteraction } = useControlsContext();
-
-  const isActiveIndex = carrouselItemIndex === index;
 
   // - Ref
   const containerRef = useRef<HTMLDivElement>(null);
@@ -38,6 +36,13 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
     return videoRef.current;
   }, []);
 
+  useEffect(() => {
+    // FUTURE: We can do better than that (e.g. preload the video to know if it's ready)
+    setItemInteraction(itemIndex, "ready");
+  }, [itemIndex, setItemInteraction]);
+
+  // -- Play/Pause/Loading
+
   const play = useCallback(() => {
     getVideoElmtOrThrow().play();
   }, [getVideoElmtOrThrow]);
@@ -47,25 +52,25 @@ const VideoElement: React.FC<Props> = ({ src, poster, index }) => {
 
   // Pause the video when the video is not the carrousel active index
   useEffect(() => {
+    const isActiveIndex = carrouselItemIndex === itemIndex;
+
     if (!isActiveIndex) {
       pause();
     }
-  }, [pause, isActiveIndex]);
-
-  // -- Play/Pause/Loading Events
+  }, [carrouselItemIndex, itemIndex, pause]);
 
   const [isRunning, setIsRunning] = useState(false); // Video is playing or loading
   const [isLoading, setIsLoading] = useState(true);
 
   const handleOnPlay = () => {
     setIsRunning(true);
-    setItemInteraction(index, "running");
+    setItemInteraction(itemIndex, "running");
   };
 
   // Either the video ended or the user stopped it
   const handleOnStop = () => {
     setIsRunning(false);
-    setItemInteraction(index, null);
+    setItemInteraction(itemIndex, "ready");
   };
 
   // Video is ready to play (enough data has been loaded)

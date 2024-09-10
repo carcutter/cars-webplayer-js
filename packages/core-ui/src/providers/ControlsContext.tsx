@@ -23,9 +23,9 @@ import { clamp } from "../utils/math";
 import { useCompositionContext } from "./CompositionContext";
 import { useGlobalContext } from "./GlobalContext";
 
-type ItemInteraction = null | "running";
+type ItemInteraction = null | "ready" | "running";
 
-type CycleDirection = "first_to_last" | "last_to_first";
+type SpecialCommand = "instant" | "first_to_last" | "last_to_first";
 
 type Details = { src: string; title?: string; text?: string };
 
@@ -38,11 +38,12 @@ type ContextType = {
   itemIndexCommand: number | null;
   setItemIndexCommand: (index: number | null) => void;
   masterItemIndex: number;
-  cycling: CycleDirection | null;
-  isCycling: boolean;
-  finishCycling: () => void;
-  prevImage: () => void;
-  nextImage: () => void;
+  specialCommand: SpecialCommand | null;
+  isRunningSpecialCommand: boolean;
+  finishSpecialCommand: () => void;
+  prevItem: () => void;
+  nextItem: () => void;
+  scrollToItemIndex: (index: number) => void;
 
   displayedCategoryId: string;
   changeCategory: (categoryId: string) => void;
@@ -98,21 +99,19 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const {
+    infiniteCarrousel,
+    preventFullScreen,
+
     emitEvent,
     isFullScreen,
-    preventFullScreen,
     requestFullscreen,
     exitFullscreen,
   } = useGlobalContext();
   const { categories, items } = useCompositionContext();
 
-  const initItemInteractionList = useCallback(() => {
-    return items.map(() => null);
-  }, [items]);
-
   const [itemInteractionList, setItemInteractionList] = useState<
     ItemInteraction[]
-  >(initItemInteractionList);
+  >(items.map(() => null));
 
   const setItemInteraction = useCallback(
     (index: number, value: ItemInteraction) => {
@@ -129,40 +128,75 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const currentItem = items[masterItemIndex];
   const currentItemInteraction = itemInteractionList[masterItemIndex];
 
-  const [cycling, setCycling] = useState<CycleDirection | null>(null);
-  const finishCycling = useCallback(() => setCycling(null), []);
+  const [specialCommand, setSpecialCommand] = useState<SpecialCommand | null>(
+    null
+  );
+  const isRunningSpecialCommand = !!specialCommand;
+  const finishSpecialCommand = useCallback(() => setSpecialCommand(null), []);
 
-  const prevImage = useCallback(() => {
+  const prevItem = useCallback(() => {
     // Command still running
-    if (cycling || itemIndexCommand !== null) {
+    if (isRunningSpecialCommand || itemIndexCommand !== null) {
       return;
     }
 
     const target = carrouselItemIndex - 1;
-    // Check if we need to cycle
-    if (target < 0) {
-      setCycling("first_to_last");
-      setItemIndexCommand(items.length - 1);
-    } else {
+    // Check if we not need to cycle
+    if (target >= 0) {
       setItemIndexCommand(target);
+    } else if (infiniteCarrousel) {
+      setSpecialCommand("first_to_last");
+      setItemIndexCommand(items.length - 1);
     }
-  }, [carrouselItemIndex, items.length, cycling, itemIndexCommand]);
+  }, [
+    isRunningSpecialCommand,
+    itemIndexCommand,
+    carrouselItemIndex,
+    infiniteCarrousel,
+    items.length,
+  ]);
 
-  const nextImage = useCallback(() => {
+  const nextItem = useCallback(() => {
     // Command still running
-    if (cycling || itemIndexCommand !== null) {
+    if (isRunningSpecialCommand || itemIndexCommand !== null) {
       return;
     }
 
     const target = carrouselItemIndex + 1;
-    // Check if we need to cycle
-    if (target > items.length - 1) {
-      setCycling("last_to_first");
-      setItemIndexCommand(0);
-    } else {
+    // Check if we not need to cycle
+    if (target < items.length) {
       setItemIndexCommand(target);
+    } else if (infiniteCarrousel) {
+      setSpecialCommand("last_to_first");
+      setItemIndexCommand(0);
     }
-  }, [carrouselItemIndex, items.length, cycling, itemIndexCommand]);
+  }, [
+    isRunningSpecialCommand,
+    itemIndexCommand,
+    carrouselItemIndex,
+    items.length,
+    infiniteCarrousel,
+  ]);
+
+  const scrollToItemIndex = useCallback(
+    (index: number) => {
+      // Check if everything is ready between carrousel and command
+      const min = Math.min(carrouselItemIndex, index);
+      const max = Math.max(carrouselItemIndex, index);
+
+      // We allow 2 not ready items
+      const shouldBeInstant =
+        itemInteractionList.slice(min, max + 1).filter(value => value === null)
+          .length > 2;
+
+      if (shouldBeInstant) {
+        setSpecialCommand("instant");
+      }
+
+      setItemIndexCommand(index);
+    },
+    [carrouselItemIndex, itemInteractionList]
+  );
 
   // -- Categories
   const displayedCategoryId = useMemo(() => {
@@ -185,9 +219,9 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
       const targetIndex = items.findIndex(item => item === target);
 
-      setItemIndexCommand(targetIndex);
+      scrollToItemIndex(targetIndex);
     },
-    [categories, items]
+    [categories, items, scrollToItemIndex]
   );
 
   // -- Hotspots
@@ -196,7 +230,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       case "image":
         return !!currentItem.hotspots?.length;
       case "360":
-        return currentItemInteraction !== null;
+        return currentItemInteraction === "running";
       case "video":
         return false;
     }
@@ -237,7 +271,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       case "image":
         return true;
       case "360":
-        return currentItemInteraction !== null;
+        return currentItemInteraction === "running";
       case "video":
         return false;
     }
@@ -382,11 +416,12 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         itemIndexCommand,
         setItemIndexCommand,
         masterItemIndex,
-        cycling,
-        isCycling: !!cycling,
-        finishCycling,
-        prevImage,
-        nextImage,
+        specialCommand,
+        isRunningSpecialCommand,
+        finishSpecialCommand,
+        prevItem,
+        nextItem,
+        scrollToItemIndex,
 
         displayedCategoryId,
         changeCategory,

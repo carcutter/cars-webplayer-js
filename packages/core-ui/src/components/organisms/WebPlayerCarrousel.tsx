@@ -29,9 +29,9 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     setCarrouselItemIndex,
     itemIndexCommand,
     setItemIndexCommand,
-    cycling,
-    isCycling,
-    finishCycling,
+    specialCommand,
+    isRunningSpecialCommand,
+    finishSpecialCommand,
 
     extendMode,
     extendTransition,
@@ -86,16 +86,16 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       0
     );
 
-    if (cycling === "first_to_last") {
+    if (specialCommand === "first_to_last") {
       // The very last item is the first one (as we moved it to the end)
       return modulo(closestIndex, items.length);
-    } else if (cycling === "last_to_first") {
+    } else if (specialCommand === "last_to_first") {
       // The very first item is the last one (as we moved it to the start). It shifts the index by 1
       return modulo(closestIndex - 1, items.length);
     } else {
       return closestIndex;
     }
-  }, [cycling, getSliderOrThrow, items.length]);
+  }, [specialCommand, getSliderOrThrow, items.length]);
 
   const setStyleCursor = useCallback(
     (cursor: "auto" | "grab" | "grabbing") => {
@@ -246,7 +246,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   // -- Event listeners to handle the slider dragging -- //
   useEffect(() => {
     // Sliding is disabled
-    if (!slidable || isCycling) {
+    if (!slidable || isRunningSpecialCommand) {
       setStyleCursor("auto");
       return;
     }
@@ -340,7 +340,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   }, [
     cancelScrollAnimation,
     computeClosestIndex,
-    isCycling,
+    isRunningSpecialCommand,
     scrollToIndex,
     setStyleCursor,
     setStyleSnapState,
@@ -387,7 +387,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   }, [
     computeClosestIndex,
     extendTransition,
-    isCycling,
+    isRunningSpecialCommand,
     isResizing,
     itemIndexCommand,
     items.length,
@@ -401,22 +401,37 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       return;
     }
 
-    if (cycling === "first_to_last") {
-      // Go to the "moved" first item instantly
-      scrollToIndex(items.length, "instant");
+    const cb = () => finishSpecialCommand();
 
-      // Move to the last item
-      scrollToIndex(items.length - 1, "smooth", () => finishCycling());
-    } else if (cycling === "last_to_first") {
-      // Go to the "moved" last item instantly
-      scrollToIndex(0, "instant");
+    switch (specialCommand) {
+      case "first_to_last":
+        // Go to the "moved" first item instantly
+        scrollToIndex(items.length, "instant");
+        // Move to the last item
+        scrollToIndex(items.length - 1, "smooth", cb);
+        break;
 
-      // Move to the first item (it shifted by 1 due to the "moved" last item)
-      scrollToIndex(1, "smooth", () => finishCycling());
-    } else {
-      scrollToIndex(itemIndexCommand, "smooth");
+      case "last_to_first":
+        // Go to the "moved" last item instantly
+        scrollToIndex(0, "instant");
+
+        // Move to the first item (it shifted by 1 due to the "moved" last item)
+        scrollToIndex(1, "smooth", cb);
+        break;
+      case "instant":
+        scrollToIndex(itemIndexCommand, "instant", cb);
+        break;
+      default:
+        scrollToIndex(itemIndexCommand, "smooth");
+        break;
     }
-  }, [cycling, finishCycling, itemIndexCommand, items.length, scrollToIndex]);
+  }, [
+    specialCommand,
+    finishSpecialCommand,
+    itemIndexCommand,
+    items.length,
+    scrollToIndex,
+  ]);
 
   const CyclePlaceholder = () => (
     <div className="h-full" style={aspectRatioStyle} />
@@ -432,7 +447,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
         className={`flex size-full ${slidable ? "overflow-x-auto no-scrollbar *:snap-start *:snap-always" : "justify-center"}`}
       >
         {/* Empty element to allow cycling */}
-        {cycling === "last_to_first" && <CyclePlaceholder />}
+        {specialCommand === "last_to_first" && <CyclePlaceholder />}
 
         {items.map((item, index) => {
           const imgSrc = item.type === "360" ? item.images[0] : item.src;
@@ -450,11 +465,11 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
             !(infiniteCarrousel && isLast && firstIsShown); // Not the first one when the last one is shown (only for infinite carrousel)
 
           const transformStyle = (() => {
-            if (cycling === "first_to_last" && isFirst) {
+            if (specialCommand === "first_to_last" && isFirst) {
               return {
                 transform: `translateX(${100 * items.length}%)`,
               };
-            } else if (cycling === "last_to_first" && isLast) {
+            } else if (specialCommand === "last_to_first" && isLast) {
               return {
                 transform: `translateX(-${100 * items.length}%)`,
               };
@@ -478,7 +493,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
         })}
 
         {/*Empty element to allow cycling */}
-        {cycling === "first_to_last" && <CyclePlaceholder />}
+        {specialCommand === "first_to_last" && <CyclePlaceholder />}
       </div>
 
       {slidable && !isZooming && (

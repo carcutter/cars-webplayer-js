@@ -17,7 +17,7 @@ const DRAG_STEP_PX = 10;
 const SCROLL_STEP_PX = 15;
 
 type ThreeSixtyElementProps = Extract<Item, { type: "360" }> & {
-  index: number;
+  itemIndex: number;
   onlyPreload: boolean;
 };
 
@@ -399,13 +399,14 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
 type ThreeSixtyElementPlaceholderProps = {
   images: ImageWithHotspots[];
-  onReady: () => void;
-  onError?: () => void;
+  onPlaceholderImageLoaded: () => void;
+  onSpinImagesLoaded: () => void;
+  onError: () => void;
 };
 
 const ThreeSixtyElementPlaceholder: React.FC<
   ThreeSixtyElementPlaceholderProps
-> = ({ images, onReady, onError }) => {
+> = ({ images, onPlaceholderImageLoaded, onSpinImagesLoaded, onError }) => {
   const imagesSrc = useMemo(() => images.map(({ src }) => src), [images]);
 
   const [loadingStatusMap, setLoadingStatusMap] = useState<Map<
@@ -419,7 +420,7 @@ const ThreeSixtyElementPlaceholder: React.FC<
       100
     : null;
 
-  const fetchImages = useCallback(() => {
+  const fetchSpinImages = useCallback(() => {
     if (loadingProgress !== null) {
       return;
     }
@@ -437,9 +438,9 @@ const ThreeSixtyElementPlaceholder: React.FC<
 
   useEffect(() => {
     if (loadingProgress === 100) {
-      onReady();
+      onSpinImagesLoaded();
     }
-  }, [loadingProgress, onReady]);
+  }, [loadingProgress, onSpinImagesLoaded]);
 
   return (
     <div className="relative size-full">
@@ -457,11 +458,15 @@ const ThreeSixtyElementPlaceholder: React.FC<
         </div>
       )}
 
-      <CdnImage className="size-full" src={imagesSrc[0]} />
+      <CdnImage
+        className="size-full"
+        src={imagesSrc[0]}
+        onLoad={onPlaceholderImageLoaded}
+      />
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
         <ThreeSixtyIcon className="size-20 text-primary" />
 
-        <Button color="neutral" shape="icon" onClick={fetchImages}>
+        <Button color="neutral" shape="icon" onClick={fetchSpinImages}>
           <PlayIcon className="size-full" />
         </Button>
 
@@ -489,34 +494,32 @@ const ThreeSixtyElementPlaceholder: React.FC<
  * @prop `index`: The index of the item in the carrousel. Used to share state.
  */
 const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = props => {
-  const { index } = props;
+  const { itemIndex } = props;
 
   const { setItemInteraction } = useControlsContext();
 
-  const [status, setStatus] = useState<"placeholder" | "ready" | "error">(
-    "placeholder"
-  );
+  const [status, setStatus] = useState<
+    null | "placeholder" | "spin" | "error"
+  >();
 
   // Update the item interaction state according to the readiness of the 360
   useEffect(() => {
-    setItemInteraction(index, status === "ready" ? "running" : null);
-  }, [index, setItemInteraction, status]);
+    if (status === null || status === "error") {
+      return;
+    }
 
-  // Clean up the item interaction state when the component is unmounted
-  useEffect(() => {
-    return () => {
-      setItemInteraction(index, null);
-    };
-  }, [index, setItemInteraction]);
+    setItemInteraction(itemIndex, status === "spin" ? "running" : "ready");
+  }, [itemIndex, setItemInteraction, status]);
 
   // TODO: Implement error state
   if (status === "error") {
     return <ErrorTemplate title="Failed to fetch 360" />;
-  } else if (status === "placeholder") {
+  } else if (status !== "spin") {
     return (
       <ThreeSixtyElementPlaceholder
         {...props}
-        onReady={() => setStatus("ready")}
+        onPlaceholderImageLoaded={() => setStatus("placeholder")}
+        onSpinImagesLoaded={() => setStatus("spin")}
         onError={() => setStatus("error")}
       />
     );

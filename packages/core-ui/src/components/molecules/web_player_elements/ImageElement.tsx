@@ -7,21 +7,46 @@ import ZoomableCdnImage, {
 } from "../../atoms/ZoomableCdnImage";
 import Hotspot from "../Hotspot";
 
-type Props = ZoomableCdnImageProps & ImageWithHotspots;
+type Props = ZoomableCdnImageProps &
+  ImageWithHotspots & {
+    itemIndex?: number;
+  };
 
 /**
  * ImageElement component renders a carrousel's image with hotspots
  */
-const ImageElement: React.FC<Props> = ({ className, hotspots, ...props }) => {
-  const { isShowingDetails, showHotspots } = useControlsContext();
+const ImageElement: React.FC<Props> = ({
+  hotspots,
+
+  itemIndex,
+
+  className,
+  onLoad,
+  ...props
+}) => {
+  const { isShowingDetails, showHotspots, setItemInteraction } =
+    useControlsContext();
 
   return (
     <div className={cn("relative size-full overflow-hidden", className)}>
       <div
         // Scale effect on show details
-        className={`size-full duration-details ${isShowingDetails ? "scale-105" : "scale-100"}`}
+        className={cn(
+          "size-full duration-details",
+          isShowingDetails ? "scale-105" : "scale-100"
+        )}
       >
-        <ZoomableCdnImage className="size-full" {...props} />
+        <ZoomableCdnImage
+          className="size-full"
+          onLoad={e => {
+            if (itemIndex !== undefined) {
+              setItemInteraction(itemIndex, "ready");
+            }
+
+            onLoad?.(e);
+          }}
+          {...props}
+        />
         {showHotspots &&
           hotspots?.map((hotspot, index) => (
             <Hotspot key={index} hotspot={hotspot} />
