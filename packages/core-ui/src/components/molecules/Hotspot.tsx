@@ -16,10 +16,11 @@ const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
   const { getIconConfig } = useCustomizationContext();
   const hotspotConfig = icon ? getIconConfig(icon) : undefined;
 
-  const { setShownDetails } = useControlsContext();
+  const { extendMode, setShownDetails } = useControlsContext();
 
   const clickable = !!detail;
   const withImage = detail?.type === "image";
+  const withText = !!title || !!description;
 
   const DefaultIcon = withImage ? (
     <ImageIcon className="size-4" />
@@ -42,7 +43,10 @@ const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
 
   return (
     <div
-      className={`group absolute z-hotspot -translate-x-1/2 -translate-y-1/2 ${clickable ? "cursor-pointer" : "cursor-help"} hover:z-hotspot-hover`}
+      className={cn(
+        "group absolute z-hotspot -translate-x-1/2 -translate-y-1/2 hover:z-hotspot-hover",
+        clickable ? "cursor-pointer" : "cursor-help"
+      )}
       style={{
         top: `${100 * hotspot.position.y}%`,
         left: `${100 * hotspot.position.x}%`,
@@ -67,17 +71,20 @@ const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
           <div className="p-1">{DefaultIcon}</div>
         )}
       </div>
-      {!withImage && description && (
+      {!withImage && withText && (
         <div
           className={cn(
-            "absolute -z-10 w-max max-w-40 rounded-ui-lg bg-background p-2 pl-6 small:max-w-48 small:pl-8",
-            position.y < 0.55 ? "-top-0.5" : "-bottom-0.5",
-            position.x < 0.55 ? "-left-0.5" : "-right-0.5",
+            "absolute -z-10 w-max max-w-40 text-pretty rounded-ui bg-background p-2 small:max-w-48",
+            extendMode && "large:max-w-56",
+            position.y < 0.55 ? "-top-1" : "-bottom-1",
+            position.x < 0.55
+              ? "-left-1 pl-6 small:pl-8"
+              : "-right-1 pr-4 small:pr-6",
             "pointer-events-none opacity-0 transition-opacity duration-300 group-hover:pointer-events-auto group-hover:opacity-100"
           )}
         >
           <div className="space-y-1">
-            <div className="text-sm">{title}</div>
+            {title && <div className="text-sm">{title}</div>}
             {description && <div className="text-xs">{description}</div>}
           </div>
         </div>
