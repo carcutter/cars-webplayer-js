@@ -30,6 +30,7 @@ export default defineConfig({
       external: [
         "@car-cutter/core",
         "@car-cutter/core-ui",
+        "@car-cutter/core-ui/dist/style.css?inline",
         "react",
         "react-dom",
       ],
@@ -37,6 +38,7 @@ export default defineConfig({
         globals: {
           "@car-cutter/core": "CarCutterCore",
           "@car-cutter/core-ui": "CarCutterCoreUI",
+          "@car-cutter/core-ui/dist/style.css?inline": "CarCutterCoreUIStyle",
           react: "React",
           "react-dom": "ReactDOM",
         },
