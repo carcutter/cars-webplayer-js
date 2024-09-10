@@ -2,6 +2,7 @@ import type { Item } from "@car-cutter/core";
 
 import { useCompositionContext } from "../../providers/CompositionContext";
 import { useControlsContext } from "../../providers/ControlsContext";
+import { useGlobalContext } from "../../providers/GlobalContext";
 import { cn } from "../../utils/style";
 import CdnImage from "../atoms/CdnImage";
 import PlayIcon from "../icons/PlayIcon";
@@ -27,6 +28,8 @@ const GalleryIconWrapper: React.FC<React.PropsWithChildren> = ({
 type GalleryElementProps = { item: Item };
 
 const GalleryElement: React.FC<GalleryElementProps> = ({ item }) => {
+  const { permanentGallery } = useGlobalContext();
+
   const { aspectRatioStyle } = useCompositionContext();
 
   const { type } = item;
@@ -46,7 +49,12 @@ const GalleryElement: React.FC<GalleryElementProps> = ({ item }) => {
   }
 
   const imgNode = (
-    <CdnImage className="size-full object-cover" src={imgSrc} onlyThumbnail />
+    <CdnImage
+      className="size-full object-cover"
+      src={imgSrc}
+      onlyThumbnail
+      fadeIn={!permanentGallery}
+    />
   );
 
   let overlayIcon: React.ReactNode;

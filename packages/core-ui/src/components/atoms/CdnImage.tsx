@@ -1,9 +1,10 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { cdnImgSrcWithWidth } from "@car-cutter/core";
 
 import { useCompositionContext } from "../../providers/CompositionContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
+import { cn } from "../../utils/style";
 
 export type CdnImageProps = Omit<
   React.ComponentPropsWithoutRef<"img">,
@@ -13,7 +14,9 @@ export type CdnImageProps = Omit<
 } & (
     | { onlyThumbnail?: false; imgInPlayerWidthRatio?: number }
     | { onlyThumbnail: true; imgInPlayerWidthRatio?: never }
-  );
+  ) & {
+    fadeIn?: boolean;
+  };
 
 /**
  * CdnImage component renders an image with optimized loading strategies.
@@ -27,8 +30,12 @@ export type CdnImageProps = Omit<
  */
 const CdnImage: React.FC<CdnImageProps> = ({
   src,
+  className,
+  onLoad,
+
   imgInPlayerWidthRatio = 1,
   onlyThumbnail,
+  fadeIn,
   ...props
 }) => {
   const {
@@ -114,7 +121,44 @@ const CdnImage: React.FC<CdnImageProps> = ({
     src,
   ]);
 
-  return <img src={src} srcSet={srcSet} sizes={sizes} {...props} />;
+  // - Fade-in effect
+
+  const [isLoaded, setIsLoaded] = useState<boolean>();
+
+  useEffect(() => {
+    if (isLoaded === true) {
+      return;
+    }
+
+    // Give a little time to retrieve the image from the cache before showing the fade-in effect
+    const timeout = setTimeout(() => {
+      setIsLoaded(false);
+    }, 30);
+
+    return () => clearTimeout(timeout);
+  }, [isLoaded]);
+
+  return (
+    <img
+      src={src}
+      srcSet={srcSet}
+      sizes={sizes}
+      className={cn(
+        className,
+        fadeIn &&
+          cn(
+            isLoaded !== undefined && "transition-opacity duration-200",
+            isLoaded === false && "opacity-0",
+            isLoaded === true && "opacity-100"
+          )
+      )}
+      onLoad={e => {
+        setIsLoaded(true);
+        onLoad?.(e);
+      }}
+      {...props}
+    />
+  );
 };
 
 export default CdnImage;
