@@ -62,7 +62,6 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       return;
     }
     cancelAnimationFrame(scrollAnimationFrame.current);
-    scrollAnimationFrame.current = null;
   }, []);
 
   const computeClosestIndex = useCallback(() => {
@@ -140,11 +139,18 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
         });
       };
 
+      const finishAnimation = () => {
+        setScrollInstant(targetScroll);
+        setStyleSnapState("mandatory");
+
+        callback?.();
+      };
+
       const distance = Math.abs(startScroll - targetScroll);
 
       if (distance < 1 || behavior === "instant") {
-        setScrollInstant(targetScroll);
-        callback?.();
+        finishAnimation();
+
         return;
       }
 
@@ -162,14 +168,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
           const timeElapsed = currentTime - startTime;
 
           if (timeElapsed >= animationDuration) {
-            setScrollInstant(targetScroll);
-
-            callback?.();
-
-            scrollAnimationFrame.current = requestAnimationFrame(() => {
-              setStyleSnapState("mandatory");
-              scrollAnimationFrame.current = null;
-            });
+            finishAnimation();
             return;
           }
 

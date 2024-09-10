@@ -95,7 +95,6 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       const isEscape = event.key === "Escape";
-      const canNavigate = !isZooming && !isShowingDetails;
 
       if (isEscape) {
         if (isZooming) {
@@ -105,16 +104,9 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
         } else {
           disableExtendMode();
         }
-      } else if (canNavigate) {
-        switch (event.key) {
-          case "ArrowLeft":
-            prevImage();
-            break;
-          case "ArrowRight":
-            nextImage();
-            break;
-        }
       }
+
+      // NOTE: we do not need to handle arrow keys because the scroll is natively taking care of it
     };
 
     addEventListener("keydown", handleKeyDown);
