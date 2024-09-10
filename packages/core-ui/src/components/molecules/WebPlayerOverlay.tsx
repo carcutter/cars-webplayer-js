@@ -231,9 +231,32 @@ const WebPlayerOverlay: React.FC = () => {
                 imgInPlayerWidthRatio={0.6}
               />
 
-              <div className="space-y-1 p-3">
-                <span>{shownDetails.title}</span>
-                <p>{shownDetails.text}</p>
+              <div
+                className={cn(
+                  "space-y-1 p-1.5 small:p-2",
+                  extendMode && "large:p-3"
+                )}
+              >
+                {shownDetails.title && (
+                  <span
+                    className={cn(
+                      "text-sm small:text-base",
+                      extendMode && "large:text-lg"
+                    )}
+                  >
+                    {shownDetails.title}
+                  </span>
+                )}
+                {shownDetails.text && (
+                  <p
+                    className={cn(
+                      "text-xs small:text-sm",
+                      extendMode && "large:text-base"
+                    )}
+                  >
+                    {shownDetails.text}
+                  </p>
+                )}
               </div>
             </>
           )}
