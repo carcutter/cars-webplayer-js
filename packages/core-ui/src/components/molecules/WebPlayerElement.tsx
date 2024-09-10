@@ -1,7 +1,6 @@
 import type { Item } from "@car-cutter/core";
 
 import ImageElement from "./web_player_elements/ImageElement";
-import OmniDirectionElement from "./web_player_elements/OmniDirectionElement";
 import ThreeSixtyElement from "./web_player_elements/ThreeSixtyElement";
 import VideoElement from "./web_player_elements/VideoElement";
 
@@ -31,11 +30,6 @@ const WebPlayerElement: React.FC<Props> = ({ index, item, isShown, lazy }) => {
           <ThreeSixtyElement index={index} onlyPreload={!isShown} {...item} />
         );
         break;
-      case "omni_directional":
-        Comp = <OmniDirectionElement item={item} />;
-        break;
-      default:
-        throw new Error(`Unsupported item type: ${type}`);
     }
   } else {
     Comp = null;

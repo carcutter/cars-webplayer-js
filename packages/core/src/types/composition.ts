@@ -32,12 +32,7 @@ type ThreeSixtyItem = {
   images: ImageWithHotspots[];
 };
 
-type OmniDirectionalItem = {
-  type: "omni_directional";
-  src: string;
-};
-
-export type Item = ImageItem | VideoItem | ThreeSixtyItem | OmniDirectionalItem;
+export type Item = ImageItem | VideoItem | ThreeSixtyItem;
 
 export type Category = {
   id: string;

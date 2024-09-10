@@ -31,32 +31,23 @@ const GalleryElement: React.FC<GalleryElementProps> = ({ item }) => {
 
   const { type } = item;
 
-  let imgNode: React.ReactNode;
+  let imgSrc: string;
 
-  if (type !== "omni_directional") {
-    let imgSrc: string;
-
-    switch (type) {
-      case "360":
-        imgSrc = item.images[0].src;
-        break;
-      case "image":
-        imgSrc = item.src;
-        break;
-      case "video":
-        imgSrc = item.poster;
-        break;
-    }
-
-    imgNode = (
-      <CdnImage className="size-full object-cover" src={imgSrc} onlyThumbnail />
-    );
-  } else {
-    // FUTURE : Add srcSet for omni_directional
-    const imgSrc = item.src;
-
-    imgNode = <img className="size-full object-cover" src={imgSrc} />;
+  switch (type) {
+    case "360":
+      imgSrc = item.images[0].src;
+      break;
+    case "image":
+      imgSrc = item.src;
+      break;
+    case "video":
+      imgSrc = item.poster;
+      break;
   }
+
+  const imgNode = (
+    <CdnImage className="size-full object-cover" src={imgSrc} onlyThumbnail />
+  );
 
   let overlayIcon: React.ReactNode;
 

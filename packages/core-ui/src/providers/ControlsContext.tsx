@@ -198,7 +198,6 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       case "360":
         return currentItemInteraction !== null;
       case "video":
-      case "omni_directional":
         return false;
     }
   }, [currentItem, currentItemInteraction]);
@@ -215,7 +214,6 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     switch (currentItem.type) {
       case "image":
       case "360":
-      case "omni_directional":
         return true;
       case "video":
         return currentItemInteraction !== "running";
@@ -241,7 +239,6 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       case "360":
         return currentItemInteraction !== null;
       case "video":
-      case "omni_directional":
         return false;
     }
   }, [currentItem.type, currentItemInteraction]);
