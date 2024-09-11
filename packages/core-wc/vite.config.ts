@@ -32,7 +32,7 @@ export default defineConfig({
         "@car-cutter/core-ui",
         "@car-cutter/core-ui/dist/style.css?inline",
         "react",
-        "react-dom",
+        "react-dom/client",
       ],
       output: {
         globals: {
@@ -40,7 +40,7 @@ export default defineConfig({
           "@car-cutter/core-ui": "CarCutterCoreUI",
           "@car-cutter/core-ui/dist/style.css?inline": "CarCutterCoreUIStyle",
           react: "React",
-          "react-dom": "ReactDOM",
+          "react-dom/client": "ReactDOMClient",
         },
       },
     },

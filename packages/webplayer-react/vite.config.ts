@@ -34,11 +34,11 @@ export default defineConfig({
     chunkSizeWarningLimit: 125,
 
     rollupOptions: {
-      external: ["react", "react-dom"],
+      external: ["react", "react-dom/client"],
       output: {
         globals: {
           react: "React",
-          "react-dom": "ReactDOM",
+          "react-dom/client": "ReactDOMClient",
         },
       },
     },
