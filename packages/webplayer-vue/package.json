@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/vue-webplayer",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "license": "UNLICENSED",
   "type": "module",
   "main": "dist/index.umd.cjs",
@@ -22,7 +22,7 @@
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
-    "@car-cutter/wc-webplayer": "0.4.0",
+    "@car-cutter/wc-webplayer": "0.4.1",
     "@vitejs/plugin-vue": "^5.1.2",
     "eslint": "^8.57.0",
     "typescript": "^5.5.3",
