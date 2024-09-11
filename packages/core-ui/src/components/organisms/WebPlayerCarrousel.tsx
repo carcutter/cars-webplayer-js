@@ -50,7 +50,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     return sliderRef.current;
   }, []);
 
-  // - value refs
+  // - value refs (NOTE: could be directly within the useEffect)
   const mouseIsDown = useRef(false);
   const startX = useRef<number | null>(null);
   const startScrollLeft = useRef<number | null>(null);
@@ -271,17 +271,16 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       e.preventDefault(); // Prevents native image dragging
       e.stopPropagation(); // Prevents overlay click when ending drag outside the carrousel
 
+      // Cancel any ongoing scroll animation
+      cancelScrollAnimation();
+
       // Take snapshot of the current state
-      // NOTE: Since we are using scroll-smooth, the scrollLeft may not be correct as the animation is still running
-      //       It's the reason why it can feel buggy when the user spams the click
       mouseIsDown.current = true;
       startX.current = e.pageX - slider.offsetLeft;
       startScrollLeft.current = slider.scrollLeft;
 
-      // - Apply animation settings
-      cancelScrollAnimation();
+      // Change cursor
       setStyleCursor("grabbing");
-      setStyleSnapState("none");
     };
 
     // Scroll according the user's dragging movement
@@ -294,6 +293,9 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       if (startX.current === null) {
         throw new Error("[onMouseMove] startX is null");
       }
+
+      // Disable snap scrolling to allow free dragging
+      setStyleSnapState("none");
 
       const x = e.pageX - slider.offsetLeft;
       const walk = x - startX.current;
@@ -319,7 +321,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       // Reset cursor
       setStyleCursor("grab");
 
-      // Snap scrolling (it will reset the snap behavior to mandatory)
+      // Snap scrolling (NOTE: it will reset the snap behavior to mandatory once the animation is done)
       const closestSnapIndex = computeClosestIndex();
       scrollToIndex(closestSnapIndex, "smooth");
     };
