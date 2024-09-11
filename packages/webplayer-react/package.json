@@ -2,6 +2,16 @@
   "name": "@car-cutter/react-webplayer",
   "version": "0.4.1",
   "license": "UNLICENSED",
+  "author": {
+    "name": "CarCutter",
+    "url": "https://www.car-cutter.com/"
+  },
+  "description": "Use CarCutter WebPlayer in your React app",
+  "keywords": [
+    "car-cutter",
+    "webplayer",
+    "react"
+  ],
   "type": "module",
   "main": "dist/index.umd.cjs",
   "module": "dist/index.js",

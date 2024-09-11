@@ -2,6 +2,18 @@
   "name": "@car-cutter/vanilla-webplayer",
   "version": "0.4.1",
   "license": "UNLICENSED",
+  "author": {
+    "name": "CarCutter",
+    "url": "https://www.car-cutter.com/"
+  },
+  "description": "Use CarCutter WebPlayer with Vanilla JS/TS",
+  "keywords": [
+    "car-cutter",
+    "webplayer",
+    "vanilla",
+    "javascript",
+    "typescript"
+  ],
   "type": "module",
   "main": "dist/index.umd.cjs",
   "module": "dist/index.js",
