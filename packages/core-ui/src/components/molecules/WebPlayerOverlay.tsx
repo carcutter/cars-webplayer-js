@@ -233,14 +233,14 @@ const WebPlayerOverlay: React.FC = () => {
 
               <div
                 className={cn(
-                  "space-y-1 p-1.5 small:p-2",
-                  extendMode && "large:p-3"
+                  "space-y-1 px-2 py-1 small:p-3",
+                  extendMode && "large:p-4"
                 )}
               >
                 {shownDetails.title && (
                   <span
                     className={cn(
-                      "text-sm small:text-base",
+                      "text-sm font-semibold small:text-base small:font-bold",
                       extendMode && "large:text-lg"
                     )}
                   >
@@ -250,7 +250,7 @@ const WebPlayerOverlay: React.FC = () => {
                 {shownDetails.text && (
                   <p
                     className={cn(
-                      "text-xs small:text-sm",
+                      "text-xs text-foreground/65 small:text-sm",
                       extendMode && "large:text-base"
                     )}
                   >
