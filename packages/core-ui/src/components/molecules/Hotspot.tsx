@@ -80,12 +80,20 @@ const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
             position.x < 0.55
               ? "-left-1 pl-6 small:pl-8"
               : "-right-1 pr-4 small:pr-6",
-            "pointer-events-none opacity-0 transition-opacity duration-300 group-hover:pointer-events-auto group-hover:opacity-100"
+            "pointer-events-none opacity-0 transition-opacity duration-200 group-hover:pointer-events-auto group-hover:opacity-100"
           )}
         >
-          <div className="space-y-1">
-            {title && <div className="text-sm">{title}</div>}
-            {description && <div className="text-xs">{description}</div>}
+          <div className="space-y-1 text-pretty">
+            {title && (
+              <div className="text-sm font-semibold small:text-base small:font-bold">
+                {title}
+              </div>
+            )}
+            {description && (
+              <div className="text-xs text-foreground/65 small:text-sm">
+                {description}
+              </div>
+            )}
           </div>
         </div>
       )}
