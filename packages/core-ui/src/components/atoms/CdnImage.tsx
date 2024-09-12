@@ -132,7 +132,8 @@ const CdnImage: React.FC<CdnImageProps> = ({
 
     // Give a little time to retrieve the image from the cache before showing the fade-in effect
     const timeout = setTimeout(() => {
-      setIsLoaded(false);
+      // NOTE: "??" to avoid race condition with the onLoad event
+      setIsLoaded(v => v ?? false);
     }, 30);
 
     return () => clearTimeout(timeout);
