@@ -28,7 +28,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   const { reverse360 } = useGlobalContext();
   const { isShowingDetails, isZooming } = useControlsContext();
 
-  const disabled = isZooming || isShowingDetails; // We do not want to do anything while zooming or showing a detail image
+  const disableSpin = isZooming || isShowingDetails; // We do not want to do anything while zooming or showing a detail image
 
   // - element refs
   const containerRef = useRef<HTMLDivElement>(null);
@@ -48,7 +48,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
   // - Event listeners to handle spinning
   useEffect(() => {
-    if (disabled) {
+    if (disableSpin) {
       return;
     }
 
@@ -367,7 +367,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       scroller.removeEventListener("touchend", onTouchEnd);
       scroller.removeEventListener("touchcancel", onTouchEnd);
     };
-  }, [displayNextImage, displayPreviousImage, disabled, reverse360]);
+  }, [displayNextImage, displayPreviousImage, disableSpin, reverse360]);
 
   return (
     <div ref={containerRef} className="cursor-ew-resize">
@@ -375,18 +375,15 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       {/* NOTE: ImageElement is within so that it can capture events first */}
       <div ref={scrollerRef} className="overflow-x-scroll no-scrollbar">
         <div className="sticky left-0 top-0">
-          {/* Flip book */}
-          {images.map((image, index) => (
-            <ImageElement
+          {/* Flip book (Ensures image are already in the DOM) */}
+          {images.map(image => (
+            <CdnImage
               key={image.src}
-              {...image}
-              className={cn(
-                index !== imageIndex &&
-                  "pointer-events-none !absolute left-0 top-0 -z-10"
-              )}
-              onlyPreload={index !== imageIndex || onlyPreload}
+              src={image.src}
+              className="pointer-events-none !absolute left-0 top-0 -z-10"
             />
           ))}
+          <ImageElement {...images[imageIndex]} onlyPreload={onlyPreload} />
         </div>
         {/* Add space on both sides to allow scrolling */}
         {/* NOTE: We need the element to have an height, otherwise, Safari will ignore it */}

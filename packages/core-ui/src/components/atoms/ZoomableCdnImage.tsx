@@ -116,7 +116,7 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
 
       const setTargetState = () => {
         setTransformStyle({ x: targetX, y: targetY, scale: targetScale });
-        // Update zoom value on ControlsContext
+        // Update zoom value on ControlsContext (we do not update at each step to avoid multiple re-renders)
         setZoom(targetScale);
       };
 
@@ -156,6 +156,7 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
 
           setTransformStyle({ x: currentX, y: currentY, scale: currentScale });
 
+          // Next animation step
           animate();
         };
 
@@ -264,21 +265,42 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
     [getTransformElementOrThrow, setTransformZoom]
   );
 
+  const offsetTransformZoom = useCallback(
+    (
+      offset: number,
+      targetContainerPos: { x: number; y: number },
+      animationDuration?: number
+    ) => {
+      const { scale: currentScale } = transformStyleRef.current;
+
+      setTransformZoom(
+        currentScale + offset,
+        targetContainerPos,
+        animationDuration
+      );
+    },
+    [setTransformZoom]
+  );
+
   // -- Listeners -- //
 
   // - Update zoom when the ControlsContext's value changes (zoom buttons, reset with Escape, ...)
   useEffect(() => {
+    if (onlyPreload) {
+      return;
+    }
+
     // DOM not ready yet
     if (!transformElementRef.current) {
       return;
     }
 
     setZoomFromCenter(zoom);
-  }, [setZoomFromCenter, zoom]);
+  }, [onlyPreload, setZoomFromCenter, zoom]);
 
   // -  Handle mouse dragging within zoomed image
   useEffect(() => {
-    if (!isZooming) {
+    if (onlyPreload || !isZooming) {
       return;
     }
 
@@ -344,10 +366,14 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
       document.removeEventListener("mouseup", onStopDragging);
       document.removeEventListener("contextmenu", onStopDragging);
     };
-  }, [isZooming, offsetTransformXYStyle]);
+  }, [isZooming, offsetTransformXYStyle, onlyPreload]);
 
   // - Listen to trackpad & wheel from zooming/scrolling
   useEffect(() => {
+    if (onlyPreload) {
+      return;
+    }
+
     const container = containerRef.current;
 
     // DOM not ready yet
@@ -371,7 +397,7 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
         const x = clientX - parentOffsetX;
         const y = clientY - parentOffsetY;
 
-        setTransformZoom(zoom - 0.01 * deltaY, {
+        offsetTransformZoom(-0.01 * deltaY, {
           x,
           y,
         });
@@ -397,7 +423,7 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
     return () => {
       container.removeEventListener("wheel", onWheel);
     };
-  }, [isZooming, offsetTransformXYStyle, setTransformZoom, zoom]);
+  }, [isZooming, offsetTransformXYStyle, offsetTransformZoom, onlyPreload]);
 
   // - Listen to touch for zoom (pinch with 2 finger) & pan (1 finger)
   useEffect(() => {
@@ -476,7 +502,7 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
         const { left: parentOffsetX, top: parentOffsetY } =
           container.getBoundingClientRect();
 
-        setTransformZoom(distanceFactor * zoom, {
+        offsetTransformZoom(distanceFactor - 1, {
           x: (touch1.clientX + touch2.clientX) / 2 - parentOffsetX,
           y: (touch1.clientY + touch2.clientY) / 2 - parentOffsetY,
         });
@@ -497,7 +523,7 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
       transformElement.removeEventListener("touchend", onTouchEnd);
       transformElement.removeEventListener("touchcancel", onTouchEnd);
     };
-  }, [isZooming, offsetTransformXYStyle, setTransformZoom, zoom]);
+  }, [isZooming, offsetTransformXYStyle, offsetTransformZoom]);
 
   return (
     <div
