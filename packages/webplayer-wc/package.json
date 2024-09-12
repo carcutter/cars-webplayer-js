@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/wc-webplayer",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "license": "UNLICENSED",
   "author": {
     "name": "CarCutter",
@@ -28,9 +28,9 @@
     "analyze": "vite-bundle-visualizer"
   },
   "devDependencies": {
-    "@car-cutter/core": "0.4.2",
-    "@car-cutter/core-ui": "0.4.2",
-    "@car-cutter/core-wc": "0.4.2",
+    "@car-cutter/core": "0.5.0",
+    "@car-cutter/core-ui": "0.5.0",
+    "@car-cutter/core-wc": "0.5.0",
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
     "eslint": "^8.57.0",

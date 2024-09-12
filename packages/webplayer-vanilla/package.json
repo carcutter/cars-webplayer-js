@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/vanilla-webplayer",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "license": "UNLICENSED",
   "author": {
     "name": "CarCutter",
@@ -31,7 +31,7 @@
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
-    "@car-cutter/wc-webplayer": "0.4.2",
+    "@car-cutter/wc-webplayer": "0.5.0",
     "eslint": "^8.57.0",
     "typescript": "^5.5.4",
     "vite": "^5.4.1",
