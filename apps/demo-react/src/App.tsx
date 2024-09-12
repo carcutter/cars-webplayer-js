@@ -26,8 +26,10 @@ const App = () => {
           <WebPlayer
             compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
             infiniteCarrousel
-            // eslint-disable-next-line no-console
-            onCompositionLoaded={() => console.log("Composition loaded")}
+            onCompositionLoaded={composition =>
+              // eslint-disable-next-line no-console
+              console.log("Composition loaded !", composition)
+            }
           />
         </div>
 

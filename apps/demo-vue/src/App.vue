@@ -9,8 +9,9 @@ import { WebPlayer } from "@car-cutter/vue-webplayer";
       <WebPlayer
         compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
         :flatten="true"
-        @compositionLoaded="() => console.log('Composition loaded')"
-        @extendModeOn="() => console.log('Extend mode on')"
+        @compositionLoaded="
+          composition => console.log('Composition loaded', composition)
+        "
       />
     </div>
   </div>

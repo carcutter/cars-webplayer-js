@@ -10,15 +10,15 @@ The `WebPlayer` component provides several callback functions that can be used t
 
 ### Available Callbacks
 
-- `onCompositionLoading?: () => void;`
+- `onCompositionLoading?: (url: string) => void;`
 
   - Triggered when the composition is loading.
 
-- `onCompositionLoaded?: () => void;`
+- `onCompositionLoaded?: (composition: Composition) => void;`
 
   - Triggered when the composition has successfully loaded.
 
-- `onCompositionLoadError?: () => void;`
+- `onCompositionLoadError?: (error: unknown) => void;`
 
   - Triggered when there is an error loading the composition.
 

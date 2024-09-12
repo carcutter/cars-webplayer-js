@@ -20,4 +20,6 @@ export {
   EVENT_HOTSPOTS_OFF,
   EVENT_GALLERY_OPEN,
   EVENT_GALLERY_CLOSE,
+  // - Types
+  type Composition,
 } from "@car-cutter/wc-webplayer";

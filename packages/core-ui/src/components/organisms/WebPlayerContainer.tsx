@@ -189,12 +189,12 @@ const WebPlayerContainer: React.FC<WebPlayerContainerProps> = ({
   useEffect(() => {
     if (error) {
       emitEvent(EVENT_COMPOSITION_LOAD_ERROR, error);
-    } else if (isSuccess) {
-      emitEvent(EVENT_COMPOSITION_LOADED);
     } else if (status === "fetching") {
-      emitEvent(EVENT_COMPOSITION_LOADING);
+      emitEvent(EVENT_COMPOSITION_LOADING, compositionUrl);
+    } else if (isSuccess) {
+      emitEvent(EVENT_COMPOSITION_LOADED, composition);
     }
-  }, [emitEvent, error, isSuccess, status]);
+  }, [composition, compositionUrl, emitEvent, error, isSuccess, status]);
 
   if (error) {
     // TODO: Implement error state

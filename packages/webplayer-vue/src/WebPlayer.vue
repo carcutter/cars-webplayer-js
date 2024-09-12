@@ -12,15 +12,16 @@ import {
   EVENT_HOTSPOTS_OFF,
   EVENT_GALLERY_OPEN,
   EVENT_GALLERY_CLOSE,
+  type Composition,
 } from "@car-cutter/core";
 import { type WebPlayerProps } from "@car-cutter/core-ui";
 import { ensureCustomElementsDefinition } from "@car-cutter/wc-webplayer";
 
 export type { WebPlayerProps };
 export type WebPlayerEvents = {
-  compositionLoading: [];
-  compositionLoaded: [];
-  compositionLoadError: [];
+  compositionLoading: [url: string];
+  compositionLoaded: [composition: Composition];
+  compositionLoadError: [error: unknown];
   extendModeOn: [];
   extendModeOff: [];
   hotspotsOn: [];
@@ -39,29 +40,43 @@ const eventPrefix = props.eventPrefix ?? DEFAULT_EVENT_PREFIX;
 
 const generateEventName = (event: string) => `${eventPrefix}${event}`;
 
-const eventListenerMap = new Map([
-  [EVENT_COMPOSITION_LOADING, () => emit("compositionLoading")],
-  [EVENT_COMPOSITION_LOADED, () => emit("compositionLoaded")],
-  [EVENT_COMPOSITION_LOAD_ERROR, () => emit("compositionLoadError")],
-  [EVENT_EXTEND_MODE_ON, () => emit("extendModeOn")],
-  [EVENT_EXTEND_MODE_OFF, () => emit("extendModeOff")],
-  [EVENT_HOTSPOTS_ON, () => emit("hotspotsOn")],
-  [EVENT_HOTSPOTS_OFF, () => emit("hotspotsOff")],
-  [EVENT_GALLERY_OPEN, () => emit("galleryOpen")],
-  [EVENT_GALLERY_CLOSE, () => emit("galleryClose")],
-]);
+const eventListenerMap = {
+  [EVENT_COMPOSITION_LOADING]: (url: string) => emit("compositionLoading", url),
+  [EVENT_COMPOSITION_LOADED]: (composition: Composition) =>
+    emit("compositionLoaded", composition),
+  [EVENT_COMPOSITION_LOAD_ERROR]: (error: unknown) =>
+    emit("compositionLoadError", error),
+  [EVENT_EXTEND_MODE_ON]: () => emit("extendModeOn"),
+  [EVENT_EXTEND_MODE_OFF]: () => emit("extendModeOff"),
+  [EVENT_HOTSPOTS_ON]: () => emit("hotspotsOn"),
+  [EVENT_HOTSPOTS_OFF]: () => emit("hotspotsOff"),
+  [EVENT_GALLERY_OPEN]: () => emit("galleryOpen"),
+  [EVENT_GALLERY_CLOSE]: () => emit("galleryClose"),
+};
+
+const eventCbMap = new Map<string, EventListener>();
+
+Object.entries(eventListenerMap).forEach(([event, listener]) => {
+  if (!listener) {
+    return;
+  }
+
+  const eventName = generateEventName(event);
+  const eventListener = (event: Event) =>
+    listener((event as CustomEvent).detail);
+
+  eventCbMap.set(eventName, eventListener);
+});
 
 onMounted(() => {
-  eventListenerMap.forEach((emiter, event) => {
-    const eventName = generateEventName(event);
-    document.addEventListener(eventName, emiter);
+  eventCbMap.forEach((eventListener, eventName) => {
+    document.addEventListener(eventName, eventListener);
   });
 });
 
 onUnmounted(() => {
-  eventListenerMap.forEach((emiter, event) => {
-    const eventName = generateEventName(event);
-    document.removeEventListener(eventName, emiter);
+  eventCbMap.forEach((eventListener, eventName) => {
+    document.removeEventListener(eventName, eventListener);
   });
 });
 </script>
@@ -76,7 +91,7 @@ onUnmounted(() => {
     :max-image-width="maxImageWidth"
     :flatten="flatten"
     :prevent-full-screen="preventFullScreen"
-    :eventPrefix="eventPrefix"
+    :event-prefix="eventPrefix"
     :reverse360="reverse360"
   >
   </cc-webplayer>

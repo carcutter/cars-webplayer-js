@@ -11,6 +11,7 @@ import {
   EVENT_HOTSPOTS_OFF,
   EVENT_GALLERY_OPEN,
   EVENT_GALLERY_CLOSE,
+  type Composition,
 } from "@car-cutter/core";
 import { type WebPlayerProps as WebPlayerPropsWC } from "@car-cutter/core-ui";
 import {
@@ -21,9 +22,9 @@ import {
 ensureCustomElementsDefinition();
 
 export type WebPlayerProps = WebPlayerPropsWC & {
-  onCompositionLoading?: () => void;
-  onCompositionLoaded?: () => void;
-  onCompositionLoadError?: () => void;
+  onCompositionLoading?: (url: string) => void;
+  onCompositionLoaded?: (composition: Composition) => void;
+  onCompositionLoadError?: (error: unknown) => void;
   onExtendModeOn?: () => void;
   onExtendModeOff?: () => void;
   onHotspotsOn?: () => void;
@@ -51,31 +52,37 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
 
     const generateEventName = (event: string) => `${eventPrefix}${event}`;
 
-    const eventListenerMap = new Map([
-      [EVENT_COMPOSITION_LOADING, onCompositionLoading],
-      [EVENT_COMPOSITION_LOADED, onCompositionLoaded],
-      [EVENT_COMPOSITION_LOAD_ERROR, onCompositionLoadError],
-      [EVENT_EXTEND_MODE_ON, onExtendModeOn],
-      [EVENT_EXTEND_MODE_OFF, onExtendModeOff],
-      [EVENT_HOTSPOTS_ON, onHotspotsOn],
-      [EVENT_HOTSPOTS_OFF, onHotspotsOff],
-      [EVENT_GALLERY_OPEN, onGalleryOpen],
-      [EVENT_GALLERY_CLOSE, onGalleryClose],
-    ]);
+    const eventListenerMap = {
+      [EVENT_COMPOSITION_LOADING]: onCompositionLoading,
+      [EVENT_COMPOSITION_LOADED]: onCompositionLoaded,
+      [EVENT_COMPOSITION_LOAD_ERROR]: onCompositionLoadError,
+      [EVENT_EXTEND_MODE_ON]: onExtendModeOn,
+      [EVENT_EXTEND_MODE_OFF]: onExtendModeOff,
+      [EVENT_HOTSPOTS_ON]: onHotspotsOn,
+      [EVENT_HOTSPOTS_OFF]: onHotspotsOff,
+      [EVENT_GALLERY_OPEN]: onGalleryOpen,
+      [EVENT_GALLERY_CLOSE]: onGalleryClose,
+    };
 
-    eventListenerMap.forEach((listener, event) => {
-      if (listener) {
-        const eventName = generateEventName(event);
-        document.addEventListener(eventName, listener);
+    const eventCbMap = new Map<string, EventListener>();
+
+    Object.entries(eventListenerMap).forEach(([event, listener]) => {
+      if (!listener) {
+        return;
       }
+
+      const eventName = generateEventName(event);
+      const eventListener = (event: Event) =>
+        listener((event as CustomEvent).detail);
+
+      eventCbMap.set(eventName, eventListener);
+
+      document.addEventListener(eventName, eventListener);
     });
 
     return () => {
-      eventListenerMap.forEach((listener, event) => {
-        if (listener) {
-          const eventName = generateEventName(event);
-          document.removeEventListener(eventName, listener);
-        }
+      eventCbMap.forEach((eventListener, eventName) => {
+        document.removeEventListener(eventName, eventListener);
       });
     };
   }, [
