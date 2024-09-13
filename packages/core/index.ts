@@ -23,6 +23,9 @@ export {
   DEFAULT_REVERSE_360,
 } from "./src/const/default_props";
 
+// - Utils
+export { generateCompositionUrl, cdnImgSrcWithWidth } from "./src/utils";
+
 // - Types
 export type {
   Hotspot,
@@ -37,6 +40,3 @@ export type {
   ImageWidth,
   ImageLoadStrategy,
 } from "./src/types/misc";
-
-// - Utils
-export { cdnImgSrcWithWidth } from "./src/utils";

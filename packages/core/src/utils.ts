@@ -1,6 +1,20 @@
 import type { ImageWidth } from "./types/misc";
 
 /**
+ * Generates a URL for fetching the composition JSON for a given customer and vehicle.
+ *
+ * @param {string} customerId - The ID of the customer.
+ * @param {string} vin - The Vehicle Identification Number.
+ * @returns {string} The URL to fetch the composition JSON.
+ */
+export function generateCompositionUrl(
+  customerId: string,
+  vin: string
+): string {
+  return `https://cdn.car-cutter.com/gallery/${customerId}/${vin}/composition_v3.json`;
+}
+
+/**
  * Adds a specified width to a CDN Image source.
  *
  * @param {string} src - The source URL of the image.
