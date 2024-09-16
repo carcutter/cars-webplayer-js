@@ -6,18 +6,18 @@ sidebar_position: 2
 
 ## Props
 
-| Prop                | Type                     | Required | Default           | Description                                               |
-| ------------------- | ------------------------ | -------- | ----------------- | --------------------------------------------------------- |
-| `compositionUrl`    | `string`                 | ✅       | -                 | URL to the composition data                               |
-| `flatten`           | `boolean`                |          | `false`           | Flatten the hierarchy of elements (no categories)         |
-| `infiniteCarrousel` | `boolean`                |          | `false`           | Allow to navigate from 1st to last image (and vice versa) |
-| `permanentGallery`  | `boolean`                |          | `false`           | Display gallery under the carrousel                       |
-| `imageLoadStrategy` | `"quality"` or `"speed"` |          | `"quality"`       | Strategy for loading images.                              |
-| `minImageWidth`     | `number`                 |          | `0`               | Force minimum image width (in pixels)                     |
-| `maxImageWidth`     | `number`                 |          | `Infinity`        | Force maximum image width (in pixels)                     |
-| `preventFullScreen` | `boolean`                |          | `false`           | Whether to prevent full screen mode                       |
-| `eventPrefix`       | `string`                 |          | `"cc-webplayer:"` | Prefix of cc-player events                                |
-| `reverse360`        | `boolean`                |          | `false`           | Reverse the 360-degree rotation                           |
+| Prop                | Type                     | Default           | Description                                               |
+| ------------------- | ------------------------ | ----------------- | --------------------------------------------------------- |
+| `compositionUrl`    | `string`                 | ❌ Required       | URL to the composition data                               |
+| `flatten`           | `boolean`                | `false`           | Flatten the hierarchy of elements (no categories)         |
+| `infiniteCarrousel` | `boolean`                | `false`           | Allow to navigate from 1st to last image (and vice versa) |
+| `permanentGallery`  | `boolean`                | `false`           | Display gallery under the carrousel                       |
+| `imageLoadStrategy` | `"quality"` or `"speed"` | `"quality"`       | Strategy for loading images.                              |
+| `minImageWidth`     | `number`                 | `0`               | Force minimum image width (in pixels)                     |
+| `maxImageWidth`     | `number`                 | `Infinity`        | Force maximum image width (in pixels)                     |
+| `preventFullScreen` | `boolean`                | `false`           | Whether to prevent full screen mode                       |
+| `eventPrefix`       | `string`                 | `"cc-webplayer:"` | Prefix of cc-player events                                |
+| `reverse360`        | `boolean`                | `false`           | Reverse the 360-degree rotation                           |
 
 :::info
 
@@ -52,7 +52,7 @@ You can customise the WebPlayer CSS with CSS Variables
 | `--cc-webplayer-primary-foreground` | Foreground color for primary items | `--cc-background` |
 | `--cc-webplayer-neutral`            | Neutral color                      | `0 0% 39%`        |
 | `--cc-webplayer-neutral-foreground` | Foreground color for neutral items | `--cc-foreground` |
-| `--cc-webplayer-radius-ui`          | UI element Border radius (buttons) | `9999px`          |
+| `--cc-webplayer-radius-ui`          | UI element Border radius (buttons) | `1rem`            |
 | `--cc-webplayer-radius-carrousel`   | Carrousel border radius            | `0`               |
 | `--cc-webplayer-radius-gallery`     | Gallery images border radius       | `0`               |
 
