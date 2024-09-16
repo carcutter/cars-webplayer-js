@@ -1,3 +1,5 @@
+import { Link2 } from "lucide-react";
+
 import { useAppContext } from "../../AppContext";
 import { COLOR_LIST, colorToClassName, colorToPretty } from "../../const/color";
 import { RADIUS_LIST } from "../../const/radius";
@@ -28,16 +30,26 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
     setRadius,
   } = useAppContext();
 
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
-      <PopoverContent className="w-80">
+      <PopoverContent
+        className="w-72 sm:w-80"
+        onOpenAutoFocus={e => e.preventDefault()}
+      >
         <div className="space-y-6">
-          <div className="space-y-4">
+          <div
+            // Showroom
+            className="space-y-4"
+          >
             <div className="space-y-0.5">
               <h4 className="font-medium">Showroom</h4>
               <p className="text-sm text-foreground/75">
-                Customise how the Showroom page looks.
+                Customise the Showroom page.
               </p>
             </div>
 
@@ -63,11 +75,14 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
             </div>
           </div>
 
-          <div className="space-y-4">
+          <div
+            // WebPlayer
+            className="space-y-4"
+          >
             <div className="space-y-0.5">
               <h4 className="font-medium">WebPlayer</h4>
               <p className="text-sm text-foreground/75">
-                Customise how the WebPlayer looks.
+                Customise the WebPlayer looks.
               </p>
             </div>
 
@@ -104,7 +119,6 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
                   <Button
                     key={btnColor}
                     className={cn(
-                      "gap-x-2",
                       "border-border",
                       btnColor === color &&
                         "border-foreground ring-1 ring-foreground"
@@ -147,6 +161,17 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
                 ))}
               </div>
             </div>
+          </div>
+
+          <div
+            // Misc
+            className="space-y-2"
+          >
+            <h4 className="font-medium">Share</h4>
+            <Button color="foreground" size="sm" onClick={handleCopyLink}>
+              <Link2 />
+              Copy Link
+            </Button>
           </div>
         </div>
       </PopoverContent>

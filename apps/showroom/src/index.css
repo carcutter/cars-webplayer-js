@@ -76,7 +76,7 @@
 
   cc-webplayer {
     --cc-webplayer-radius-ui: var(--ui-radius);
-    --cc-webplayer-radius-carrousel: calc(var(--ui-radius) + 4px);
+    --cc-webplayer-radius-carrousel: calc(var(--ui-radius) * 0.8);
     --cc-webplayer-radius-gallery: calc(var(--ui-radius) * 0.6);
   }
 }

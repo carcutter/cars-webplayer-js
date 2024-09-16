@@ -29,8 +29,8 @@ const coloredVariantClassNames: Record<Variant, Record<Color, string>> = {
 };
 
 const sizeClassNames: Record<Size, string> = {
-  sm: "h-8 px-2 text-sm rounded-ui",
-  md: "h-10 px-4 text-base rounded-ui-md",
+  sm: "h-7 px-1.5 text-xs sm:h-8 sm:px-2 sm:text-sm rounded-ui",
+  md: "h-8 px-2 text-sm sm:h-10 sm:px-4 sm:text-base rounded-ui-md",
 };
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -45,7 +45,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={cn(
-          "flex items-center justify-center transition disabled:opacity-60",
+          "flex items-center justify-center gap-x-1.5 transition disabled:opacity-60 sm:gap-x-2",
           coloredVariantClassName,
           sizeClassName,
           className
