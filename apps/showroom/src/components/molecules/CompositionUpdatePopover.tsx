@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { useAppContext } from "../../AppContext";
 import { Button } from "../ui/Button";
@@ -11,14 +11,22 @@ const CompositionUpdatePopover: React.FC<React.PropsWithChildren> = ({
 }) => {
   const { customer, setCustomer, id, setId } = useAppContext();
 
+  const initialStateRef = useRef({ customer, id });
+
   const [isOpen, setIsOpen] = useState(false);
 
   const [formCustomer, setFormCustomer] = useState(customer);
   const [formId, setFormId] = useState(id);
 
   const onReset = () => {
+    const { customer, id } = initialStateRef.current;
+
     setFormCustomer(customer);
     setFormId(id);
+
+    setCustomer(customer);
+    setId(id);
+    setIsOpen(false);
   };
 
   // FUTURE: make more robust by checking if form values are valid
