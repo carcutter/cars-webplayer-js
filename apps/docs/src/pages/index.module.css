@@ -37,17 +37,3 @@
 .playerWrapper {
   margin-bottom: 0.5rem;
 }
-
-.form {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem;
-}
-.input {
-  width: 100%;
-  max-width: 448px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}

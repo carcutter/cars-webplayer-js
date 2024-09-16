@@ -51,58 +51,17 @@ export default function Home(): JSX.Element {
           }
         >
           {() => {
-            /* eslint-disable @typescript-eslint/no-var-requires */
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
             const WebPlayer = require("@car-cutter/react-webplayer").WebPlayer;
-            const useState = require("react").useState;
-            /* eslint-enable @typescript-eslint/no-var-requires */
-
-            const [compositionUrl, setCompositionUrl] = useState(
-              DEFAULT_COMPOSITION_URL
-            );
-            const [inputValue, setInputValue] = useState(compositionUrl);
-
-            const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-              e.preventDefault();
-              setCompositionUrl(inputValue);
-            };
-
-            const handleReset = () => {
-              setInputValue(DEFAULT_COMPOSITION_URL);
-              setCompositionUrl(DEFAULT_COMPOSITION_URL);
-            };
 
             return (
               <div>
                 <div className={`${styles.container} ${styles.playerWrapper}`}>
-                  <WebPlayer compositionUrl={compositionUrl} />
+                  <WebPlayer compositionUrl={DEFAULT_COMPOSITION_URL} />
                 </div>
                 <CodeBlock className="container" language="tsx">
-                  {`<WebPlayer compositionUrl="${compositionUrl}" />`}
+                  {`<WebPlayer compositionUrl="${DEFAULT_COMPOSITION_URL}" />`}
                 </CodeBlock>
-                <form className={styles.form} onSubmit={handleSubmit}>
-                  <input
-                    className={styles.input}
-                    type="text"
-                    value={inputValue}
-                    onChange={e => setInputValue(e.target.value)}
-                  />
-                  <div className={styles.ctas}>
-                    <button
-                      className="button button--primary"
-                      type="submit"
-                      disabled={inputValue === compositionUrl}
-                    >
-                      Use my composition
-                    </button>
-                    <button
-                      className="button button--secondary"
-                      type="button"
-                      onClick={handleReset}
-                    >
-                      Reset
-                    </button>
-                  </div>
-                </form>
               </div>
             );
           }}
