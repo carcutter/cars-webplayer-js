@@ -1,9 +1,8 @@
-import { Link2 } from "lucide-react";
-
 import { useAppContext } from "../../AppContext";
 import { COLOR_LIST, colorToClassName, colorToPretty } from "../../const/color";
 import { RADIUS_LIST } from "../../const/radius";
 import { cn } from "../../utils/style";
+import CopyLinkButton from "../atoms/CopyLinkButton";
 import { Button } from "../ui/Button";
 import { Checkbox } from "../ui/Checkbox";
 import { Input } from "../ui/Input";
@@ -29,10 +28,6 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
     radius,
     setRadius,
   } = useAppContext();
-
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
-  };
 
   return (
     <Popover>
@@ -168,10 +163,7 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
             className="space-y-2"
           >
             <h4 className="font-medium">Share</h4>
-            <Button color="foreground" size="sm" onClick={handleCopyLink}>
-              <Link2 />
-              Copy Link
-            </Button>
+            <CopyLinkButton size="sm" />
           </div>
         </div>
       </PopoverContent>
