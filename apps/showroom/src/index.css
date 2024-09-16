@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* COLORS */
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    --border: 214.3 31.8% 91.4%;
+
+    /* Set for popover */
+    --primary: 240 5.9% 10%;
+    --ui-radius: 0.25rem;
+  }
+
+  .ui-blue {
+    --primary: 216 100% 52%;
+  }
+
+  .ui-green {
+    --primary: 130 75% 38%;
+  }
+  .ui-yellow {
+    --primary: 56 96% 53%;
+    --primary-foreground: var(--foreground);
+  }
+
+  .ui-black {
+    --primary: 240 5.9% 10%;
+  }
+
+  .ui-orange {
+    --primary: 33 100% 50%;
+  }
+
+  .ui-gray {
+    --primary: 0 0% 30%;
+  }
+
+  cc-webplayer {
+    --cc-webplayer-primary: var(--primary);
+    --cc-webplayer-primary-foreground: var(--primary-foreground);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* BORDER RADIUS */
+
+@layer base {
+  .ui-radius-sm {
+    --ui-radius: 0.25rem;
+  }
+
+  .ui-radius-md {
+    --ui-radius: 0.5rem;
+  }
+
+  .ui-radius-lg {
+    --ui-radius: 0.75rem;
+  }
+
+  .ui-radius-xl {
+    --ui-radius: 1rem;
+  }
+
+  cc-webplayer {
+    --cc-webplayer-radius-ui: var(--ui-radius);
+    --cc-webplayer-radius-carrousel: calc(var(--ui-radius) + 4px);
+    --cc-webplayer-radius-gallery: calc(var(--ui-radius) * 0.6);
+  }
+}

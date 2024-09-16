@@ -13,6 +13,7 @@
 
   "files.associations": {
     "**/packages/core-ui/**/*.css": "tailwindcss",
-    "**/apps/demo-next/**/*.css": "tailwindcss"
+    "**/apps/demo-next/**/*.css": "tailwindcss",
+    "**/apps/showroom/**/*.css": "tailwindcss"
   }
 }

@@ -1,0 +1,5 @@
+{
+  "extends": "@car-cutter/typescript-config/react.json",
+
+  "include": ["src"]
+}
