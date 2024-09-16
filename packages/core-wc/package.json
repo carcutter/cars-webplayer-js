@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/core-wc",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
@@ -9,25 +9,27 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -b && vite build",
-    "lint": "eslint . --ext ts --max-warnings 0",
+    "lint": "eslint . --ext ts,tsx --max-warnings 0",
     "analyze": "vite-bundle-visualizer"
   },
   "dependencies": {
     "@r2wc/react-to-web-component": "^2.0.3"
   },
   "peerDependencies": {
-    "@car-cutter/core": "0.5.0",
-    "@car-cutter/core-ui": "0.5.0",
+    "@car-cutter/core": "0.6.0",
+    "@car-cutter/core-ui": "0.6.0",
     "react": ">=16.8",
     "react-dom": ">=16.8"
   },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
+    "@types/react": "^18.3.6",
+    "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^8.57.0",
     "typescript": "^5.5.4",
     "vite": "^5.4.1",
     "vite-bundle-visualizer": "^1.2.1",
-    "vite-plugin-dts": "^4.0.3"
+    "vite-plugin-dts": "^4.2.1"
   }
 }

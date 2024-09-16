@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/next-webplayer",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "license": "UNLICENSED",
   "author": {
     "name": "CarCutter",
@@ -32,9 +32,9 @@
     "next": ">=10"
   },
   "devDependencies": {
-    "@car-cutter/core": "0.5.0",
-    "@car-cutter/core-ui": "0.5.0",
-    "@car-cutter/core-wc": "0.5.0",
+    "@car-cutter/core": "0.6.0",
+    "@car-cutter/core-ui": "0.6.0",
+    "@car-cutter/core-wc": "0.6.0",
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
     "@vitejs/plugin-react": "^4.3.1",
@@ -43,6 +43,6 @@
     "typescript": "^5.5.4",
     "vite": "^5.4.1",
     "vite-bundle-visualizer": "^1.2.1",
-    "vite-plugin-dts": "^4.0.3"
+    "vite-plugin-dts": "^4.2.1"
   }
 }

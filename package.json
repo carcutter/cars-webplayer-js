@@ -24,8 +24,8 @@
     "publish:docs": "turbo build --filter=@car-cutter/webplayer-docs && cd apps/docs && yarn deploy"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.27.7",
-    "turbo": "^2.1.1"
+    "@changesets/cli": "^2.27.8",
+    "turbo": "^2.1.2"
   },
   "packageManager": "yarn@1.22.22",
   "workspaces": [
