@@ -60,7 +60,7 @@ defineCustomElements();
     <div style="max-width: 800px; margin-inline: auto">
       <cc-webplayer
         composition-url="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
-        flatten="true"
+        hide-categories="true"
       >
       </cc-webplayer>
     </div>

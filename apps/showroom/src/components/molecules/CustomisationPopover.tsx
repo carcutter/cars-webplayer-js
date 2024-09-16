@@ -19,8 +19,8 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
 
     permanentGallery,
     setPermanentGallery,
-    flatten,
-    setFlatten,
+    hideCategories,
+    setHideCategories,
 
     color,
     setColor,
@@ -85,13 +85,15 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
                   Fixed Gallery
                 </Label>
 
-                {/* Flatten */}
+                {/* HideCategories */}
                 <Checkbox
-                  id="flatten"
-                  checked={!flatten}
-                  onCheckedChange={checked => setFlatten(checked !== true)}
+                  id="hideCategories"
+                  checked={!hideCategories}
+                  onCheckedChange={checked =>
+                    setHideCategories(checked !== true)
+                  }
                 />
-                <Label htmlFor="flatten">Categories</Label>
+                <Label htmlFor="hideCategories">Categories</Label>
               </div>
             </div>
 

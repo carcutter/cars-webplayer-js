@@ -16,7 +16,7 @@ const AppContent: React.FC = () => {
     product,
 
     permanentGallery,
-    flatten,
+    hideCategories,
     color,
     radius,
   } = useAppContext();
@@ -56,7 +56,7 @@ const AppContent: React.FC = () => {
           compositionUrl={compositionUrl}
           infiniteCarrousel
           permanentGallery={permanentGallery}
-          flatten={flatten}
+          hideCategories={hideCategories}
         />
       </main>
       <footer className="flex-[2] self-center">

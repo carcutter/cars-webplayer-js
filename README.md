@@ -112,7 +112,7 @@ Run `yarn publish:docs`
 | Prop                | Type                     | Required | Default           | Description                                               |
 | ------------------- | ------------------------ | -------- | ----------------- | --------------------------------------------------------- |
 | `compositionUrl`    | `string`                 | ✅       | -                 | URL to the composition data                               |
-| `flatten`           | `boolean`                |          | false             | Flatten the hierarchy of elements (no categories)         |
+| `hideCategories`    | `boolean`                |          | false             | Hide the category-based navigation                        |
 | `infiniteCarrousel` | `boolean`                |          | false             | Allow to navigate from 1st to last image (and vice versa) |
 | `permanentGallery`  | `boolean`                |          | false             | Display gallery under the carrousel                       |
 | `imageLoadStrategy` | `"quality"` or `"speed"` |          | `"quality"`       | Strategy for loading images.                              |

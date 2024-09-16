@@ -19,7 +19,7 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedStyles, {
   props: {
     compositionUrl: "string",
 
-    flatten: "boolean",
+    hideCategories: "boolean",
     infiniteCarrousel: "boolean",
     permanentGallery: "boolean",
 

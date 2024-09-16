@@ -4,7 +4,7 @@ import { type Color } from "./const/color";
 import {
   DEFAULT_COLOR,
   DEFAULT_CUSTOMER,
-  DEFAULT_FLATTEN,
+  DEFAULT_HIDE_CATEGORIES,
   DEFAULT_ID,
   DEFAULT_PERMANENT_GALLERY,
   DEFAULT_RADIUS,
@@ -25,8 +25,8 @@ type ContextType = {
 
   permanentGallery: boolean;
   setPermanentGallery: (permanentGallery: boolean) => void;
-  flatten: boolean;
-  setFlatten: (flatten: boolean) => void;
+  hideCategories: boolean;
+  setHideCategories: (hideCategories: boolean) => void;
   color: Color;
   setColor: (color: Color) => void;
   radius: Radius;
@@ -58,7 +58,10 @@ const AppContextProvider: React.FC<React.PropsWithChildren> = ({
     "permanentGallery",
     DEFAULT_PERMANENT_GALLERY
   );
-  const [flatten, setFlatten] = useSearchParam("flatten", DEFAULT_FLATTEN);
+  const [hideCategories, setHideCategories] = useSearchParam(
+    "hideCategories",
+    DEFAULT_HIDE_CATEGORIES
+  );
 
   const [color, setColor] = useSearchParam("color", DEFAULT_COLOR);
   const [radius, setRadius] = useSearchParam("radius", DEFAULT_RADIUS);
@@ -78,8 +81,8 @@ const AppContextProvider: React.FC<React.PropsWithChildren> = ({
 
         permanentGallery,
         setPermanentGallery,
-        flatten,
-        setFlatten,
+        hideCategories,
+        setHideCategories,
 
         color,
         setColor,

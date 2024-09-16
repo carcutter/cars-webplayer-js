@@ -9,12 +9,12 @@ import {
 
 import {
   WEB_PLAYER_WC_TAG,
-  DEFAULT_PREVENT_FULL_SCREEN,
-  DEFAULT_EVENT_PREFIX,
-  DEFAULT_FLATTEN,
-  DEFAULT_IMAGE_LOAD_STRATEGY,
+  DEFAULT_HIDE_CATEGORIES,
   DEFAULT_INFINITE_CARROUSEL,
   DEFAULT_PERMANENT_GALLERY,
+  DEFAULT_IMAGE_LOAD_STRATEGY,
+  DEFAULT_PREVENT_FULL_SCREEN,
+  DEFAULT_EVENT_PREFIX,
   DEFAULT_REVERSE_360,
 } from "@car-cutter/core";
 
@@ -28,7 +28,7 @@ import "./index.css";
 const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   compositionUrl,
 
-  flatten = DEFAULT_FLATTEN,
+  hideCategories = DEFAULT_HIDE_CATEGORIES,
   infiniteCarrousel = DEFAULT_INFINITE_CARROUSEL,
   permanentGallery = DEFAULT_PERMANENT_GALLERY,
 
@@ -153,7 +153,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
         ...props,
         reverse360,
         imageLoadStrategy,
-        flatten,
+        hideCategories,
         infiniteCarrousel,
         preventFullScreen,
         permanentGallery,

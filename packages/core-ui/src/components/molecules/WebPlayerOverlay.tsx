@@ -31,7 +31,8 @@ import CategorySelect from "./CategorySelect";
  * - Details overlay when an hotspot with image is clicked
  */
 const WebPlayerOverlay: React.FC = () => {
-  const { flatten, infiniteCarrousel, permanentGallery } = useGlobalContext();
+  const { hideCategories, infiniteCarrousel, permanentGallery } =
+    useGlobalContext();
 
   const {
     items: { length: dataLength },
@@ -92,7 +93,7 @@ const WebPlayerOverlay: React.FC = () => {
   return (
     <>
       {/* CategorySelect (on top) */}
-      {!flatten && !isZooming && (
+      {!hideCategories && !isZooming && (
         <CategorySelect sharedClassName={sharedClassName} />
       )}
 

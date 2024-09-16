@@ -9,7 +9,7 @@ sidebar_position: 2
 | Prop                | Type                     | Default           | Description                                               |
 | ------------------- | ------------------------ | ----------------- | --------------------------------------------------------- |
 | `compositionUrl`    | `string`                 | ❌ Required       | URL to the composition data                               |
-| `flatten`           | `boolean`                | `false`           | Flatten the hierarchy of elements (no categories)         |
+| `hideCategories`    | `boolean`                | `false`           | Hide the category-based navigation                        |
 | `infiniteCarrousel` | `boolean`                | `false`           | Allow to navigate from 1st to last image (and vice versa) |
 | `permanentGallery`  | `boolean`                | `false`           | Display gallery under the carrousel                       |
 | `imageLoadStrategy` | `"quality"` or `"speed"` | `"quality"`       | Strategy for loading images.                              |
@@ -30,7 +30,7 @@ If you are using the WebComponent directly, you need to transform the props to H
 | Property            | Attribute             |
 | ------------------- | --------------------- |
 | `compositionUrl`    | `composition-url`     |
-| `flatten`           | `flatten`             |
+| `hideCategories`    | `hide-categories`     |
 | `infiniteCarrousel` | `infinite-carrousel`  |
 | `permanentGallery`  | `permanent-gallery`   |
 | `imageLoadStrategy` | `image-load-strategy` |
