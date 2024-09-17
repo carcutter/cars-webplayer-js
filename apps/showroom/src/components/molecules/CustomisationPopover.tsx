@@ -1,6 +1,6 @@
 import { useAppContext } from "../../AppContext";
 import { COLOR_LIST, colorToClassName, colorToPretty } from "../../const/color";
-import { RADIUS_LIST } from "../../const/radius";
+import { RADIUS_LIST, radiusToClassName } from "../../const/radius";
 import { cn } from "../../utils/style";
 import CopyLinkButton from "../atoms/CopyLinkButton";
 import { Button } from "../ui/Button";
@@ -144,7 +144,8 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
                     className={cn(
                       "border-border",
                       btnRadius === radius &&
-                        "border-foreground ring-1 ring-foreground"
+                        "border-foreground ring-1 ring-foreground",
+                      radiusToClassName(btnRadius)
                     )}
                     variant="outline"
                     color="foreground"
