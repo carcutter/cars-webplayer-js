@@ -3,9 +3,9 @@ import Button, { ButtonProps } from "../ui/Button";
 
 type Props = ButtonProps;
 
-const PlayButton: React.FC<Props> = ({ className = "", ...props }) => {
+const PlayButton: React.FC<Props> = props => {
   return (
-    <Button color="neutral" shape="icon" className={className} {...props}>
+    <Button color="neutral" shape="icon" {...props}>
       <PlayIcon className="size-full" />
     </Button>
   );

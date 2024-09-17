@@ -1,3 +1,5 @@
+import { cn } from "../../utils/style";
+
 type Variant = "fill" | "ghost";
 type Shape = "button" | "icon";
 type Color = "primary" | "neutral";
@@ -28,7 +30,7 @@ const Button: React.FC<React.PropsWithChildren<ButtonProps>> = ({
   variant = "fill",
   shape = "button",
   color = "primary",
-  className = "",
+  className,
   children,
   ...props
 }) => {
@@ -37,7 +39,12 @@ const Button: React.FC<React.PropsWithChildren<ButtonProps>> = ({
 
   return (
     <button
-      className={`${coloredVariantClassName} ${shapeClassName} flex items-center justify-center rounded-ui text-sm transition disabled:opacity-60 ${className}`}
+      className={cn(
+        "flex items-center justify-center rounded-ui text-sm transition disabled:opacity-60",
+        coloredVariantClassName,
+        shapeClassName,
+        className
+      )}
       {...props}
     >
       {children}
