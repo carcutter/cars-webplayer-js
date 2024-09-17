@@ -43,7 +43,6 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   ...props
 }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [wrapperWidth, setWrapperWidth] = useState<number>();
   const [playerInViewportWidthRatio, setPlayerInViewportWidthRatio] =
     useState(0.5); // NOTE: Hardcoded for typing convenience, but will be updated in the useEffect
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -73,16 +72,9 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
 
     const update = () => {
       const viewportWidth = window.innerWidth;
+      const playerWrapperWidth = wrapper.clientWidth;
 
-      // NOTE: We need to get the margin to have the correct width (e.g. including decimals)
-      const playerStyle = getComputedStyle(wrapper);
-      const wrapperWidth =
-        wrapper.getBoundingClientRect().width +
-        parseFloat(playerStyle.marginLeft) +
-        parseFloat(playerStyle.marginRight);
-
-      setWrapperWidth(wrapperWidth);
-      setPlayerInViewportWidthRatio(wrapperWidth / viewportWidth);
+      setPlayerInViewportWidthRatio(playerWrapperWidth / viewportWidth);
     };
 
     update();
@@ -171,12 +163,6 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
           id="cc-webplayer-wrapper"
           ref={wrapperRef}
           className="select-none text-foreground"
-          // TODO: Find a better way as it is very bad with reload
-          // Hack to avoid the player to have a decimal width (e.g. 800.6px) which cause issue on scroll snap
-          style={{
-            marginInline: "auto",
-            maxWidth: wrapperWidth && Math.floor(wrapperWidth),
-          }}
         >
           <WebPlayerContainer compositionUrl={compositionUrl} />
         </div>

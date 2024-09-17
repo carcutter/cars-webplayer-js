@@ -1,5 +1,7 @@
 import type { Item } from "@car-cutter/core";
 
+import { cn } from "../../utils/style";
+
 import ImageElement from "./web_player_elements/ImageElement";
 import ThreeSixtyElement from "./web_player_elements/ThreeSixtyElement";
 import VideoElement from "./web_player_elements/VideoElement";
@@ -37,6 +39,9 @@ const WebPlayerElement: React.FC<Props> = ({ index, item, isShown, lazy }) => {
         );
         break;
     }
+
+    // HACK: Add 1px on both side to avoid vertical lines due to decimal sizes
+    Comp = <div className={cn("-ml-px h-full w-[calc(100%+2px)]")}>{Comp}</div>;
   } else {
     Comp = null;
   }

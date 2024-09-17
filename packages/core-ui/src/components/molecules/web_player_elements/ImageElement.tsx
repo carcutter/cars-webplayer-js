@@ -37,7 +37,7 @@ const ImageElement: React.FC<Props> = ({
         )}
       >
         <ZoomableCdnImage
-          className="size-full"
+          className="size-full object-cover"
           onLoad={e => {
             if (itemIndex !== undefined) {
               setItemInteraction(itemIndex, "ready");
