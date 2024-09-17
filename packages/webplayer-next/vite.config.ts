@@ -1,6 +1,7 @@
 import { resolve } from "path";
 
 import react from "@vitejs/plugin-react";
+import browserslistToEsbuild from "browserslist-to-esbuild";
 import preserveDirectives from "rollup-preserve-directives";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
@@ -32,6 +33,7 @@ export default defineConfig({
       fileName: "index",
       entry: resolve(__dirname, "./index.ts"),
     },
+    target: browserslistToEsbuild(),
 
     chunkSizeWarningLimit: 125,
 

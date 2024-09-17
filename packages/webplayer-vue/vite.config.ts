@@ -1,6 +1,7 @@
 import { resolve } from "path";
 
 import vue from "@vitejs/plugin-vue";
+import browserslistToEsbuild from "browserslist-to-esbuild";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
@@ -36,6 +37,7 @@ export default defineConfig({
       fileName: "index",
       entry: resolve(__dirname, "./index.ts"),
     },
+    target: browserslistToEsbuild(),
 
     chunkSizeWarningLimit: 400,
 

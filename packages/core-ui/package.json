@@ -25,6 +25,8 @@
     "@types/react": "^18.3.3",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.20",
+    "browserslist": "^4.23.3",
+    "browserslist-to-esbuild": "^2.1.1",
     "eslint": "^8.57.0",
     "eslint-plugin-tailwindcss": "^3.17.4",
     "postcss": "^8.4.47",
@@ -38,5 +40,8 @@
     "vite": "^5.4.1",
     "vite-bundle-visualizer": "^1.2.1",
     "vite-plugin-dts": "^4.2.1"
-  }
+  },
+  "browserslist": [
+    "defaults"
+  ]
 }

@@ -33,6 +33,8 @@
     "@car-cutter/core-wc": "0.6.0",
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
+    "browserslist": "^4.23.3",
+    "browserslist-to-esbuild": "^2.1.1",
     "eslint": "^8.57.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -40,5 +42,8 @@
     "vite": "^5.4.1",
     "vite-bundle-visualizer": "^1.2.1",
     "vite-plugin-dts": "^4.2.1"
-  }
+  },
+  "browserslist": [
+    "defaults"
+  ]
 }

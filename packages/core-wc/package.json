@@ -26,10 +26,15 @@
     "@car-cutter/typescript-config": "*",
     "@types/react": "^18.3.6",
     "@vitejs/plugin-react": "^4.3.1",
+    "browserslist": "^4.23.3",
+    "browserslist-to-esbuild": "^2.1.1",
     "eslint": "^8.57.0",
     "typescript": "^5.5.4",
     "vite": "^5.4.1",
     "vite-bundle-visualizer": "^1.2.1",
     "vite-plugin-dts": "^4.2.1"
-  }
+  },
+  "browserslist": [
+    "defaults"
+  ]
 }

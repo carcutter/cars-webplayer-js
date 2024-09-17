@@ -14,8 +14,13 @@
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
     "@car-cutter/wc-webplayer": "0.6.0",
+    "browserslist": "^4.23.3",
+    "browserslist-to-esbuild": "^2.1.1",
     "typescript": "^5.5.4",
     "vite": "^5.4.1",
     "vite-bundle-visualizer": "^1.2.1"
-  }
+  },
+  "browserslist": [
+    "defaults"
+  ]
 }

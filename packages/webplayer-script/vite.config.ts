@@ -1,5 +1,6 @@
 import { resolve } from "path";
 
+import browserslistToEsbuild from "browserslist-to-esbuild";
 import { defineConfig } from "vite";
 
 import { version } from "./package.json";
@@ -17,6 +18,7 @@ export default defineConfig({
       entry: resolve(__dirname, "./index.ts"),
       formats: ["umd"],
     },
+    target: browserslistToEsbuild(),
 
     chunkSizeWarningLimit: 300,
   },
