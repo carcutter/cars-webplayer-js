@@ -461,7 +461,7 @@ const ThreeSixtyElementPlaceholder: React.FC<
         onLoad={onPlaceholderImageLoaded}
       />
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
-        <ThreeSixtyIcon className="size-20 text-primary" />
+        <ThreeSixtyIcon className="size-20 text-primary-light" />
 
         <Button color="neutral" shape="icon" onClick={fetchSpinImages}>
           <PlayIcon className="size-full" />

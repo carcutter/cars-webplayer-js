@@ -12,6 +12,7 @@
       --cc-webplayer-primary-foreground,
       var(--background)
     );
+    --primary-light: var(--cc-webplayer-primary-light, var(--primary));
 
     --neutral: var(--cc-webplayer-neutral, 0 0% 39%);
     --neutral-foreground: var(

@@ -29,6 +29,7 @@
 
   .ui-black {
     --primary: 240 5.9% 10%;
+    --primary-light: 240 5.9% 95%;
   }
 
   .ui-orange {
@@ -37,11 +38,13 @@
 
   .ui-gray {
     --primary: 0 0% 30%;
+    --primary-light: 0 0% 95%;
   }
 
   cc-webplayer {
     --cc-webplayer-primary: var(--primary);
     --cc-webplayer-primary-foreground: var(--primary-foreground);
+    --cc-webplayer-primary-light: var(--primary-light);
   }
 }
 

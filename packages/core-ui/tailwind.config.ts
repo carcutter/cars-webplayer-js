@@ -46,10 +46,15 @@ const config: Config = {
 
       background: "hsl(var(--background))",
       foreground: "hsl(var(--foreground))",
-      primary: "hsl(var(--primary))",
-      "primary-foreground": "hsl(var(--primary-foreground))",
-      neutral: "hsl(var(--neutral))",
-      "neutral-foreground": "hsl(var(--neutral-foreground))",
+      primary: {
+        DEFAULT: "hsl(var(--primary))",
+        foreground: "hsl(var(--primary-foreground))",
+        light: "hsl(var(--primary-light))",
+      },
+      neutral: {
+        DEFAULT: "hsl(var(--neutral))",
+        foreground: "hsl(var(--neutral-foreground))",
+      },
     },
     borderRadius: {
       none: "0",
