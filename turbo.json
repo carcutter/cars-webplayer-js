@@ -3,7 +3,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*", "!README.md"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*", "!README.md", "!dev/**"],
       "outputs": ["dist/**"]
     },
     "lint": {},
