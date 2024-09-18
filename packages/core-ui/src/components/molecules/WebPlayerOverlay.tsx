@@ -90,13 +90,17 @@ const WebPlayerOverlay: React.FC = () => {
 
   const sharedClassName = "absolute z-overlay";
 
-  const galleryControlsClassName = `transition-opacity ${showGalleryControls ? "opacity-100" : "opacity-0 !pointer-events-none"}`;
-
   return (
     <>
       {/* CategorySelect (on top) */}
-      {!hideCategories && !isZooming && (
-        <CategorySelect sharedClassName={sharedClassName} />
+      {!hideCategories && (
+        <CategorySelect
+          sharedClassName={cn(
+            sharedClassName,
+            "transition-opacity",
+            !isZooming ? "opacity-100" : "!pointer-events-none opacity-0"
+          )}
+        />
       )}
 
       {/* Index Indicator */}
@@ -110,12 +114,16 @@ const WebPlayerOverlay: React.FC = () => {
       )}
 
       {/* Next/Prev buttons */}
-      {slidable && !isZooming && (
+      {slidable && (
         <>
           <Button
             shape="icon"
             color="neutral"
-            className={cn(sharedClassName, positionToClassName("middle-left"))}
+            className={cn(
+              sharedClassName,
+              positionToClassName("middle-left"),
+              !isZooming ? "opacity-100" : "!pointer-events-none opacity-0"
+            )}
             onClick={prevItem}
             disabled={!infiniteCarrousel && masterItemIndex <= 0}
           >
@@ -126,7 +134,11 @@ const WebPlayerOverlay: React.FC = () => {
           <Button
             shape="icon"
             color="neutral"
-            className={cn(sharedClassName, positionToClassName("middle-right"))}
+            className={cn(
+              sharedClassName,
+              positionToClassName("middle-right"),
+              !isZooming ? "opacity-100" : "!pointer-events-none opacity-0"
+            )}
             onClick={nextItem}
             disabled={!infiniteCarrousel && masterItemIndex >= dataLength - 1}
           >
@@ -146,10 +158,14 @@ const WebPlayerOverlay: React.FC = () => {
         )}
       >
         {/* Gallery's toogle button & Gallery */}
-        {!permanentGallery && slidable && !isZooming && (
+        {!permanentGallery && slidable && (
           <>
             <Button
-              className={galleryControlsClassName}
+              className={
+                showGalleryControls && !isZooming
+                  ? "opacity-100"
+                  : "!pointer-events-none opacity-0"
+              }
               variant="fill"
               color={showGallery ? "primary" : "neutral"}
               shape="icon"
@@ -163,7 +179,11 @@ const WebPlayerOverlay: React.FC = () => {
             {showGallery && (
               <Gallery
                 className={cn(
-                  galleryControlsClassName,
+                  "transition-opacity",
+                  showGalleryControls && !isZooming
+                    ? "opacity-100"
+                    : "!pointer-events-none opacity-0",
+                  // Left & Right gradient mask to fade the gallery
                   "[mask-image:linear-gradient(to_left,transparent_0px,black_4px,black_calc(100%-4px),transparent_100%)]"
                 )}
                 containerClassName="mx-1"
@@ -173,12 +193,18 @@ const WebPlayerOverlay: React.FC = () => {
         )}
         <div className="col-start-3 flex flex-col items-end gap-y-1 small:gap-y-2">
           {/* Hotspot button */}
-          {enableHotspotsControl && !isZooming && (
-            <Switch enabled={showHotspots} onToggle={toggleHotspots}>
+          {enableHotspotsControl && (
+            <Switch
+              className={cn(
+                "transition-opacity",
+                !isZooming ? "opacity-100" : "!pointer-events-none opacity-0"
+              )}
+              enabled={showHotspots}
+              onToggle={toggleHotspots}
+            >
               <HotspotsIcon className="size-full" />
             </Switch>
           )}
-
           {/* Zoom buttons */}
           {showZoomControls && (
             <div className="max-small:hidden">
