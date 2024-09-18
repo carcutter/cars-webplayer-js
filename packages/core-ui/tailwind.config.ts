@@ -73,6 +73,7 @@ const config: Config = {
         details: "350ms",
       },
       zIndex: {
+        1: "1",
         hotspot: "10",
         "hotspot-hover": "11",
         "zoomed-image": "20",

@@ -9,6 +9,7 @@ import { isSelfEvent } from "../../utils/web";
 import CdnImage from "../atoms/CdnImage";
 import CloseButton from "../atoms/CloseButton";
 import CustomizableIcon from "../atoms/CustomizableIcon";
+import IndexIndicator from "../atoms/IndexIndicator";
 import ArrowRightIcon from "../icons/ArrowRightIcon";
 import ExtendIcon from "../icons/ExtendIcon";
 import GalleryIcon from "../icons/GalleryIcon";
@@ -42,6 +43,7 @@ const WebPlayerOverlay: React.FC = () => {
   const {
     slidable,
 
+    carrouselItemIndex,
     masterItemIndex,
     prevItem,
     nextItem,
@@ -97,6 +99,16 @@ const WebPlayerOverlay: React.FC = () => {
         <CategorySelect sharedClassName={sharedClassName} />
       )}
 
+      {/* Index Indicator */}
+      {slidable && !isZooming && (
+        <div className={cn(sharedClassName, positionToClassName("top-right"))}>
+          <IndexIndicator
+            currentIndex={carrouselItemIndex}
+            maxIndex={dataLength - 1}
+          />
+        </div>
+      )}
+
       {/* Next/Prev buttons */}
       {slidable && !isZooming && (
         <>
@@ -134,7 +146,7 @@ const WebPlayerOverlay: React.FC = () => {
         )}
       >
         {/* Gallery's toogle button & Gallery */}
-        {!permanentGallery && dataLength > 1 && !isZooming && (
+        {!permanentGallery && slidable && !isZooming && (
           <>
             <Button
               className={galleryControlsClassName}
