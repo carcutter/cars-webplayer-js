@@ -1,4 +1,9 @@
-import { WebPlayer, generateCompositionUrl } from "@car-cutter/react-webplayer";
+import { sha256 } from "js-sha256";
+
+import {
+  WebPlayer,
+  generateCompositionUrl as generateCompositionUrlWithHashedCustomer,
+} from "@car-cutter/react-webplayer";
 
 import AppContextProvider, { useAppContext } from "./AppContext";
 import CompositionUpdatePopover from "./components/molecules/CompositionUpdatePopover";
@@ -7,6 +12,17 @@ import { Button } from "./components/ui/Button";
 import { colorToClassName } from "./const/color";
 import { radiusToClassName } from "./const/radius";
 import { cn } from "./utils/style";
+
+const generateCompositionUrl = (customer: string, id: string) => {
+  const isHashed = (str: string) => /^[a-f0-9]{64}$/i.test(str);
+
+  const hashCustomerId = (customerId: string) => sha256(customerId);
+
+  const hashedCustomer = isHashed(customer)
+    ? customer
+    : hashCustomerId(customer);
+  return generateCompositionUrlWithHashedCustomer(hashedCustomer, id);
+};
 
 const AppContent: React.FC = () => {
   const {
