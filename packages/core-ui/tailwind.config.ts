@@ -69,6 +69,9 @@ const config: Config = {
     },
 
     extend: {
+      transitionProperty: {
+        radius: "border-radius",
+      },
       transitionDuration: {
         details: "350ms",
       },

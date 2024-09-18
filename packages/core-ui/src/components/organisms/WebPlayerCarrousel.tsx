@@ -438,7 +438,10 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
 
   return (
     <div
-      className={cn("relative overflow-hidden rounded-carrousel", className)}
+      className={cn(
+        "relative overflow-hidden rounded-carrousel transition-radius",
+        className
+      )}
       style={aspectRatioStyle}
     >
       <div

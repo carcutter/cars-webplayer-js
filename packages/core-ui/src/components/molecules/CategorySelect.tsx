@@ -54,13 +54,13 @@ const CategorySelect: React.FC<Props> = ({ sharedClassName }) => {
         </Button>
 
         {isMenuOpen && (
-          <div className="rounded-ui-md bg-background">
+          <div className="rounded-ui-md bg-background transition-radius">
             <ul className="space-y-0.5 p-1">
               {categories.map(({ id, title }) => (
                 <li
                   key={id}
                   className={cn(
-                    "cursor-pointer rounded-ui px-2 py-1 text-sm font-bold transition-colors hover:bg-primary/30",
+                    "cursor-pointer rounded-ui px-2 py-1 text-sm font-bold transition-all hover:bg-primary/30",
                     id === displayedCategoryId && "bg-primary/50"
                   )}
                   onClick={() => {

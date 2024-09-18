@@ -40,7 +40,7 @@ const Button: React.FC<React.PropsWithChildren<ButtonProps>> = ({
   return (
     <button
       className={cn(
-        "flex items-center justify-center rounded-ui text-sm transition disabled:opacity-60",
+        "flex items-center justify-center rounded-ui text-sm transition-all disabled:opacity-60",
         coloredVariantClassName,
         shapeClassName,
         className

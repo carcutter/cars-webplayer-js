@@ -77,10 +77,7 @@ const GalleryElement: React.FC<GalleryElementProps> = ({ item }) => {
   }
 
   return (
-    <div
-      className="relative overflow-hidden rounded-gallery bg-foreground/30"
-      style={aspectRatioStyle}
-    >
+    <div className="relative bg-foreground/30" style={aspectRatioStyle}>
       {imgNode}
       {overlayIcon && (
         <div className="absolute inset-0 flex items-center justify-center bg-foreground/25">

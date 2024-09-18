@@ -267,9 +267,9 @@ const Gallery: React.FC<Props> = ({
 
             <div
               className={cn(
-                "relative h-full rounded-gallery ",
+                "relative h-full overflow-hidden rounded-gallery transition-radius",
                 !isDragging && "cursor-pointer",
-                "after:absolute after:inset-0 after:rounded-gallery after:border-2 after:border-primary after:transition-opacity",
+                "after:absolute after:inset-0 after:rounded-gallery after:border-2 after:border-primary after:transition-all",
                 index === masterItemIndex
                   ? "after:opacity-100"
                   : "after:opacity-0 hover:after:opacity-70"
