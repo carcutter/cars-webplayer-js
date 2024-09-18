@@ -45,7 +45,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={cn(
-          "flex items-center justify-center gap-x-1.5 transition disabled:opacity-60 sm:gap-x-2",
+          "flex items-center justify-center gap-x-1.5 transition-all disabled:opacity-60 sm:gap-x-2",
           coloredVariantClassName,
           sizeClassName,
           className

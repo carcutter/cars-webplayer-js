@@ -34,7 +34,7 @@ const AppContent: React.FC = () => {
       <header className="flex flex-1 items-center justify-between gap-y-2">
         <div className="space-y-2">
           {dealer && (
-            <h2 className="w-fit rounded-ui bg-primary/20 px-4 py-1 text-sm text-primary-contrast">
+            <h2 className="w-fit rounded-ui bg-primary/20 px-4 py-1 text-sm text-primary-contrast transition-all">
               {dealer}
             </h2>
           )}
