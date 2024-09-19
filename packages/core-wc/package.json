@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/core-wc",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@car-cutter/core": "0.6.0",
-    "@car-cutter/core-ui": "0.6.0",
+    "@car-cutter/core-ui": "0.6.1",
     "@r2wc/react-to-web-component": "^2.0.3"
   },
   "peerDependencies": {
