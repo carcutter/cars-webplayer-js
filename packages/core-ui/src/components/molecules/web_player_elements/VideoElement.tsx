@@ -367,7 +367,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, itemIndex }) => {
               // Loading overlay with spinner
               className="pointer-events-none absolute inset-0 flex items-center justify-center bg-foreground/25"
             >
-              <Spinner size="lg" />
+              <Spinner size="lg" color="background" />
             </div>
           )}
         </>

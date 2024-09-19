@@ -482,7 +482,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
             <div
               key={`${index}_${imgSrc}`}
               className={cn(
-                "h-full bg-foreground/50",
+                "h-full bg-foreground/35",
                 carrouselItemIndex === index && "z-1" // Give high-ground to the shown item (to avoid 1px vertical line)
               )}
               style={{ ...aspectRatioStyle, ...transformStyle }}

@@ -1,4 +1,6 @@
-type Color = "primary" | "neutral";
+import { cn } from "../../utils/style";
+
+type Color = "primary" | "foreground" | "background";
 type Size = "sm" | "md" | "lg";
 
 export type SpinnerProps = {
@@ -8,7 +10,8 @@ export type SpinnerProps = {
 
 const colorClassNames: Record<Color, string> = {
   primary: "border-primary",
-  neutral: "border-background",
+  foreground: "border-foreground",
+  background: "border-background",
 };
 
 const sizeClassNames: Record<Size, string> = {
@@ -18,7 +21,7 @@ const sizeClassNames: Record<Size, string> = {
 };
 
 const Spinner: React.FC<SpinnerProps> = ({
-  color = "neutral",
+  color = "foreground",
   size = "md",
 }) => {
   const colorClassName = colorClassNames[color];
@@ -26,7 +29,11 @@ const Spinner: React.FC<SpinnerProps> = ({
 
   return (
     <div
-      className={`inline-block ${sizeClassName} animate-rotation rounded-full ${colorClassName} border-b-transparent`}
+      className={cn(
+        "inline-block animate-rotation rounded-full border-b-transparent",
+        sizeClassName,
+        colorClassName
+      )}
     />
   );
 };

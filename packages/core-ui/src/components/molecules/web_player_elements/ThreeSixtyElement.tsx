@@ -508,9 +508,13 @@ const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = props => {
     setItemInteraction(itemIndex, status === "spin" ? "running" : "ready");
   }, [itemIndex, setItemInteraction, status]);
 
-  // TODO: Implement error state
   if (status === "error") {
-    return <ErrorTemplate title="Failed to fetch 360" />;
+    return (
+      <ErrorTemplate
+        className="text-background"
+        text="Spin could not be loaded"
+      />
+    );
   } else if (status !== "spin") {
     return (
       <ThreeSixtyElementPlaceholder

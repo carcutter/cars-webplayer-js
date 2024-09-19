@@ -196,16 +196,19 @@ const WebPlayerContainer: React.FC<WebPlayerContainerProps> = ({
   }, [composition, compositionUrl, emitEvent, error, isSuccess, status]);
 
   if (error) {
-    // TODO: Implement error state
-    return <ErrorTemplate title="Failed to fetch composition" error={error} />;
+    return (
+      <ErrorTemplate
+        className="aspect-square text-foreground/70"
+        text="Player could not be loaded"
+      />
+    );
   }
 
   if (!isSuccess) {
-    // TODO: Implement loading state
     return (
-      <div className="flex aspect-video size-full flex-col items-center justify-center gap-y-4">
-        <div className="text-xl">Loading WebPlayer...</div>
-        <Spinner color="primary" />
+      <div className="flex aspect-square size-full flex-col items-center justify-center gap-y-4">
+        <div className="animate-pulse text-xl">Loading Player</div>
+        <Spinner color="foreground" />
       </div>
     );
   }

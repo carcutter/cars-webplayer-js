@@ -84,6 +84,10 @@ const config: Config = {
       },
       // Animation
       keyframes: {
+        pulse: {
+          "from, to": { opacity: "0" },
+          "50%": { opacity: "1" },
+        },
         "hotspot-ping": {
           from: { transform: "scale(0)" },
           "25%": { opacity: "1" },
