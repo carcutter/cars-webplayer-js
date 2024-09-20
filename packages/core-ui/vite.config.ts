@@ -11,6 +11,7 @@ export default defineConfig(({ mode }) => ({
     dts({
       tsconfigPath: resolve(__dirname, "./tsconfig.app.json"),
       rollupTypes: true,
+      bundledPackages: ["@car-cutter/core"],
     }),
   ],
 

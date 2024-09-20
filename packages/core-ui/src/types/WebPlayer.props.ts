@@ -1,4 +1,4 @@
-export type ImageLoadStrategy = "quality" | "speed";
+import type { ImageLoadStrategy, ImageWidth } from "@car-cutter/core";
 
 export type WebPlayerProps = {
   compositionUrl: string;
@@ -10,8 +10,8 @@ export type WebPlayerProps = {
 
   // Images loading
   imageLoadStrategy?: ImageLoadStrategy;
-  minImageWidth?: number;
-  maxImageWidth?: number;
+  minImageWidth?: ImageWidth;
+  maxImageWidth?: ImageWidth;
 
   // Miscelaneous
   preventFullScreen?: boolean;

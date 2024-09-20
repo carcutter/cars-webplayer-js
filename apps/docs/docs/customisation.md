@@ -6,18 +6,18 @@ sidebar_position: 2
 
 ## Props
 
-| Prop                | Type                     | Default           | Description                                               |
-| ------------------- | ------------------------ | ----------------- | --------------------------------------------------------- |
-| `compositionUrl`    | `string`                 | ❌ Required       | URL to the composition data                               |
-| `hideCategories`    | `boolean`                | `false`           | Hide the category-based navigation                        |
-| `infiniteCarrousel` | `boolean`                | `false`           | Allow to navigate from 1st to last image (and vice versa) |
-| `permanentGallery`  | `boolean`                | `false`           | Display gallery under the carrousel                       |
-| `imageLoadStrategy` | `"quality"` or `"speed"` | `"quality"`       | Strategy for loading images.                              |
-| `minImageWidth`     | `number`                 | `0`               | Force minimum image width (in pixels)                     |
-| `maxImageWidth`     | `number`                 | `Infinity`        | Force maximum image width (in pixels)                     |
-| `preventFullScreen` | `boolean`                | `false`           | Whether to prevent full screen mode                       |
-| `eventPrefix`       | `string`                 | `"cc-webplayer:"` | Prefix of cc-player events                                |
-| `reverse360`        | `boolean`                | `false`           | Reverse the 360-degree rotation                           |
+| Prop                | Type                              | Default           | Description                                               |
+| ------------------- | --------------------------------- | ----------------- | --------------------------------------------------------- |
+| `compositionUrl`    | `string`                          | ❌ Required       | URL to the composition data                               |
+| `hideCategories`    | `boolean`                         | `false`           | Hide the category-based navigation                        |
+| `infiniteCarrousel` | `boolean`                         | `false`           | Allow to navigate from 1st to last image (and vice versa) |
+| `permanentGallery`  | `boolean`                         | `false`           | Display gallery under the carrousel                       |
+| `imageLoadStrategy` | `"quality"`/`"speed"`/`"closest"` | `"quality"`       | Strategy for loading images.                              |
+| `minImageWidth`     | `number`                          | `0`               | Force minimum image width (in pixels)                     |
+| `maxImageWidth`     | `number`                          | `Infinity`        | Force maximum image width (in pixels)                     |
+| `preventFullScreen` | `boolean`                         | `false`           | Whether to prevent full screen mode                       |
+| `eventPrefix`       | `string`                          | `"cc-webplayer:"` | Prefix of cc-player events                                |
+| `reverse360`        | `boolean`                         | `false`           | Reverse the 360-degree rotation                           |
 
 :::info
 

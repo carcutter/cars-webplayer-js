@@ -81,28 +81,52 @@ const CdnImage: React.FC<CdnImageProps> = ({
       const viewportWidthMultiplier =
         1 / (imgInPlayerWidthRatio * playerInViewportWidthRatio);
 
-      if (imageLoadStrategy === "quality") {
-        const biggerWidth = usedImageWidths.pop();
+      switch (imageLoadStrategy) {
+        case "quality": {
+          const biggestWidth = usedImageWidths.pop();
 
-        sizesList = usedImageWidths.map(
-          imgWidth =>
-            `(max-width: ${viewportWidthMultiplier * imgWidth}px) ${imgWidth}px`
-        );
-
-        sizesList.push(`${biggerWidth}px`);
-      } else {
-        const smallestWidth = usedImageWidths.shift();
-
-        sizesList = usedImageWidths
-          .reverse()
-          .map(
+          sizesList = usedImageWidths.map(
             imageWidth =>
-              `(min-width: ${viewportWidthMultiplier * imageWidth}px) ${imageWidth}px`
+              `(max-width: ${viewportWidthMultiplier * imageWidth}px) ${imageWidth}px`
           );
 
-        sizesList.push(`${smallestWidth}px`);
+          sizesList.push(`${biggestWidth}px`);
+          break;
+        }
+        case "speed": {
+          const smallestWidth = usedImageWidths.shift();
+
+          sizesList = usedImageWidths
+            .reverse()
+            .map(
+              imageWidth =>
+                `(min-width: ${viewportWidthMultiplier * imageWidth}px) ${imageWidth}px`
+            );
+
+          sizesList.push(`${smallestWidth}px`);
+          break;
+        }
+        case "closest": {
+          sizesList = [];
+
+          for (let i = 0; i < usedImageWidths.length - 1; i++) {
+            const imageWidth = usedImageWidths[i];
+            const nextImageWidth = usedImageWidths[i + 1];
+
+            const breakpoint = (imageWidth + nextImageWidth) / 2;
+
+            sizesList.push(
+              `(max-width: ${viewportWidthMultiplier * breakpoint}px) ${imageWidth}px`
+            );
+          }
+
+          sizesList.push(`${usedImageWidths[usedImageWidths.length - 1]}px`);
+          break;
+        }
       }
-    } else {
+    }
+    // Thumbnail
+    else {
       const smallestWidth = usedImageWidths.shift();
 
       sizesList = [`${smallestWidth}px`];
