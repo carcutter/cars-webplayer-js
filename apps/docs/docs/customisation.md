@@ -15,6 +15,7 @@ sidebar_position: 2
 | `mediaLoadStrategy` | `"quality"`/`"speed"`/`"closest"` | `"quality"`       | Strategy for loading medias.                              |
 | `minMediaWidth`     | `number`                          | `0`               | Force minimum media width (in pixels)                     |
 | `maxMediaWidth`     | `number`                          | `Infinity`        | Force maximum media width (in pixels)                     |
+| `preloadRange`      | `number`                          | `1`               | Number of medias to preload before & after the viewport   |
 | `preventFullScreen` | `boolean`                         | `false`           | Whether to prevent full screen mode                       |
 | `eventPrefix`       | `string`                          | `"cc-webplayer:"` | Prefix of cc-player events                                |
 | `reverse360`        | `boolean`                         | `false`           | Reverse the 360-degree rotation                           |
@@ -36,6 +37,7 @@ If you are using the WebComponent directly, you need to transform the props to H
 | `mediaLoadStrategy` | `media-load-strategy` |
 | `minMediaWidth`     | `min-media-width`     |
 | `maxMediaWidth`     | `max-media-width`     |
+| `preloadRange`      | `preload-range`       |
 | `preventFullScreen` | `prevent-full-screen` |
 | `eventPrefix`       | `event-prefix`        |
 | `reverse360`        | `reverse360`          |

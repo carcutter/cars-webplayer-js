@@ -12,6 +12,7 @@ export type WebPlayerProps = {
   mediaLoadStrategy?: MediaLoadStrategy;
   minMediaWidth?: MediaWidth;
   maxMediaWidth?: MediaWidth;
+  preloadRange?: number;
 
   // Miscelaneous
   preventFullScreen?: boolean;

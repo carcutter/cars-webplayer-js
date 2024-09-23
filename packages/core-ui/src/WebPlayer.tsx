@@ -13,6 +13,7 @@ import {
   DEFAULT_INFINITE_CARROUSEL,
   DEFAULT_PERMANENT_GALLERY,
   DEFAULT_MEDIA_LOAD_STRATEGY,
+  DEFAULT_PRELOAD_RANGE,
   DEFAULT_PREVENT_FULL_SCREEN,
   DEFAULT_EVENT_PREFIX,
   DEFAULT_REVERSE_360,
@@ -33,6 +34,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   permanentGallery = DEFAULT_PERMANENT_GALLERY,
 
   mediaLoadStrategy = DEFAULT_MEDIA_LOAD_STRATEGY,
+  preloadRange = DEFAULT_PRELOAD_RANGE,
 
   preventFullScreen = DEFAULT_PREVENT_FULL_SCREEN,
   eventPrefix = DEFAULT_EVENT_PREFIX,
@@ -40,7 +42,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
 
   children: customizationChildren, // NOTE: use to customize the player, not to display the content
 
-  ...props
+  ...props // Contains the rest of the props (minMediaWidth / maxMediaWidth)
 }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [playerInViewportWidthRatio, setPlayerInViewportWidthRatio] =
@@ -143,12 +145,13 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
     <GlobalContextProvider
       {...{
         ...props,
-        reverse360,
-        mediaLoadStrategy,
         hideCategories,
         infiniteCarrousel,
-        preventFullScreen,
         permanentGallery,
+        mediaLoadStrategy,
+        preloadRange,
+        preventFullScreen,
+        reverse360,
 
         emitEvent,
 

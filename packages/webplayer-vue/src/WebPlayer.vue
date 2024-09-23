@@ -89,6 +89,7 @@ onUnmounted(() => {
     :media-load-strategy="mediaLoadStrategy"
     :min-media-width="minMediaWidth"
     :max-media-width="maxMediaWidth"
+    :preload-range="preloadRange"
     :hide-categories="hideCategories"
     :prevent-full-screen="preventFullScreen"
     :event-prefix="eventPrefix"

@@ -18,7 +18,7 @@ type Props = {
  * ThreeSixtyElement component renders the carrousel of items.
  */
 const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
-  const { infiniteCarrousel, isFullScreen } = useGlobalContext();
+  const { infiniteCarrousel, preloadRange, isFullScreen } = useGlobalContext();
   const { items, aspectRatioStyle } = useCompositionContext();
 
   const {
@@ -456,15 +456,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
 
           const isShown = index === carrouselItemIndex;
           const isFirst = index === 0;
-          const lastIsShown = carrouselItemIndex === items.length - 1;
           const isLast = index === items.length - 1;
-          const firstIsShown = carrouselItemIndex === 0;
-
-          // Lazy param avoids loading images that are too far from the current one
-          const lazy =
-            Math.abs(index - carrouselItemIndex) > 1 && // Not next to the current one
-            !(infiniteCarrousel && isFirst && lastIsShown) && // Not the last one when the first one is shown (only for infinite carrousel)
-            !(infiniteCarrousel && isLast && firstIsShown); // Not the first one when the last one is shown (only for infinite carrousel)
 
           const transformStyle = (() => {
             if (specialCommand === "first_to_last" && isFirst) {
@@ -478,6 +470,23 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
             }
           })();
 
+          // - "inDisplayRange" avoids loading medias that are too far from the current one
+          let inDisplayRange =
+            Math.abs(index - carrouselItemIndex) <= preloadRange; // Consider medias in the preload range
+          inDisplayRange ||= index === itemIndexCommand; // Consider the target media
+
+          if (infiniteCarrousel) {
+            // If we are at the start, consider medias at the end
+            inDisplayRange ||=
+              carrouselItemIndex < preloadRange &&
+              items.length - index <= preloadRange - carrouselItemIndex;
+
+            // If we are at the end, consider medias at the start
+            inDisplayRange ||=
+              carrouselItemIndex >= items.length - preloadRange &&
+              index <= preloadRange - (items.length - carrouselItemIndex);
+          }
+
           return (
             <div
               key={`${index}_${imgSrc}`}
@@ -487,12 +496,9 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
               )}
               style={{ ...aspectRatioStyle, ...transformStyle }}
             >
-              <WebPlayerElement
-                index={index}
-                item={item}
-                isShown={isShown}
-                lazy={lazy}
-              />
+              {inDisplayRange && (
+                <WebPlayerElement index={index} item={item} isShown={isShown} />
+              )}
             </div>
           );
         })}

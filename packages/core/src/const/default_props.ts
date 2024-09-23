@@ -6,6 +6,7 @@ export const DEFAULT_PERMANENT_GALLERY = false satisfies boolean;
 
 export const DEFAULT_MEDIA_LOAD_STRATEGY =
   "quality" satisfies MediaLoadStrategy;
+export const DEFAULT_PRELOAD_RANGE = 1 satisfies number;
 
 export const DEFAULT_PREVENT_FULL_SCREEN = false satisfies boolean;
 export const DEFAULT_EVENT_PREFIX = "cc-webplayer:" satisfies string;

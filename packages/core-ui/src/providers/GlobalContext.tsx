@@ -9,6 +9,7 @@ type ProviderProps = Required<
     | "infiniteCarrousel"
     | "permanentGallery"
     | "mediaLoadStrategy"
+    | "preloadRange"
     | "preventFullScreen"
     | "reverse360"
   >
