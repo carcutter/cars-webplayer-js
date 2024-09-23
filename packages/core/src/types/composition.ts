@@ -1,4 +1,4 @@
-import { AspectRatio, ImageWidth } from "./misc";
+import { AspectRatio, MediaWidth } from "./misc";
 
 export type Hotspot = {
   title: string;
@@ -42,7 +42,7 @@ export type Category = {
 
 export type Composition = {
   aspectRatio: AspectRatio;
-  imageHdWidth: ImageWidth;
-  imageSubWidths: ImageWidth[];
+  imageHdWidth: MediaWidth;
+  imageSubWidths: MediaWidth[];
   categories: Category[];
 };

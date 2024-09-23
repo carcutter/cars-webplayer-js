@@ -12,7 +12,7 @@ import {
   DEFAULT_HIDE_CATEGORIES,
   DEFAULT_INFINITE_CARROUSEL,
   DEFAULT_PERMANENT_GALLERY,
-  DEFAULT_IMAGE_LOAD_STRATEGY,
+  DEFAULT_MEDIA_LOAD_STRATEGY,
   DEFAULT_PREVENT_FULL_SCREEN,
   DEFAULT_EVENT_PREFIX,
   DEFAULT_REVERSE_360,
@@ -32,7 +32,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   infiniteCarrousel = DEFAULT_INFINITE_CARROUSEL,
   permanentGallery = DEFAULT_PERMANENT_GALLERY,
 
-  imageLoadStrategy = DEFAULT_IMAGE_LOAD_STRATEGY,
+  mediaLoadStrategy = DEFAULT_MEDIA_LOAD_STRATEGY,
 
   preventFullScreen = DEFAULT_PREVENT_FULL_SCREEN,
   eventPrefix = DEFAULT_EVENT_PREFIX,
@@ -144,7 +144,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
       {...{
         ...props,
         reverse360,
-        imageLoadStrategy,
+        mediaLoadStrategy,
         hideCategories,
         infiniteCarrousel,
         preventFullScreen,

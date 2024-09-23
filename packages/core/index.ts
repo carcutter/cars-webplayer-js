@@ -17,7 +17,7 @@ export {
   DEFAULT_HIDE_CATEGORIES,
   DEFAULT_INFINITE_CARROUSEL,
   DEFAULT_PERMANENT_GALLERY,
-  DEFAULT_IMAGE_LOAD_STRATEGY,
+  DEFAULT_MEDIA_LOAD_STRATEGY,
   DEFAULT_PREVENT_FULL_SCREEN,
   DEFAULT_EVENT_PREFIX,
   DEFAULT_REVERSE_360,
@@ -37,6 +37,6 @@ export type {
 
 export type {
   AspectRatio,
-  ImageWidth,
-  ImageLoadStrategy,
+  MediaWidth,
+  MediaLoadStrategy,
 } from "./src/types/misc";

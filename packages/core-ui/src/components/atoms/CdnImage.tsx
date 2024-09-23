@@ -39,9 +39,9 @@ const CdnImage: React.FC<CdnImageProps> = ({
   ...props
 }) => {
   const {
-    minImageWidth,
-    maxImageWidth,
-    imageLoadStrategy,
+    minMediaWidth,
+    maxMediaWidth,
+    mediaLoadStrategy,
     playerInViewportWidthRatio,
   } = useGlobalContext();
 
@@ -54,10 +54,10 @@ const CdnImage: React.FC<CdnImageProps> = ({
 
     // Filter out composition' widths that are not within the attribute constraints
     const usedImageWidths = imageWidths.filter(width => {
-      if (minImageWidth && width < minImageWidth) {
+      if (minMediaWidth && width < minMediaWidth) {
         return false;
       }
-      if (maxImageWidth && width > maxImageWidth) {
+      if (maxMediaWidth && width > maxMediaWidth) {
         return false;
       }
       return true;
@@ -81,7 +81,7 @@ const CdnImage: React.FC<CdnImageProps> = ({
       const viewportWidthMultiplier =
         1 / (imgInPlayerWidthRatio * playerInViewportWidthRatio);
 
-      switch (imageLoadStrategy) {
+      switch (mediaLoadStrategy) {
         case "quality": {
           const biggestWidth = usedImageWidths.pop();
 
@@ -135,11 +135,11 @@ const CdnImage: React.FC<CdnImageProps> = ({
     return [srcSetList.join(", "), sizesList.join(", ")];
   }, [
     imageHdWidth,
-    imageLoadStrategy,
+    mediaLoadStrategy,
     imageSubWidths,
     imgInPlayerWidthRatio,
-    maxImageWidth,
-    minImageWidth,
+    maxMediaWidth,
+    minMediaWidth,
     onlyThumbnail,
     playerInViewportWidthRatio,
     src,

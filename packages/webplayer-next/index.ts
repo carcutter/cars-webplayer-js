@@ -24,5 +24,5 @@ export {
   generateCompositionUrl,
   // - Types
   type Composition,
-  type ImageLoadStrategy,
+  type MediaLoadStrategy,
 } from "@car-cutter/core";

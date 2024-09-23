@@ -23,9 +23,9 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedStyles, {
     infiniteCarrousel: "boolean",
     permanentGallery: "boolean",
 
-    minImageWidth: "number",
-    maxImageWidth: "number",
-    imageLoadStrategy: "string",
+    minMediaWidth: "number",
+    maxMediaWidth: "number",
+    mediaLoadStrategy: "string",
 
     preventFullScreen: "boolean",
     eventPrefix: "string",

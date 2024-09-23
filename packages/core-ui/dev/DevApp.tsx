@@ -35,9 +35,9 @@ const DevApp: React.FC = () => {
           // hideCategories
           infiniteCarrousel
           permanentGallery
-          // imageLoadStrategy="speed"
-          // minImageWidth={300}
-          // maxImageWidth={1000}
+          // mediaLoadStrategy="speed"
+          // minMediaWidth={300}
+          // maxMediaWidth={1000}
           // preventFullScreen
           // eventPrefix="cc-event:"
           // reverse360

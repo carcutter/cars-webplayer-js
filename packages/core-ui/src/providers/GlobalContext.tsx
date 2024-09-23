@@ -8,12 +8,12 @@ type ProviderProps = Required<
     | "hideCategories"
     | "infiniteCarrousel"
     | "permanentGallery"
-    | "imageLoadStrategy"
+    | "mediaLoadStrategy"
     | "preventFullScreen"
     | "reverse360"
   >
 > &
-  Pick<WebPlayerProps, "minImageWidth" | "maxImageWidth"> & {
+  Pick<WebPlayerProps, "minMediaWidth" | "maxMediaWidth"> & {
     emitEvent: (name: string, detail?: unknown) => void;
 
     playerInViewportWidthRatio: number;

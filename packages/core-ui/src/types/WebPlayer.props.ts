@@ -1,4 +1,4 @@
-import type { ImageLoadStrategy, ImageWidth } from "@car-cutter/core";
+import type { MediaLoadStrategy, MediaWidth } from "@car-cutter/core";
 
 export type WebPlayerProps = {
   compositionUrl: string;
@@ -8,10 +8,10 @@ export type WebPlayerProps = {
   infiniteCarrousel?: boolean;
   permanentGallery?: boolean;
 
-  // Images loading
-  imageLoadStrategy?: ImageLoadStrategy;
-  minImageWidth?: ImageWidth;
-  maxImageWidth?: ImageWidth;
+  // Medias loading
+  mediaLoadStrategy?: MediaLoadStrategy;
+  minMediaWidth?: MediaWidth;
+  maxMediaWidth?: MediaWidth;
 
   // Miscelaneous
   preventFullScreen?: boolean;

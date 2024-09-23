@@ -113,11 +113,11 @@ Run `yarn publish:docs`
 | ------------------- | --------------------------------- | -------- | ----------------- | --------------------------------------------------------- |
 | `compositionUrl`    | `string`                          | ✅       | -                 | URL to the composition data                               |
 | `hideCategories`    | `boolean`                         |          | false             | Hide the category-based navigation                        |
-| `infiniteCarrousel` | `boolean`                         |          | false             | Allow to navigate from 1st to last image (and vice versa) |
+| `infiniteCarrousel` | `boolean`                         |          | false             | Allow to navigate from 1st to last media (and vice versa) |
 | `permanentGallery`  | `boolean`                         |          | false             | Display gallery under the carrousel                       |
-| `imageLoadStrategy` | `"quality"`/`"speed"`/`"closest"` |          | `"quality"`       | Strategy for loading images.                              |
-| `minImageWidth`     | `number`                          |          | -                 | Force minimum image width (in pixels)                     |
-| `maxImageWidth`     | `number`                          |          | -                 | Force maximum image width (in pixels)                     |
+| `mediaLoadStrategy` | `"quality"`/`"speed"`/`"closest"` |          | `"quality"`       | Strategy for loading medias.                              |
+| `minMediaWidth`     | `number`                          |          | -                 | Force minimum media width (in pixels)                     |
+| `maxMediaWidth`     | `number`                          |          | -                 | Force maximum media width (in pixels)                     |
 | `preventFullScreen` | `boolean`                         |          | false             | Whether to prevent full screen mode                       |
 | `eventPrefix`       | `string`                          |          | `"cc-webplayer:"` | Prefix of cc-player events                                |
 | `reverse360`        | `boolean`                         |          | false             | Reverse the 360-degree rotation                           |
@@ -142,7 +142,7 @@ You can customise the WebPlayer CSS with CSS Variables
 | `--cc-webplayer-neutral-foreground` | Foreground color for neutral items | `--cc-foreground` |
 | `--cc-webplayer-radius-ui`          | UI element Border radius (buttons) | `1rem`            |
 | `--cc-webplayer-radius-carrousel`   | Carrousel border radius            | `0`               |
-| `--cc-webplayer-radius-gallery`     | Gallery images border radius       | `0`               |
+| `--cc-webplayer-radius-gallery`     | Gallery medias border radius       | `0`               |
 
 ### More customisation
 

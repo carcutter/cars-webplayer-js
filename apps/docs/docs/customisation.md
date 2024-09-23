@@ -10,11 +10,11 @@ sidebar_position: 2
 | ------------------- | --------------------------------- | ----------------- | --------------------------------------------------------- |
 | `compositionUrl`    | `string`                          | ❌ Required       | URL to the composition data                               |
 | `hideCategories`    | `boolean`                         | `false`           | Hide the category-based navigation                        |
-| `infiniteCarrousel` | `boolean`                         | `false`           | Allow to navigate from 1st to last image (and vice versa) |
+| `infiniteCarrousel` | `boolean`                         | `false`           | Allow to navigate from 1st to last media (and vice versa) |
 | `permanentGallery`  | `boolean`                         | `false`           | Display gallery under the carrousel                       |
-| `imageLoadStrategy` | `"quality"`/`"speed"`/`"closest"` | `"quality"`       | Strategy for loading images.                              |
-| `minImageWidth`     | `number`                          | `0`               | Force minimum image width (in pixels)                     |
-| `maxImageWidth`     | `number`                          | `Infinity`        | Force maximum image width (in pixels)                     |
+| `mediaLoadStrategy` | `"quality"`/`"speed"`/`"closest"` | `"quality"`       | Strategy for loading medias.                              |
+| `minMediaWidth`     | `number`                          | `0`               | Force minimum media width (in pixels)                     |
+| `maxMediaWidth`     | `number`                          | `Infinity`        | Force maximum media width (in pixels)                     |
 | `preventFullScreen` | `boolean`                         | `false`           | Whether to prevent full screen mode                       |
 | `eventPrefix`       | `string`                          | `"cc-webplayer:"` | Prefix of cc-player events                                |
 | `reverse360`        | `boolean`                         | `false`           | Reverse the 360-degree rotation                           |
@@ -33,9 +33,9 @@ If you are using the WebComponent directly, you need to transform the props to H
 | `hideCategories`    | `hide-categories`     |
 | `infiniteCarrousel` | `infinite-carrousel`  |
 | `permanentGallery`  | `permanent-gallery`   |
-| `imageLoadStrategy` | `image-load-strategy` |
-| `minImageWidth`     | `min-image-width`     |
-| `maxImageWidth`     | `max-image-width`     |
+| `mediaLoadStrategy` | `media-load-strategy` |
+| `minMediaWidth`     | `min-media-width`     |
+| `maxMediaWidth`     | `max-media-width`     |
 | `preventFullScreen` | `prevent-full-screen` |
 | `eventPrefix`       | `event-prefix`        |
 | `reverse360`        | `reverse360`          |
@@ -55,7 +55,7 @@ You can customise the WebPlayer CSS with CSS Variables
 | `--cc-webplayer-neutral-foreground` | Foreground color for neutral items | `--cc-foreground` |
 | `--cc-webplayer-radius-ui`          | UI element Border radius (buttons) | `1rem`            |
 | `--cc-webplayer-radius-carrousel`   | Carrousel border radius            | `0`               |
-| `--cc-webplayer-radius-gallery`     | Gallery images border radius       | `0`               |
+| `--cc-webplayer-radius-gallery`     | Gallery medias border radius       | `0`               |
 
 ### Example
 
