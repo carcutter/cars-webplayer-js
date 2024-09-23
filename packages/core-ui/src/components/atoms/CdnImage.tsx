@@ -106,7 +106,7 @@ const CdnImage: React.FC<CdnImageProps> = ({
           sizesList.push(`${smallestWidth}px`);
           break;
         }
-        case "closest": {
+        case "balanced": {
           sizesList = [];
 
           for (let i = 0; i < usedImageWidths.length - 1; i++) {

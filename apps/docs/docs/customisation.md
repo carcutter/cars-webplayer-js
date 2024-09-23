@@ -6,19 +6,19 @@ sidebar_position: 2
 
 ## Props
 
-| Prop                | Type                              | Default           | Description                                               |
-| ------------------- | --------------------------------- | ----------------- | --------------------------------------------------------- |
-| `compositionUrl`    | `string`                          | ❌ Required       | URL to the composition data                               |
-| `hideCategories`    | `boolean`                         | `false`           | Hide the category-based navigation                        |
-| `infiniteCarrousel` | `boolean`                         | `false`           | Allow to navigate from 1st to last media (and vice versa) |
-| `permanentGallery`  | `boolean`                         | `false`           | Display gallery under the carrousel                       |
-| `mediaLoadStrategy` | `"quality"`/`"speed"`/`"closest"` | `"quality"`       | Strategy for loading medias.                              |
-| `minMediaWidth`     | `number`                          | `0`               | Force minimum media width (in pixels)                     |
-| `maxMediaWidth`     | `number`                          | `Infinity`        | Force maximum media width (in pixels)                     |
-| `preloadRange`      | `number`                          | `1`               | Number of medias to preload before & after the viewport   |
-| `preventFullScreen` | `boolean`                         | `false`           | Whether to prevent full screen mode                       |
-| `eventPrefix`       | `string`                          | `"cc-webplayer:"` | Prefix of cc-player events                                |
-| `reverse360`        | `boolean`                         | `false`           | Reverse the 360-degree rotation                           |
+| Prop                | Type                               | Default           | Description                                               |
+| ------------------- | ---------------------------------- | ----------------- | --------------------------------------------------------- |
+| `compositionUrl`    | `string`                           | ❌ Required       | URL to the composition data                               |
+| `hideCategories`    | `boolean`                          | `false`           | Hide the category-based navigation                        |
+| `infiniteCarrousel` | `boolean`                          | `false`           | Allow to navigate from 1st to last media (and vice versa) |
+| `permanentGallery`  | `boolean`                          | `false`           | Display gallery under the carrousel                       |
+| `mediaLoadStrategy` | `"quality"`/`"speed"`/`"balanced"` | `"quality"`       | Strategy for loading medias.                              |
+| `minMediaWidth`     | `number`                           | `0`               | Force minimum media width (in pixels)                     |
+| `maxMediaWidth`     | `number`                           | `Infinity`        | Force maximum media width (in pixels)                     |
+| `preloadRange`      | `number`                           | `1`               | Number of medias to preload before & after the viewport   |
+| `preventFullScreen` | `boolean`                          | `false`           | Whether to prevent full screen mode                       |
+| `eventPrefix`       | `string`                           | `"cc-webplayer:"` | Prefix of cc-player events                                |
+| `reverse360`        | `boolean`                          | `false`           | Reverse the 360-degree rotation                           |
 
 :::info
 
