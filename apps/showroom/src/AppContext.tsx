@@ -15,8 +15,10 @@ import { useSearchParam } from "./hooks/useSearchParam";
 type ContextType = {
   customer: string;
   setCustomer: (customer: string) => void;
+  isDefaultCustomer: boolean;
   id: string;
   setId: (id: string) => void;
+  isDefaultId: boolean;
 
   dealer: string;
   setDealer: (dealer: string) => void;
@@ -48,8 +50,11 @@ export const useAppContext = () => {
 const AppContextProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const [customer, setCustomer] = useSearchParam("customer", DEFAULT_CUSTOMER);
-  const [id, setId] = useSearchParam("id", DEFAULT_ID);
+  const [customer, setCustomer, isDefaultCustomer] = useSearchParam(
+    "customer",
+    DEFAULT_CUSTOMER
+  );
+  const [id, setId, isDefaultId] = useSearchParam("id", DEFAULT_ID);
 
   const [dealer, setDealer] = useSearchParam("dealer");
   const [product, setProduct] = useSearchParam("product");
@@ -71,8 +76,10 @@ const AppContextProvider: React.FC<React.PropsWithChildren> = ({
       value={{
         customer,
         setCustomer,
+        isDefaultCustomer,
         id,
         setId,
+        isDefaultId,
 
         dealer,
         setDealer,
