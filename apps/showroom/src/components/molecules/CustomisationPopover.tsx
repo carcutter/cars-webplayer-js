@@ -53,18 +53,20 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
                 <Label htmlFor="dealer">Dealer</Label>
                 <Input
                   id="dealer"
+                  className="col-span-2 h-8"
+                  placeholder="Enter the dealer name"
                   value={dealer}
                   onChange={e => setDealer(e.target.value)}
-                  className="col-span-2 h-8"
                 />
               </div>
               <div className="grid grid-cols-3 items-center gap-4">
                 <Label htmlFor="product">Product</Label>
                 <Input
                   id="product"
+                  className="col-span-2 h-8"
+                  placeholder="Enter the product name"
                   value={product}
                   onChange={e => setProduct(e.target.value)}
-                  className="col-span-2 h-8"
                 />
               </div>
             </div>
