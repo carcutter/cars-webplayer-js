@@ -1,6 +1,6 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useMemo } from "react";
 
-import { type Color } from "./const/color";
+import { isColor } from "./const/color";
 import {
   DEFAULT_COLOR,
   DEFAULT_CUSTOMER,
@@ -11,6 +11,7 @@ import {
 } from "./const/default";
 import { type Radius } from "./const/radius";
 import { useSearchParam } from "./hooks/useSearchParam";
+import { hexToHSL } from "./utils/style";
 
 type ContextType = {
   customer: string;
@@ -29,8 +30,11 @@ type ContextType = {
   setPermanentGallery: (permanentGallery: boolean) => void;
   hideCategories: boolean;
   setHideCategories: (hideCategories: boolean) => void;
-  color: Color;
-  setColor: (color: Color) => void;
+
+  color: string;
+  setColor: (color: string) => void;
+  customColorStyle: React.CSSProperties | undefined;
+
   radius: Radius;
   setRadius: (radius: Radius) => void;
 };
@@ -68,7 +72,21 @@ const AppContextProvider: React.FC<React.PropsWithChildren> = ({
     DEFAULT_HIDE_CATEGORIES
   );
 
-  const [color, setColor] = useSearchParam("color", DEFAULT_COLOR);
+  const [color, setColor] = useSearchParam<string>("color", DEFAULT_COLOR);
+  const customColorStyle = useMemo(() => {
+    const isCustomColor = !isColor(color);
+
+    if (!isCustomColor) {
+      return undefined;
+    }
+
+    const hsl = hexToHSL(color);
+
+    const cssColor = `${hsl.h}, ${hsl.s}%, ${hsl.l}%`;
+
+    return { "--primary": cssColor } as React.CSSProperties;
+  }, [color]);
+
   const [radius, setRadius] = useSearchParam("radius", DEFAULT_RADIUS);
 
   return (
@@ -93,6 +111,8 @@ const AppContextProvider: React.FC<React.PropsWithChildren> = ({
 
         color,
         setColor,
+        customColorStyle,
+
         radius,
         setRadius,
       }}

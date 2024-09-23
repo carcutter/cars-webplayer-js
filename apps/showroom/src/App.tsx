@@ -9,7 +9,7 @@ import AppContextProvider, { useAppContext } from "./AppContext";
 import CompositionUpdatePopover from "./components/molecules/CompositionUpdatePopover";
 import CustomisationPopover from "./components/molecules/CustomisationPopover";
 import { Button } from "./components/ui/Button";
-import { colorToClassName } from "./const/color";
+import { colorToClassName, isColor } from "./const/color";
 import { radiusToClassName } from "./const/radius";
 import { cn } from "./utils/style";
 
@@ -33,7 +33,10 @@ const AppContent: React.FC = () => {
 
     permanentGallery,
     hideCategories,
+
     color,
+    customColorStyle,
+
     radius,
   } = useAppContext();
 
@@ -43,9 +46,10 @@ const AppContent: React.FC = () => {
     <div
       className={cn(
         "mx-auto flex min-h-screen max-w-3xl flex-col justify-center gap-y-4 p-1.5 sm:p-2",
-        colorToClassName(color),
+        isColor(color) && colorToClassName(color),
         radiusToClassName(radius)
       )}
+      style={customColorStyle}
     >
       <header className="flex flex-1 items-center justify-between gap-y-2">
         <div className="space-y-2">

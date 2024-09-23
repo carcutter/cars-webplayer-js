@@ -4,10 +4,13 @@ export const COLOR_LIST = [
   "green",
   "gray",
   "yellow",
-  "orange",
+  // "orange",
 ] as const;
 
 export type Color = (typeof COLOR_LIST)[number];
+
+export const isColor = (color: string): color is Color =>
+  COLOR_LIST.includes(color as Color);
 
 const colorsInfos: Record<
   Color,
@@ -17,7 +20,7 @@ const colorsInfos: Record<
   green: { pretty: "Green", className: "ui-green" },
   yellow: { pretty: "Yellow", className: "ui-yellow" },
   black: { pretty: "Black", className: "ui-black" },
-  orange: { pretty: "Orange", className: "ui-orange" },
+  // orange: { pretty: "Orange", className: "ui-orange" },
   gray: { pretty: "Gray", className: "ui-gray" },
 };
 

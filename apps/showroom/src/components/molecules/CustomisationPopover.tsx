@@ -3,7 +3,7 @@ import { COLOR_LIST, colorToClassName, colorToPretty } from "../../const/color";
 import { RADIUS_LIST, radiusToClassName } from "../../const/radius";
 import { cn } from "../../utils/style";
 import CopyLinkButton from "../atoms/CopyLinkButton";
-import { Button } from "../ui/Button";
+import { Button, getButtonClassName } from "../ui/Button";
 import { Checkbox } from "../ui/Checkbox";
 import { Input } from "../ui/Input";
 import { Label } from "../ui/Label";
@@ -25,9 +25,13 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
 
     color,
     setColor,
+    customColorStyle,
+
     radius,
     setRadius,
   } = useAppContext();
+
+  const isCustomColor = !!customColorStyle;
 
   return (
     <Popover>
@@ -134,6 +138,31 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
                     <span>{colorToPretty(btnColor)}</span>
                   </Button>
                 ))}
+
+                <label
+                  className={cn(
+                    getButtonClassName({
+                      variant: "outline",
+                      color: "foreground",
+                      size: "sm",
+                    }),
+                    "w-full cursor-pointer border-border",
+                    isCustomColor && "border-foreground ring-1 ring-foreground"
+                  )}
+                >
+                  <input
+                    className="sr-only"
+                    type="color"
+                    value={color}
+                    onChange={e => setColor(e.target.value)}
+                  />
+
+                  <div
+                    className="size-3 rounded-full bg-primary"
+                    style={customColorStyle}
+                  />
+                  <span> Custom </span>
+                </label>
               </div>
             </div>
 

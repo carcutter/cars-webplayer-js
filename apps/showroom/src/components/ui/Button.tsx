@@ -33,28 +33,32 @@ const sizeClassNames: Record<Size, string> = {
   md: "h-8 px-2 text-sm sm:h-10 sm:px-4 sm:text-base rounded-ui-md",
 };
 
+const getButtonClassName = ({
+  variant = "fill",
+  size = "md",
+  color = "primary",
+}: ButtonProps) => {
+  const baseClassName =
+    "flex items-center justify-center gap-x-1.5 transition-all disabled:opacity-60 sm:gap-x-2";
+  const coloredVariantClassName = coloredVariantClassNames[variant][color];
+  const sizeClassName = sizeClassNames[size];
+
+  return cn(baseClassName, coloredVariantClassName, sizeClassName);
+};
+
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    { className, variant = "fill", color = "primary", size = "md", ...props },
-    ref
-  ) => {
-    const coloredVariantClassName = coloredVariantClassNames[variant][color];
-    const sizeClassName = sizeClassNames[size];
+  ({ className, variant, size, color, ...props }, ref) => {
+    const buttonClassName = getButtonClassName({
+      variant,
+      size,
+      color,
+    });
 
     return (
-      <button
-        ref={ref}
-        className={cn(
-          "flex items-center justify-center gap-x-1.5 transition-all disabled:opacity-60 sm:gap-x-2",
-          coloredVariantClassName,
-          sizeClassName,
-          className
-        )}
-        {...props}
-      />
+      <button ref={ref} className={cn(buttonClassName, className)} {...props} />
     );
   }
 );
 Button.displayName = "Button";
 
-export { Button };
+export { Button, getButtonClassName };
