@@ -6,12 +6,14 @@ import {
   EVENT_COMPOSITION_LOADING,
   EVENT_COMPOSITION_LOADED,
   EVENT_COMPOSITION_LOAD_ERROR,
+  EVENT_ITEM_CHANGE,
   EVENT_EXTEND_MODE_ON,
   EVENT_EXTEND_MODE_OFF,
   EVENT_HOTSPOTS_ON,
   EVENT_HOTSPOTS_OFF,
   EVENT_GALLERY_OPEN,
   EVENT_GALLERY_CLOSE,
+  type Item,
   type Composition,
 } from "@car-cutter/core";
 import { type WebPlayerProps } from "@car-cutter/core-ui";
@@ -22,6 +24,7 @@ export type WebPlayerEvents = {
   compositionLoading: [url: string];
   compositionLoaded: [composition: Composition];
   compositionLoadError: [error: unknown];
+  itemChange: [props: { index: number; item: Item }];
   extendModeOn: [];
   extendModeOff: [];
   hotspotsOn: [];
@@ -46,6 +49,8 @@ const eventListenerMap = {
     emit("compositionLoaded", composition),
   [EVENT_COMPOSITION_LOAD_ERROR]: (error: unknown) =>
     emit("compositionLoadError", error),
+  [EVENT_ITEM_CHANGE]: (props: { index: number; item: Item }) =>
+    emit("itemChange", props),
   [EVENT_EXTEND_MODE_ON]: () => emit("extendModeOn"),
   [EVENT_EXTEND_MODE_OFF]: () => emit("extendModeOff"),
   [EVENT_HOTSPOTS_ON]: () => emit("hotspotsOn"),

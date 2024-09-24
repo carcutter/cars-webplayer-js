@@ -8,6 +8,7 @@ import {
 } from "react";
 
 import {
+  EVENT_ITEM_CHANGE,
   EVENT_EXTEND_MODE_OFF,
   EVENT_EXTEND_MODE_ON,
   EVENT_GALLERY_CLOSE,
@@ -197,6 +198,13 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     },
     [carrouselItemIndex, itemInteractionList]
   );
+
+  useEffect(() => {
+    emitEvent(EVENT_ITEM_CHANGE, {
+      index: masterItemIndex,
+      item: currentItem,
+    });
+  }, [currentItem, emitEvent, masterItemIndex]);
 
   // -- Categories
   const displayedCategoryId = useMemo(() => {

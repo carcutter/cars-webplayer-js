@@ -14,6 +14,7 @@ export {
   EVENT_COMPOSITION_LOADING,
   EVENT_COMPOSITION_LOADED,
   EVENT_COMPOSITION_LOAD_ERROR,
+  EVENT_ITEM_CHANGE,
   EVENT_EXTEND_MODE_ON,
   EVENT_EXTEND_MODE_OFF,
   EVENT_HOTSPOTS_ON,
@@ -23,6 +24,7 @@ export {
   // - Utils
   generateCompositionUrl,
   // - Types
+  type Item,
   type Composition,
   type MediaLoadStrategy,
 } from "@car-cutter/wc-webplayer";

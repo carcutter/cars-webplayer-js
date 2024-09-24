@@ -5,12 +5,14 @@ import {
   EVENT_COMPOSITION_LOADING,
   EVENT_COMPOSITION_LOADED,
   EVENT_COMPOSITION_LOAD_ERROR,
+  EVENT_ITEM_CHANGE,
   EVENT_EXTEND_MODE_ON,
   EVENT_EXTEND_MODE_OFF,
   EVENT_HOTSPOTS_ON,
   EVENT_HOTSPOTS_OFF,
   EVENT_GALLERY_OPEN,
   EVENT_GALLERY_CLOSE,
+  type Item,
   type Composition,
 } from "@car-cutter/core";
 import { type WebPlayerProps as WebPlayerPropsWC } from "@car-cutter/core-ui";
@@ -25,6 +27,7 @@ export type WebPlayerProps = WebPlayerPropsWC & {
   onCompositionLoading?: (url: string) => void;
   onCompositionLoaded?: (composition: Composition) => void;
   onCompositionLoadError?: (error: unknown) => void;
+  onItemChange?: (props: { index: number; item: Item }) => void;
   onExtendModeOn?: () => void;
   onExtendModeOff?: () => void;
   onHotspotsOn?: () => void;
@@ -37,6 +40,7 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
   onCompositionLoading,
   onCompositionLoaded,
   onCompositionLoadError,
+  onItemChange,
   onExtendModeOn,
   onExtendModeOff,
   onHotspotsOn,
@@ -56,6 +60,7 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
       [EVENT_COMPOSITION_LOADING]: onCompositionLoading,
       [EVENT_COMPOSITION_LOADED]: onCompositionLoaded,
       [EVENT_COMPOSITION_LOAD_ERROR]: onCompositionLoadError,
+      [EVENT_ITEM_CHANGE]: onItemChange,
       [EVENT_EXTEND_MODE_ON]: onExtendModeOn,
       [EVENT_EXTEND_MODE_OFF]: onExtendModeOff,
       [EVENT_HOTSPOTS_ON]: onHotspotsOn,
@@ -91,6 +96,7 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
     onCompositionLoading,
     onCompositionLoaded,
     onCompositionLoadError,
+    onItemChange,
     onExtendModeOn,
     onExtendModeOff,
     onHotspotsOn,
