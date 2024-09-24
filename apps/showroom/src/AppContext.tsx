@@ -82,7 +82,7 @@ const AppContextProvider: React.FC<React.PropsWithChildren> = ({
 
     const hsl = hexToHSL(color);
 
-    const cssColor = `${hsl.h}, ${hsl.s}%, ${hsl.l}%`;
+    const cssColor = `${hsl.h} ${hsl.s}% ${hsl.l}%`;
 
     return { "--primary": cssColor } as React.CSSProperties;
   }, [color]);
