@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/react-webplayer",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "license": "UNLICENSED",
   "author": {
     "name": "CarCutter",
@@ -34,7 +34,7 @@
   "devDependencies": {
     "@car-cutter/core": "0.7.0",
     "@car-cutter/core-ui": "0.7.0",
-    "@car-cutter/core-wc": "0.7.0",
+    "@car-cutter/core-wc": "0.7.1",
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
     "@vitejs/plugin-react": "^4.3.1",
