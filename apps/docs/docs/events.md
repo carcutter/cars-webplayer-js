@@ -10,39 +10,43 @@ The `WebPlayer` component provides several callback functions that can be used t
 
 ### Available Callbacks
 
-- `onCompositionLoading?: (url: string) => void;`
+- `onCompositionLoading: (url: string) => void;`
 
   - Triggered when the composition is loading.
 
-- `onCompositionLoaded?: (composition: Composition) => void;`
+- `onCompositionLoaded: (composition: Composition) => void;`
 
   - Triggered when the composition has successfully loaded.
 
-- `onCompositionLoadError?: (error: unknown) => void;`
+- `onCompositionLoadError: (error: unknown) => void;`
 
   - Triggered when there is an error loading the composition.
 
-- `onExtendModeOn?: () => void;`
+- `onItemChange: (props: { index: number; item: Item }) => void;`
+
+  - Triggered when there is on a carrousel focus changed.
+
+- `onExtendModeOn: () => void;`
 
   - Triggered when the extend mode is turned on.
 
-- `onExtendModeOff?: () => void;`
+- `onExtendModeOff: () => void;`
 
   - Triggered when the extend mode is turned off.
 
-- `onHotspotsOn?: () => void;`
+- `onHotspotsOn: () => void;`
 
   - Triggered when hotspots are turned on.
 
-- `onHotspotsOff?: () => void;`
+- `onHotspotsOff: () => void;`
 
   - Triggered when hotspots are turned off.
 
-- `onGalleryOpen?: () => void;`
+- `onGalleryOpen: () => void;`
 
   - Triggered when the gallery is opened.
 
-- `onGalleryClose?: () => void;`
+- `onGalleryClose: () => void;`
   - Triggered when the gallery is closed.
 
 ### Example Usage with React
@@ -92,6 +96,7 @@ The default prefix for all WebPlayer events is `"cc-webplayer:"`. This prefix he
 | `"composition-loading"`    | `EVENT_COMPOSITION_LOADING`    |
 | `"composition-loaded"`     | `EVENT_COMPOSITION_LOADED`     |
 | `"composition-load-error"` | `EVENT_COMPOSITION_LOAD_ERROR` |
+| `"item-change"`            | `EVENT_ITEM_CHANGE`            |
 | `"extend-mode-on"`         | `EVENT_EXTEND_MODE_ON`         |
 | `"extend-mode-off"`        | `EVENT_EXTEND_MODE_OFF`        |
 | `"hotspots-on"`            | `EVENT_HOTSPOTS_ON`            |
