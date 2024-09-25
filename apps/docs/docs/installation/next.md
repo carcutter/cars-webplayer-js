@@ -30,15 +30,14 @@ export default function Home() {
   return (
     <main>
       <h1>Next App</h1>
-      <div style={{ maxWidth: "800px", marginInline: "auto" }}>
-        // highlight-start
-        <WebPlayer
-          compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
-          infiniteCarrousel
-          onCompositionLoaded={() => console.log("Composition loaded")}
-        />
-        // highlight-end
-      </div>
+      // highlight-start
+      <WebPlayer
+        style={{ maxWidth: "800px", marginInline: "auto", marginTop: "16px" }}
+        compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
+        infiniteCarrousel
+        onCompositionLoaded={() => console.log("Composition loaded")}
+      />
+      // highlight-end
     </main>
   );
 }

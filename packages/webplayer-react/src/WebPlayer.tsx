@@ -1,4 +1,4 @@
-import { useEffect, type FC as ReactFC } from "react";
+import { useMemo, useEffect, type FC as ReactFC } from "react";
 
 import {
   DEFAULT_EVENT_PREFIX,
@@ -34,7 +34,7 @@ export type WebPlayerProps = WebPlayerPropsWC & {
   onHotspotsOff?: () => void;
   onGalleryOpen?: () => void;
   onGalleryClose?: () => void;
-};
+} & Pick<React.HTMLAttributes<HTMLElement>, "className" | "style">;
 
 const WebPlayer: ReactFC<WebPlayerProps> = ({
   onCompositionLoading,
@@ -47,9 +47,20 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
   onHotspotsOff,
   onGalleryOpen,
   onGalleryClose,
+  className,
+  style = {},
   ...props
 }) => {
-  const attributes = webPlayerPropsToAttributes(props);
+  const attributes = useMemo(() => {
+    const wcAttributes = webPlayerPropsToAttributes(props);
+
+    // Add "class" as r2wc does not support camelCase props
+    if (className) {
+      Object.assign(wcAttributes, { class: className });
+    }
+
+    return wcAttributes;
+  }, [className, props]);
 
   useEffect(() => {
     const eventPrefix = props.eventPrefix ?? DEFAULT_EVENT_PREFIX;
@@ -105,8 +116,13 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
     onGalleryClose,
   ]);
 
-  // @ts-expect-error: [TODO] Should define into JSX.IntrinsicElements
-  return <cc-webplayer {...attributes} />;
+  return (
+    // NOTE: Custom element are "display: inline" by default.
+    // Style is there so that React can do its thing
+    // TODO Should define into JSX.IntrinsicElements.
+    // @ts-expect-error: Custom element
+    <cc-webplayer style={{ display: "block", ...style }} {...attributes} />
+  );
 };
 
 export default WebPlayer;

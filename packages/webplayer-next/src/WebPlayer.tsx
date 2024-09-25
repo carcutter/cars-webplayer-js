@@ -31,7 +31,7 @@ export type WebPlayerProps = WebPlayerPropsWC & {
   onHotspotsOff?: () => void;
   onGalleryOpen?: () => void;
   onGalleryClose?: () => void;
-};
+} & Pick<React.HTMLAttributes<HTMLElement>, "className" | "style">;
 
 const WebPlayer: ReactFC<WebPlayerProps> = ({
   onCompositionLoading,
@@ -44,6 +44,8 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
   onHotspotsOff,
   onGalleryOpen,
   onGalleryClose,
+  className,
+  style = {},
   ...props
 }) => {
   const [attributes, setAttributes] = useState<WebPlayerAttributes>();
@@ -57,9 +59,13 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
       ensureCustomElementsDefinition();
 
       // NOTE: Cannot be used in the top level of a module because of the dynamic import
-      setAttributes(webPlayerPropsToAttributes(props));
+      const wcAttributes = webPlayerPropsToAttributes(props);
+      if (className) {
+        Object.assign(wcAttributes, { class: className });
+      }
+      setAttributes(wcAttributes);
     })();
-  }, [props]);
+  }, [className, props]);
 
   // Listen to WebPlayer events
   useEffect(() => {
@@ -120,8 +126,13 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
     return null;
   }
 
-  // @ts-expect-error: [TODO] Should define into JSX.IntrinsicElements
-  return <cc-webplayer {...attributes} />;
+  return (
+    // NOTE: Custom element are "display: inline" by default.
+    // Style is there so that React can do its thing
+    // TODO Should define into JSX.IntrinsicElements.
+    // @ts-expect-error: Custom element
+    <cc-webplayer style={{ display: "block", ...style }} {...attributes} />
+  );
 };
 
 export default WebPlayer;

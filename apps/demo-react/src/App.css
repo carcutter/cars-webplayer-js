@@ -55,8 +55,7 @@ main {
   gap: 1rem;
 }
 
-.main__left {
-  min-width: 0;
+.main__webplayer {
   flex: 7;
 
   padding-inline: 0.5rem;

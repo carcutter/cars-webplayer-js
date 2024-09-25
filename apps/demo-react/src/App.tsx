@@ -22,16 +22,15 @@ const App = () => {
       </header>
 
       <main className="main">
-        <div className="main__left">
-          <WebPlayer
-            compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
-            infiniteCarrousel
-            onCompositionLoaded={composition =>
-              // eslint-disable-next-line no-console
-              console.log("Composition loaded !", composition)
-            }
-          />
-        </div>
+        <WebPlayer
+          className="main__webplayer"
+          compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
+          infiniteCarrousel
+          onCompositionLoaded={composition =>
+            // eslint-disable-next-line no-console
+            console.log("Composition loaded !", composition)
+          }
+        />
 
         <div className="main__right">
           <div>
