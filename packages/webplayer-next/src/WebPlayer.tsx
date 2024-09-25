@@ -126,11 +126,8 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
     return null;
   }
 
+  // NOTE: Custom element are "display: inline" by default + Style is there so that React can do its thing
   return (
-    // NOTE: Custom element are "display: inline" by default.
-    // Style is there so that React can do its thing
-    // TODO Should define into JSX.IntrinsicElements.
-    // @ts-expect-error: Custom element
     <cc-webplayer style={{ display: "block", ...style }} {...attributes} />
   );
 };
