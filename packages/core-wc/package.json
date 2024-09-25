@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/core-wc",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
@@ -13,8 +13,8 @@
     "analyze": "vite-bundle-visualizer"
   },
   "dependencies": {
-    "@car-cutter/core": "0.6.0",
-    "@car-cutter/core-ui": "0.6.1",
+    "@car-cutter/core": "0.7.0",
+    "@car-cutter/core-ui": "0.7.0",
     "@r2wc/react-to-web-component": "^2.0.3"
   },
   "peerDependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/script-webplayer",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
@@ -13,7 +13,7 @@
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
-    "@car-cutter/wc-webplayer": "0.6.1",
+    "@car-cutter/wc-webplayer": "0.7.0",
     "browserslist": "^4.23.3",
     "browserslist-to-esbuild": "^2.1.1",
     "typescript": "^5.5.4",
