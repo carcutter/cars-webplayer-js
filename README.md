@@ -124,7 +124,7 @@ Run `yarn publish:docs`
 | `reverse360`        | `boolean`                          | `false`           | Reverse the 360-degree rotation                           |
 
 _NOTE: If you are using the WebComponent directly, you need to transform the props to HTML attributes
-(which are in kebab case and take `string` as value type)_
+(which are in dashed-case and take `string` as value type)_
 
 ### Customisation
 

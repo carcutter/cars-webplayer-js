@@ -3,7 +3,7 @@ import r2wc from "@r2wc/react-to-web-component";
 import { WebPlayer, type WebPlayerProps } from "@car-cutter/core-ui";
 import styles from "@car-cutter/core-ui/dist/style.css?inline";
 
-import { CamelToKebab, propsToAttributes } from "./utils";
+import { type PropsToAttributes, propsToAttributes } from "./utils";
 
 const WebPlayerWithInjectedStyles: React.FC<WebPlayerProps> = props => {
   return (
@@ -33,12 +33,10 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedStyles, {
   },
 });
 
-export type WebPlayerAttributes = Record<
-  CamelToKebab<keyof WebPlayerProps>,
-  string
->;
+export type WebPlayerAttributes = PropsToAttributes<WebPlayerProps>;
 
-export const webPlayerPropsToAttributes = (props: WebPlayerProps) =>
-  propsToAttributes(props) as WebPlayerAttributes;
+export const webPlayerPropsToAttributes = (
+  props: WebPlayerProps
+): WebPlayerAttributes => propsToAttributes(props);
 
 export default WebPlayerWebComponent;
