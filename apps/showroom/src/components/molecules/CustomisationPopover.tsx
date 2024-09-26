@@ -38,6 +38,9 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
       <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent
         className="w-72 sm:w-80"
+        side="right"
+        sideOffset={16}
+        align="start"
         onOpenAutoFocus={e => e.preventDefault()}
       >
         <div className="space-y-6">
