@@ -34,6 +34,7 @@ const AppContent: React.FC = () => {
 
     permanentGallery,
     hideCategories,
+    withCustomMedias,
 
     color,
     customColorStyle,
@@ -79,15 +80,19 @@ const AppContent: React.FC = () => {
           permanentGallery={permanentGallery}
           hideCategories={hideCategories}
         >
-          <WebPlayerCustomMedia
-            index={4}
-            thumbnailSrc="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_thumbnail_audi.png"
-          >
-            <img src="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_image_1.jpg" />
-          </WebPlayerCustomMedia>
-          <WebPlayerCustomMedia index={-2}>
-            <img src="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_image_2.jpg" />
-          </WebPlayerCustomMedia>
+          {withCustomMedias && (
+            <>
+              <WebPlayerCustomMedia
+                index={4}
+                thumbnailSrc="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_thumbnail_audi.png"
+              >
+                <img src="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_image_1.jpg" />
+              </WebPlayerCustomMedia>
+              <WebPlayerCustomMedia index={-2}>
+                <img src="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_image_2.jpg" />
+              </WebPlayerCustomMedia>
+            </>
+          )}
         </WebPlayer>
       </main>
       <footer className="flex-[2] self-center">

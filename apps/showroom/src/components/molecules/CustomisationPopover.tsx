@@ -22,6 +22,8 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
     setPermanentGallery,
     hideCategories,
     setHideCategories,
+    withCustomMedias,
+    setWithCustomMedias,
 
     color,
     setColor,
@@ -104,7 +106,7 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
                   Fixed Gallery
                 </Label>
 
-                {/* HideCategories */}
+                {/* Hide Categories */}
                 <Checkbox
                   id="hideCategories"
                   checked={!hideCategories}
@@ -113,6 +115,16 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
                   }
                 />
                 <Label htmlFor="hideCategories">Categories</Label>
+
+                {/* Custom Medias */}
+                <Checkbox
+                  id="withCustomMedias"
+                  checked={withCustomMedias}
+                  onCheckedChange={checked =>
+                    setWithCustomMedias(checked === true)
+                  }
+                />
+                <Label htmlFor="withCustomMedias">Custom Medias</Label>
               </div>
             </div>
 
