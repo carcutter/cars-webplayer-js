@@ -12,23 +12,23 @@ import { WebPlayerIconProps } from "./types/WebPlayerIcon.props";
 
 const WebPlayerIconReact: ReactFC<
   ReactPropsWithChildren<WebPlayerIconProps>
-> = ({ name, color, children: Icon }) => {
-  const { setIconConfig, resetIconConfig } = useCustomizationContext();
+> = ({ name, children: Icon }) => {
+  const { registerIconConfig, unregisterIconConfig } =
+    useCustomizationContext();
 
   useEffect(() => {
-    if (!Icon && !color) {
+    if (!Icon) {
       return;
     }
 
-    setIconConfig(name, {
+    registerIconConfig(name, {
       Icon,
-      color,
     });
 
     return () => {
-      resetIconConfig(name);
+      unregisterIconConfig(name);
     };
-  }, [Icon, color, name, resetIconConfig, setIconConfig]);
+  }, [Icon, name, registerIconConfig, unregisterIconConfig]);
 
   return null;
 };

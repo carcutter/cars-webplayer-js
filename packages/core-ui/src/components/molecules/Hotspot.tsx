@@ -56,8 +56,6 @@ const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
       <div
         // Hoverable icon
         className="relative flex items-center justify-center rounded-full border-2 border-background bg-primary text-primary-foreground"
-        // Override the background color with the one from the config if available
-        style={{ backgroundColor: hotspotConfig?.color }}
       >
         <div
           // Ping animation
@@ -65,11 +63,13 @@ const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
         />
 
         {/* Use the icon from the config if available. Else, replace it if needed */}
-        {hotspotConfig?.Icon ? (
-          <div className="size-5">{hotspotConfig.Icon}</div>
-        ) : (
-          <div className="p-1">{DefaultIcon}</div>
-        )}
+        <div className="p-1">
+          {hotspotConfig?.Icon ? (
+            <div className="size-4">{hotspotConfig.Icon}</div>
+          ) : (
+            DefaultIcon
+          )}
+        </div>
       </div>
       {!withImage && withText && (
         <div

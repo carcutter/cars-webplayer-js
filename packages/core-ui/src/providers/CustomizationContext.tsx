@@ -13,24 +13,22 @@ import {
 } from "@car-cutter/core";
 
 import { CustomMedia } from "../types/customisable_item";
+import { WebPlayerIconProps } from "../types/WebPlayerIcon.props";
 
 import { useGlobalContext } from "./GlobalContext";
 
-type IconConfig = {
+type IconConfig = Omit<WebPlayerIconProps, "name"> & {
   Icon: React.ReactNode;
-  color: string;
 };
 
 type CustomMediaWithId = CustomMedia & {
   id: string;
 };
 
-type PartialIconConfig = Partial<IconConfig>;
-
 type ContextType = {
-  getIconConfig: (key: string) => PartialIconConfig | undefined;
-  setIconConfig: (key: string, iconConfig: PartialIconConfig) => void;
-  resetIconConfig: (key: string) => void;
+  getIconConfig: (name: string) => IconConfig | undefined;
+  registerIconConfig: (name: string, iconConfig: IconConfig) => void;
+  unregisterIconConfig: (name: string) => void;
 
   customMediaList: CustomMediaWithId[];
   registerCustomMedia: (customMedia: CustomMedia) => CustomMediaWithId["id"];
@@ -55,8 +53,8 @@ export const useCustomizationContext = () => {
   return ctx;
 };
 
-// Make sure images are taking the whole space
-const CUSTOM_MEDIA_WRAPPER_CLASS = "*:object-cover *:size-full";
+const ICON_WRAPPER_CLASS = "*:size-full";
+const CUSTOM_MEDIA_WRAPPER_CLASS = "*:object-cover *:size-full"; // Make sure images are taking the whole space
 
 type ProviderProps = {
   //
@@ -67,63 +65,6 @@ const CustomizationContextProvider: React.FC<
 > = ({ children }) => {
   const { compositionUrl } = useGlobalContext();
 
-  // -- Icon
-
-  const [iconConfigMap, setIconConfigMap] = useState(
-    new Map<string, PartialIconConfig>()
-  );
-
-  // HACK: find a way to make it less hacky. Maybe with React Portals? https://github.com/bitovi/react-to-web-component/issues/106
-  const getIconConfig = useCallback(
-    (key: string) => {
-      // Check if the key is already in the map (CASE WHEN USING REACT)
-      const ctxConfig = iconConfigMap.get(key);
-      if (ctxConfig) {
-        return ctxConfig;
-      }
-
-      // Check if the key has been customized in the DOM (CASE WHEN USING WEB COMPONENTS)
-      const domElement = document.querySelector(
-        `${WEB_PLAYER_ICON_WC_TAG}[name="${key}"]`
-      );
-
-      if (!domElement) {
-        return;
-      }
-
-      const color = domElement.getAttribute("color") ?? undefined;
-      const iconHTML = domElement.innerHTML;
-      const Icon = iconHTML ? (
-        <div
-          className="size-full"
-          dangerouslySetInnerHTML={{ __html: iconHTML }}
-        />
-      ) : undefined;
-
-      if (!color && !Icon) {
-        return;
-      }
-
-      return { Icon, color };
-    },
-    [iconConfigMap]
-  );
-
-  // - Set & Reset are only used when using React because the Web Component Icon cannot access the context
-  const setIconConfig = useCallback(
-    (key: string, iconConfig: PartialIconConfig) => {
-      setIconConfigMap(currentMap => new Map(currentMap.set(key, iconConfig)));
-    },
-    []
-  );
-  const resetIconConfig = useCallback((key: string) => {
-    setIconConfigMap(currentMap => {
-      currentMap.delete(key);
-      return new Map(currentMap);
-    });
-  }, []);
-
-  // -- Custom Media
   const queryWebPlayerElement = useCallback(
     () =>
       document.querySelector(
@@ -132,6 +73,104 @@ const CustomizationContextProvider: React.FC<
     [compositionUrl]
   );
 
+  // -- Icon
+  const extractIconsFromElement = useCallback((element: Element) => {
+    const iconElements = element.querySelectorAll(WEB_PLAYER_ICON_WC_TAG);
+
+    const map = new Map<WebPlayerIconProps["name"], IconConfig>();
+
+    for (const iconElement of iconElements) {
+      const name = iconElement.getAttribute("name");
+
+      if (!name) {
+        // eslint-disable-next-line no-console
+        console.warn("Icon element is missing a name attribute");
+        continue;
+      }
+
+      const iconHTML = iconElement.innerHTML;
+      const Icon = iconHTML ? (
+        <div
+          className={ICON_WRAPPER_CLASS}
+          dangerouslySetInnerHTML={{ __html: iconHTML }}
+        />
+      ) : undefined;
+
+      if (!Icon) {
+        // eslint-disable-next-line no-console
+        console.warn(`Icon "${name}" customization is empty.`);
+        continue;
+      }
+
+      map.set(name, { Icon });
+    }
+
+    return map;
+  }, []);
+
+  const [iconConfigMap, setIconConfigMap] = useState<Map<string, IconConfig>>(
+    () => {
+      const webPlayerElement = queryWebPlayerElement();
+
+      // Check if the element does not exist in the DOM (CASE WHEN USING REACT)
+      if (!webPlayerElement) {
+        return new Map();
+      }
+
+      return extractIconsFromElement(webPlayerElement);
+    }
+  );
+
+  // Update icons when the DOM changes
+  useEffect(() => {
+    const webPlayerElement = queryWebPlayerElement();
+
+    // Check if the element does not exist in the DOM (CASE WHEN USING REACT)
+    if (!webPlayerElement) {
+      return;
+    }
+
+    const observer = new MutationObserver(() => {
+      setIconConfigMap(extractIconsFromElement(webPlayerElement));
+    });
+
+    observer.observe(webPlayerElement, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => observer.disconnect();
+  }, [extractIconsFromElement, queryWebPlayerElement]);
+
+  const getIconConfig = useCallback(
+    (key: string) => iconConfigMap.get(key),
+    [iconConfigMap]
+  );
+
+  // - Set & Reset are only used when using React because the Web Component Icon cannot access the context
+  const registerIconConfig = useCallback(
+    (key: string, iconConfig: IconConfig) => {
+      setIconConfigMap(currentMap => {
+        const { Icon, ...config } = iconConfig;
+
+        return new Map(
+          currentMap.set(key, {
+            ...config,
+            Icon: <div className={ICON_WRAPPER_CLASS}>{Icon}</div>,
+          })
+        );
+      });
+    },
+    []
+  );
+  const unregisterIconConfig = useCallback((key: string) => {
+    setIconConfigMap(currentMap => {
+      currentMap.delete(key);
+      return new Map(currentMap);
+    });
+  }, []);
+
+  // -- Custom Media
   const extractCustomMediasFromElement = useCallback((element: Element) => {
     const customMediaElements = element.querySelectorAll(
       WEB_PLAYER_CUSTOM_MEDIA_WC_TAG
@@ -141,13 +180,21 @@ const CustomizationContextProvider: React.FC<
 
     for (const customMediaElement of customMediaElements) {
       const Media = customMediaElement.innerHTML;
-      const index = Number(customMediaElement.getAttribute("index"));
-      const thumbnailSrc =
-        customMediaElement.getAttribute("thumbnail-src") ?? undefined;
-
-      if (!Media || Number.isNaN(index)) {
+      if (!Media) {
+        // eslint-disable-next-line no-console
+        console.warn("Custom media element is empty");
         continue;
       }
+
+      const index = Number(customMediaElement.getAttribute("index"));
+      if (Number.isNaN(index)) {
+        // eslint-disable-next-line no-console
+        console.warn("Custom media element is missing the 'index' attribute");
+        continue;
+      }
+
+      const thumbnailSrc =
+        customMediaElement.getAttribute("thumbnail-src") ?? undefined;
 
       const id = JSON.stringify({ index, thumbnailSrc });
 
@@ -194,7 +241,6 @@ const CustomizationContextProvider: React.FC<
     });
 
     observer.observe(webPlayerElement, {
-      attributes: true,
       childList: true,
       subtree: true,
     });
@@ -232,8 +278,8 @@ const CustomizationContextProvider: React.FC<
     <CustomizationContext.Provider
       value={{
         getIconConfig,
-        setIconConfig,
-        resetIconConfig,
+        registerIconConfig,
+        unregisterIconConfig,
 
         customMediaList,
         registerCustomMedia,
