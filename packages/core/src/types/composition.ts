@@ -24,7 +24,7 @@ type ImageItem = { type: "image" } & ImageWithHotspots;
 type VideoItem = {
   type: "video";
   src: string;
-  poster: string;
+  poster?: string;
 };
 
 type ThreeSixtyItem = {

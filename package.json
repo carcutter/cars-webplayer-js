@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "yarn dev:core",
     "dev:core": "turbo dev --filter=@car-cutter/core-ui --",
+    "dev:core-wc": "turbo dev --filter=@car-cutter/core-wc --",
     "dev:showroom": "turbo dev --filter=@car-cutter/webplayer-showroom --",
     "dev:docs": "turbo dev --filter=@car-cutter/webplayer-docs --",
     "demo:next": "turbo dev --filter=demo-next --",

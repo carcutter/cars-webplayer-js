@@ -8,6 +8,7 @@
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --max-warnings 0",
     "analyze": "vite-bundle-visualizer"

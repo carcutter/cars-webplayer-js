@@ -16,10 +16,26 @@ import {
   type Item,
   type Composition,
 } from "@car-cutter/core";
-import { type WebPlayerProps } from "@car-cutter/core-ui";
-import { ensureCustomElementsDefinition } from "@car-cutter/wc-webplayer";
+import { type WebPlayerProps as WebPlayerPropsWC } from "@car-cutter/core-ui";
+import {
+  ensureCustomElementsDefinition,
+  webPlayerPropsToAttributes,
+} from "@car-cutter/wc-webplayer";
 
-export type { WebPlayerProps };
+ensureCustomElementsDefinition();
+
+export type WebPlayerProps = WebPlayerPropsWC & {
+  class?: string;
+  style?: HTMLElement["style"];
+};
+
+const props = defineProps<WebPlayerProps>();
+const { class: class_, style, ...wcProps } = props;
+const style_ = { display: "block", ...(style ?? {}) };
+
+const attributes = webPlayerPropsToAttributes(wcProps);
+
+// -- Event listeners
 export type WebPlayerEvents = {
   compositionLoading: [url: string];
   compositionLoaded: [composition: Composition];
@@ -32,11 +48,6 @@ export type WebPlayerEvents = {
   galleryOpen: [];
   galleryClose: [];
 };
-
-const props = defineProps<WebPlayerProps>();
-ensureCustomElementsDefinition();
-
-// -- Event listeners
 const emit = defineEmits<WebPlayerEvents>();
 
 const eventPrefix = props.eventPrefix ?? DEFAULT_EVENT_PREFIX;
@@ -87,18 +98,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <cc-webplayer
-    :composition-url="compositionUrl"
-    :infinite-carrousel="infiniteCarrousel"
-    :permanent-gallery="permanentGallery"
-    :media-load-strategy="mediaLoadStrategy"
-    :min-media-width="minMediaWidth"
-    :max-media-width="maxMediaWidth"
-    :preload-range="preloadRange"
-    :hide-categories="hideCategories"
-    :prevent-full-screen="preventFullScreen"
-    :event-prefix="eventPrefix"
-    :reverse360="reverse360"
-  >
+  <cc-webplayer v-bind="attributes" :class="class_" :style="style_">
+    <slot></slot>
   </cc-webplayer>
 </template>

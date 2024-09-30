@@ -145,6 +145,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
     <GlobalContextProvider
       {...{
         ...props,
+        compositionUrl,
         hideCategories,
         infiniteCarrousel,
         permanentGallery,
@@ -167,7 +168,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
           ref={wrapperRef}
           className="select-none text-foreground"
         >
-          <WebPlayerContainer compositionUrl={compositionUrl} />
+          <WebPlayerContainer />
         </div>
         {customizationChildren}
       </CustomizationContextProvider>

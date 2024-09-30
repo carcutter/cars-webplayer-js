@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { WebPlayer } from "@car-cutter/vue-webplayer";
+import { WebPlayer, WebPlayerCustomMedia } from "@car-cutter/vue-webplayer";
 </script>
 
 <template>
@@ -12,7 +12,16 @@ import { WebPlayer } from "@car-cutter/vue-webplayer";
         @compositionLoaded="
           composition => console.log('Composition loaded', composition)
         "
-      />
+      >
+        <WebPlayerCustomMedia
+          :index="4"
+          thumbnailSrc="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_thumbnail_audi.png"
+        >
+          <img
+            src="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_image_1.jpg"
+          />
+        </WebPlayerCustomMedia>
+      </WebPlayer>
     </div>
   </div>
 </template>

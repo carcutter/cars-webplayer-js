@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import type { ImageWithHotspots, Item } from "@car-cutter/core";
+import type { ImageWithHotspots } from "@car-cutter/core";
 
 import { useControlsContext } from "../../../providers/ControlsContext";
 import { useGlobalContext } from "../../../providers/GlobalContext";
+import { CustomisableItem } from "../../../types/customisable_item";
 import { cn } from "../../../utils/style";
 import CdnImage from "../../atoms/CdnImage";
 import PlayIcon from "../../icons/PlayIcon";
@@ -16,7 +17,7 @@ import ImageElement from "./ImageElement";
 const DRAG_STEP_PX = 10;
 const SCROLL_STEP_PX = 15;
 
-type ThreeSixtyElementProps = Extract<Item, { type: "360" }> & {
+type ThreeSixtyElementProps = Extract<CustomisableItem, { type: "360" }> & {
   itemIndex: number;
   onlyPreload: boolean;
 };

@@ -1,4 +1,5 @@
 import WebPlayer from "../src/WebPlayer";
+import WebPlayerCustomMedia from "../src/WebPlayerCustomMedia";
 import WebPlayerIcon from "../src/WebPlayerIcon";
 
 const DevApp: React.FC = () => {
@@ -43,6 +44,19 @@ const DevApp: React.FC = () => {
           // eventPrefix="cc-event:"
           // reverse360
         >
+          <WebPlayerCustomMedia
+            index={4}
+            thumbnailSrc="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_thumbnail_audi.png"
+          >
+            <img src="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_image_1.jpg" />
+          </WebPlayerCustomMedia>
+          <WebPlayerCustomMedia index={-2}>
+            <img src="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_image_2.jpg" />
+          </WebPlayerCustomMedia>
+          {/* <WebPlayerCustomMedia index={-3}>
+            <img src="https://prod.pictures.autoscout24.net/listing-images/4ac589e2-40e3-47b8-a211-579d2e07125e_b277b9ec-63d5-4900-9003-77dd029364dc.jpg/720x540.webp" />
+          </WebPlayerCustomMedia> */}
+
           <WebPlayerIcon name="TIRESPIN" color="#ff00ff">
             <svg
               style={{ color: "white" }}

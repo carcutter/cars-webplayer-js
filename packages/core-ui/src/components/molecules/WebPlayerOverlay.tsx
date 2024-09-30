@@ -35,12 +35,11 @@ const WebPlayerOverlay: React.FC = () => {
   const { hideCategories, infiniteCarrousel, permanentGallery } =
     useGlobalContext();
 
-  const {
-    items: { length: dataLength },
-    aspectRatioStyle,
-  } = useCompositionContext();
+  const { aspectRatioStyle } = useCompositionContext();
 
   const {
+    items: { length: dataLength },
+
     slidable,
 
     carrouselItemIndex,

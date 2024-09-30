@@ -1,6 +1,11 @@
-import { WEB_PLAYER_WC_TAG, WEB_PLAYER_ICON_WC_TAG } from "@car-cutter/core";
+import {
+  WEB_PLAYER_WC_TAG,
+  WEB_PLAYER_ICON_WC_TAG,
+  WEB_PLAYER_CUSTOM_MEDIA_WC_TAG,
+} from "@car-cutter/core";
 
 import WebPlayerWebComponent from "./WebPlayer.wc";
+import WebPlayerCustomMediaWebComponent from "./WebPlayerCustomMedia.wc";
 import WebPlayerIconWebComponent from "./WebPlayerIcon.wc";
 
 /**
@@ -9,6 +14,7 @@ import WebPlayerIconWebComponent from "./WebPlayerIcon.wc";
 export function checkCustomElementsDefinition(): boolean {
   return (
     !!customElements.get(WEB_PLAYER_WC_TAG) &&
+    !!customElements.get(WEB_PLAYER_CUSTOM_MEDIA_WC_TAG) &&
     !!customElements.get(WEB_PLAYER_ICON_WC_TAG)
   );
 }
@@ -18,6 +24,10 @@ export function checkCustomElementsDefinition(): boolean {
  */
 export function defineCustomElements(): void {
   customElements.define(WEB_PLAYER_WC_TAG, WebPlayerWebComponent);
+  customElements.define(
+    WEB_PLAYER_CUSTOM_MEDIA_WC_TAG,
+    WebPlayerCustomMediaWebComponent
+  );
   customElements.define(WEB_PLAYER_ICON_WC_TAG, WebPlayerIconWebComponent);
 }
 

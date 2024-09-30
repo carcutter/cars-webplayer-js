@@ -1,4 +1,4 @@
-import { WebPlayer } from "@car-cutter/react-webplayer";
+import { WebPlayer, WebPlayerCustomMedia } from "@car-cutter/react-webplayer";
 
 import reactLogo from "./assets/react.svg";
 
@@ -30,7 +30,14 @@ const App = () => {
             // eslint-disable-next-line no-console
             console.log("Composition loaded !", composition)
           }
-        />
+        >
+          <WebPlayerCustomMedia
+            index={4}
+            thumbnailSrc="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_thumbnail_audi.png"
+          >
+            <img src="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_image_1.jpg" />
+          </WebPlayerCustomMedia>
+        </WebPlayer>
 
         <div className="main__right">
           <div>

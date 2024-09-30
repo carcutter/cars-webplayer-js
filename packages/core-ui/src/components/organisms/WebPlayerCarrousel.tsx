@@ -19,9 +19,11 @@ type Props = {
  */
 const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   const { infiniteCarrousel, preloadRange, isFullScreen } = useGlobalContext();
-  const { items, aspectRatioStyle } = useCompositionContext();
+  const { aspectRatioStyle } = useCompositionContext();
 
   const {
+    items,
+
     slidable,
 
     carrouselItemIndex,
@@ -452,8 +454,6 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
         {specialCommand === "last_to_first" && <CyclePlaceholder />}
 
         {items.map((item, index) => {
-          const imgSrc = item.type === "360" ? item.images[0] : item.src;
-
           const isShown = index === carrouselItemIndex;
           const isFirst = index === 0;
           const isLast = index === items.length - 1;
@@ -487,9 +487,29 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
               index <= preloadRange - (items.length - carrouselItemIndex);
           }
 
+          const key = (() => {
+            let imgSrc: string;
+            switch (item.type) {
+              case "360":
+                imgSrc = item.images[0].src;
+                break;
+              case "image":
+                imgSrc = item.src;
+                break;
+              case "video":
+                imgSrc = item.poster ?? "video";
+                break;
+              case "custom":
+                imgSrc = "custom";
+                break;
+            }
+
+            return `${index}_${imgSrc}`;
+          })();
+
           return (
             <div
-              key={`${index}_${imgSrc}`}
+              key={key}
               className={cn(
                 "h-full bg-foreground/35",
                 carrouselItemIndex === index && "z-1" // Give high-ground to the shown item (to avoid 1px vertical line)

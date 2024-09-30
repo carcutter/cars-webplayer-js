@@ -1,5 +1,9 @@
 // - Const
-export { WEB_PLAYER_WC_TAG, WEB_PLAYER_ICON_WC_TAG } from "./src/const/wc";
+export {
+  WEB_PLAYER_WC_TAG,
+  WEB_PLAYER_CUSTOM_MEDIA_WC_TAG,
+  WEB_PLAYER_ICON_WC_TAG,
+} from "./src/const/wc";
 
 export {
   EVENT_COMPOSITION_LOADING,

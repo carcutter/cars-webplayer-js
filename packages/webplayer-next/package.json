@@ -26,15 +26,13 @@
     "lint": "eslint . --ext ts,tsx --max-warnings 0",
     "analyze": "vite-bundle-visualizer"
   },
+  "dependencies": {
+    "@car-cutter/react-webplayer": "0.7.1"
+  },
   "peerDependencies": {
-    "react": ">=16.8",
-    "react-dom": ">=16.8",
     "next": ">=10"
   },
   "devDependencies": {
-    "@car-cutter/core": "0.7.0",
-    "@car-cutter/core-ui": "0.7.0",
-    "@car-cutter/core-wc": "0.7.1",
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
     "@vitejs/plugin-react": "^4.3.1",

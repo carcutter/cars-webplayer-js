@@ -5,6 +5,7 @@ import type { WebPlayerProps } from "../types/WebPlayer.props";
 type ProviderProps = Required<
   Pick<
     WebPlayerProps,
+    | "compositionUrl"
     | "hideCategories"
     | "infiniteCarrousel"
     | "permanentGallery"

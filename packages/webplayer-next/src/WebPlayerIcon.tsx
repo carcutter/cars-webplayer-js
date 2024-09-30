@@ -1,22 +1,12 @@
 "use client";
 
-import { useEffect, type FC as ReactFC } from "react";
+import dynamic from "next/dynamic";
 
-import type { WebPlayerIconProps } from "@car-cutter/core-ui";
+import type { WebPlayerIconProps } from "@car-cutter/react-webplayer";
 
-const WebPlayerIcon: ReactFC<WebPlayerIconProps> = props => {
-  useEffect(() => {
-    (async () => {
-      const { ensureCustomElementsDefinition } = await import(
-        "@car-cutter/core-wc"
-      );
-      ensureCustomElementsDefinition();
-    })();
-  }, []);
+const WebPlayerIcon = dynamic(
+  () => import("@car-cutter/react-webplayer").then(mod => mod.WebPlayerIcon),
+  { ssr: false }
+);
 
-  return <cc-webplayer-icon {...props} />;
-};
-
-export { WebPlayerIconProps };
-
-export default WebPlayerIcon;
+export { WebPlayerIcon, type WebPlayerIconProps };

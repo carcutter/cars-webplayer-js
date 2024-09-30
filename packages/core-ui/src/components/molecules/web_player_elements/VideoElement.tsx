@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import type { Item } from "@car-cutter/core";
-
 import { useControlsContext } from "../../../providers/ControlsContext";
+import { CustomisableItem } from "../../../types/customisable_item";
 import { cn } from "../../../utils/style";
 import PlayButton from "../../atoms/PlayButton";
 import PauseIcon from "../../icons/PauseIcon";
@@ -14,7 +13,7 @@ import Spinner from "../../ui/Spinner";
 
 const HIDE_CONTROLS_DELAY = 3000;
 
-type Props = Extract<Item, { type: "video" }> & {
+type Props = Extract<CustomisableItem, { type: "video" }> & {
   itemIndex: number;
 };
 

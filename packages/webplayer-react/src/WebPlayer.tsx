@@ -1,4 +1,9 @@
-import { useMemo, useEffect, type FC as ReactFC } from "react";
+import {
+  useMemo,
+  useEffect,
+  type FC as ReactFC,
+  type PropsWithChildren as ReactPropsWithChildren,
+} from "react";
 
 import {
   DEFAULT_EVENT_PREFIX,
@@ -23,7 +28,7 @@ import {
 
 ensureCustomElementsDefinition();
 
-export type WebPlayerProps = WebPlayerPropsWC & {
+type WebPlayerProps = ReactPropsWithChildren<WebPlayerPropsWC> & {
   onCompositionLoading?: (url: string) => void;
   onCompositionLoaded?: (composition: Composition) => void;
   onCompositionLoadError?: (error: unknown) => void;
@@ -49,6 +54,7 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
   onGalleryClose,
   className,
   style = {},
+  children,
   ...props
 }) => {
   const attributes = useMemo(() => {
@@ -118,8 +124,10 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
 
   // NOTE: Custom element are "display: inline" by default + Style is there so that React can do its thing
   return (
-    <cc-webplayer style={{ display: "block", ...style }} {...attributes} />
+    <cc-webplayer style={{ display: "block", ...style }} {...attributes}>
+      {children}
+    </cc-webplayer>
   );
 };
 
-export default WebPlayer;
+export { WebPlayer, type WebPlayerProps };

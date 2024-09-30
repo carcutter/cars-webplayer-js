@@ -2,6 +2,7 @@ import { sha256 } from "js-sha256";
 
 import {
   WebPlayer,
+  WebPlayerCustomMedia,
   generateCompositionUrl as generateCompositionUrlWithHashedCustomer,
 } from "@car-cutter/react-webplayer";
 
@@ -77,7 +78,17 @@ const AppContent: React.FC = () => {
           infiniteCarrousel
           permanentGallery={permanentGallery}
           hideCategories={hideCategories}
-        />
+        >
+          <WebPlayerCustomMedia
+            index={4}
+            thumbnailSrc="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_thumbnail_audi.png"
+          >
+            <img src="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_image_1.jpg" />
+          </WebPlayerCustomMedia>
+          <WebPlayerCustomMedia index={-2}>
+            <img src="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_image_2.jpg" />
+          </WebPlayerCustomMedia>
+        </WebPlayer>
       </main>
       <footer className="flex-[2] self-center">
         <div className="flex gap-x-2">

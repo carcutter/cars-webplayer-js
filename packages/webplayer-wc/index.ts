@@ -3,6 +3,7 @@
 export {
   // - WebComponents
   WEB_PLAYER_WC_TAG,
+  WEB_PLAYER_CUSTOM_MEDIA_WC_TAG,
   WEB_PLAYER_ICON_WC_TAG,
   // - Events
   DEFAULT_EVENT_PREFIX,
@@ -25,11 +26,6 @@ export {
 } from "@car-cutter/core";
 
 export {
-  type WebPlayerProps,
-  type WebPlayerIconProps,
-} from "@car-cutter/core-ui";
-
-export {
   // - Utils
   checkCustomElementsDefinition,
   defineCustomElements,
@@ -37,6 +33,8 @@ export {
   // - Components
   webPlayerPropsToAttributes,
   type WebPlayerAttributes,
+  webPlayerCustomMediaPropsToAttributes,
+  type WebPlayerCustomMediaAttributes,
   webPlayerIconPropsToAttributes,
   type WebPlayerIconAttributes,
 } from "@car-cutter/core-wc";

@@ -4,6 +4,16 @@ export {
   type WebPlayerEvents,
 } from "./src/WebPlayer.vue";
 
+export {
+  default as WebPlayerCustomMedia,
+  type WebPlayerCustomMediaProps,
+} from "./src/WebPlayerCustomMedia.vue";
+
+export {
+  default as WebPlayerIcon,
+  type WebPlayerIconProps,
+} from "./src/WebPlayerIcon.vue";
+
 // Expose parent package
 export {
   // - Components

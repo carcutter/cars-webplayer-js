@@ -1,11 +1,14 @@
-export { appendWebPlayerElement } from "./src/lib";
+export { appendWebPlayer } from "./src/lib";
 
 // Expose parent package
 export {
   // - Components
   WEB_PLAYER_WC_TAG,
+  type WebPlayerAttributes,
+  WEB_PLAYER_CUSTOM_MEDIA_WC_TAG,
+  type WebPlayerCustomMediaAttributes,
   WEB_PLAYER_ICON_WC_TAG,
-  type WebPlayerProps,
+  type WebPlayerIconAttributes,
   // - Events
   DEFAULT_EVENT_PREFIX,
   EVENT_COMPOSITION_LOADING,

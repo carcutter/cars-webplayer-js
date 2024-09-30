@@ -8,7 +8,7 @@
   <body>
     <script type="module">
       import {
-        appendWebPlayerElement,
+        appendWebPlayer,
         DEFAULT_EVENT_PREFIX,
         EVENT_COMPOSITION_LOADED,
       } from "@car-cutter/vanilla-webplayer";
@@ -16,11 +16,26 @@
       function init() {
         const targetElement = document.getElementById("webplayer-wrapper");
 
-        appendWebPlayerElement(targetElement, {
-          compositionUrl:
-            "https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json",
-          infiniteCarrousel: true,
-        });
+        const imgElmt = document.createElement("img");
+        imgElmt.src =
+          "https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_image_1.jpg";
+
+        appendWebPlayer(
+          targetElement,
+          {
+            compositionUrl:
+              "https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json",
+            infiniteCarrousel: true,
+          },
+          {
+            customMedias: [
+              {
+                index: 4,
+                element: imgElmt,
+              },
+            ],
+          }
+        );
 
         document.addEventListener(
           `${DEFAULT_EVENT_PREFIX}${EVENT_COMPOSITION_LOADED}`,

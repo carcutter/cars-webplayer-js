@@ -1,8 +1,9 @@
-export { default as WebPlayer, type WebPlayerProps } from "./src/WebPlayer";
+export { WebPlayer, type WebPlayerProps } from "./src/WebPlayer";
 export {
-  default as WebPlayerIcon,
-  type WebPlayerIconProps,
-} from "./src/WebPlayerIcon";
+  WebPlayerCustomMedia,
+  type WebPlayerCustomMediaProps,
+} from "./src/WebPlayerCustomMedia";
+export { WebPlayerIcon, type WebPlayerIconProps } from "./src/WebPlayerIcon";
 
 // -- Expose ancestors package
 export {
