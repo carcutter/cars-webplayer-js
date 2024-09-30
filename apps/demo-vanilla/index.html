@@ -16,9 +16,26 @@
       function init() {
         const targetElement = document.getElementById("webplayer-wrapper");
 
+        // Custom media
         const imgElmt = document.createElement("img");
         imgElmt.src =
           "https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_image_1.jpg";
+
+        // Custom Icon (SVG)
+        const svgElmt = document.createElement("svg");
+        svgElmt.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+        svgElmt.setAttribute("width", "24");
+        svgElmt.setAttribute("height", "24");
+        svgElmt.setAttribute("viewBox", "0 0 24 24");
+
+        const pathElmt = document.createElement("path");
+        pathElmt.setAttribute("fill", "currentColor");
+        pathElmt.setAttribute(
+          "d",
+          "M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"
+        );
+
+        svgElmt.appendChild(pathElmt);
 
         appendWebPlayer(
           targetElement,
@@ -32,6 +49,14 @@
               {
                 index: 4,
                 element: imgElmt,
+                thumbnailSrc:
+                  "https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_thumbnail_audi.png",
+              },
+            ],
+            icons: [
+              {
+                name: "UI_IMAGE",
+                element: svgElmt,
               },
             ],
           }

@@ -9,7 +9,7 @@ const attributes = webPlayerIconPropsToAttributes(props);
 </script>
 
 <template>
-  <cc-webplayer-custom-media v-bind="attributes">
+  <cc-webplayer-icon v-bind="attributes">
     <slot></slot>
-  </cc-webplayer-custom-media>
+  </cc-webplayer-icon>
 </template>

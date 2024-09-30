@@ -1,6 +1,7 @@
 import type {
   WebPlayerProps,
   WebPlayerCustomMediaProps,
+  WebPlayerIconProps,
 } from "@car-cutter/core-ui";
 import {
   WEB_PLAYER_WC_TAG,
@@ -8,6 +9,8 @@ import {
   webPlayerPropsToAttributes,
   webPlayerCustomMediaPropsToAttributes,
   WEB_PLAYER_CUSTOM_MEDIA_WC_TAG,
+  WEB_PLAYER_ICON_WC_TAG,
+  webPlayerIconPropsToAttributes,
 } from "@car-cutter/wc-webplayer";
 
 export function appendWebPlayer(
@@ -15,6 +18,7 @@ export function appendWebPlayer(
   webPlayerProps: WebPlayerProps,
   customisation?: {
     customMedias?: (WebPlayerCustomMediaProps & { element: HTMLElement })[];
+    icons?: (WebPlayerIconProps & { element: HTMLElement })[];
   }
 ) {
   const setAttributes = (
@@ -34,6 +38,7 @@ export function appendWebPlayer(
   setAttributes(webPlayerElmt, webPlayerAttributes);
 
   // - Customisation
+  // Custom medias
   customisation?.customMedias?.forEach(customMedia => {
     const customMediaElmt = document.createElement(
       WEB_PLAYER_CUSTOM_MEDIA_WC_TAG
@@ -46,6 +51,18 @@ export function appendWebPlayer(
     const mediaAttributes = webPlayerCustomMediaPropsToAttributes(props);
     setAttributes(customMediaElmt, mediaAttributes);
     webPlayerElmt.appendChild(customMediaElmt);
+  });
+  // Custom icons
+  customisation?.icons?.forEach(icon => {
+    const iconElmt = document.createElement(WEB_PLAYER_ICON_WC_TAG);
+
+    const { element, ...props } = icon;
+
+    iconElmt.appendChild(element);
+
+    const iconAttributes = webPlayerIconPropsToAttributes(props);
+    setAttributes(iconElmt, iconAttributes);
+    webPlayerElmt.appendChild(iconElmt);
   });
 
   // - Append Element to Dom
