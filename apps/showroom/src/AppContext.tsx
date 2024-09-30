@@ -8,6 +8,7 @@ import {
   DEFAULT_ID,
   DEFAULT_PERMANENT_GALLERY,
   DEFAULT_RADIUS,
+  DEFAULT_WITH_CUSTOM_ICONS,
   DEFAULT_WITH_CUSTOM_MEDIAS,
 } from "./const/default";
 import { type Radius } from "./const/radius";
@@ -33,6 +34,8 @@ type ContextType = {
   setHideCategories: (hideCategories: boolean) => void;
   withCustomMedias: boolean;
   setWithCustomMedias: (withCustomMedias: boolean) => void;
+  withCustomIcons: boolean;
+  setWithCustomIcons: (withCustomIcons: boolean) => void;
 
   color: string;
   setColor: (color: string) => void;
@@ -78,6 +81,10 @@ const AppContextProvider: React.FC<React.PropsWithChildren> = ({
     "withCustomMedias",
     DEFAULT_WITH_CUSTOM_MEDIAS
   );
+  const [withCustomIcons, setWithCustomIcons] = useSearchParam(
+    "withCustomIcons",
+    DEFAULT_WITH_CUSTOM_ICONS
+  );
 
   const [color, setColor] = useSearchParam<string>("color", DEFAULT_COLOR);
   const customColorStyle = useMemo(() => {
@@ -117,6 +124,8 @@ const AppContextProvider: React.FC<React.PropsWithChildren> = ({
         setHideCategories,
         withCustomMedias,
         setWithCustomMedias,
+        withCustomIcons,
+        setWithCustomIcons,
 
         color,
         setColor,

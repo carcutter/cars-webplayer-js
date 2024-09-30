@@ -3,6 +3,7 @@ import { sha256 } from "js-sha256";
 import {
   WebPlayer,
   WebPlayerCustomMedia,
+  WebPlayerIcon,
   generateCompositionUrl as generateCompositionUrlWithHashedCustomer,
 } from "@car-cutter/react-webplayer";
 
@@ -35,6 +36,7 @@ const AppContent: React.FC = () => {
     permanentGallery,
     hideCategories,
     withCustomMedias,
+    withCustomIcons,
 
     color,
     customColorStyle,
@@ -92,6 +94,20 @@ const AppContent: React.FC = () => {
                 <img src="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_image_2.jpg" />
               </WebPlayerCustomMedia>
             </>
+          )}
+          {withCustomIcons && (
+            <WebPlayerIcon name="UI_ARROW_RIGHT">
+              <svg
+                viewBox="2 2 12 12"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"
+                />
+              </svg>
+            </WebPlayerIcon>
           )}
         </WebPlayer>
       </main>

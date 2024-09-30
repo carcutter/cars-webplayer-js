@@ -24,6 +24,8 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
     setHideCategories,
     withCustomMedias,
     setWithCustomMedias,
+    withCustomIcons,
+    setWithCustomIcons,
 
     color,
     setColor,
@@ -125,6 +127,16 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
                   }
                 />
                 <Label htmlFor="withCustomMedias">Custom Medias</Label>
+
+                {/* Custom Icons */}
+                <Checkbox
+                  id="withCustomIcons"
+                  checked={withCustomIcons}
+                  onCheckedChange={checked =>
+                    setWithCustomIcons(checked === true)
+                  }
+                />
+                <Label htmlFor="withCustomIcons">Custom Icons</Label>
               </div>
             </div>
 
