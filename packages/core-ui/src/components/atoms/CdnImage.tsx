@@ -38,37 +38,13 @@ const CdnImage: React.FC<CdnImageProps> = ({
   fadeIn,
   ...props
 }) => {
-  const {
-    minMediaWidth,
-    maxMediaWidth,
-    mediaLoadStrategy,
-    playerInViewportWidthRatio,
-  } = useGlobalContext();
+  const { mediaLoadStrategy, playerInViewportWidthRatio } = useGlobalContext();
 
-  const { imageHdWidth, imageSubWidths } = useCompositionContext();
+  const { imageHdWidth, usedMediaWidths } = useCompositionContext();
 
   const [srcSet, sizes] = useMemo(() => {
-    const imageWidths = imageSubWidths
-      .concat(imageHdWidth)
-      .sort((a, b) => a - b);
-
-    // Filter out composition' widths that are not within the attribute constraints
-    const usedImageWidths = imageWidths.filter(width => {
-      if (minMediaWidth && width < minMediaWidth) {
-        return false;
-      }
-      if (maxMediaWidth && width > maxMediaWidth) {
-        return false;
-      }
-      return true;
-    });
-
-    if (usedImageWidths.length === 0) {
-      throw new Error("No image widths available for the given constraints");
-    }
-
     // - Generate the srcSet attribute (list of image URLs with their widths)
-    const srcSetList = usedImageWidths.map(width => {
+    const srcSetList = usedMediaWidths.map(width => {
       const url = width !== imageHdWidth ? cdnImgSrcWithWidth(src, width) : src;
       return `${url} ${width}w`;
     });
@@ -83,24 +59,26 @@ const CdnImage: React.FC<CdnImageProps> = ({
 
       switch (mediaLoadStrategy) {
         case "quality": {
-          const biggestWidth = usedImageWidths.pop();
+          const mediaWidths = [...usedMediaWidths]; // Copy the array to avoid mutation
+          const biggestWidth = mediaWidths.pop();
 
-          sizesList = usedImageWidths.map(
-            imageWidth =>
-              `(max-width: ${viewportWidthMultiplier * imageWidth}px) ${imageWidth}px`
+          sizesList = mediaWidths.map(
+            mediaWidth =>
+              `(max-width: ${viewportWidthMultiplier * mediaWidth}px) ${mediaWidth}px`
           );
 
           sizesList.push(`${biggestWidth}px`);
           break;
         }
         case "speed": {
-          const smallestWidth = usedImageWidths.shift();
+          const mediaWidths = [...usedMediaWidths]; // Copy the array to avoid mutation
+          const smallestWidth = mediaWidths.shift();
 
-          sizesList = usedImageWidths
+          sizesList = mediaWidths
             .reverse()
             .map(
-              imageWidth =>
-                `(min-width: ${viewportWidthMultiplier * imageWidth}px) ${imageWidth}px`
+              mediaWidth =>
+                `(min-width: ${viewportWidthMultiplier * mediaWidth}px) ${mediaWidth}px`
             );
 
           sizesList.push(`${smallestWidth}px`);
@@ -109,25 +87,25 @@ const CdnImage: React.FC<CdnImageProps> = ({
         case "balanced": {
           sizesList = [];
 
-          for (let i = 0; i < usedImageWidths.length - 1; i++) {
-            const imageWidth = usedImageWidths[i];
-            const nextImageWidth = usedImageWidths[i + 1];
+          for (let i = 0; i < usedMediaWidths.length - 1; i++) {
+            const mediaWidth = usedMediaWidths[i];
+            const nextMediaWidth = usedMediaWidths[i + 1];
 
-            const breakpoint = (imageWidth + nextImageWidth) / 2;
+            const breakpoint = (mediaWidth + nextMediaWidth) / 2;
 
             sizesList.push(
-              `(max-width: ${viewportWidthMultiplier * breakpoint}px) ${imageWidth}px`
+              `(max-width: ${viewportWidthMultiplier * breakpoint}px) ${mediaWidth}px`
             );
           }
 
-          sizesList.push(`${usedImageWidths[usedImageWidths.length - 1]}px`);
+          sizesList.push(`${usedMediaWidths[usedMediaWidths.length - 1]}px`);
           break;
         }
       }
     }
     // Thumbnail
     else {
-      const smallestWidth = usedImageWidths.shift();
+      const smallestWidth = usedMediaWidths[0];
 
       sizesList = [`${smallestWidth}px`];
     }
@@ -135,14 +113,12 @@ const CdnImage: React.FC<CdnImageProps> = ({
     return [srcSetList.join(", "), sizesList.join(", ")];
   }, [
     imageHdWidth,
-    mediaLoadStrategy,
-    imageSubWidths,
     imgInPlayerWidthRatio,
-    maxMediaWidth,
-    minMediaWidth,
+    mediaLoadStrategy,
     onlyThumbnail,
     playerInViewportWidthRatio,
     src,
+    usedMediaWidths,
   ]);
 
   // - Fade-in effect

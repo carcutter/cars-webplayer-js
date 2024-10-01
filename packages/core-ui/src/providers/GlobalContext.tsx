@@ -10,19 +10,20 @@ type ProviderProps = Required<
     | "infiniteCarrousel"
     | "permanentGallery"
     | "mediaLoadStrategy"
+    | "minMediaWidth"
+    | "maxMediaWidth"
     | "preloadRange"
     | "preventFullScreen"
     | "reverse360"
   >
-> &
-  Pick<WebPlayerProps, "minMediaWidth" | "maxMediaWidth"> & {
-    emitEvent: (name: string, detail?: unknown) => void;
+> & {
+  emitEvent: (name: string, detail?: unknown) => void;
 
-    playerInViewportWidthRatio: number;
-    isFullScreen: boolean;
-    requestFullscreen: () => Promise<boolean>;
-    exitFullscreen: () => Promise<boolean>;
-  };
+  playerInViewportWidthRatio: number;
+  isFullScreen: boolean;
+  requestFullscreen: () => Promise<boolean>;
+  exitFullscreen: () => Promise<boolean>;
+};
 
 type ContextType = ProviderProps;
 
