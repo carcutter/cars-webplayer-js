@@ -1,6 +1,7 @@
 import { useCustomizationContext } from "../../providers/CustomizationContext";
+import { WebPlayerIconName } from "../../types/WebPlayerIcon.props";
 
-type Props = { customizationKey: string; className?: string };
+type Props = { customizationKey: WebPlayerIconName; className?: string };
 
 const CustomizableIcon: React.FC<React.PropsWithChildren<Props>> = ({
   customizationKey,

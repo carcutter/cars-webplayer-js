@@ -126,8 +126,8 @@ const WebPlayerOverlay: React.FC = () => {
             onClick={prevItem}
             disabled={!infiniteCarrousel && masterItemIndex <= 0}
           >
-            <CustomizableIcon customizationKey="CONTROLS_ARROW_LEFT">
-              <ArrowRightIcon className="size-full rotate-180" />
+            <CustomizableIcon customizationKey="CONTROLS_PREV">
+              <ArrowRightIcon className="size-full -scale-x-100" />
             </CustomizableIcon>
           </Button>
           <Button
@@ -141,7 +141,7 @@ const WebPlayerOverlay: React.FC = () => {
             onClick={nextItem}
             disabled={!infiniteCarrousel && masterItemIndex >= dataLength - 1}
           >
-            <CustomizableIcon customizationKey="CONTROLS_ARROW_RIGHT">
+            <CustomizableIcon customizationKey="CONTROLS_NEXT">
               <ArrowRightIcon className="size-full" />
             </CustomizableIcon>
           </Button>
@@ -170,9 +170,7 @@ const WebPlayerOverlay: React.FC = () => {
               shape="icon"
               onClick={toggleGallery}
             >
-              <CustomizableIcon customizationKey="CONTROLS_GALLERY">
-                <GalleryIcon className="size-full" />
-              </CustomizableIcon>
+              <GalleryIcon className="size-full" />
             </Button>
 
             {showGallery && (
