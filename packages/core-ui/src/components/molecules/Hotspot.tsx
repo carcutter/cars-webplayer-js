@@ -102,34 +102,9 @@ const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
 };
 
 const Hotspot: React.FC<HotspotProps> = ({ hotspot }) => {
-  const { icon, detail } = hotspot;
+  const { detail } = hotspot;
 
-  let IconComp: React.ReactNode;
-
-  // TODO: Add some ... or clean!
-  switch (icon) {
-    case "WINDOW STICKER":
-      IconComp = (
-        <img
-          className="h-10"
-          src="https://cdn.car-cutter.com/libs/web-player/v2/assets/images/customers/autonation/window_sticker.png"
-          alt="Window sticker"
-        />
-      );
-      break;
-    case "CARFAX":
-      IconComp = (
-        <img
-          className="h-10"
-          src="https://cdn.car-cutter.com/libs/web-player/v2/assets/images/customers/autonation/carfax.png"
-          alt="Carfax"
-        />
-      );
-      break;
-    default:
-      IconComp = <IconHotspot hotspot={hotspot} />;
-      break;
-  }
+  const IconComp = <IconHotspot hotspot={hotspot} />;
 
   switch (detail?.type) {
     case "link":
