@@ -13,11 +13,7 @@ export default defineConfig({
     dts({
       tsconfigPath: resolve(__dirname, "./tsconfig.app.json"),
       rollupTypes: true,
-      bundledPackages: [
-        "@car-cutter/core",
-        "@car-cutter/core-ui",
-        "@car-cutter/core-wc",
-      ],
+      bundledPackages: ["@car-cutter/core"],
     }),
   ],
 
@@ -35,15 +31,21 @@ export default defineConfig({
     },
     target: browserslistToEsbuild(),
 
-    chunkSizeWarningLimit: 125,
+    chunkSizeWarningLimit: 15,
 
     rollupOptions: {
-      external: ["react", "react-dom/client", "next"],
+      external: [
+        "react",
+        "react-dom/client",
+        "next",
+        "@car-cutter/react-webplayer",
+      ],
       output: {
         globals: {
           react: "React",
           "react-dom/client": "ReactDOMClient",
           next: "Next",
+          "@car-cutter/react-webplayer": "ReactWebPlayer",
         },
       },
     },
