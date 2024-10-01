@@ -70,6 +70,23 @@ const CdnImage: React.FC<CdnImageProps> = ({
           sizesList.push(`${biggestWidth}px`);
           break;
         }
+        case "balanced": {
+          sizesList = [];
+
+          for (let i = 0; i < usedMediaWidths.length - 1; i++) {
+            const mediaWidth = usedMediaWidths[i];
+            const nextMediaWidth = usedMediaWidths[i + 1];
+
+            const breakpoint = Math.round((mediaWidth + nextMediaWidth) / 2);
+
+            sizesList.push(
+              `(max-width: ${viewportWidthMultiplier * breakpoint}px) ${mediaWidth}px`
+            );
+          }
+
+          sizesList.push(`${usedMediaWidths[usedMediaWidths.length - 1]}px`);
+          break;
+        }
         case "speed": {
           const mediaWidths = [...usedMediaWidths]; // Copy the array to avoid mutation
           const smallestWidth = mediaWidths.shift();
@@ -82,23 +99,6 @@ const CdnImage: React.FC<CdnImageProps> = ({
             );
 
           sizesList.push(`${smallestWidth}px`);
-          break;
-        }
-        case "balanced": {
-          sizesList = [];
-
-          for (let i = 0; i < usedMediaWidths.length - 1; i++) {
-            const mediaWidth = usedMediaWidths[i];
-            const nextMediaWidth = usedMediaWidths[i + 1];
-
-            const breakpoint = (mediaWidth + nextMediaWidth) / 2;
-
-            sizesList.push(
-              `(max-width: ${viewportWidthMultiplier * breakpoint}px) ${mediaWidth}px`
-            );
-          }
-
-          sizesList.push(`${usedMediaWidths[usedMediaWidths.length - 1]}px`);
           break;
         }
       }

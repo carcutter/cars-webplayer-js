@@ -115,7 +115,7 @@ Run `yarn publish:docs`
 | `hideCategories`    | `boolean`                          | `false`           | Hide the category-based navigation                        |
 | `infiniteCarrousel` | `boolean`                          | `false`           | Allow to navigate from 1st to last media (and vice versa) |
 | `permanentGallery`  | `boolean`                          | `false`           | Display gallery under the carrousel                       |
-| `mediaLoadStrategy` | `"quality"`/`"speed"`/`"balanced"` | `"quality"`       | Strategy for loading medias.                              |
+| `mediaLoadStrategy` | `"quality"`/`"balanced"`/`"speed"` | `"quality"`       | Strategy for loading medias.                              |
 | `minMediaWidth`     | `number`                           | `0`               | Force minimum media width (in pixels)                     |
 | `maxMediaWidth`     | `number`                           | `Infinity`        | Force maximum media width (in pixels)                     |
 | `preloadRange`      | `number`                           | `1`               | Number of items to preload before and after the viewport  |
