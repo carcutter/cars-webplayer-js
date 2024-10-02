@@ -18,7 +18,7 @@ npm install @car-cutter/vue-webplayer
 1. Import: `import { WebPlayer } from "@car-cutter/vue-webplayer"`
 2. Use: `<WebPlayer :compositionUrl={url} />`
 
-### Vue implementation example
+### Quick start
 
 ```html title="/src/App.vue"
 <script setup lang="ts">
@@ -51,4 +51,4 @@ npm install @car-cutter/vue-webplayer
 
 ## Next steps
 
-For more customisation, take a look at available **props** in the **Customisation** section.
+For more customisation, take a look at available **props** in the **[Properties](../properties.mdx)** section

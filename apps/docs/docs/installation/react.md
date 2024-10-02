@@ -18,7 +18,7 @@ npm install @car-cutter/react-webplayer
 1. Import: `import { WebPlayer } from "@car-cutter/react-webplayer"`
 2. Use: `<WebPlayer compositionUrl={url} />`
 
-### React implementation example
+### Quick start
 
 ```jsx title="/src/App.jsx"
 // highlight-next-line
@@ -45,4 +45,4 @@ export default App;
 
 ## Next steps
 
-For more customisation, take a look at available **props** in the **[Customisation](../customisation.md)** section
+For more customisation, take a look at available **props** in the **[Properties](../properties.mdx)** section

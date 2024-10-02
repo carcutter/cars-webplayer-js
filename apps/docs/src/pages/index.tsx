@@ -37,7 +37,7 @@ export default function Home(): JSX.Element {
           </Link>
           <Link
             className="button button--outline button--primary button--lg"
-            to="/docs/customisation"
+            to="/docs/properties"
           >
             Customise
           </Link>

@@ -26,7 +26,7 @@ appendWebPlayer(document.getElementById("webplayer-wrapper"), {
 });
 ```
 
-### Vanilla implementation example
+### Quick start
 
 ```html title="/index.html"
 <!doctype html>
@@ -76,4 +76,4 @@ appendWebPlayer(document.getElementById("webplayer-wrapper"), {
 
 ## Next steps
 
-For more customisation, take a look at available **props** in the **Customisation** section.
+For more customisation, take a look at available **props** in the **[Properties](../properties.mdx)** section

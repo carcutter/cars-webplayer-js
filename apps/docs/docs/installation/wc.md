@@ -25,7 +25,7 @@ defineCustomElements();
 
 2. Use the `<cc-webplayer>` element in your HTML.
 
-### WebComponent implementation example
+### Quick start
 
 ```html title="/index.html"
 <!doctype html>
@@ -70,4 +70,4 @@ defineCustomElements();
 
 ## Next steps
 
-For more customisation, take a look at available **props** in the **Customisation** section.
+For more customisation, take a look at available **props** in the **[Properties](../properties.mdx)** section

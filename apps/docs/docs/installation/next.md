@@ -18,7 +18,7 @@ npm install @car-cutter/next-webplayer
 1. Import: `import { WebPlayer } from "@car-cutter/next-webplayer"`
 2. Use: `<WebPlayer compositionUrl={url} />`
 
-### Next.js implementation example
+### Quick start
 
 ```jsx title="/app/page.tsx"
 "use client"; // Mandatory only if we use events handlers
@@ -45,4 +45,4 @@ export default function Home() {
 
 ## Next steps
 
-For more customisation, take a look at available **props** in the **[Customisation](../customisation.md)** section
+For more customisation, take a look at available **props** in the **[Properties](../properties.mdx)** section

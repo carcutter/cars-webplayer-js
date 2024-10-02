@@ -21,7 +21,7 @@ description: "Use the WebPlayer without any package manager"
 <cc-webplayer composition-url="..." />
 ```
 
-### Default Script implementation example
+### Quick start
 
 ```html title="index.html"
 <html>
@@ -51,4 +51,4 @@ description: "Use the WebPlayer without any package manager"
 
 ## Next steps
 
-For more customisation, take a look at available **props** in the **[Customisation](../customisation.md)** section
+For more customisation, take a look at available **attributes** in the **[Attributes](../properties.mdx)** section

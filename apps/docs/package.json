@@ -27,6 +27,7 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@car-cutter/core-wc": "*",
     "@docusaurus/module-type-aliases": "3.5.2",
     "@docusaurus/tsconfig": "3.5.2",
     "@docusaurus/types": "3.5.2",
