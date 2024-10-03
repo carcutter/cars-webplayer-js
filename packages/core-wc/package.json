@@ -2,7 +2,6 @@
   "name": "@car-cutter/core-wc",
   "version": "0.8.0",
   "private": true,
-  "license": "UNLICENSED",
   "type": "module",
   "main": "dist/index.umd.cjs",
   "module": "dist/index.js",

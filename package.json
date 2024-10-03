@@ -1,7 +1,7 @@
 {
   "name": "cars-webplayer",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "scripts": {
     "dev": "yarn dev:core",
     "dev:core": "turbo dev --filter=@car-cutter/core-ui --",

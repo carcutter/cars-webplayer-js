@@ -2,7 +2,7 @@
   "name": "@car-cutter/script-webplayer",
   "version": "0.8.0",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "type": "module",
   "main": "dist/bundle.js",
   "scripts": {
