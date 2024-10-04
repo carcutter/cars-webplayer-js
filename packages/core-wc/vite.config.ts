@@ -35,6 +35,7 @@ export default defineConfig({
         "@car-cutter/core-ui/dist/style.css?inline",
         "react",
         "react-dom/client",
+        "react/jsx-runtime",
       ],
       output: {
         globals: {
@@ -43,6 +44,7 @@ export default defineConfig({
           "@car-cutter/core-ui/dist/style.css?inline": "CarCutterCoreUIStyle",
           react: "React",
           "react-dom/client": "ReactDOMClient",
+          "react/jsx-runtime": "ReactJSXRuntime",
         },
       },
     },

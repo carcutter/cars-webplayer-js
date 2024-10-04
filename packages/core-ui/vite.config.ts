@@ -33,11 +33,12 @@ export default defineConfig(({ mode }) => ({
     copyPublicDir: false, // The only public file is mock data
 
     rollupOptions: {
-      external: ["@car-cutter/core", "react"],
+      external: ["@car-cutter/core", "react", "react/jsx-runtime"],
       output: {
         globals: {
           "@car-cutter/core": "CarCutterCore",
           react: "React",
+          "react/jsx-runtime": "ReactJSXRuntime",
         },
       },
     },
