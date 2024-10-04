@@ -38,6 +38,7 @@ export default defineConfig({
         "react",
         "react-dom/client",
         "next",
+        "next/dynamic",
         "@car-cutter/react-webplayer",
       ],
       output: {
@@ -45,6 +46,7 @@ export default defineConfig({
           react: "React",
           "react-dom/client": "ReactDOMClient",
           next: "Next",
+          "next/dynamic": "NextDynamic",
           "@car-cutter/react-webplayer": "ReactWebPlayer",
         },
       },
