@@ -36,11 +36,12 @@ export default defineConfig({
     chunkSizeWarningLimit: 125,
 
     rollupOptions: {
-      external: ["react", "react-dom/client"],
+      external: ["react", "react-dom/client", "react/jsx-runtime"],
       output: {
         globals: {
           react: "React",
           "react-dom/client": "ReactDOMClient",
+          "react/jsx-runtime": "ReactJSXRuntime",
         },
       },
     },
