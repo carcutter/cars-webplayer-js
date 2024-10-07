@@ -1,0 +1,39 @@
+diff --git a/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.cjs b/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.cjs
+index 80193c5..cd124b9 100644
+--- a/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.cjs
++++ b/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.cjs
+@@ -1 +1 @@
+-"use strict";const c=require("react"),u=require("react-dom/client"),i=require("@r2wc/core");function s(e,t,r){const n=u.createRoot(e),o=c.createElement(t,r);return n.render(o),{root:n,ReactComponent:t}}function m({root:e,ReactComponent:t},r){const n=c.createElement(t,r);e.render(n)}function l({root:e}){e.unmount()}function a(e,t={}){return i(e,t,{mount:s,update:m,unmount:l})}module.exports=a;
++"use strict";const c=require("react"),u=require("react-dom/client"),i=require("@r2wc/core");function s(e,t,r){const n=u.createRoot(e),o=c.createElement(t,r);return n.render(o),{root:n,ReactComponent:t}}function m({root:e,ReactComponent:t},r){const n=c.createElement(t,r);e.render(n)}function l({root:e}){setTimeout(()=>{e.unmount()},0)}function a(e,t={}){return i(e,t,{mount:s,update:m,unmount:l})}module.exports=a;
+diff --git a/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.js b/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.js
+index 2dd89f3..697b1c7 100644
+--- a/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.js
++++ b/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.js
+@@ -13,7 +13,9 @@ function i({ root: t, ReactComponent: e }, r) {
+   t.render(n);
+ }
+ function a({ root: t }) {
+-  t.unmount();
++  setTimeout(() => {
++    t.unmount();
++  }, 0);
+ }
+ function s(t, e = {}) {
+   return m(t, e, { mount: f, update: i, unmount: a });
+diff --git a/node_modules/@r2wc/react-to-web-component/src/react-to-web-component.ts b/node_modules/@r2wc/react-to-web-component/src/react-to-web-component.ts
+index fbdb5dc..bb1d72c 100644
+--- a/node_modules/@r2wc/react-to-web-component/src/react-to-web-component.ts
++++ b/node_modules/@r2wc/react-to-web-component/src/react-to-web-component.ts
+@@ -36,7 +36,11 @@ function update<Props extends object>(
+ }
+ 
+ function unmount<Props extends object>({ root }: Context<Props>): void {
+-  root.unmount()
++  // The warning "Attempted to synchronously unmount a root while React" is a false positive with nested roots: https://github.com/facebook/react/issues/25675
++  // Issue tracker: https://github.com/bitovi/react-to-web-component/issues/142
++  setTimeout(() => {
++    root.unmount()
++  }, 0)
+ }
+ 
+ export default function r2wc<Props extends object>(
