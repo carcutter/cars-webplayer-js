@@ -6,6 +6,7 @@
     "name": "CarCutter",
     "url": "https://www.car-cutter.com/"
   },
+  "homepage": "https://carcutter.github.io/cars-webplayer-js/",
   "description": "Use CarCutter WebPlayer with Vanilla JS/TS",
   "keywords": [
     "car-cutter",
