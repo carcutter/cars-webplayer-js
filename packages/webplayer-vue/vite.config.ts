@@ -10,7 +10,12 @@ export default defineConfig({
     vue({
       template: {
         compilerOptions: {
-          isCustomElement: tag => ["cc-webplayer"].includes(tag),
+          isCustomElement: tag =>
+            [
+              "cc-webplayer",
+              "cc-webplayer-custom-media",
+              "cc-webplayer-icon",
+            ].includes(tag),
         },
       },
     }),

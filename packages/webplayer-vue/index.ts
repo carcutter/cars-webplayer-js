@@ -18,6 +18,7 @@ export {
 export {
   // - Components
   WEB_PLAYER_WC_TAG,
+  WEB_PLAYER_CUSTOM_MEDIA_WC_TAG,
   WEB_PLAYER_ICON_WC_TAG,
   // - Events
   DEFAULT_EVENT_PREFIX,
