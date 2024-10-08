@@ -25,7 +25,7 @@ export default defineConfig({
 
   build: {
     lib: {
-      name: "next-webplayer",
+      name: "CarCutterWebplayerNext",
       fileName: "index",
       entry: resolve(__dirname, "./index.ts"),
     },
@@ -44,10 +44,10 @@ export default defineConfig({
       output: {
         globals: {
           react: "React",
-          "react-dom/client": "ReactDOMClient",
+          "react-dom/client": "ReactDOM",
           next: "Next",
           "next/dynamic": "NextDynamic",
-          "@car-cutter/react-webplayer": "ReactWebPlayer",
+          "@car-cutter/react-webplayer": "CarCutterWebplayerReact",
         },
       },
     },

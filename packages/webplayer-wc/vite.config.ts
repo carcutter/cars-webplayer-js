@@ -26,7 +26,7 @@ export default defineConfig({
   },
   build: {
     lib: {
-      name: "wc-webplayer",
+      name: "CarCutterWebplayerWC",
       fileName: "index",
       entry: resolve(__dirname, "./index.ts"),
     },

@@ -20,7 +20,7 @@ export default defineConfig({
   },
   build: {
     lib: {
-      name: "vanilla-webplayer",
+      name: "CarCutterWebplayerVanilla",
       fileName: "index",
       entry: resolve(__dirname, "./index.ts"),
     },

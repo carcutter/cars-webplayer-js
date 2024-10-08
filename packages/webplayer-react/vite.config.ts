@@ -27,7 +27,7 @@ export default defineConfig({
 
   build: {
     lib: {
-      name: "react-webplayer",
+      name: "CarCutterWebplayerReact",
       fileName: "index",
       entry: resolve(__dirname, "./index.ts"),
     },
@@ -40,8 +40,8 @@ export default defineConfig({
       output: {
         globals: {
           react: "React",
-          "react-dom/client": "ReactDOMClient",
-          "react/jsx-runtime": "ReactJSXRuntime",
+          "react-dom/client": "ReactDOM",
+          "react/jsx-runtime": "jsx",
         },
       },
     },

@@ -38,7 +38,7 @@ export default defineConfig({
   },
   build: {
     lib: {
-      name: "vue-webplayer",
+      name: "CarCutterWebplayerVue",
       fileName: "index",
       entry: resolve(__dirname, "./index.ts"),
     },

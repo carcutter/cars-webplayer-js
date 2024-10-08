@@ -22,7 +22,7 @@ export default defineConfig({
   },
   build: {
     lib: {
-      name: "core-wc",
+      name: "CarCutterCoreWC",
       fileName: "index",
       entry: resolve(__dirname, "./index.ts"),
     },
@@ -43,8 +43,8 @@ export default defineConfig({
           "@car-cutter/core-ui": "CarCutterCoreUI",
           "@car-cutter/core-ui/dist/style.css?inline": "CarCutterCoreUIStyle",
           react: "React",
-          "react-dom/client": "ReactDOMClient",
-          "react/jsx-runtime": "ReactJSXRuntime",
+          "react-dom/client": "ReactDOM",
+          "react/jsx-runtime": "jsx",
         },
       },
     },

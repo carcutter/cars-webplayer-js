@@ -24,7 +24,7 @@ export default defineConfig(({ mode }) => ({
   // FUTURE: Find a way to build in watch mode. The simple script "watch": "vite build --watch" does not work because it does not rebuild the TS.
   build: {
     lib: {
-      name: "core-ui",
+      name: "CarCutterCoreUI",
       fileName: "index",
       entry: resolve(__dirname, "./index.ts"),
     },
@@ -38,7 +38,7 @@ export default defineConfig(({ mode }) => ({
         globals: {
           "@car-cutter/core": "CarCutterCore",
           react: "React",
-          "react/jsx-runtime": "ReactJSXRuntime",
+          "react/jsx-runtime": "jsx",
         },
       },
     },
