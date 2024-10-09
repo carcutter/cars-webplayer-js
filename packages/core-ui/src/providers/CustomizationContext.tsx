@@ -10,10 +10,10 @@ import {
   WEB_PLAYER_CUSTOM_MEDIA_WC_TAG,
   WEB_PLAYER_ICON_WC_TAG,
   WEB_PLAYER_WC_TAG,
+  type WebPlayerIconProps,
 } from "@car-cutter/core";
 
 import { CustomMedia } from "../types/customisable_item";
-import { WebPlayerIconProps } from "../types/WebPlayerIcon.props";
 
 import { useGlobalContext } from "./GlobalContext";
 

@@ -4,11 +4,12 @@ import {
   type PropsWithChildren as ReactPropsWithChildren,
 } from "react";
 
+import type { WebPlayerCustomMediaProps } from "@car-cutter/core";
+
 import {
   useCustomizationContext,
   useCustomizationContextSafe,
 } from "./providers/CustomizationContext";
-import { WebPlayerCustomMediaProps } from "./types/WebPlayerCustomMedia.props";
 
 const WebPlayerCustomMediaReact: ReactFC<
   ReactPropsWithChildren<WebPlayerCustomMediaProps>

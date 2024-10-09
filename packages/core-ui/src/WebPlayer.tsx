@@ -19,12 +19,12 @@ import {
   DEFAULT_PREVENT_FULL_SCREEN,
   DEFAULT_EVENT_PREFIX,
   DEFAULT_REVERSE_360,
+  type WebPlayerProps,
 } from "@car-cutter/core";
 
 import WebPlayerContainer from "./components/organisms/WebPlayerContainer";
 import CustomizationContextProvider from "./providers/CustomizationContext";
 import GlobalContextProvider from "./providers/GlobalContext";
-import { WebPlayerProps } from "./types/WebPlayer.props";
 
 import "./index.css";
 

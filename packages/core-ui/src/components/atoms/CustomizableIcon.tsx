@@ -1,5 +1,6 @@
+import type { WebPlayerIconName } from "@car-cutter/core";
+
 import { useCustomizationContext } from "../../providers/CustomizationContext";
-import { WebPlayerIconName } from "../../types/WebPlayerIcon.props";
 
 type Props = { customizationKey: WebPlayerIconName; className?: string };
 

@@ -4,11 +4,12 @@ import {
   type PropsWithChildren as ReactPropsWithChildren,
 } from "react";
 
+import type { WebPlayerIconProps } from "@car-cutter/core";
+
 import {
   useCustomizationContext,
   useCustomizationContextSafe,
 } from "./providers/CustomizationContext";
-import { WebPlayerIconProps } from "./types/WebPlayerIcon.props";
 
 const WebPlayerIconReact: ReactFC<
   ReactPropsWithChildren<WebPlayerIconProps>

@@ -1,4 +1,4 @@
-import type { MediaLoadStrategy, MediaWidth } from "@car-cutter/core";
+import type { MediaLoadStrategy, MediaWidth } from "./misc";
 
 export type WebPlayerProps = {
   compositionUrl: string;

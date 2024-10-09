@@ -1,6 +1,4 @@
-import type { Item } from "@car-cutter/core/src/types/composition";
-
-import { WebPlayerCustomMediaProps } from "./WebPlayerCustomMedia.props";
+import type { Item, WebPlayerCustomMediaProps } from "@car-cutter/core";
 
 export type CustomMedia = WebPlayerCustomMediaProps & {
   Media: React.ReactNode;

@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 
-import type { WebPlayerProps } from "../types/WebPlayer.props";
+import type { WebPlayerProps } from "@car-cutter/core";
 
 type ProviderProps = Required<
   Pick<

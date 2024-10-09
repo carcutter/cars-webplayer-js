@@ -1,4 +1,4 @@
-import type { WebPlayerProps } from "@car-cutter/core-ui";
+import type { WebPlayerProps } from "@car-cutter/core";
 
 import { type PropsToAttributes, propsToAttributes } from "./utils";
 

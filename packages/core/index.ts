@@ -48,3 +48,11 @@ export type {
   MediaWidth,
   MediaLoadStrategy,
 } from "./src/types/misc";
+
+// - Components props
+export type { WebPlayerProps } from "./src/types/WebPlayer.props";
+export type { WebPlayerCustomMediaProps } from "./src/types/WebPlayerCustomMedia.props";
+export type {
+  WebPlayerIconProps,
+  WebPlayerIconName,
+} from "./src/types/WebPlayerIcon.props";
