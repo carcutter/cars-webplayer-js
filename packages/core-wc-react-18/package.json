@@ -8,6 +8,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "dev": "vite",
+    "postinstall": "patch-package",
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --max-warnings 0",
     "analyze": "vite-bundle-visualizer"
@@ -30,6 +31,7 @@
     "browserslist": "^4.23.3",
     "browserslist-to-esbuild": "^2.1.1",
     "eslint": "^8.57.0",
+    "patch-package": "^8.0.0",
     "typescript": "^5.5.4",
     "vite": "^5.4.1",
     "vite-bundle-visualizer": "^1.2.1",
