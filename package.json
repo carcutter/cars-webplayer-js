@@ -20,6 +20,9 @@
     "build:core-wc": "turbo build --filter=@car-cutter/core-wc",
     "build:next": "turbo build --filter=@car-cutter/next-webplayer",
     "build:react": "turbo build --filter=@car-cutter/react-webplayer",
+    "build:script": "turbo build --filter=@car-cutter/script-webplayer",
+    "build:script-react-16-17": "turbo build --filter=@car-cutter/script-webplayer-react-16-17",
+    "build:script-react-18": "turbo build --filter=@car-cutter/script-webplayer-react-18",
     "lint": "turbo lint --ui tui --continue",
     "ci": "yarn && turbo run build lint --ui tui",
     "ci:core": "turbo run build lint --filter=@car-cutter/core-ui",
@@ -36,8 +39,13 @@
     "turbo": "^2.1.2"
   },
   "packageManager": "yarn@1.22.22",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ],
+    "nohoist": [
+      "@car-cutter/core-wc-react-*/@r2wc/**"
+    ]
+  }
 }

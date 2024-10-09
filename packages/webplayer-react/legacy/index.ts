@@ -1,12 +1,12 @@
-import { ensureCustomElementsDefinition } from "@car-cutter/core-wc-react-18";
+import { ensureCustomElementsDefinition } from "@car-cutter/core-wc-react-16-17";
 ensureCustomElementsDefinition();
 
-export { WebPlayer, type WebPlayerProps } from "./src/WebPlayer";
+export { WebPlayer, type WebPlayerProps } from "../src/WebPlayer";
 export {
   WebPlayerCustomMedia,
   type WebPlayerCustomMediaProps,
-} from "./src/WebPlayerCustomMedia";
-export { WebPlayerIcon, type WebPlayerIconProps } from "./src/WebPlayerIcon";
+} from "../src/WebPlayerCustomMedia";
+export { WebPlayerIcon, type WebPlayerIconProps } from "../src/WebPlayerIcon";
 
 // -- Expose ancestors package
 export {

@@ -1,5 +1,5 @@
 {
-  "name": "@car-cutter/core-wc",
+  "name": "@car-cutter/core-wc-react-18",
   "version": "0.8.0",
   "private": true,
   "type": "module",
@@ -7,13 +7,20 @@
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --max-warnings 0",
     "analyze": "vite-bundle-visualizer"
   },
   "dependencies": {
     "@car-cutter/core": "0.8.0",
-    "@car-cutter/core-ui": "0.8.0"
+    "@car-cutter/core-ui": "0.8.0",
+    "@car-cutter/core-wc": "0.8.0",
+    "@r2wc/react-to-web-component": "^2.0.3"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",

@@ -21,12 +21,7 @@ import {
   type Composition,
 } from "@car-cutter/core";
 import { type WebPlayerProps as WebPlayerPropsWC } from "@car-cutter/core-ui";
-import {
-  ensureCustomElementsDefinition,
-  webPlayerPropsToAttributes,
-} from "@car-cutter/core-wc";
-
-ensureCustomElementsDefinition();
+import { webPlayerPropsToAttributes } from "@car-cutter/core-wc";
 
 type WebPlayerProps = ReactPropsWithChildren<WebPlayerPropsWC> & {
   onCompositionLoading?: (url: string) => void;

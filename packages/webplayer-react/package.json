@@ -36,7 +36,8 @@
   "devDependencies": {
     "@car-cutter/core": "0.8.0",
     "@car-cutter/core-ui": "0.8.0",
-    "@car-cutter/core-wc": "0.8.0",
+    "@car-cutter/core-wc-react-16-17": "0.8.0",
+    "@car-cutter/core-wc-react-18": "0.8.0",
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
     "@vitejs/plugin-react": "^4.3.1",

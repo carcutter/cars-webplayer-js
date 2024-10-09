@@ -1,17 +1,11 @@
-import { ensureCustomElementsDefinition } from "@car-cutter/core-wc-react-18";
-ensureCustomElementsDefinition();
-
-export { WebPlayer, type WebPlayerProps } from "./src/WebPlayer";
-export {
-  WebPlayerCustomMedia,
-  type WebPlayerCustomMediaProps,
-} from "./src/WebPlayerCustomMedia";
-export { WebPlayerIcon, type WebPlayerIconProps } from "./src/WebPlayerIcon";
+export { ensureCustomElementsDefinition } from "./src/wc";
 
 // -- Expose ancestors package
+
 export {
-  // - Components
+  // - WebComponents
   WEB_PLAYER_WC_TAG,
+  WEB_PLAYER_CUSTOM_MEDIA_WC_TAG,
   WEB_PLAYER_ICON_WC_TAG,
   // - Events
   DEFAULT_EVENT_PREFIX,
@@ -32,3 +26,13 @@ export {
   type Composition,
   type MediaLoadStrategy,
 } from "@car-cutter/core";
+
+export {
+  // - Components
+  webPlayerPropsToAttributes,
+  type WebPlayerAttributes,
+  webPlayerCustomMediaPropsToAttributes,
+  type WebPlayerCustomMediaAttributes,
+  webPlayerIconPropsToAttributes,
+  type WebPlayerIconAttributes,
+} from "@car-cutter/core-wc";

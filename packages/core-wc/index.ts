@@ -1,20 +1,16 @@
-export {
-  checkCustomElementsDefinition,
-  defineCustomElements,
-  ensureCustomElementsDefinition,
-} from "./src/wc";
+export { checkCustomElementsDefinition } from "./src/wc";
 
 export {
   webPlayerPropsToAttributes,
   type WebPlayerAttributes,
-} from "./src/WebPlayer.wc";
+} from "./src/webplayer";
 
 export {
   webPlayerCustomMediaPropsToAttributes,
   type WebPlayerCustomMediaAttributes,
-} from "./src/WebPlayerCustomMedia.wc";
+} from "./src/webplayer-custom-media";
 
 export {
   webPlayerIconPropsToAttributes,
   type WebPlayerIconAttributes,
-} from "./src/WebPlayerIcon.wc";
+} from "./src/webplayer-icon";

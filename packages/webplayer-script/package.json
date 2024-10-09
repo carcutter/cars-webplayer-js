@@ -4,7 +4,6 @@
   "private": true,
   "license": "Apache-2.0",
   "type": "module",
-  "main": "dist/bundle.js",
   "scripts": {
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts --max-warnings 0",

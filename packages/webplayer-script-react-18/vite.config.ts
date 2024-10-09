@@ -13,13 +13,23 @@ export default defineConfig({
   },
   build: {
     lib: {
-      name: "CarCutterWebplayerScript",
-      fileName: () => `bundle-${version}.js`,
+      name: "CarCutterWebplayerScriptReactLTS",
+      fileName: () => `bundle-react-18@${version}.js`,
       entry: resolve(__dirname, "./index.ts"),
       formats: ["umd"],
     },
     target: browserslistToEsbuild(),
 
-    chunkSizeWarningLimit: 300,
+    chunkSizeWarningLimit: 125,
+
+    rollupOptions: {
+      external: ["react", "react-dom/client"],
+      output: {
+        globals: {
+          react: "React",
+          "react-dom/client": "ReactDOM",
+        },
+      },
+    },
   },
 });
