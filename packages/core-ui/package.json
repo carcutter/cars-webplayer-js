@@ -3,14 +3,11 @@
   "version": "0.8.0",
   "private": true,
   "type": "module",
-  "main": "dist/index.umd.cjs",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./index.ts",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint . --ext ts,tsx --max-warnings 0",
-    "analyze": "vite-bundle-visualizer"
+    "lint": "eslint . --ext ts,tsx --max-warnings 0"
   },
   "dependencies": {
     "@car-cutter/core": "0.8.0"
@@ -37,9 +34,7 @@
     "react-dom": "^18.3.1",
     "tailwindcss": "^3.4.11",
     "typescript": "^5.5.4",
-    "vite": "^5.4.1",
-    "vite-bundle-visualizer": "^1.2.1",
-    "vite-plugin-dts": "^4.2.1"
+    "vite": "^5.4.1"
   },
   "browserslist": [
     "defaults"
