@@ -4,7 +4,9 @@ import dynamic from "next/dynamic";
 
 const WebPlayerCustomMedia = dynamic(
   () =>
-    import("@car-cutter/react-webplayer").then(mod => mod.WebPlayerCustomMedia),
+    import("@car-cutter/react-webplayer/legacy").then(
+      mod => mod.WebPlayerCustomMedia
+    ),
   { ssr: false }
 );
 

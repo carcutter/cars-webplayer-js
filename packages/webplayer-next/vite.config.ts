@@ -26,8 +26,10 @@ export default defineConfig({
   build: {
     lib: {
       name: "CarCutterWebplayerNext",
-      fileName: "index",
-      entry: resolve(__dirname, "./index.ts"),
+      entry: {
+        index: resolve(__dirname, "src/index.ts"),
+        legacy: resolve(__dirname, "src/legacy/index.ts"),
+      },
     },
     target: browserslistToEsbuild(),
 
@@ -36,18 +38,28 @@ export default defineConfig({
     rollupOptions: {
       external: [
         "react",
+        "react-dom",
         "react-dom/client",
+        "react/jsx-runtime",
+
         "next",
         "next/dynamic",
+
         "@car-cutter/react-webplayer",
+        "@car-cutter/react-webplayer/legacy",
       ],
       output: {
         globals: {
           react: "React",
+          "react-dom": "ReactDOM",
           "react-dom/client": "ReactDOM",
+          "react/jsx-runtime": "jsx",
+
           next: "Next",
           "next/dynamic": "NextDynamic",
+
           "@car-cutter/react-webplayer": "CarCutterWebplayerReact",
+          "@car-cutter/react-webplayer/legacy": "CarCutterWebplayerReact",
         },
       },
     },

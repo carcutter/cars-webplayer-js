@@ -1,6 +1,6 @@
 {
   "extends": "@car-cutter/typescript-config/react.json",
 
-  "include": ["index.ts", "src", "custom-elements.d.ts"],
+  "include": ["src", "custom-elements.d.ts"],
   "exclude": ["dist", "node_modules"]
 }

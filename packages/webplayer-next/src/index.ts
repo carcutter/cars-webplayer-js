@@ -1,14 +1,12 @@
-export { WebPlayer, type WebPlayerProps } from "./src/WebPlayer";
-export {
-  WebPlayerCustomMedia,
-  type WebPlayerCustomMediaProps,
-} from "./src/WebPlayerCustomMedia";
-export { WebPlayerIcon, type WebPlayerIconProps } from "./src/WebPlayerIcon";
+export { WebPlayer } from "./WebPlayer";
+export { WebPlayerCustomMedia } from "./WebPlayerCustomMedia";
+export { WebPlayerIcon } from "./WebPlayerIcon";
 
 // -- Expose ancestors package
 export {
   // - Components
   WEB_PLAYER_WC_TAG,
+  WEB_PLAYER_CUSTOM_MEDIA_WC_TAG,
   WEB_PLAYER_ICON_WC_TAG,
   // - Events
   DEFAULT_EVENT_PREFIX,
@@ -29,3 +27,9 @@ export {
   type Composition,
   type MediaLoadStrategy,
 } from "@car-cutter/core";
+
+export type {
+  WebPlayerProps,
+  WebPlayerCustomMediaProps,
+  WebPlayerIconProps,
+} from "@car-cutter/react-webplayer";

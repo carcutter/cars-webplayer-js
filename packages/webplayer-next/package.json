@@ -14,9 +14,21 @@
     "next"
   ],
   "type": "module",
-  "main": "dist/index.umd.cjs",
+  "main": "dist/index.cjs",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./legacy": {
+      "types": "./dist/legacy.d.ts",
+      "import": "./dist/legacy.js",
+      "require": "./dist/legacy.cjs"
+    }
+  },
   "files": [
     "dist",
     "package.json",
@@ -32,7 +44,7 @@
     "@car-cutter/react-webplayer": "0.8.0"
   },
   "peerDependencies": {
-    "next": ">=10"
+    "next": ">=8"
   },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
