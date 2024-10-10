@@ -2,6 +2,8 @@ import WebPlayer from "../src/WebPlayer";
 import WebPlayerCustomMedia from "../src/WebPlayerCustomMedia";
 import WebPlayerIcon from "../src/WebPlayerIcon";
 
+import "../src/index.css";
+
 const DevApp: React.FC = () => {
   return (
     <div>
