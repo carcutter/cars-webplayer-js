@@ -161,7 +161,7 @@ const WebPlayerEventsTable: React.FC = () => {
       case "native":
         Code = (
           <CodeBlock language="javascript">
-            {`import { DEFAULT_EVENT_PREFIX, EVENT_COMPOSITION_LOADING } from "@car-cutter/core-wc";
+            {`import { DEFAULT_EVENT_PREFIX, EVENT_COMPOSITION_LOADING } from "@car-cutter/native-webplayer";
 
 document.addEventListener(DEFAULT_EVENT_PREFIX + EVENT_COMPOSITION_LOADING, (event) => {
   console.log("Composition loaded", event.detail);

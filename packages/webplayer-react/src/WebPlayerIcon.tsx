@@ -3,13 +3,8 @@ import {
   type PropsWithChildren as ReactPropsWithChildren,
 } from "react";
 
-import { type WebPlayerIconProps } from "@car-cutter/core-ui";
-import {
-  ensureCustomElementsDefinition,
-  webPlayerIconPropsToAttributes,
-} from "@car-cutter/core-wc";
-
-ensureCustomElementsDefinition();
+import type { WebPlayerIconProps } from "@car-cutter/core";
+import { webPlayerIconPropsToAttributes } from "@car-cutter/core-wc";
 
 const WebPlayerIcon: ReactFC<ReactPropsWithChildren<WebPlayerIconProps>> = ({
   children,

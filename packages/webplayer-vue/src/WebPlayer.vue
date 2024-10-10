@@ -15,8 +15,9 @@ import {
   EVENT_GALLERY_CLOSE,
   type Item,
   type Composition,
+  type WebPlayerProps as WebPlayerCoreProps,
 } from "@car-cutter/core";
-import { type WebPlayerProps as WebPlayerPropsWC } from "@car-cutter/core-ui";
+import {} from "@car-cutter/core-ui";
 import {
   ensureCustomElementsDefinition,
   webPlayerPropsToAttributes,
@@ -24,7 +25,7 @@ import {
 
 ensureCustomElementsDefinition();
 
-export type WebPlayerProps = WebPlayerPropsWC & {
+export type WebPlayerProps = WebPlayerCoreProps & {
   class?: string;
   style?: HTMLElement["style"];
 };

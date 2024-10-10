@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { WebPlayerCustomMediaProps } from "@car-cutter/core-ui";
+import type { WebPlayerCustomMediaProps } from "@car-cutter/core";
 import { webPlayerCustomMediaPropsToAttributes } from "@car-cutter/wc-webplayer";
 
 export type { WebPlayerCustomMediaProps };

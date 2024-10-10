@@ -28,8 +28,6 @@ export {
 export {
   // - Utils
   checkCustomElementsDefinition,
-  defineCustomElements,
-  ensureCustomElementsDefinition,
   // - Components
   webPlayerPropsToAttributes,
   type WebPlayerAttributes,
@@ -38,3 +36,5 @@ export {
   webPlayerIconPropsToAttributes,
   type WebPlayerIconAttributes,
 } from "@car-cutter/core-wc";
+
+export { ensureCustomElementsDefinition } from "@car-cutter/core-wc-react-18";

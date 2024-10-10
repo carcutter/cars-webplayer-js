@@ -15,6 +15,7 @@ export default defineConfig({
         "@car-cutter/core",
         "@car-cutter/core-ui",
         "@car-cutter/core-wc",
+        "@car-cutter/core-wc-react-18",
       ],
     }),
   ],

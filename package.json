@@ -17,7 +17,6 @@
     "postinstall": "turbo run postinstall",
     "build": "turbo build --ui tui --",
     "build:core": "turbo build --filter=@car-cutter/core-ui",
-    "build:core-wc": "turbo build --filter=@car-cutter/core-wc",
     "build:next": "turbo build --filter=@car-cutter/next-webplayer",
     "build:react": "turbo build --filter=@car-cutter/react-webplayer",
     "build:script": "turbo build --filter=@car-cutter/script-webplayer",

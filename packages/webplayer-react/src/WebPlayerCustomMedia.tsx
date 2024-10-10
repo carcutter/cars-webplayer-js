@@ -3,13 +3,9 @@ import {
   type PropsWithChildren as ReactPropsWithChildren,
 } from "react";
 
-import { type WebPlayerCustomMediaProps } from "@car-cutter/core-ui";
-import {
-  ensureCustomElementsDefinition,
-  webPlayerCustomMediaPropsToAttributes,
-} from "@car-cutter/core-wc";
+import type { WebPlayerCustomMediaProps } from "@car-cutter/core";
+import { webPlayerCustomMediaPropsToAttributes } from "@car-cutter/core-wc";
 
-ensureCustomElementsDefinition();
 const WebPlayerCustomMedia: ReactFC<
   ReactPropsWithChildren<WebPlayerCustomMediaProps>
 > = ({ children, ...props }) => {

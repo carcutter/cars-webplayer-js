@@ -2,7 +2,7 @@ import type {
   WebPlayerProps,
   WebPlayerCustomMediaProps,
   WebPlayerIconProps,
-} from "@car-cutter/core-ui";
+} from "@car-cutter/core";
 import {
   WEB_PLAYER_WC_TAG,
   ensureCustomElementsDefinition,

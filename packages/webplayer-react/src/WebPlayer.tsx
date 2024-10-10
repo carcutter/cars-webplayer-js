@@ -20,10 +20,10 @@ import {
   type Item,
   type Composition,
 } from "@car-cutter/core";
-import { type WebPlayerProps as WebPlayerPropsWC } from "@car-cutter/core-ui";
+import { type WebPlayerProps as WebPlayerCoreProps } from "@car-cutter/core";
 import { webPlayerPropsToAttributes } from "@car-cutter/core-wc";
 
-type WebPlayerProps = ReactPropsWithChildren<WebPlayerPropsWC> & {
+type WebPlayerProps = ReactPropsWithChildren<WebPlayerCoreProps> & {
   onCompositionLoading?: (url: string) => void;
   onCompositionLoaded?: (composition: Composition) => void;
   onCompositionLoadError?: (error: unknown) => void;

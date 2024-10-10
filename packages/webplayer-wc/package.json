@@ -33,6 +33,7 @@
     "@car-cutter/core": "0.8.0",
     "@car-cutter/core-ui": "0.8.0",
     "@car-cutter/core-wc": "0.8.0",
+    "@car-cutter/core-wc-react-18": "0.8.0",
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
     "browserslist": "^4.23.3",
