@@ -1,17 +1,6 @@
 import r2wc from "@r2wc/react-to-web-component";
 
-import { type WebPlayerProps } from "@car-cutter/core";
-import { WebPlayer } from "@car-cutter/core-ui";
-import styles from "@car-cutter/core-ui/dist/style.css?inline";
-
-const WebPlayerWithInjectedStyles: React.FC<WebPlayerProps> = props => {
-  return (
-    <>
-      <style>{styles}</style>
-      <WebPlayer {...props} />
-    </>
-  );
-};
+import { WebPlayerWithInjectedStyles } from "@car-cutter/core-wc";
 
 const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedStyles, {
   shadow: "open",

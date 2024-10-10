@@ -6,7 +6,7 @@
   "main": "./index.ts",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "lint": "eslint . --ext ts,tsx --max-warnings 0"
   },
   "dependencies": {

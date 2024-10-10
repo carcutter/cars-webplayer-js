@@ -15,8 +15,5 @@
     "@car-cutter/typescript-config": "*",
     "eslint": "^8.57.0",
     "typescript": "^5.5.4"
-  },
-  "browserslist": [
-    "defaults"
-  ]
+  }
 }

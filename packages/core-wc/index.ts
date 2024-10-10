@@ -1,6 +1,7 @@
 export { checkCustomElementsDefinition } from "./src/wc";
 
 export {
+  WebPlayerWithInjectedStyles,
   webPlayerPropsToAttributes,
   type WebPlayerAttributes,
 } from "./src/webplayer";

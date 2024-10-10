@@ -10,12 +10,11 @@ export default defineConfig({
     react(),
     dts({
       tsconfigPath: resolve(__dirname, "./tsconfig.app.json"),
-      rollupTypes: true,
+      // rollupTypes: true,
       bundledPackages: [
         "@car-cutter/core",
         "@car-cutter/core-ui",
         "@car-cutter/core-wc",
-        "@car-cutter/core-wc-react-18",
       ],
     }),
   ],
