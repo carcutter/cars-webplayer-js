@@ -167,9 +167,25 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
     >
       <CustomizationContextProvider>
         <div
-          id="cc-webplayer-wrapper"
           ref={wrapperRef}
           className="select-none text-foreground"
+          style={
+            {
+              "--background": "var(--cc-webplayer-background, 0 0% 100%)",
+              "--foreground": "var(--cc-webplayer-foreground, 240 10% 3.9%)",
+              "--primary": "var(--cc-webplayer-primary, 216 100% 52%)",
+              "--primary-foreground":
+                "var(--cc-webplayer-primary-foreground, var(--background))",
+              "--primary-light":
+                "var(--cc-webplayer-primary-light, var(--primary))",
+              "--neutral": "var(--cc-webplayer-neutral, 0 0% 39%)",
+              "--neutral-foreground":
+                "var(--cc-webplayer-neutral-foreground, var(--foreground))",
+              "--radius-ui": "var(--cc-webplayer-radius-ui, 1rem)",
+              "--radius-carrousel": "var(--cc-webplayer-radius-carrousel, 0)",
+              "--radius-gallery": "var(--cc-webplayer-radius-gallery, 0)",
+            } as React.CSSProperties
+          }
         >
           <WebPlayerContainer />
         </div>
