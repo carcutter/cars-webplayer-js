@@ -11,11 +11,7 @@ export default defineConfig({
     dts({
       tsconfigPath: resolve(__dirname, "./tsconfig.app.json"),
       rollupTypes: true,
-      bundledPackages: [
-        "@car-cutter/core",
-        "@car-cutter/core-ui",
-        "@car-cutter/core-wc",
-      ],
+      bundledPackages: ["@car-cutter/core*"],
     }),
   ],
 
@@ -28,8 +24,10 @@ export default defineConfig({
   build: {
     lib: {
       name: "CarCutterWebplayerReact",
-      fileName: "index",
-      entry: resolve(__dirname, "./index.ts"),
+      entry: {
+        index: resolve(__dirname, "index.ts"),
+        legacy: resolve(__dirname, "src/legacy.ts"),
+      },
     },
     target: browserslistToEsbuild(),
 
@@ -43,6 +41,13 @@ export default defineConfig({
           "react-dom": "ReactDOM",
           "react-dom/client": "ReactDOM",
           "react/jsx-runtime": "jsx",
+        },
+        manualChunks: {
+          shared: [
+            "src/components/WebPlayerIcon.tsx",
+            "src/components/WebPlayer.tsx",
+            "src/components/WebPlayerCustomMedia.tsx",
+          ],
         },
       },
     },
