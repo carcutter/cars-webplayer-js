@@ -2,13 +2,10 @@ export { appendWebPlayer } from "./src/lib";
 
 // Expose parent package
 export {
-  // - Components
+  // - WebComponents
   WEB_PLAYER_WC_TAG,
-  type WebPlayerAttributes,
   WEB_PLAYER_CUSTOM_MEDIA_WC_TAG,
-  type WebPlayerCustomMediaAttributes,
   WEB_PLAYER_ICON_WC_TAG,
-  type WebPlayerIconAttributes,
   // - Events
   DEFAULT_EVENT_PREFIX,
   EVENT_COMPOSITION_LOADING,
@@ -27,4 +24,4 @@ export {
   type Item,
   type Composition,
   type MediaLoadStrategy,
-} from "@car-cutter/wc-webplayer";
+} from "@car-cutter/core";

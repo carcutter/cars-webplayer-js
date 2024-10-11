@@ -20,7 +20,7 @@ export default defineConfig({
     },
     target: browserslistToEsbuild(),
 
-    chunkSizeWarningLimit: 125,
+    chunkSizeWarningLimit: 100,
 
     rollupOptions: {
       external: ["react", "react-dom/client"],

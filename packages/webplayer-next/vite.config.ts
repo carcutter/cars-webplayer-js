@@ -33,7 +33,7 @@ export default defineConfig({
     },
     target: browserslistToEsbuild(),
 
-    chunkSizeWarningLimit: 15,
+    chunkSizeWarningLimit: 5,
 
     rollupOptions: {
       external: [

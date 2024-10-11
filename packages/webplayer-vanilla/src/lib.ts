@@ -4,13 +4,13 @@ import type {
   WebPlayerIconProps,
 } from "@car-cutter/core";
 import {
-  WEB_PLAYER_WC_TAG,
   ensureCustomElementsDefinition,
   webPlayerPropsToAttributes,
+  WEB_PLAYER_WC_TAG,
   webPlayerCustomMediaPropsToAttributes,
   WEB_PLAYER_CUSTOM_MEDIA_WC_TAG,
-  WEB_PLAYER_ICON_WC_TAG,
   webPlayerIconPropsToAttributes,
+  WEB_PLAYER_ICON_WC_TAG,
 } from "@car-cutter/wc-webplayer";
 
 export function appendWebPlayer(

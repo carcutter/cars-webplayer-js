@@ -9,7 +9,7 @@ export default defineConfig({
     dts({
       tsconfigPath: resolve(__dirname, "./tsconfig.app.json"),
       rollupTypes: true,
-      bundledPackages: ["@car-cutter/wc-webplayer"],
+      bundledPackages: ["@car-cutter/core"],
     }),
   ],
 
@@ -25,5 +25,16 @@ export default defineConfig({
       entry: resolve(__dirname, "./index.ts"),
     },
     target: browserslistToEsbuild(),
+
+    chunkSizeWarningLimit: 5,
+
+    rollupOptions: {
+      external: ["@car-cutter/wc-webplayer"],
+      output: {
+        globals: {
+          "@car-cutter/wc-webplayer": "CarCutterWebplayerWC",
+        },
+      },
+    },
   },
 });

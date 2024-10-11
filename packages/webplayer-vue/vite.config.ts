@@ -41,7 +41,7 @@ export default defineConfig({
     },
     target: browserslistToEsbuild(),
 
-    chunkSizeWarningLimit: 400,
+    chunkSizeWarningLimit: 5,
 
     // Vue is an external dependency, it should be provided by the consumer
     rollupOptions: {

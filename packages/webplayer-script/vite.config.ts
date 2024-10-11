@@ -20,6 +20,6 @@ export default defineConfig({
     },
     target: browserslistToEsbuild(),
 
-    chunkSizeWarningLimit: 300,
+    chunkSizeWarningLimit: 250,
   },
 });
