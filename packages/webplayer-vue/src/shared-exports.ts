@@ -1,20 +1,4 @@
-export {
-  default as WebPlayer,
-  type WebPlayerProps,
-  type WebPlayerEvents,
-} from "./src/WebPlayer.vue";
-
-export {
-  default as WebPlayerCustomMedia,
-  type WebPlayerCustomMediaProps,
-} from "./src/WebPlayerCustomMedia.vue";
-
-export {
-  default as WebPlayerIcon,
-  type WebPlayerIconProps,
-} from "./src/WebPlayerIcon.vue";
-
-// Expose parent package
+// -- Expose ancestors package
 export {
   // - Components
   WEB_PLAYER_WC_TAG,
@@ -38,4 +22,4 @@ export {
   type Item,
   type Composition,
   type MediaLoadStrategy,
-} from "@car-cutter/wc-webplayer";
+} from "@car-cutter/core";

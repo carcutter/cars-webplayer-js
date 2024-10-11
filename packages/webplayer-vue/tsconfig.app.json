@@ -4,5 +4,5 @@
   "compilerOptions": {
     "jsx": "preserve"
   },
-  "include": ["index.ts", "src"]
+  "include": ["src"]
 }

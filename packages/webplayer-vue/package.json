@@ -14,9 +14,21 @@
     "vue"
   ],
   "type": "module",
-  "main": "dist/index.umd.cjs",
+  "main": "dist/index.cjs",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./legacy": {
+      "types": "./dist/legacy.d.ts",
+      "import": "./dist/legacy.js",
+      "require": "./dist/legacy.cjs"
+    }
+  },
   "files": [
     "dist",
     "package.json",
@@ -28,13 +40,15 @@
     "lint": "eslint . --ext ts --max-warnings 0",
     "analyze": "vite-bundle-visualizer"
   },
+  "dependencies": {
+    "@car-cutter/wc-webplayer": "0.8.0"
+  },
   "peerDependencies": {
-    "vue": ">=3"
+    "vue": ">=2"
   },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
-    "@car-cutter/wc-webplayer": "0.8.0",
     "@vitejs/plugin-vue": "^5.1.3",
     "browserslist": "^4.23.3",
     "browserslist-to-esbuild": "^2.1.1",

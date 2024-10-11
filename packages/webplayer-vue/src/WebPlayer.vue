@@ -17,7 +17,6 @@ import {
   type Composition,
   type WebPlayerProps as WebPlayerCoreProps,
 } from "@car-cutter/core";
-import {} from "@car-cutter/core-ui";
 import {
   ensureCustomElementsDefinition,
   webPlayerPropsToAttributes,

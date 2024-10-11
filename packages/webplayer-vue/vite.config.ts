@@ -22,12 +22,7 @@ export default defineConfig({
     dts({
       tsconfigPath: resolve(__dirname, "./tsconfig.app.json"),
       rollupTypes: true,
-      bundledPackages: [
-        "@car-cutter/core",
-        "@car-cutter/core-ui",
-        "@car-cutter/core-wc",
-        "@car-cutter/wc-webplayer",
-      ],
+      bundledPackages: ["@car-cutter/core", "@car-cutter/core-wc"],
     }),
   ],
 
@@ -39,8 +34,10 @@ export default defineConfig({
   build: {
     lib: {
       name: "CarCutterWebplayerVue",
-      fileName: "index",
-      entry: resolve(__dirname, "./index.ts"),
+      entry: {
+        index: resolve(__dirname, "src/index.ts"),
+        legacy: resolve(__dirname, "src/legacy/index.ts"),
+      },
     },
     target: browserslistToEsbuild(),
 
@@ -48,10 +45,12 @@ export default defineConfig({
 
     // Vue is an external dependency, it should be provided by the consumer
     rollupOptions: {
-      external: ["vue"],
+      external: ["vue", "@car-cutter/wc-webplayer"],
       output: {
         globals: {
           vue: "Vue",
+
+          "@car-cutter/wc-webplayer": "CarCutterWebplayerWC",
         },
       },
     },
