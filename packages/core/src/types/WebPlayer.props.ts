@@ -1,6 +1,6 @@
 import type { MediaLoadStrategy, MediaWidth } from "./misc";
 
-export type WebPlayerCoreProps = {
+export type WebPlayerProps = {
   compositionUrl: string;
 
   // Layout
