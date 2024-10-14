@@ -181,8 +181,8 @@ document.addEventListener(DEFAULT_EVENT_PREFIX + EVENT_COMPOSITION_LOADING, (eve
   };
 
   return (
-    <Tabs>
-      <TabItem value="jsx" label="React/Next" default>
+    <Tabs groupId="events-handling">
+      <TabItem value="jsx" label="React/Next">
         <EventTable type="jsx" />
         <ExampleCode type="jsx" />
       </TabItem>

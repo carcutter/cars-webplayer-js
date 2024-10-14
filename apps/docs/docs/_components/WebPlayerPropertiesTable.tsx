@@ -146,12 +146,12 @@ const WebPlayerPropertiesTable: React.FC = () => {
   };
 
   return (
-    <Tabs>
-      <TabItem value="frameworks" label="Frameworks (camelCase)" default>
+    <Tabs groupId="implementation-type">
+      <TabItem value="framework" label="Frameworks">
         <Table type="props" />
       </TabItem>
 
-      <TabItem value="native" label="Native (dashed-case)">
+      <TabItem value="native" label="Native">
         <Table type="attributes" />
       </TabItem>
     </Tabs>
