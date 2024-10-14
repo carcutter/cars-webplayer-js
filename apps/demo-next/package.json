@@ -9,7 +9,7 @@
     "@car-cutter/next-webplayer": "*",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.5"
+    "next": "14.2.10"
   },
   "devDependencies": {
     "typescript": "^5",
