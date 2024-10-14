@@ -23,10 +23,10 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
-    "./legacy": {
-      "types": "./dist/legacy.d.ts",
-      "import": "./dist/legacy.js",
-      "require": "./dist/legacy.cjs"
+    "./vue2": {
+      "types": "./dist/vue2.d.ts",
+      "import": "./dist/vue2.js",
+      "require": "./dist/vue2.cjs"
     }
   },
   "files": [

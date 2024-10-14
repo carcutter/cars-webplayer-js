@@ -1,0 +1,130 @@
+---
+sidebar_position: 3
+sidebar_label: Vue.js
+
+description: "Use the WebPlayer with Vue.js"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# WebPlayer with Vue.js
+
+## Installation
+
+```bash npm2yarn
+npm install @car-cutter/vue-webplayer
+```
+
+## Usage
+
+<Tabs groupId="vue-version">
+  <TabItem value="vue3" label="Vue 3" default>
+
+```typescript
+import { WebPlayer } from "@car-cutter/vue-webplayer";
+```
+
+  </TabItem>
+  <TabItem value="vue2" label="Vue 2">
+
+```typescript
+import { WebPlayer } from "@car-cutter/vue-webplayer/vue2";
+```
+
+  </TabItem>
+</Tabs>
+
+Then, use the component as: `<WebPlayer :compositionUrl="url" />`
+
+### Quick start
+
+<Tabs groupId="vue-version">
+  <TabItem value="vue3" label="Vue 3" default>
+
+```html title="/src/App.vue"
+<script setup lang="ts">
+  // highlight-next-line
+  import { WebPlayer } from "@car-cutter/vue-webplayer";
+</script>
+
+<template>
+  <main>
+    <h1>Vue App</h1>
+    <div class="webplayer-wrapper">
+      // highlight-start
+      <WebPlayer
+        compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
+        :infiniteCarrousel="true"
+        @compositionLoaded="() => console.log('Composition loaded')"
+      />
+      // highlight-end
+    </div>
+  </main>
+</template>
+
+<style scoped>
+  .webplayer-wrapper {
+    max-width: 800px;
+    margin-inline: auto;
+  }
+</style>
+```
+
+  </TabItem>
+  <TabItem value="vue2" label="Vue 2">
+
+```html title="/src/App.vue"
+<script>
+  // highlight-next-line
+  import { WebPlayer } from "@car-cutter/vue-webplayer/vue2";
+
+  export default {
+    components: {
+      // highlight-next-line
+      WebPlayer,
+    },
+    methods: {
+      // highlight-start
+      onCompositionLoaded() {
+        console.log("Composition loaded");
+      },
+      // highlight-end
+    },
+  };
+</script>
+
+<template>
+  <main>
+    <h1>Vue App</h1>
+    <div class="webplayer-wrapper">
+      // highlight-start
+      <WebPlayer
+        compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
+        :infiniteCarrousel="true"
+        @compositionLoaded="onCompositionLoaded"
+      />
+      // highlight-end
+    </div>
+  </main>
+</template>
+
+<style scoped>
+  .webplayer-wrapper {
+    max-width: 800px;
+    margin-inline: auto;
+  }
+</style>
+```
+
+  </TabItem>
+</Tabs>
+
+## Version Compatibility
+
+- Vue 3: Use the default import from `@car-cutter/vue-webplayer`
+- Vue 2: Use the specific import from `@car-cutter/vue-webplayer/vue2`
+
+## Next steps
+
+For more customisation, take a look at available **props** in the **[Properties](../properties.mdx)** section
