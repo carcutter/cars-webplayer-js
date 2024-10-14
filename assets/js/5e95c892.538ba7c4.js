@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_car_cutter_webplayer_docs=self.webpackChunk_car_cutter_webplayer_docs||[]).push([[647],{3531:(e,r,c)=>{c.r(r),c.d(r,{default:()=>d});c(4041);var s=c(4357),a=c(145),t=c(7473),u=c(8150),l=c(6047),_=c(1085);function d(e){return(0,_.jsx)(a.e3,{className:(0,s.A)(t.G.wrapper.docsPages),children:(0,_.jsx)(l.A,{children:(0,u.v)(e.route.routes)})})}}}]);
