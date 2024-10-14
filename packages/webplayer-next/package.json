@@ -44,7 +44,7 @@
     "@car-cutter/react-webplayer": "0.8.0"
   },
   "peerDependencies": {
-    "next": ">=8"
+    "next": ">=10"
   },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
