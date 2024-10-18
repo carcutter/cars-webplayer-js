@@ -1,13 +1,13 @@
 import { resolve } from "path";
 
-import react from "@vitejs/plugin-react";
+import preact from "@preact/preset-vite";
 import browserslistToEsbuild from "browserslist-to-esbuild";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
 export default defineConfig({
   plugins: [
-    react(),
+    preact(),
     dts({
       tsconfigPath: resolve(__dirname, "./tsconfig.app.json"),
       // rollupTypes: true,
@@ -33,5 +33,11 @@ export default defineConfig({
     target: browserslistToEsbuild(),
 
     chunkSizeWarningLimit: 350,
+  },
+  resolve: {
+    alias: {
+      react: "preact/compat",
+      "react-dom": "preact/compat",
+    },
   },
 });
