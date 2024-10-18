@@ -8,21 +8,17 @@
   <body>
     <script type="module">
       import {
-        defineCustomElements,
+        ensureCustomElementsDefinition,
         DEFAULT_EVENT_PREFIX,
         EVENT_COMPOSITION_LOADED,
       } from "@car-cutter/wc-webplayer";
 
-      function init() {
-        defineCustomElements();
+      ensureCustomElementsDefinition();
 
-        document.addEventListener(
-          `${DEFAULT_EVENT_PREFIX}${EVENT_COMPOSITION_LOADED}`,
-          () => console.log("Composition loaded")
-        );
-      }
-
-      init();
+      document.addEventListener(
+        `${DEFAULT_EVENT_PREFIX}${EVENT_COMPOSITION_LOADED}`,
+        () => console.log("Composition loaded")
+      );
     </script>
 
     <h1>WC App</h1>
