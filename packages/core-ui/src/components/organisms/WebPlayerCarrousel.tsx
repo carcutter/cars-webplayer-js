@@ -218,6 +218,10 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   // 1) when the user changes the category (need to reset the first index)
   // 2) when the user toggles the extend mode
   useEffect(() => {
+    if (specialCommand) {
+      return;
+    }
+
     const closestIndex = computeClosestIndex();
 
     // When changing layout with full-screen for instance, the scroll position can be messed-up
@@ -232,8 +236,9 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     scrollToIndex(carrouselItemIndex, "instant");
   }, [
     carrouselItemIndex,
-    scrollToIndex,
+    specialCommand,
     computeClosestIndex,
+    scrollToIndex,
     // - Run the effect when those values change
     items,
     resizeTransitionTimeout,
@@ -420,7 +425,12 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
         scrollToIndex(1, "smooth", cb);
         break;
       case "instant":
-        scrollToIndex(itemIndexCommand, "instant", cb);
+        scrollToIndex(itemIndexCommand, "instant", () => {
+          // NOTE: timeout to avoid race condition (because we cannot really know when the instant scroll is done)
+          setTimeout(() => {
+            cb();
+          }, 100);
+        });
         break;
       default:
         scrollToIndex(itemIndexCommand, "smooth");
