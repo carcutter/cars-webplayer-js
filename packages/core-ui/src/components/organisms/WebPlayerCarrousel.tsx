@@ -94,7 +94,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     } else {
       return closestIndex;
     }
-  }, [specialCommand, getSliderOrThrow, items.length]);
+  }, [getSliderOrThrow, items.length, specialCommand]);
 
   const setStyleCursor = useCallback(
     (cursor: "auto" | "grab" | "grabbing") => {
@@ -236,9 +236,9 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     scrollToIndex(carrouselItemIndex, "instant");
   }, [
     carrouselItemIndex,
-    specialCommand,
     computeClosestIndex,
     scrollToIndex,
+    specialCommand,
     // - Run the effect when those values change
     items,
     resizeTransitionTimeout,
@@ -393,10 +393,8 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   }, [
     computeClosestIndex,
     extendTransition,
-    isRunningSpecialCommand,
     isResizing,
     itemIndexCommand,
-    items.length,
     setCarrouselItemIndex,
     setItemIndexCommand,
   ]);
@@ -468,7 +466,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
           const isFirst = index === 0;
           const isLast = index === items.length - 1;
 
-          const transformStyle = (() => {
+          const transformStyle: React.CSSProperties | undefined = (() => {
             if (specialCommand === "first_to_last" && isFirst) {
               return {
                 transform: `translateX(${100 * items.length}%)`,
