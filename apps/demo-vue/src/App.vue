@@ -12,7 +12,8 @@ import {
     <div class="webplayer-wrapper">
       <WebPlayer
         compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
-        :hideCategories="true"
+        :infiniteCarrousel="true"
+        :permanentGallery="true"
         @compositionLoaded="
           composition => console.log('Composition loaded', composition)
         "
