@@ -5,7 +5,7 @@ import { useCompositionContext } from "../../providers/CompositionContext";
 import { useControlsContext } from "../../providers/ControlsContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
 import { easeOut } from "../../utils/animation";
-import { clamp, lerp, modulo } from "../../utils/math";
+import { clamp, lerp } from "../../utils/math";
 import { cn } from "../../utils/style";
 import WebPlayerElement from "../molecules/WebPlayerElement";
 import WebPlayerOverlay from "../molecules/WebPlayerOverlay";
@@ -85,16 +85,8 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       0
     );
 
-    if (specialCommand === "first_to_last") {
-      // The very last item is the first one (as we moved it to the end)
-      return modulo(closestIndex, items.length);
-    } else if (specialCommand === "last_to_first") {
-      // The very first item is the last one (as we moved it to the start). It shifts the index by 1
-      return modulo(closestIndex - 1, items.length);
-    } else {
-      return closestIndex;
-    }
-  }, [getSliderOrThrow, items.length, specialCommand]);
+    return closestIndex;
+  }, [getSliderOrThrow]);
 
   const setStyleCursor = useCallback(
     (cursor: "auto" | "grab" | "grabbing") => {
@@ -405,30 +397,25 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       return;
     }
 
-    const cb = () => finishSpecialCommand();
+    const cb = () => {
+      // NOTE: timeout to avoid race condition (because we cannot really know when the instant scroll is done)
+      setTimeout(() => {
+        setItemIndexCommand(null);
+        finishSpecialCommand();
+      }, 75);
+    };
 
     switch (specialCommand) {
       case "first_to_last":
-        // Go to the "moved" first item instantly
-        scrollToIndex(items.length, "instant");
-        // Move to the last item
-        scrollToIndex(items.length - 1, "smooth", cb);
+        // Move to the last item instantly
+        scrollToIndex(items.length - 1, "instant", cb);
         break;
-
       case "last_to_first":
-        // Go to the "moved" last item instantly
-        scrollToIndex(0, "instant");
-
-        // Move to the first item (it shifted by 1 due to the "moved" last item)
-        scrollToIndex(1, "smooth", cb);
+        // Move to the first item instantly
+        scrollToIndex(0, "instant", cb);
         break;
       case "instant":
-        scrollToIndex(itemIndexCommand, "instant", () => {
-          // NOTE: timeout to avoid race condition (because we cannot really know when the instant scroll is done)
-          setTimeout(() => {
-            cb();
-          }, 100);
-        });
+        scrollToIndex(itemIndexCommand, "instant", cb);
         break;
       default:
         scrollToIndex(itemIndexCommand, "smooth");
@@ -440,11 +427,8 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     itemIndexCommand,
     items.length,
     scrollToIndex,
+    setItemIndexCommand,
   ]);
-
-  const CyclePlaceholder = () => (
-    <div className="h-full" style={aspectRatioStyle} />
-  );
 
   return (
     <div
@@ -458,9 +442,6 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
         ref={sliderRef}
         className={`flex size-full ${slidable ? "overflow-x-auto no-scrollbar *:snap-start *:snap-always" : "justify-center"}`}
       >
-        {/* Empty element to allow cycling */}
-        {specialCommand === "last_to_first" && <CyclePlaceholder />}
-
         {items.map((item, index) => {
           const isShown = index === carrouselItemIndex;
           const isFirst = index === 0;
@@ -530,9 +511,6 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
             </div>
           );
         })}
-
-        {/*Empty element to allow cycling */}
-        {specialCommand === "first_to_last" && <CyclePlaceholder />}
       </div>
 
       <WebPlayerOverlay />
