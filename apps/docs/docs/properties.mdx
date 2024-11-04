@@ -2,6 +2,9 @@
 sidebar_position: 2
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 import WebPlayerPropertiesTable from "./_components/WebPlayerPropertiesTable";
 
 # Properties
@@ -14,3 +17,58 @@ import WebPlayerPropertiesTable from "./_components/WebPlayerPropertiesTable";
 :::
 
 <WebPlayerPropertiesTable />
+
+## Generate composition URL
+
+:::note
+
+The _composition URL_ could be any URL that returns a JSON object with the composition data.
+
+In the following example, we are using a URL that is specific to the Car Cutter platform, but you can replace it with your own URL if you have a different backend.
+
+:::
+
+<Tabs>
+  <TabItem value="package" label="NPM package">
+
+```ts
+import { generateCompositionUrl } from "@car-cutter/your-npm-package-webplayer";
+
+/**
+ * @param {string} hashedCustomerId - The ID of the customer (hashed with SHA-256).
+ * @param {string} vin - The Vehicle Identification Number.
+ * @returns {string} The URL to fetch the composition JSON.
+ */
+const compositionUrl = generateCompositionUrl(hashedCustomerId, vin);
+```
+
+  </TabItem>
+
+  <TabItem value="script" label="<script/>">
+
+```ts
+/**
+ * Generates a URL for fetching the composition JSON for a given customer and vehicle.
+ *
+ * @param {string} hashedCustomerId - The ID of the customer (hashed with SHA-256).
+ * @param {string} vin - The Vehicle Identification Number.
+ * @returns {string} The URL to fetch the composition JSON.
+ */
+export function generateCompositionUrl(
+  hashedCustomerId: string,
+  vin: string
+): string {
+  return `https://cdn.car-cutter.com/gallery/${hashedCustomerId}/${vin}/composition_v3.json`;
+}
+```
+
+  </TabItem>
+
+</Tabs>
+
+:::warning
+
+To protect your Customer ID, CarCutter uses a **hashed version** of it.
+You should hash your customerId with SHA-256 before using it.
+
+:::
