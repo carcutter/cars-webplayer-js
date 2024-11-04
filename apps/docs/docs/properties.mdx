@@ -20,7 +20,7 @@ import WebPlayerPropertiesTable from "./_components/WebPlayerPropertiesTable";
 
 ## Generate composition URL
 
-:::note
+:::info
 
 The _composition URL_ could be any URL that returns a JSON object with the composition data.
 
@@ -35,11 +35,11 @@ In the following example, we are using a URL that is specific to the Car Cutter 
 import { generateCompositionUrl } from "@car-cutter/your-npm-package-webplayer";
 
 /**
- * @param {string} hashedCustomerId - The ID of the customer (hashed with SHA-256).
+ * @param {string} customerToken - The CarCutter Customer Token (computed by hasing the Customer ID with SHA-256).
  * @param {string} vin - The Vehicle Identification Number.
  * @returns {string} The URL to fetch the composition JSON.
  */
-const compositionUrl = generateCompositionUrl(hashedCustomerId, vin);
+const compositionUrl = generateCompositionUrl(customerToken, vin);
 ```
 
   </TabItem>
@@ -50,15 +50,15 @@ const compositionUrl = generateCompositionUrl(hashedCustomerId, vin);
 /**
  * Generates a URL for fetching the composition JSON for a given customer and vehicle.
  *
- * @param {string} hashedCustomerId - The ID of the customer (hashed with SHA-256).
+ * @param {string} customerToken - The CarCutter Customer Token (computed by hasing the Customer ID with SHA-256).
  * @param {string} vin - The Vehicle Identification Number.
  * @returns {string} The URL to fetch the composition JSON.
  */
 export function generateCompositionUrl(
-  hashedCustomerId: string,
+  customerToken: string,
   vin: string
 ): string {
-  return `https://cdn.car-cutter.com/gallery/${hashedCustomerId}/${vin}/composition_v3.json`;
+  return `https://cdn.car-cutter.com/gallery/${customerToken}/${vin}/composition_v3.json`;
 }
 ```
 
@@ -66,9 +66,8 @@ export function generateCompositionUrl(
 
 </Tabs>
 
-:::warning
+:::note
 
-To protect your Customer ID, CarCutter uses a **hashed version** of it.
-You should hash your customerId with SHA-256 before using it.
+In order to keep your Customer ID secret, we are using the Customer Token and not the Customer ID. Make sure to not include the Customer ID in your frontend code.
 
 :::

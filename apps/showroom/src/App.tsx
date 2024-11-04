@@ -4,7 +4,7 @@ import {
   WebPlayer,
   WebPlayerCustomMedia,
   WebPlayerIcon,
-  generateCompositionUrl as generateCompositionUrlWithHashedCustomer,
+  generateCompositionUrl as generateCompositionUrlWithCustomerToken,
 } from "@car-cutter/react-webplayer";
 
 import AppContextProvider, { useAppContext } from "./AppContext";
@@ -16,14 +16,14 @@ import { radiusToClassName } from "./const/radius";
 import { cn } from "./utils/style";
 
 const generateCompositionUrl = (customer: string, id: string) => {
-  const isHashed = (str: string) => /^[a-f0-9]{64}$/i.test(str);
+  const isToken = (str: string) => /^[a-f0-9]{64}$/i.test(str);
 
-  const hashCustomerId = (customerId: string) => sha256(customerId);
+  const customerIdToToken = (customerId: string) => sha256(customerId);
 
-  const hashedCustomer = isHashed(customer)
+  const customerToken = isToken(customer)
     ? customer
-    : hashCustomerId(customer);
-  return generateCompositionUrlWithHashedCustomer(hashedCustomer, id);
+    : customerIdToToken(customer);
+  return generateCompositionUrlWithCustomerToken(customerToken, id);
 };
 
 const AppContent: React.FC = () => {

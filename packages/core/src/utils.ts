@@ -3,15 +3,15 @@ import type { MediaWidth } from "./types/misc";
 /**
  * Generates a URL for fetching the composition JSON for a given customer and vehicle.
  *
- * @param {string} hashedCustomerId - The ID of the customer (hashed with SHA-256).
+ * @param {string} customerToken - The CarCutter Customer Token (computed by hasing the Customer ID with SHA-256).
  * @param {string} vin - The Vehicle Identification Number.
  * @returns {string} The URL to fetch the composition JSON.
  */
 export function generateCompositionUrl(
-  hashedCustomerId: string,
+  customerToken: string,
   vin: string
 ): string {
-  return `https://cdn.car-cutter.com/gallery/${hashedCustomerId}/${vin}/composition_v3.json`;
+  return `https://cdn.car-cutter.com/gallery/${customerToken}/${vin}/composition_v3.json`;
 }
 
 /**
