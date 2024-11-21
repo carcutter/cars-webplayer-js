@@ -38,7 +38,7 @@ export default defineComponent({
     maxMediaWidth: Number,
     preloadRange: Number,
 
-    preventFullScreen: Boolean,
+    extendBehavior: String,
     eventPrefix: String,
     reverse360: Boolean,
   },

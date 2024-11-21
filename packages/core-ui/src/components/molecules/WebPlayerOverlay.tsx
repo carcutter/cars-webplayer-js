@@ -32,8 +32,12 @@ import CategorySelect from "./CategorySelect";
  * - Details overlay when an hotspot with image is clicked
  */
 const WebPlayerOverlay: React.FC = () => {
-  const { hideCategories, infiniteCarrousel, permanentGallery } =
-    useGlobalContext();
+  const {
+    hideCategories,
+    infiniteCarrousel,
+    permanentGallery,
+    extendBehavior,
+  } = useGlobalContext();
 
   const { aspectRatioStyle } = useCompositionContext();
 
@@ -228,18 +232,20 @@ const WebPlayerOverlay: React.FC = () => {
           )}
 
           {/* Extend/Reduce button */}
-          <Button
-            variant="fill"
-            color={extendMode ? "primary" : "neutral"}
-            shape="icon"
-            onClick={toggleExtendMode}
-          >
-            {!extendMode ? (
-              <ExtendIcon className="size-full" />
-            ) : (
-              <ReduceIcon className="size-full" />
-            )}
-          </Button>
+          {extendBehavior !== "none" && (
+            <Button
+              variant="fill"
+              color={extendMode ? "primary" : "neutral"}
+              shape="icon"
+              onClick={toggleExtendMode}
+            >
+              {!extendMode ? (
+                <ExtendIcon className="size-full" />
+              ) : (
+                <ReduceIcon className="size-full" />
+              )}
+            </Button>
+          )}
         </div>
       </div>
 

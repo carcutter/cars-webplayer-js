@@ -42,7 +42,7 @@ const DevApp: React.FC = () => {
           // minMediaWidth={300}
           // maxMediaWidth={1000}
           // preloadRange={3}
-          // preventFullScreen
+          // extendBehavior="event"
           // eventPrefix="cc-event:"
           // reverse360
         >

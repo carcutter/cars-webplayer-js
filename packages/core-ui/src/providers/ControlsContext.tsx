@@ -106,7 +106,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 }) => {
   const {
     infiniteCarrousel,
-    preventFullScreen,
+    extendBehavior,
 
     emitEvent,
     isFullScreen,
@@ -399,7 +399,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const enableExtendMode = useCallback(async () => {
     triggerExtendTransition();
 
-    if (!preventFullScreen) {
+    if (extendBehavior === "full_screen") {
       const requestSucceed = await requestFullscreen();
 
       setFakeFullScreen(!requestSucceed);
@@ -414,7 +414,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     // - if fullscreen request failed (mainly Safari iOS)
     changeExtendMode(true);
   }, [
-    preventFullScreen,
+    extendBehavior,
     changeExtendMode,
     requestFullscreen,
     triggerExtendTransition,
@@ -423,7 +423,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const disableExtendMode = useCallback(async () => {
     triggerExtendTransition();
 
-    if (!preventFullScreen) {
+    if (extendBehavior === "full_screen") {
       setFakeFullScreen(false);
 
       const exitSucceed = await exitFullscreen();
@@ -438,7 +438,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     // - If fullscreen exit request failed (mainly Safari iOS)
     changeExtendMode(false);
   }, [
-    preventFullScreen,
+    extendBehavior,
     changeExtendMode,
     exitFullscreen,
     triggerExtendTransition,
@@ -454,7 +454,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
   // Listen to fullscreen changes (mandatory to get the full screen close with Echap)
   useEffect(() => {
-    if (preventFullScreen) {
+    if (extendBehavior !== "full_screen") {
       return;
     }
 
@@ -472,7 +472,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
     changeExtendMode(isFullScreen);
   }, [
-    preventFullScreen,
+    extendBehavior,
     changeExtendMode,
     extendMode,
     fakeFullScreen,

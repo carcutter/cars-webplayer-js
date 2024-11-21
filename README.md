@@ -119,7 +119,7 @@ Run `yarn publish:docs`
 | `minMediaWidth`     | `number`                           | `0`               | Force minimum media width (in pixels)                     |
 | `maxMediaWidth`     | `number`                           | `Infinity`        | Force maximum media width (in pixels)                     |
 | `preloadRange`      | `number`                           | `1`               | Number of items to preload before and after the viewport  |
-| `preventFullScreen` | `boolean`                          | `false`           | Whether to prevent full screen mode                       |
+| `extendBehavior`    | `"full_screen"`/`"event"`/`"none"` | `"full_screen"`   | Handle extend mode                                        |
 | `eventPrefix`       | `string`                           | `"cc-webplayer:"` | Prefix of cc-player events                                |
 | `reverse360`        | `boolean`                          | `false`           | Reverse the 360-degree rotation                           |
 
@@ -132,18 +132,18 @@ _NOTE: If you are using the WebComponent directly, you need to transform the pro
 
 You can customise the WebPlayer CSS with CSS Variables
 
-| CSS Variable                        | Description                        | Default Value     |
-| ----------------------------------- | ---------------------------------- | ----------------- |
-| `--cc-webplayer-background`         | Background color (contrast texts)  | `0 0% 100%`       |
-| `--cc-webplayer-foreground`         | Foreground color (text color)      | `240 10% 3.9%`    |
-| `--cc-webplayer-primary`            | Primary color (buttons)            | `216 100% 52%`    |
-| `--cc-webplayer-primary-foreground` | Foreground color for primary items | `--cc-background` |
-| `--cc-webplayer-primary-light`      | Alternative to primary if too dark | `--cc-primary`    |
-| `--cc-webplayer-neutral`            | Neutral color                      | `0 0% 39%`        |
-| `--cc-webplayer-neutral-foreground` | Foreground color for neutral items | `--cc-foreground` |
-| `--cc-webplayer-radius-ui`          | UI element Border radius (buttons) | `1rem`            |
-| `--cc-webplayer-radius-carrousel`   | Carrousel border radius            | `0`               |
-| `--cc-webplayer-radius-gallery`     | Gallery medias border radius       | `0`               |
+| CSS Variable                        | Description                        | Default Value               |
+| ----------------------------------- | ---------------------------------- | --------------------------- |
+| `--cc-webplayer-background`         | Background color (contrast texts)  | `0 0% 100%`                 |
+| `--cc-webplayer-foreground`         | Foreground color (text color)      | `240 10% 3.9%`              |
+| `--cc-webplayer-primary`            | Primary color (buttons)            | `216 100% 52%`              |
+| `--cc-webplayer-primary-foreground` | Foreground color for primary items | `--cc-webplayer-background` |
+| `--cc-webplayer-primary-light`      | Alternative to primary if too dark | `--cc-webplayer-primary`    |
+| `--cc-webplayer-neutral`            | Neutral color                      | `0 0% 39%`                  |
+| `--cc-webplayer-neutral-foreground` | Foreground color for neutral items | `--cc-webplayer-foreground` |
+| `--cc-webplayer-radius-ui`          | UI element Border radius (buttons) | `1rem`                      |
+| `--cc-webplayer-radius-carrousel`   | Carrousel border radius            | `0`                         |
+| `--cc-webplayer-radius-gallery`     | Gallery medias border radius       | `0`                         |
 
 ### More customisation
 

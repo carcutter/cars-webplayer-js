@@ -71,8 +71,8 @@ const properties: Array<Property> = [
     description: "Number of medias to preload before & after the viewport",
   },
   {
-    propName: "preventFullScreen",
-    attribute: "prevent-full-screen",
+    propName: "extendBehavior",
+    attribute: "extend-behavior",
     type: "boolean",
     defaultValue: "false",
     description: "Whether to prevent full screen mode",

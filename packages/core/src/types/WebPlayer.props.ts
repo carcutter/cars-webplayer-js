@@ -1,4 +1,4 @@
-import type { MediaLoadStrategy, MediaWidth } from "./misc";
+import type { ExtendBehavior, MediaLoadStrategy, MediaWidth } from "./misc";
 
 export type WebPlayerProps = {
   compositionUrl: string;
@@ -15,7 +15,7 @@ export type WebPlayerProps = {
   preloadRange?: number;
 
   // Miscelaneous
-  preventFullScreen?: boolean;
+  extendBehavior?: ExtendBehavior;
   eventPrefix?: string;
   reverse360?: boolean;
 };
