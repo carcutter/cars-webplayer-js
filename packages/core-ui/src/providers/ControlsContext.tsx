@@ -306,7 +306,10 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       case "image":
         return !!currentItem.hotspots?.length;
       case "360":
-        return currentItemInteraction === "running";
+        return (
+          currentItemInteraction === "running" &&
+          currentItem.images.some(img => !!img.hotspots?.length)
+        );
       default:
         return false;
     }
