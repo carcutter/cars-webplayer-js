@@ -9,7 +9,7 @@ import {
 
 import {
   WEB_PLAYER_WC_TAG,
-  DEFAULT_HIDE_CATEGORIES,
+  DEFAULT_HIDE_CATEGORIES_NAV,
   DEFAULT_INFINITE_CARROUSEL,
   DEFAULT_PERMANENT_GALLERY,
   DEFAULT_MEDIA_LOAD_STRATEGY,
@@ -29,7 +29,7 @@ import GlobalContextProvider from "./providers/GlobalContext";
 const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   compositionUrl,
 
-  hideCategories = DEFAULT_HIDE_CATEGORIES,
+  hideCategoriesNav = DEFAULT_HIDE_CATEGORIES_NAV,
   infiniteCarrousel = DEFAULT_INFINITE_CARROUSEL,
   permanentGallery = DEFAULT_PERMANENT_GALLERY,
 
@@ -145,7 +145,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
     <GlobalContextProvider
       {...{
         compositionUrl,
-        hideCategories,
+        hideCategoriesNav,
         infiniteCarrousel,
         permanentGallery,
         mediaLoadStrategy,

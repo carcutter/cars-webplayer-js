@@ -112,7 +112,7 @@ Run `yarn publish:docs`
 | Prop                | Type                               | Default           | Description                                               |
 | ------------------- | ---------------------------------- | ----------------- | --------------------------------------------------------- |
 | `compositionUrl`    | `string`                           | ❌ Required       | URL to the composition data                               |
-| `hideCategories`    | `boolean`                          | `false`           | Hide the category-based navigation                        |
+| `hideCategoriesNav` | `boolean`                          | `false`           | Hide the category-based navigation                        |
 | `infiniteCarrousel` | `boolean`                          | `false`           | Allow to navigate from 1st to last media (and vice versa) |
 | `permanentGallery`  | `boolean`                          | `false`           | Display gallery under the carrousel                       |
 | `mediaLoadStrategy` | `"quality"`/`"balanced"`/`"speed"` | `"quality"`       | Strategy for loading medias.                              |

@@ -22,8 +22,8 @@ const properties: Array<Property> = [
     description: "URL to the composition data",
   },
   {
-    propName: "hideCategories",
-    attribute: "hide-categories",
+    propName: "hideCategoriesNav",
+    attribute: "hide-categories-nav",
     type: "boolean",
     defaultValue: "false",
     description: "Hide the category-based navigation",

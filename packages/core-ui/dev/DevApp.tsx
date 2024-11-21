@@ -35,7 +35,7 @@ const DevApp: React.FC = () => {
           // compositionUrl="/composition_mock_1.json"
           compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
           // compositionUrl="https://cdn.car-cutter.com/gallery/7de693a6dd8379eb743f6093499bdd13fe76876f135ae9a08b7d9ecbfb7f8664/WAUZZZF34N1097219/composition_v3.json"
-          // hideCategories
+          // hideCategoriesNav
           infiniteCarrousel
           permanentGallery
           // mediaLoadStrategy="speed"

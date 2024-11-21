@@ -4,7 +4,7 @@ export type WebPlayerProps = {
   compositionUrl: string;
 
   // Layout
-  hideCategories?: boolean;
+  hideCategoriesNav?: boolean;
   infiniteCarrousel?: boolean;
   permanentGallery?: boolean;
 

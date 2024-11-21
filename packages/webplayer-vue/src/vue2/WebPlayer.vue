@@ -29,7 +29,7 @@ export default defineComponent({
   props: {
     compositionUrl: { type: String, required: true },
 
-    hideCategories: Boolean,
+    hideCategoriesNav: Boolean,
     infiniteCarrousel: Boolean,
     permanentGallery: Boolean,
 

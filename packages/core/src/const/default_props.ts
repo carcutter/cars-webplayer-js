@@ -4,7 +4,7 @@ import type {
   MediaWidth,
 } from "../types/misc";
 
-export const DEFAULT_HIDE_CATEGORIES = false satisfies boolean;
+export const DEFAULT_HIDE_CATEGORIES_NAV = false satisfies boolean;
 export const DEFAULT_INFINITE_CARROUSEL = false satisfies boolean;
 export const DEFAULT_PERMANENT_GALLERY = false satisfies boolean;
 

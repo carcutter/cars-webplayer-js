@@ -20,8 +20,8 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
 
     permanentGallery,
     setPermanentGallery,
-    hideCategories,
-    setHideCategories,
+    hideCategoriesNav,
+    setHideCategoriesNav,
     withCustomMedias,
     setWithCustomMedias,
     withCustomIcons,
@@ -110,13 +110,13 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
 
                 {/* Hide Categories */}
                 <Checkbox
-                  id="hideCategories"
-                  checked={!hideCategories}
+                  id="hideCategoriesNav"
+                  checked={!hideCategoriesNav}
                   onCheckedChange={checked =>
-                    setHideCategories(checked !== true)
+                    setHideCategoriesNav(checked !== true)
                   }
                 />
-                <Label htmlFor="hideCategories">Categories</Label>
+                <Label htmlFor="hideCategoriesNav">Categories</Label>
 
                 {/* Custom Medias */}
                 <Checkbox

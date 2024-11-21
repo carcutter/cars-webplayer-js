@@ -34,7 +34,7 @@ const AppContent: React.FC = () => {
     product,
 
     permanentGallery,
-    hideCategories,
+    hideCategoriesNav,
     withCustomMedias,
     withCustomIcons,
 
@@ -80,7 +80,7 @@ const AppContent: React.FC = () => {
           compositionUrl={compositionUrl}
           infiniteCarrousel
           permanentGallery={permanentGallery}
-          hideCategories={hideCategories}
+          hideCategoriesNav={hideCategoriesNav}
         >
           {withCustomMedias && (
             <>

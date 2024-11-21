@@ -6,7 +6,7 @@ export const DEFAULT_CUSTOMER: string =
 export const DEFAULT_ID: string = "WAUZZZF34N1097219";
 
 export const DEFAULT_PERMANENT_GALLERY: boolean = true;
-export const DEFAULT_HIDE_CATEGORIES: boolean = false;
+export const DEFAULT_HIDE_CATEGORIES_NAV: boolean = false;
 export const DEFAULT_WITH_CUSTOM_MEDIAS: boolean = false;
 export const DEFAULT_WITH_CUSTOM_ICONS: boolean = false;
 

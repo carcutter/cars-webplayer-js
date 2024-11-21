@@ -33,7 +33,7 @@ import CategorySelect from "./CategorySelect";
  */
 const WebPlayerOverlay: React.FC = () => {
   const {
-    hideCategories,
+    hideCategoriesNav,
     infiniteCarrousel,
     permanentGallery,
     extendBehavior,
@@ -96,7 +96,7 @@ const WebPlayerOverlay: React.FC = () => {
   return (
     <>
       {/* CategorySelect (on top) */}
-      {!hideCategories && (
+      {!hideCategoriesNav && (
         <CategorySelect
           sharedClassName={cn(
             sharedClassName,

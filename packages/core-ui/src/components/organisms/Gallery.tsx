@@ -25,8 +25,12 @@ const Gallery: React.FC<Props> = ({
   className = "",
   containerClassName = "",
 }) => {
-  const { hideCategories, infiniteCarrousel, permanentGallery, isFullScreen } =
-    useGlobalContext();
+  const {
+    hideCategoriesNav,
+    infiniteCarrousel,
+    permanentGallery,
+    isFullScreen,
+  } = useGlobalContext();
 
   const { categories, aspectRatioStyle } = useCompositionContext();
 
@@ -45,7 +49,7 @@ const Gallery: React.FC<Props> = ({
   } = useControlsContext();
 
   const separatorIndexes = useMemo(() => {
-    if (hideCategories) {
+    if (hideCategoriesNav) {
       return [];
     }
 
@@ -75,7 +79,7 @@ const Gallery: React.FC<Props> = ({
     }
 
     return indexes;
-  }, [categories, hideCategories, items]);
+  }, [categories, hideCategoriesNav, items]);
 
   const sliderRef = useRef<HTMLDivElement>(null);
   const getSliderOrThrow = useCallback(() => {

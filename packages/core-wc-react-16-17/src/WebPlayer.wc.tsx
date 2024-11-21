@@ -7,7 +7,7 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedStyles, {
   props: {
     compositionUrl: "string",
 
-    hideCategories: "boolean",
+    hideCategoriesNav: "boolean",
     infiniteCarrousel: "boolean",
     permanentGallery: "boolean",
 

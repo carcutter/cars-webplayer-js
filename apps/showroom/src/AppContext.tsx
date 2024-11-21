@@ -4,7 +4,7 @@ import { isColor } from "./const/color";
 import {
   DEFAULT_COLOR,
   DEFAULT_CUSTOMER,
-  DEFAULT_HIDE_CATEGORIES,
+  DEFAULT_HIDE_CATEGORIES_NAV,
   DEFAULT_ID,
   DEFAULT_PERMANENT_GALLERY,
   DEFAULT_RADIUS,
@@ -30,8 +30,8 @@ type ContextType = {
 
   permanentGallery: boolean;
   setPermanentGallery: (permanentGallery: boolean) => void;
-  hideCategories: boolean;
-  setHideCategories: (hideCategories: boolean) => void;
+  hideCategoriesNav: boolean;
+  setHideCategoriesNav: (hideCategoriesNav: boolean) => void;
   withCustomMedias: boolean;
   setWithCustomMedias: (withCustomMedias: boolean) => void;
   withCustomIcons: boolean;
@@ -73,9 +73,9 @@ const AppContextProvider: React.FC<React.PropsWithChildren> = ({
     "permanentGallery",
     DEFAULT_PERMANENT_GALLERY
   );
-  const [hideCategories, setHideCategories] = useSearchParam(
-    "hideCategories",
-    DEFAULT_HIDE_CATEGORIES
+  const [hideCategoriesNav, setHideCategoriesNav] = useSearchParam(
+    "hideCategoriesNav",
+    DEFAULT_HIDE_CATEGORIES_NAV
   );
   const [withCustomMedias, setWithCustomMedias] = useSearchParam(
     "withCustomMedias",
@@ -120,8 +120,8 @@ const AppContextProvider: React.FC<React.PropsWithChildren> = ({
 
         permanentGallery,
         setPermanentGallery,
-        hideCategories,
-        setHideCategories,
+        hideCategoriesNav,
+        setHideCategoriesNav,
         withCustomMedias,
         setWithCustomMedias,
         withCustomIcons,

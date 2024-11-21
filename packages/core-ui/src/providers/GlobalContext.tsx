@@ -6,7 +6,7 @@ type ProviderProps = Required<
   Pick<
     WebPlayerProps,
     | "compositionUrl"
-    | "hideCategories"
+    | "hideCategoriesNav"
     | "infiniteCarrousel"
     | "permanentGallery"
     | "mediaLoadStrategy"
