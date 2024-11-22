@@ -13,6 +13,7 @@ type ProviderProps = Required<
     | "minMediaWidth"
     | "maxMediaWidth"
     | "preloadRange"
+    | "categoriesFilter"
     | "extendBehavior"
     | "reverse360"
   >

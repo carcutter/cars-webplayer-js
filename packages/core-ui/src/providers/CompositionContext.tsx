@@ -39,11 +39,26 @@ const CompositionContextProvider: React.FC<
     imageSubWidths: mediaSubWidths,
   } = composition;
 
-  const { minMediaWidth, maxMediaWidth } = useGlobalContext();
+  const { minMediaWidth, maxMediaWidth, categoriesFilter } = useGlobalContext();
+
+  const usedCategories = useMemo(() => {
+    if (categoriesFilter === "*") {
+      return categories;
+    }
+
+    function matchesPattern(categoryId: string): boolean {
+      return categoriesFilter.split("|").some(p => {
+        const regex = new RegExp(`^${p.replace(/\*/g, ".*")}$`);
+        return regex.test(categoryId);
+      });
+    }
+
+    return categories.filter(({ id }) => matchesPattern(id));
+  }, [categories, categoriesFilter]);
 
   const items: Item[] = useMemo(
-    () => categories.flatMap(({ items }) => items),
-    [categories]
+    () => usedCategories.flatMap(({ items }) => items),
+    [usedCategories]
   );
 
   const aspectRatioStyle: React.CSSProperties = {
@@ -86,6 +101,7 @@ const CompositionContextProvider: React.FC<
       value={{
         ...composition,
 
+        categories: usedCategories,
         items,
 
         aspectRatioStyle,

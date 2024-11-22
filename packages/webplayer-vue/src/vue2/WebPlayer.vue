@@ -38,6 +38,7 @@ export default defineComponent({
     maxMediaWidth: Number,
     preloadRange: Number,
 
+    categoriesFilter: String,
     extendBehavior: String,
     eventPrefix: String,
     reverse360: Boolean,

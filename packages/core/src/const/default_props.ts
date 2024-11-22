@@ -14,6 +14,7 @@ export const DEFAULT_MIN_MEDIA_WIDTH = 0 satisfies MediaWidth;
 export const DEFAULT_MAX_MEDIA_WIDTH = Infinity satisfies MediaWidth;
 export const DEFAULT_PRELOAD_RANGE = 1 satisfies number;
 
+export const DEFAULT_CATEGORY_FILTER = "*" satisfies string;
 export const DEFAULT_EXTEND_BEHAVIOR = "full_screen" satisfies ExtendBehavior;
 export const DEFAULT_EVENT_PREFIX = "cc-webplayer:" satisfies string;
 export const DEFAULT_REVERSE_360 = false satisfies boolean;

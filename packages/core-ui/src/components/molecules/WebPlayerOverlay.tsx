@@ -39,10 +39,13 @@ const WebPlayerOverlay: React.FC = () => {
     extendBehavior,
   } = useGlobalContext();
 
-  const { aspectRatioStyle } = useCompositionContext();
+  const {
+    aspectRatioStyle,
+    categories: { length: categoriesListLength },
+  } = useCompositionContext();
 
   const {
-    items: { length: dataLength },
+    items: { length: itemListLength },
 
     slidable,
 
@@ -96,7 +99,7 @@ const WebPlayerOverlay: React.FC = () => {
   return (
     <>
       {/* CategorySelect (on top) */}
-      {!hideCategoriesNav && (
+      {!hideCategoriesNav && categoriesListLength > 1 && (
         <CategorySelect
           sharedClassName={cn(
             sharedClassName,
@@ -111,7 +114,7 @@ const WebPlayerOverlay: React.FC = () => {
         <div className={cn(sharedClassName, positionToClassName("top-right"))}>
           <IndexIndicator
             currentIndex={carrouselItemIndex}
-            maxIndex={dataLength - 1}
+            maxIndex={itemListLength - 1}
           />
         </div>
       )}
@@ -143,7 +146,9 @@ const WebPlayerOverlay: React.FC = () => {
               !isZooming ? "opacity-100" : "!pointer-events-none opacity-0"
             )}
             onClick={nextItem}
-            disabled={!infiniteCarrousel && masterItemIndex >= dataLength - 1}
+            disabled={
+              !infiniteCarrousel && masterItemIndex >= itemListLength - 1
+            }
           >
             <CustomizableIcon customizationKey="CONTROLS_NEXT">
               <ArrowRightIcon className="size-full" />

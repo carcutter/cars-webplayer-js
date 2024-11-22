@@ -119,6 +119,7 @@ Run `yarn publish:docs`
 | `minMediaWidth`     | `number`                           | `0`               | Force minimum media width (in pixels)                     |
 | `maxMediaWidth`     | `number`                           | `Infinity`        | Force maximum media width (in pixels)                     |
 | `preloadRange`      | `number`                           | `1`               | Number of items to preload before and after the viewport  |
+| `categoriesFilter`  | `string`                           | `*`               | Only display certain categories                           |
 | `extendBehavior`    | `"full_screen"`/`"event"`/`"none"` | `"full_screen"`   | Handle extend mode                                        |
 | `eventPrefix`       | `string`                           | `"cc-webplayer:"` | Prefix of cc-player events                                |
 | `reverse360`        | `boolean`                          | `false`           | Reverse the 360-degree rotation                           |

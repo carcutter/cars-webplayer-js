@@ -42,6 +42,7 @@ const DevApp: React.FC = () => {
           // minMediaWidth={300}
           // maxMediaWidth={1000}
           // preloadRange={3}
+          // categoriesFilter="*rior|detail"
           // extendBehavior="event"
           // eventPrefix="cc-event:"
           // reverse360

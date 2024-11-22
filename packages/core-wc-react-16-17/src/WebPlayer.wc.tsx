@@ -15,6 +15,7 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedStyles, {
     maxMediaWidth: "number",
     mediaLoadStrategy: "string",
 
+    categoriesFilter: "string",
     extendBehavior: "boolean",
     eventPrefix: "string",
     reverse360: "boolean",

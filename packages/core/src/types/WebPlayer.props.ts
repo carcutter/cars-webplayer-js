@@ -15,6 +15,7 @@ export type WebPlayerProps = {
   preloadRange?: number;
 
   // Miscelaneous
+  categoriesFilter?: string;
   extendBehavior?: ExtendBehavior;
   eventPrefix?: string;
   reverse360?: boolean;

@@ -71,6 +71,13 @@ const properties: Array<Property> = [
     description: "Number of medias to preload before & after the viewport",
   },
   {
+    propName: "categoriesFilter",
+    attribute: "categories-filter",
+    type: "string",
+    defaultValue: "*",
+    description: "Only display certain categories ",
+  },
+  {
     propName: "extendBehavior",
     attribute: "extend-behavior",
     type: "boolean",
