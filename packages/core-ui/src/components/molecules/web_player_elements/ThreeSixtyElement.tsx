@@ -5,6 +5,7 @@ import type { ImageWithHotspots } from "@car-cutter/core";
 import { useControlsContext } from "../../../providers/ControlsContext";
 import { useGlobalContext } from "../../../providers/GlobalContext";
 import { CustomisableItem } from "../../../types/customisable_item";
+import { clamp } from "../../../utils/math";
 import { cn } from "../../../utils/style";
 import CdnImage from "../../atoms/CdnImage";
 import PlayIcon from "../../icons/PlayIcon";
@@ -13,6 +14,8 @@ import ErrorTemplate from "../../template/ErrorTemplate";
 import Button from "../../ui/Button";
 
 import ImageElement from "./ImageElement";
+
+const AUTO_SPINT_DURATION = 1500;
 
 const DRAG_SPIN_PX = 360; // 10px for each image of a 36 images spin
 const SCROLL_SPIN_PX = 480; // 15px for each image of a 36 images spin
@@ -65,6 +68,42 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       return;
     }
 
+    // -- Auto-spin
+    if (playDemoSpinRef.current) {
+      playDemoSpinRef.current = false;
+
+      const startTime = Date.now();
+
+      const applyDemoSpin = () => {
+        const applyDemoSpinStep = () => {
+          const now = Date.now();
+
+          const progress = (now - startTime) / AUTO_SPINT_DURATION;
+
+          const easeOut = (t: number) => 1 - Math.pow(1 - t, 2);
+
+          const stepIndex = Math.round(easeOut(progress) * length);
+
+          const imageIndex = clamp(stepIndex % length, 0, length - 1);
+
+          setImageIndex(imageIndex);
+
+          if (stepIndex >= length) {
+            return;
+          }
+
+          applyDemoSpin();
+        };
+
+        inertiaAnimationFrame.current =
+          requestAnimationFrame(applyDemoSpinStep);
+      };
+
+      applyDemoSpin();
+    }
+
+    // -- Inertia
+
     const dragStepPx = DRAG_SPIN_PX / length;
 
     type PosX = { timestamp: number; value: number };
@@ -79,9 +118,28 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       }
     };
 
-    // -- Inertia
+    const startInertiaAnimation = () => {
+      const startVelocity = (() => {
+        // Filter out points that are too old (to avoid inertia even after the user stopped)
+        const now = Date.now();
+        const filteredMouseXs = lastPosXs.filter(
+          point => now - point.timestamp < 50
+        );
 
-    const playInertiaAnimation = (startVelocity: number) => {
+        if (filteredMouseXs.length < 2) {
+          return 0; // Not enough points to calculate velocity
+        }
+
+        const firstMouse = filteredMouseXs[0];
+        const lastMouse = filteredMouseXs[filteredMouseXs.length - 1];
+
+        // Compute mean velocity in px/s
+        return (
+          (lastMouse.value - firstMouse.value) /
+          (1e-3 * Math.max(lastMouse.timestamp - firstMouse.timestamp, 1))
+        );
+      })();
+
       const startTime = Date.now();
 
       let walkX = 0;
@@ -130,31 +188,6 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       applyInertia();
     };
 
-    const startInertiaAnimation = () => {
-      const startVelocity = (() => {
-        // Filter out points that are too old (to avoid inertia even after the user stopped)
-        const now = Date.now();
-        const filteredMouseXs = lastPosXs.filter(
-          point => now - point.timestamp < 50
-        );
-
-        if (filteredMouseXs.length < 2) {
-          return 0; // Not enough points to calculate velocity
-        }
-
-        const firstMouse = filteredMouseXs[0];
-        const lastMouse = filteredMouseXs[filteredMouseXs.length - 1];
-
-        // Compute mean velocity in px/s
-        return (
-          (lastMouse.value - firstMouse.value) /
-          (1e-3 * Math.max(lastMouse.timestamp - firstMouse.timestamp, 1))
-        );
-      })();
-
-      playInertiaAnimation(startVelocity);
-    };
-
     const cancelInertiaAnimation = () => {
       if (!inertiaAnimationFrame.current) {
         return;
@@ -163,13 +196,6 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       cancelAnimationFrame(inertiaAnimationFrame.current);
       inertiaAnimationFrame.current = null;
     };
-
-    // -- Auto-spin
-    if (playDemoSpinRef.current) {
-      playDemoSpinRef.current = false;
-
-      playInertiaAnimation(1800); // 1 full spin
-    }
 
     // -- Mouse events (click & drag)
     // NOTE: As the useEffect should not re-render, we can use mutable variables. If it changes in the future, we should use useRef
