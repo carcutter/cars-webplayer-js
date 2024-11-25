@@ -188,7 +188,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
               "--neutral": "var(--cc-webplayer-neutral, 0 0% 39%)",
               "--neutral-foreground":
                 "var(--cc-webplayer-neutral-foreground, var(--foreground))",
-              "--radius-ui": "var(--cc-webplayer-radius-ui, 1rem)",
+              "--radius-ui": "var(--cc-webplayer-radius-ui, 16px)",
               "--radius-carrousel": "var(--cc-webplayer-radius-carrousel, 0)",
               "--radius-gallery": "var(--cc-webplayer-radius-gallery, 0)",
             } as React.CSSProperties

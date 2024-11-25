@@ -144,7 +144,7 @@ You can customise the WebPlayer CSS with CSS Variables
 | `--cc-webplayer-primary-light`      | Alternative to primary if too dark | `--cc-webplayer-primary`    |
 | `--cc-webplayer-neutral`            | Neutral color                      | `0 0% 39%`                  |
 | `--cc-webplayer-neutral-foreground` | Foreground color for neutral items | `--cc-webplayer-foreground` |
-| `--cc-webplayer-radius-ui`          | UI element Border radius (buttons) | `1rem`                      |
+| `--cc-webplayer-radius-ui`          | UI element Border radius (buttons) | `16px`                      |
 | `--cc-webplayer-radius-carrousel`   | Carrousel border radius            | `0`                         |
 | `--cc-webplayer-radius-gallery`     | Gallery medias border radius       | `0`                         |
 

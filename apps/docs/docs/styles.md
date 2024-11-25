@@ -15,7 +15,7 @@ You can customise the WebPlayer color & roundness with CSS Variables
 | `--cc-webplayer-primary-light`      | Alternative to primary if too dark | `--cc-primary`    |
 | `--cc-webplayer-neutral`            | Neutral color                      | `0 0% 39%`        |
 | `--cc-webplayer-neutral-foreground` | Foreground color for neutral items | `--cc-foreground` |
-| `--cc-webplayer-radius-ui`          | UI element Border radius (buttons) | `1rem`            |
+| `--cc-webplayer-radius-ui`          | UI element Border radius (buttons) | `16px`            |
 | `--cc-webplayer-radius-carrousel`   | Carrousel border radius            | `0`               |
 | `--cc-webplayer-radius-gallery`     | Gallery medias border radius       | `0`               |
 
@@ -26,7 +26,7 @@ You can insert CSS variables in your style files
 ```css title="index.css"
 :root {
   --cc-webplayer-primary: 262 88% 58%;
-  --cc-webplayer-radius-ui: 0.8rem;
+  --cc-webplayer-radius-ui: 14px;
 }
 ```
 
@@ -36,7 +36,7 @@ Or directly in your HTML
 <style>
   cc-webplayer {
     --cc-webplayer-primary: 262 88% 58%;
-    --cc-webplayer-radius-ui: 0.8rem;
+    --cc-webplayer-radius-ui: 14px;
   }
 </style>
 ```
