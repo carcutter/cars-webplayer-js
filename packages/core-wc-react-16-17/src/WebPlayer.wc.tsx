@@ -7,17 +7,21 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedStyles, {
   props: {
     compositionUrl: "string",
 
+    // Layout
     hideCategoriesNav: "boolean",
     infiniteCarrousel: "boolean",
     permanentGallery: "boolean",
 
+    // Medias loading
     minMediaWidth: "number",
     maxMediaWidth: "number",
     mediaLoadStrategy: "string",
+    preloadRange: "number",
     autoLoad360: "boolean",
 
+    // Miscelaneous
     categoriesFilter: "string",
-    extendBehavior: "boolean",
+    extendBehavior: "string",
     eventPrefix: "string",
     demoSpin: "boolean",
     reverse360: "boolean",
