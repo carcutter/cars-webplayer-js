@@ -37,10 +37,12 @@ export default defineComponent({
     minMediaWidth: Number,
     maxMediaWidth: Number,
     preloadRange: Number,
+    autoLoad360: Boolean,
 
     categoriesFilter: String,
     extendBehavior: String,
     eventPrefix: String,
+    demoSpin: Boolean,
     reverse360: Boolean,
   },
   data() {

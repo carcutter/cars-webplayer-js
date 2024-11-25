@@ -71,6 +71,13 @@ const properties: Array<Property> = [
     description: "Number of medias to preload before & after the viewport",
   },
   {
+    propName: "autoLoad360",
+    attribute: "auto-load360",
+    type: "boolean",
+    defaultValue: "false",
+    description: "Load 360 images without having to click",
+  },
+  {
     propName: "categoriesFilter",
     attribute: "categories-filter",
     type: "string",
@@ -90,6 +97,13 @@ const properties: Array<Property> = [
     type: "string",
     defaultValue: '"cc-webplayer:"',
     description: "Prefix of cc-player events",
+  },
+  {
+    propName: "demoSpin",
+    attribute: "demo-spin",
+    type: "boolean",
+    defaultValue: "false",
+    description: "Run a spin once the 360 images has been loaded",
   },
   {
     propName: "reverse360",

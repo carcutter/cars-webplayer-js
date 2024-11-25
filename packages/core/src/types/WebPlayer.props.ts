@@ -13,10 +13,12 @@ export type WebPlayerProps = {
   minMediaWidth?: MediaWidth;
   maxMediaWidth?: MediaWidth;
   preloadRange?: number;
+  autoLoad360?: boolean;
 
   // Miscelaneous
   categoriesFilter?: string;
   extendBehavior?: ExtendBehavior;
   eventPrefix?: string;
+  demoSpin?: boolean;
   reverse360?: boolean;
 };

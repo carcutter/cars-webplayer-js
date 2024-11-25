@@ -26,7 +26,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   images,
   onlyPreload,
 }) => {
-  const { reverse360 } = useGlobalContext();
+  const { demoSpin, reverse360 } = useGlobalContext();
   const { isShowingDetails, isZooming } = useControlsContext();
 
   const disableSpin = isZooming || isShowingDetails; // We do not want to do anything while zooming or showing a detail image
@@ -34,6 +34,10 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   // - element refs
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
+
+  // - Value refs
+  const playDemoSpinRef = useRef(demoSpin);
+  const inertiaAnimationFrame = useRef<number | null>(null);
 
   // - Flip book image index & details
   const [imageIndex, setImageIndex] = useState(0);
@@ -65,7 +69,6 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
     let spinStartX: number | null = null;
     let lastPosXs: PosX[] = [];
-    let inertiaAnimationFrame: number | null = null;
 
     const addPosX = (posX: PosX) => {
       lastPosXs.push(posX);
@@ -74,29 +77,10 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       }
     };
 
-    const startInertiaAnimation = () => {
-      // -- Inertia
+    // -- Inertia
+
+    const playInertiaAnimation = (startVelocity: number) => {
       const startTime = Date.now();
-      const startVelocity = (() => {
-        // Filter out points that are too old (to avoid inertia even after the user stopped)
-        const now = Date.now();
-        const filteredMouseXs = lastPosXs.filter(
-          point => now - point.timestamp < 50
-        );
-
-        if (filteredMouseXs.length < 2) {
-          return 0; // Not enough points to calculate velocity
-        }
-
-        const firstMouse = filteredMouseXs[0];
-        const lastMouse = filteredMouseXs[filteredMouseXs.length - 1];
-
-        // Compute mean velocity in px/s
-        return (
-          (lastMouse.value - firstMouse.value) /
-          (1e-3 * Math.max(lastMouse.timestamp - firstMouse.timestamp, 1))
-        );
-      })();
 
       let walkX = 0;
       let lastFrameTime = startTime;
@@ -119,7 +103,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
             Math.abs(currentVelocity) < 5 * DRAG_STEP_PX &&
             Math.abs(walkX) < DRAG_STEP_PX
           ) {
-            inertiaAnimationFrame = null;
+            inertiaAnimationFrame.current = null;
             return;
           }
 
@@ -138,20 +122,52 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
           applyInertia();
         };
 
-        inertiaAnimationFrame = requestAnimationFrame(applyInertiaStep);
+        inertiaAnimationFrame.current = requestAnimationFrame(applyInertiaStep);
       };
 
       applyInertia();
     };
 
+    const startInertiaAnimation = () => {
+      const startVelocity = (() => {
+        // Filter out points that are too old (to avoid inertia even after the user stopped)
+        const now = Date.now();
+        const filteredMouseXs = lastPosXs.filter(
+          point => now - point.timestamp < 50
+        );
+
+        if (filteredMouseXs.length < 2) {
+          return 0; // Not enough points to calculate velocity
+        }
+
+        const firstMouse = filteredMouseXs[0];
+        const lastMouse = filteredMouseXs[filteredMouseXs.length - 1];
+
+        // Compute mean velocity in px/s
+        return (
+          (lastMouse.value - firstMouse.value) /
+          (1e-3 * Math.max(lastMouse.timestamp - firstMouse.timestamp, 1))
+        );
+      })();
+
+      playInertiaAnimation(startVelocity);
+    };
+
     const cancelInertiaAnimation = () => {
-      if (!inertiaAnimationFrame) {
+      if (!inertiaAnimationFrame.current) {
         return;
       }
 
-      cancelAnimationFrame(inertiaAnimationFrame);
-      inertiaAnimationFrame = null;
+      cancelAnimationFrame(inertiaAnimationFrame.current);
+      inertiaAnimationFrame.current = null;
     };
+
+    // -- Auto-spin
+    if (playDemoSpinRef.current) {
+      playDemoSpinRef.current = false;
+
+      playInertiaAnimation(1800); // 1 full spin
+    }
 
     // -- Mouse events (click & drag)
     // NOTE: As the useEffect should not re-render, we can use mutable variables. If it changes in the future, we should use useRef
@@ -405,6 +421,8 @@ type ThreeSixtyElementPlaceholderProps = {
 const ThreeSixtyElementPlaceholder: React.FC<
   ThreeSixtyElementPlaceholderProps
 > = ({ images, onPlaceholderImageLoaded, onSpinImagesLoaded, onError }) => {
+  const { autoLoad360 } = useGlobalContext();
+
   const imagesSrc = useMemo(() => images.map(({ src }) => src), [images]);
 
   const [loadingStatusMap, setLoadingStatusMap] = useState<Map<
@@ -434,6 +452,14 @@ const ThreeSixtyElementPlaceholder: React.FC<
     });
   }, []);
 
+  // If autoLoad360 is enabled, we start loading the images
+  useEffect(() => {
+    if (autoLoad360) {
+      fetchSpinImages();
+    }
+  }, [autoLoad360, fetchSpinImages]);
+
+  // When all images are loaded, we emit the event
   useEffect(() => {
     if (loadingProgress === 100) {
       onSpinImagesLoaded();
@@ -520,7 +546,9 @@ const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = props => {
     return (
       <ThreeSixtyElementPlaceholder
         {...props}
-        onPlaceholderImageLoaded={() => setStatus("placeholder")}
+        onPlaceholderImageLoaded={() =>
+          setStatus(s => (s === null ? "placeholder" : s))
+        }
         onSpinImagesLoaded={() => setStatus("spin")}
         onError={() => setStatus("error")}
       />

@@ -16,9 +16,11 @@ import {
   DEFAULT_MIN_MEDIA_WIDTH,
   DEFAULT_MAX_MEDIA_WIDTH,
   DEFAULT_PRELOAD_RANGE,
+  DEFAULT_AUTO_LOAD_360,
   DEFAULT_CATEGORY_FILTER,
   DEFAULT_EXTEND_BEHAVIOR,
   DEFAULT_EVENT_PREFIX,
+  DEFAULT_DEMO_SPIN,
   DEFAULT_REVERSE_360,
   type WebPlayerProps,
 } from "@car-cutter/core";
@@ -38,10 +40,12 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   minMediaWidth = DEFAULT_MIN_MEDIA_WIDTH,
   maxMediaWidth = DEFAULT_MAX_MEDIA_WIDTH,
   preloadRange = DEFAULT_PRELOAD_RANGE,
+  autoLoad360 = DEFAULT_AUTO_LOAD_360,
 
   categoriesFilter = DEFAULT_CATEGORY_FILTER,
   extendBehavior = DEFAULT_EXTEND_BEHAVIOR,
   eventPrefix = DEFAULT_EVENT_PREFIX,
+  demoSpin = DEFAULT_DEMO_SPIN,
   reverse360 = DEFAULT_REVERSE_360,
 
   children: customizationChildren, // NOTE: use to customize the player, not to display the content
@@ -155,7 +159,9 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
         maxMediaWidth,
         preloadRange,
         categoriesFilter,
+        autoLoad360,
         extendBehavior,
+        demoSpin,
         reverse360,
 
         emitEvent,

@@ -14,10 +14,12 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedStyles, {
     minMediaWidth: "number",
     maxMediaWidth: "number",
     mediaLoadStrategy: "string",
+    autoLoad360: "boolean",
 
     categoriesFilter: "string",
     extendBehavior: "boolean",
     eventPrefix: "string",
+    demoSpin: "boolean",
     reverse360: "boolean",
   },
 });

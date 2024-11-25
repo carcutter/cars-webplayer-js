@@ -42,9 +42,11 @@ const DevApp: React.FC = () => {
           // minMediaWidth={300}
           // maxMediaWidth={1000}
           // preloadRange={3}
+          autoLoad360
           // categoriesFilter="*rior|detail"
           // extendBehavior="event"
           // eventPrefix="cc-event:"
+          demoSpin
           // reverse360
         >
           <WebPlayerCustomMedia
