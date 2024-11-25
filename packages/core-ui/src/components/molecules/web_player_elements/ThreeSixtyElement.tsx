@@ -14,8 +14,8 @@ import Button from "../../ui/Button";
 
 import ImageElement from "./ImageElement";
 
-const DRAG_STEP_PX = 10;
-const SCROLL_STEP_PX = 15;
+const DRAG_SPIN_PX = 360; // 10px for each image of a 36 images spin
+const SCROLL_SPIN_PX = 480; // 15px for each image of a 36 images spin
 
 type ThreeSixtyElementProps = Extract<CustomisableItem, { type: "360" }> & {
   itemIndex: number;
@@ -65,6 +65,8 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       return;
     }
 
+    const dragStepPx = DRAG_SPIN_PX / length;
+
     type PosX = { timestamp: number; value: number };
 
     let spinStartX: number | null = null;
@@ -100,14 +102,14 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
           // The intertia is very low, we can stop it
           if (
-            Math.abs(currentVelocity) < 5 * DRAG_STEP_PX &&
-            Math.abs(walkX) < DRAG_STEP_PX
+            Math.abs(currentVelocity) < 5 * dragStepPx &&
+            Math.abs(walkX) < dragStepPx
           ) {
             inertiaAnimationFrame.current = null;
             return;
           }
 
-          if (Math.abs(walkX) >= DRAG_STEP_PX) {
+          if (Math.abs(walkX) >= dragStepPx) {
             if (walkX > 0 !== reverse360) {
               displayNextImage();
             } else {
@@ -207,7 +209,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       const walkX = x - spinStartX;
 
       // If the user did not move enough, we do not want to rotate
-      if (Math.abs(walkX) < DRAG_STEP_PX) {
+      if (Math.abs(walkX) < dragStepPx) {
         return;
       }
 
@@ -243,6 +245,8 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
     // - Scroll events to update the image thanks to the "invisible scroller"
 
+    const scrollStepPx = SCROLL_SPIN_PX / length;
+
     const getScrollerWidth = () => scroller.getBoundingClientRect().width;
 
     const getScrollerCenterPosition = () =>
@@ -259,7 +263,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     const onScroll = () => {
       const walk = scroller.scrollLeft - getScrollerCenterPosition();
 
-      if (Math.abs(walk) < SCROLL_STEP_PX) {
+      if (Math.abs(walk) < scrollStepPx) {
         return;
       }
 
@@ -328,7 +332,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       const walkX = x - spinStartX;
 
       // If the user did not move enough, we do not want to rotate
-      if (Math.abs(walkX) < DRAG_STEP_PX) {
+      if (Math.abs(walkX) < dragStepPx) {
         return;
       }
 
@@ -384,7 +388,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       scroller.removeEventListener("touchend", onTouchEnd);
       scroller.removeEventListener("touchcancel", onTouchEnd);
     };
-  }, [displayNextImage, displayPreviousImage, disableSpin, reverse360]);
+  }, [displayNextImage, displayPreviousImage, disableSpin, reverse360, length]);
 
   return (
     <div ref={containerRef} className="cursor-ew-resize">
