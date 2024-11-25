@@ -71,3 +71,46 @@ export function generateCompositionUrl(
 In order to keep your Customer ID secret, we are using the Customer Token and not the Customer ID. Make sure to not include the Customer ID in your frontend code.
 
 :::
+
+## Categories Filter
+
+The `categoriesFilter` property allows you to filter which categories should be displayed in the WebPlayer. It supports wildcards (`*`) and multiple patterns separated by a vertical pipe (`|`).
+
+<Tabs>
+  <TabItem value="exact" label="Exact match">
+
+```jsx
+// Only show categories named exactly "exterior" or "interior"
+<WebPlayer categoriesFilter="exterior|interior" />
+```
+
+  </TabItem>
+
+  <TabItem value="wildcard" label="With wildcard">
+
+```jsx
+// Show all categories ending with "rior" (e.g., "exterior", "interior")
+<WebPlayer categoriesFilter="*rior" />
+
+// Show categories starting with "360" and categories named "detail"
+<WebPlayer categoriesFilter="360*|detail" />
+```
+
+  </TabItem>
+</Tabs>
+
+:::info
+When `categoriesFilter` is not specified, it defaults to `"*"` which shows all categories.
+:::
+
+## Extend Behavior
+
+The `extendBehavior` property controls how the WebPlayer reacts when its extend button is clicked.
+
+- `"full_screen"`: Uses the browser's Full Screen API when entering extend mode
+- `"event"`: Triggers an event when extend mode is requested
+- `"none"`: Hide the extend button and disable extend mode functionality
+
+:::tip
+When using `"event"` behavior, you can handle the extend mode in your own application using the `onExtendModeOn` callback (in React) or by listening to the `extendModeOn` event (in vanilla JavaScript).
+:::

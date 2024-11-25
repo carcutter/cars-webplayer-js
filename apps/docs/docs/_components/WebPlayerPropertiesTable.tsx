@@ -82,14 +82,14 @@ const properties: Array<Property> = [
     attribute: "categories-filter",
     type: "string",
     defaultValue: "*",
-    description: "Only display certain categories ",
+    description: "Only display certain categories",
   },
   {
     propName: "extendBehavior",
     attribute: "extend-behavior",
-    type: "boolean",
-    defaultValue: "false",
-    description: "Whether to prevent full screen mode",
+    type: '"full_screen"|"event"|"none"',
+    defaultValue: "full_screen",
+    description: "Handle extend mode",
   },
   {
     propName: "eventPrefix",
