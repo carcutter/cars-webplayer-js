@@ -95,10 +95,10 @@ const events: Array<Event> = [
   },
 ];
 
+type Language = "jsx" | "vue" | "js" | "vanilla";
+
 const WebPlayerEventsTable: React.FC = () => {
-  const EventTable: React.FC<{ type: "jsx" | "vue" | "native" }> = ({
-    type,
-  }) => {
+  const EventTable: React.FC<{ type: Language }> = ({ type }) => {
     return (
       <table>
         <thead>
@@ -115,7 +115,8 @@ const WebPlayerEventsTable: React.FC = () => {
                 <code>
                   {type === "jsx" && event.callbackName}
                   {type === "vue" && event.vueCallback}
-                  {type === "native" && event.constant}
+                  {type === "js" && event.constant}
+                  {type === "vanilla" && event.eventName}
                 </code>
               </td>
               <td>
@@ -129,9 +130,9 @@ const WebPlayerEventsTable: React.FC = () => {
     );
   };
 
-  const ExampleCode: React.FC<{ type: "jsx" | "vue" | "native" }> = ({
-    type,
-  }) => {
+  const ExampleCode: React.FC<{
+    type: Language;
+  }> = ({ type }) => {
     let Code: React.ReactNode;
 
     switch (type) {
@@ -158,7 +159,7 @@ const WebPlayerEventsTable: React.FC = () => {
         );
         break;
 
-      case "native":
+      case "js":
         Code = (
           <CodeBlock language="javascript">
             {`import { DEFAULT_EVENT_PREFIX, EVENT_COMPOSITION_LOADING } from "@car-cutter/native-webplayer";
@@ -170,8 +171,17 @@ document.addEventListener(DEFAULT_EVENT_PREFIX + EVENT_COMPOSITION_LOADING, (eve
           </CodeBlock>
         );
         break;
-    }
 
+      case "vanilla":
+        Code = (
+          <CodeBlock language="javascript">
+            {`document.addEventListener("cc-webplayer:composition-loading", (event) => {
+  console.log("Composition loaded", event.detail);
+});
+`}
+          </CodeBlock>
+        );
+    }
     return (
       <>
         <Heading as="h3">Example</Heading>
@@ -190,9 +200,13 @@ document.addEventListener(DEFAULT_EVENT_PREFIX + EVENT_COMPOSITION_LOADING, (eve
         <EventTable type="vue" />
         <ExampleCode type="vue" />
       </TabItem>
-      <TabItem value="native" label="Native">
-        <EventTable type="native" />
-        <ExampleCode type="native" />
+      <TabItem value="js" label="JS">
+        <EventTable type="js" />
+        <ExampleCode type="js" />
+      </TabItem>
+      <TabItem value="vanilla" label="Vanilla">
+        <EventTable type="vanilla" />
+        <ExampleCode type="vanilla" />
       </TabItem>
     </Tabs>
   );
