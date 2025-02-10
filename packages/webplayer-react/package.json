@@ -57,7 +57,7 @@
     "browserslist-to-esbuild": "^2.1.1",
     "eslint": "^8.57.0",
     "typescript": "^5.5.4",
-    "vite": "^5.4.1",
+    "vite": "^5.4.6",
     "vite-bundle-visualizer": "^1.2.1",
     "vite-plugin-dts": "^4.2.1"
   },
