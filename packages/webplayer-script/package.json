@@ -18,7 +18,7 @@
     "browserslist": "^4.23.3",
     "browserslist-to-esbuild": "^2.1.1",
     "typescript": "^5.5.4",
-    "vite": "^5.4.6",
+    "vite": "^5.4.12",
     "vite-bundle-visualizer": "^1.2.1"
   },
   "browserslist": [
