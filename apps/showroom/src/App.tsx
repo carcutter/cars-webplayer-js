@@ -49,7 +49,9 @@ const AppContent: React.FC = () => {
   } = useAppContext();
 
   if (!customer || !isNotToken(customer)) {
-    window.location.href = "/";
+    const url = new URL(window.location.href);
+    url.search = "";
+    window.history.replaceState({}, document.title, url.toString());
   }
 
   const compositionUrl = generateCompositionUrl(customer, id);
