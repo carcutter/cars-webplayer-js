@@ -26,6 +26,10 @@ const generateCompositionUrl = (customer: string, id: string) => {
   return generateCompositionUrlWithCustomerToken(customerToken, id);
 };
 
+const isNotToken = (customerId: string) => {
+  return /^[a-f0-9]{64}$/i.test(customerId);
+};
+
 const AppContent: React.FC = () => {
   const {
     customer,
@@ -43,6 +47,10 @@ const AppContent: React.FC = () => {
 
     radius,
   } = useAppContext();
+
+  if (!customer || !isNotToken(customer)) {
+    window.location.href = "/";
+  }
 
   const compositionUrl = generateCompositionUrl(customer, id);
 
