@@ -24,6 +24,7 @@ import {
   DEFAULT_REVERSE_360,
   type WebPlayerProps,
 } from "@car-cutter/core";
+import { DEFAULT_AUTO_LOAD_INTERIOR_360 } from "@car-cutter/core/src/const/default_props";
 
 import WebPlayerContainer from "./components/organisms/WebPlayerContainer";
 import CustomizationContextProvider from "./providers/CustomizationContext";
@@ -41,6 +42,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   maxMediaWidth = DEFAULT_MAX_MEDIA_WIDTH,
   preloadRange = DEFAULT_PRELOAD_RANGE,
   autoLoad360 = DEFAULT_AUTO_LOAD_360,
+  autoLoadInterior360 = DEFAULT_AUTO_LOAD_INTERIOR_360,
 
   categoriesFilter = DEFAULT_CATEGORY_FILTER,
   extendBehavior = DEFAULT_EXTEND_BEHAVIOR,
@@ -160,6 +162,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
         preloadRange,
         categoriesFilter,
         autoLoad360,
+        autoLoadInterior360,
         extendBehavior,
         demoSpin,
         reverse360,

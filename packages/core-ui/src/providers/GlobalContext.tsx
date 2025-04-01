@@ -14,6 +14,7 @@ type ProviderProps = Required<
     | "maxMediaWidth"
     | "preloadRange"
     | "autoLoad360"
+    | "autoLoadInterior360"
     | "categoriesFilter"
     | "extendBehavior"
     | "demoSpin"

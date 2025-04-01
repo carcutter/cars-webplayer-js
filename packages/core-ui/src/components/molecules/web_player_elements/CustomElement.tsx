@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 
 import { useControlsContext } from "../../../providers/ControlsContext";
-import { CustomisableItem } from "../../../types/customisable_item";
+import { CustomizableItem } from "../../../types/customizable_item";
 
-type Props = Extract<CustomisableItem, { type: "custom" }> & {
+type Props = Extract<CustomizableItem, { type: "custom" }> & {
   itemIndex: number;
 };
 

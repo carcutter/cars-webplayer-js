@@ -18,8 +18,9 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedStyles, {
     mediaLoadStrategy: "string",
     preloadRange: "number",
     autoLoad360: "boolean",
+    autoLoadInterior360: "boolean",
 
-    // Miscelaneous
+    // Miscellaneous
     categoriesFilter: "string",
     extendBehavior: "string",
     eventPrefix: "string",

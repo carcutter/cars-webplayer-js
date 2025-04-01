@@ -1,10 +1,11 @@
 import { useCompositionContext } from "../../providers/CompositionContext";
 import { useControlsContext } from "../../providers/ControlsContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
-import { CustomisableItem } from "../../types/customisable_item";
+import { CustomizableItem } from "../../types/customizable_item";
 import { cn } from "../../utils/style";
 import CdnImage from "../atoms/CdnImage";
 import ImageIcon from "../icons/ImageIcon";
+import InteriorThreeSixtyIcon from "../icons/InteriorThreeSixtyIcon";
 import PlayIcon from "../icons/PlayIcon";
 import ThreeSixtyIcon from "../icons/ThreeSixtyIcon";
 
@@ -51,7 +52,7 @@ const GalleryIconWrapper: React.FC<React.PropsWithChildren> = ({
   );
 };
 
-type GalleryElementProps = { item: CustomisableItem };
+type GalleryElementProps = { item: CustomizableItem };
 
 const GalleryElement: React.FC<GalleryElementProps> = ({ item }) => {
   const { aspectRatioStyle } = useCompositionContext();
@@ -66,6 +67,10 @@ const GalleryElement: React.FC<GalleryElementProps> = ({ item }) => {
       imgSrc = item.images[0].src;
       withCdn = true;
       break;
+    case "interior-360":
+      imgSrc = item.thumbnailSrc;
+      withCdn = true;
+      break;
     case "image":
       imgSrc = item.src;
       withCdn = true;
@@ -78,6 +83,8 @@ const GalleryElement: React.FC<GalleryElementProps> = ({ item }) => {
       imgSrc = item.thumbnailSrc;
       withCdn = false;
       break;
+    default:
+      withCdn = false;
   }
 
   const imgNode = <GalleryImage src={imgSrc} withCdn={withCdn} />;
@@ -89,6 +96,13 @@ const GalleryElement: React.FC<GalleryElementProps> = ({ item }) => {
       overlayIcon = (
         <GalleryIconWrapper>
           <ThreeSixtyIcon className="size-full text-primary-light" />
+        </GalleryIconWrapper>
+      );
+      break;
+    case "interior-360":
+      overlayIcon = (
+        <GalleryIconWrapper>
+          <InteriorThreeSixtyIcon className="size-full text-primary-light" />
         </GalleryIconWrapper>
       );
       break;

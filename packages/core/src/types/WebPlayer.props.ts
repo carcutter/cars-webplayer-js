@@ -14,8 +14,9 @@ export type WebPlayerProps = {
   maxMediaWidth?: MediaWidth;
   preloadRange?: number;
   autoLoad360?: boolean;
+  autoLoadInterior360?: boolean;
 
-  // Miscelaneous
+  // Miscellaneous
   categoriesFilter?: string;
   extendBehavior?: ExtendBehavior;
   eventPrefix?: string;

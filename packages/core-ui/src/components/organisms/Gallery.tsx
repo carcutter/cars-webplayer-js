@@ -10,7 +10,7 @@ import {
 import { useCompositionContext } from "../../providers/CompositionContext";
 import { useControlsContext } from "../../providers/ControlsContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
-import { CustomisableItem } from "../../types/customisable_item";
+import { CustomizableItem } from "../../types/customizable_item";
 import { clamp } from "../../utils/math";
 import { cn } from "../../utils/style";
 import GalleryElement from "../molecules/GalleryElement";
@@ -57,7 +57,7 @@ const Gallery: React.FC<Props> = ({
 
     let currentCategory = categories[0];
 
-    const findItemCategory = (item: CustomisableItem) => {
+    const findItemCategory = (item: CustomizableItem) => {
       return categories.find(category =>
         category.items.some(categoryItem => categoryItem === item)
       );

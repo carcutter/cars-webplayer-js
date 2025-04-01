@@ -32,7 +32,6 @@ const CdnImage: React.FC<CdnImageProps> = ({
   src,
   className,
   onLoad,
-
   imgInPlayerWidthRatio = 1,
   onlyThumbnail,
   fadeIn,

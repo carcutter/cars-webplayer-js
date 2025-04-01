@@ -35,7 +35,7 @@ CARS-WEBPLAYER/
 
 ### Setup
 
-1. Install Node v20. Tuto for macOS [here](https://sukiphan.medium.com/how-to-install-nvm-node-version-manager-on-macos-d9fe432cc7db)
+1. Install Node v20. Tutorial for macOS [here](https://sukiphan.medium.com/how-to-install-nvm-node-version-manager-on-macos-d9fe432cc7db)
 2. Install Yarn v1 : `brew install yarn`.
 3. Install the node modules with the command `yarn`.
 
@@ -109,31 +109,32 @@ Run `yarn publish:docs`
 
 ### Properties
 
-| Prop                | Type                               | Default           | Description                                               |
-| ------------------- | ---------------------------------- | ----------------- | --------------------------------------------------------- |
-| `compositionUrl`    | `string`                           | ❌ Required       | URL to the composition data                               |
-| `hideCategoriesNav` | `boolean`                          | `false`           | Hide the category-based navigation                        |
-| `infiniteCarrousel` | `boolean`                          | `false`           | Allow to navigate from 1st to last media (and vice versa) |
-| `permanentGallery`  | `boolean`                          | `false`           | Display gallery under the carrousel                       |
-| `mediaLoadStrategy` | `"quality"`/`"balanced"`/`"speed"` | `"quality"`       | Strategy for loading medias.                              |
-| `minMediaWidth`     | `number`                           | `0`               | Force minimum media width (in pixels)                     |
-| `maxMediaWidth`     | `number`                           | `Infinity`        | Force maximum media width (in pixels)                     |
-| `preloadRange`      | `number`                           | `1`               | Number of items to preload before and after the viewport  |
-| `autoLoad360`       | `boolean`                          | `false`           | Load 360 images without having to click                   |
-| `categoriesFilter`  | `string`                           | `*`               | Only display certain categories                           |
-| `extendBehavior`    | `"full_screen"`/`"event"`/`"none"` | `"full_screen"`   | Handle extend mode                                        |
-| `eventPrefix`       | `string`                           | `"cc-webplayer:"` | Prefix of cc-player events                                |
-| `demoSpin`          | `boolean`                          | `false`           | Run a spin once the 360 images has been loaded            |
-| `reverse360`        | `boolean`                          | `false`           | Reverse the 360-degree rotation                           |
+| Prop                  | Type                               | Default           | Description                                               |
+| --------------------- | ---------------------------------- | ----------------- | --------------------------------------------------------- |
+| `compositionUrl`      | `string`                           | ❌ Required       | URL to the composition data                               |
+| `hideCategoriesNav`   | `boolean`                          | `false`           | Hide the category-based navigation                        |
+| `infiniteCarrousel`   | `boolean`                          | `false`           | Allow to navigate from 1st to last media (and vice versa) |
+| `permanentGallery`    | `boolean`                          | `false`           | Display gallery under the carrousel                       |
+| `mediaLoadStrategy`   | `"quality"`/`"balanced"`/`"speed"` | `"quality"`       | Strategy for loading medias.                              |
+| `minMediaWidth`       | `number`                           | `0`               | Force minimum media width (in pixels)                     |
+| `maxMediaWidth`       | `number`                           | `Infinity`        | Force maximum media width (in pixels)                     |
+| `preloadRange`        | `number`                           | `1`               | Number of items to preload before and after the viewport  |
+| `autoLoad360`         | `boolean`                          | `false`           | Load 360 images without having to click                   |
+| `autoLoadInterior360` | `boolean`                          | `false`           | Load interior 360 images without having to click          |
+| `categoriesFilter`    | `string`                           | `*`               | Only display certain categories                           |
+| `extendBehavior`      | `"full_screen"`/`"event"`/`"none"` | `"full_screen"`   | Handle extend mode                                        |
+| `eventPrefix`         | `string`                           | `"cc-webplayer:"` | Prefix of cc-player events                                |
+| `demoSpin`            | `boolean`                          | `false`           | Run a spin once the 360 images has been loaded            |
+| `reverse360`          | `boolean`                          | `false`           | Reverse the 360-degree rotation                           |
 
 _NOTE: If you are using the WebComponent directly, you need to transform the props to HTML attributes
 (which are in dashed-case and take `string` as value type)_
 
-### Customisation
+### Customization
 
 #### CSS
 
-You can customise the WebPlayer CSS with CSS Variables
+You can customize the WebPlayer CSS with CSS Variables
 
 | CSS Variable                        | Description                        | Default Value               |
 | ----------------------------------- | ---------------------------------- | --------------------------- |
@@ -148,9 +149,9 @@ You can customise the WebPlayer CSS with CSS Variables
 | `--cc-webplayer-radius-carrousel`   | Carrousel border radius            | `0`                         |
 | `--cc-webplayer-radius-gallery`     | Gallery medias border radius       | `0`                         |
 
-### More customisation
+### More customization
 
-For more customisation, take a look at the **[Online Documentation](https://carcutter.github.io/cars-webplayer-js/)**
+For more customization, take a look at the **[Online Documentation](https://carcutter.github.io/cars-webplayer-js/)**
 
 ## Useful scripts
 
