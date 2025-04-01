@@ -17,6 +17,7 @@ import {
   DEFAULT_MAX_MEDIA_WIDTH,
   DEFAULT_PRELOAD_RANGE,
   DEFAULT_AUTO_LOAD_360,
+  DEFAULT_AUTO_LOAD_INTERIOR_360,
   DEFAULT_CATEGORY_FILTER,
   DEFAULT_EXTEND_BEHAVIOR,
   DEFAULT_EVENT_PREFIX,
@@ -24,7 +25,6 @@ import {
   DEFAULT_REVERSE_360,
   type WebPlayerProps,
 } from "@car-cutter/core";
-import { DEFAULT_AUTO_LOAD_INTERIOR_360 } from "@car-cutter/core/src/const/default_props";
 
 import WebPlayerContainer from "./components/organisms/WebPlayerContainer";
 import CustomizationContextProvider from "./providers/CustomizationContext";
