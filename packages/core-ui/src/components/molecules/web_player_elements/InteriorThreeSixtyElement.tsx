@@ -1,3 +1,4 @@
+import { Pannellum } from "pannellum-react";
 import { useCallback, useEffect, useState } from "react";
 
 import { useControlsContext } from "../../../providers/ControlsContext";
@@ -54,6 +55,42 @@ const InteriorThreeSixtyElementInteractive: React.FC<
           isShowingDetails ? "scale-105" : "scale-100"
         )}
       >
+        <Pannellum
+          id="pannellum"
+          panorama={src}
+          preview={poster}
+          width="100%"
+          height="100%"
+          image={src}
+          pitch={0}
+          yaw={0}
+          hfov={100}
+          maxHfov={100}
+          compass={false}
+          showControls={false}
+          onLoad={onLoad}
+          onError={onError}
+          onMousedown={onMouse}
+          onTouchstart={onMouse}
+          onTouchend={onMouse}
+          onMouseup={onMouse}
+          autoLoad={true}
+        >
+          <Pannellum.Hotspot
+            type="info"
+            pitch={11}
+            yaw={-167}
+            text="Info Hotspot Text 3"
+            URL="https://github.com/farminf/pannellum-react"
+          />
+          <Pannellum.Hotspot
+            type="info"
+            pitch={11}
+            yaw={-0}
+            text="Info Hotspot Text 3"
+            URL="https://github.com/farminf/pannellum-react"
+          />
+        </Pannellum>
       </div>
     </div>
   );
