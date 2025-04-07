@@ -44,7 +44,7 @@ const DevApp: React.FC = () => {
           // maxMediaWidth={1000}
           // preloadRange={3}
           // autoLoad360
-          autoLoadInterior360
+          // autoLoadInterior360
           // categoriesFilter="*rior|detail"
           // extendBehavior="event"
           // eventPrefix="cc-event:"

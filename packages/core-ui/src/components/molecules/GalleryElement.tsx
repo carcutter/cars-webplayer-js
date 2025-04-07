@@ -68,7 +68,7 @@ const GalleryElement: React.FC<GalleryElementProps> = ({ item }) => {
       withCdn = true;
       break;
     case "interior-360":
-      imgSrc = item.thumbnailSrc;
+      imgSrc = item.poster;
       withCdn = true;
       break;
     case "image":
