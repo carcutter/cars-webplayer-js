@@ -8,4 +8,4 @@ type CustomItem = {
   type: "custom";
 } & CustomMedia;
 
-export type CustomisableItem = Item | CustomItem;
+export type CustomizableItem = Item | CustomItem;

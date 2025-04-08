@@ -17,6 +17,7 @@ import {
   DEFAULT_MAX_MEDIA_WIDTH,
   DEFAULT_PRELOAD_RANGE,
   DEFAULT_AUTO_LOAD_360,
+  DEFAULT_AUTO_LOAD_INTERIOR_360,
   DEFAULT_CATEGORY_FILTER,
   DEFAULT_EXTEND_BEHAVIOR,
   DEFAULT_EVENT_PREFIX,
@@ -41,6 +42,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   maxMediaWidth = DEFAULT_MAX_MEDIA_WIDTH,
   preloadRange = DEFAULT_PRELOAD_RANGE,
   autoLoad360 = DEFAULT_AUTO_LOAD_360,
+  autoLoadInterior360 = DEFAULT_AUTO_LOAD_INTERIOR_360,
 
   categoriesFilter = DEFAULT_CATEGORY_FILTER,
   extendBehavior = DEFAULT_EXTEND_BEHAVIOR,
@@ -160,6 +162,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
         preloadRange,
         categoriesFilter,
         autoLoad360,
+        autoLoadInterior360,
         extendBehavior,
         demoSpin,
         reverse360,

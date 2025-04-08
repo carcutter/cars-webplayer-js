@@ -78,6 +78,13 @@ const properties: Array<Property> = [
     description: "Load 360 images without having to click",
   },
   {
+    propName: "autoLoadInterior360",
+    attribute: "auto-load-interior360",
+    type: "boolean",
+    defaultValue: "false",
+    description: "Load interior 360 images without having to click",
+  },
+  {
     propName: "categoriesFilter",
     attribute: "categories-filter",
     type: "string",

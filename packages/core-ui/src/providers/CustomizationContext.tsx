@@ -13,7 +13,7 @@ import {
   type WebPlayerIconProps,
 } from "@car-cutter/core";
 
-import { CustomMedia } from "../types/customisable_item";
+import { CustomMedia } from "../types/customizable_item";
 
 import { useGlobalContext } from "./GlobalContext";
 
