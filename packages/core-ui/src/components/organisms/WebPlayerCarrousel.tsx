@@ -482,6 +482,9 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
               case "360":
                 imgSrc = item.images[0].src;
                 break;
+              case "interior-360":
+                imgSrc = item.thumbnailSrc;
+                break;
               case "image":
                 imgSrc = item.src;
                 break;
@@ -491,6 +494,8 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
               case "custom":
                 imgSrc = "custom";
                 break;
+              default:
+                imgSrc = "unknown";
             }
 
             return `${index}_${imgSrc}`;

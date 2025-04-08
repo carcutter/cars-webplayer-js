@@ -17,9 +17,7 @@ type Props = ZoomableCdnImageProps &
  */
 const ImageElement: React.FC<Props> = ({
   hotspots,
-
   itemIndex,
-
   className,
   onLoad,
   ...props

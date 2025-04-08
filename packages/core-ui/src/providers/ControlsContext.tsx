@@ -20,7 +20,7 @@ import {
 
 import { RESIZE_TRANSITION_DURATION } from "../const/browser";
 import { MAX_ZOOM, ZOOM_STEP } from "../const/zoom";
-import type { CustomisableItem } from "../types/customisable_item";
+import type { CustomizableItem } from "../types/customizable_item";
 import { clamp } from "../utils/math";
 
 import { useCompositionContext } from "./CompositionContext";
@@ -34,7 +34,7 @@ type SpecialCommand = "instant" | "first_to_last" | "last_to_first";
 type Details = { src: string; title?: string; text?: string };
 
 type ContextType = {
-  items: CustomisableItem[];
+  items: CustomizableItem[];
 
   setItemInteraction: (index: number, value: ItemInteraction) => void;
   slidable: boolean;
@@ -119,7 +119,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const { categories, items: compositionItems } = useCompositionContext();
 
   const items = useMemo(() => {
-    const compositionWithCustomItems = new Array<CustomisableItem>(
+    const compositionWithCustomItems = new Array<CustomizableItem>(
       ...compositionItems
     );
 

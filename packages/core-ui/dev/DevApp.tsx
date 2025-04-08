@@ -21,7 +21,7 @@ const DevApp: React.FC = () => {
             fontSize: "1.5rem",
           }}
         >
-          Carcutter Demo React
+          CarCutter Demo React
         </h2>
       </div>
 
@@ -33,7 +33,8 @@ const DevApp: React.FC = () => {
       >
         <WebPlayer
           // compositionUrl="/composition_mock_1.json"
-          compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
+          compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/interior-360.json"
+          // compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
           // compositionUrl="https://cdn.car-cutter.com/gallery/7de693a6dd8379eb743f6093499bdd13fe76876f135ae9a08b7d9ecbfb7f8664/WAUZZZF34N1097219/composition_v3.json"
           // hideCategoriesNav
           infiniteCarrousel
@@ -42,7 +43,8 @@ const DevApp: React.FC = () => {
           // minMediaWidth={300}
           // maxMediaWidth={1000}
           // preloadRange={3}
-          autoLoad360
+          // autoLoad360
+          // autoLoadInterior360
           // categoriesFilter="*rior|detail"
           // extendBehavior="event"
           // eventPrefix="cc-event:"

@@ -1,13 +1,14 @@
-import { CustomisableItem } from "../../types/customisable_item";
+import { CustomizableItem } from "../../types/customizable_item";
 
 import CustomElement from "./web_player_elements/CustomElement";
 import ImageElement from "./web_player_elements/ImageElement";
+import InteriorThreeSixtyElement from "./web_player_elements/InteriorThreeSixtyElement";
 import ThreeSixtyElement from "./web_player_elements/ThreeSixtyElement";
 import VideoElement from "./web_player_elements/VideoElement";
 
 type Props = {
   index: number;
-  item: CustomisableItem;
+  item: CustomizableItem;
   isShown: boolean;
 };
 
@@ -29,6 +30,15 @@ const WebPlayerElement: React.FC<Props> = ({ index, item, isShown }) => {
     case "360":
       Comp = (
         <ThreeSixtyElement itemIndex={index} onlyPreload={!isShown} {...item} />
+      );
+      break;
+    case "interior-360":
+      Comp = (
+        <InteriorThreeSixtyElement
+          itemIndex={index}
+          onlyPreload={!isShown}
+          {...item}
+        />
       );
       break;
     case "custom":

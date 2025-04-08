@@ -4,7 +4,7 @@ import type { ImageWithHotspots } from "@car-cutter/core";
 
 import { useControlsContext } from "../../../providers/ControlsContext";
 import { useGlobalContext } from "../../../providers/GlobalContext";
-import { CustomisableItem } from "../../../types/customisable_item";
+import { CustomizableItem } from "../../../types/customizable_item";
 import { clamp } from "../../../utils/math";
 import { cn } from "../../../utils/style";
 import CdnImage from "../../atoms/CdnImage";
@@ -21,7 +21,7 @@ const AUTO_SPIN_DURATION = 1250;
 const DRAG_SPIN_PX = 360; // 10px for each image of a 36 images spin
 const SCROLL_SPIN_PX = 480; // 15px for each image of a 36 images spin
 
-type ThreeSixtyElementProps = Extract<CustomisableItem, { type: "360" }> & {
+type ThreeSixtyElementProps = Extract<CustomizableItem, { type: "360" }> & {
   itemIndex: number;
   onlyPreload: boolean;
 };
@@ -179,7 +179,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
           const timeSinceLastFrame = (now - lastFrameTime) / 1000;
           walkX += currentVelocity * timeSinceLastFrame;
 
-          // The intertia is very low, we can stop it
+          // The inertia is very low, we can stop it
           if (
             Math.abs(currentVelocity) < 5 * dragStepPx &&
             Math.abs(walkX) < dragStepPx
@@ -209,7 +209,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       applyInertia();
     };
 
-    // -- Mouse events (click & drag)
+    // -- Mouse events (click &
     const cancelAnimation = () => {
       clearAutoSpinTimeout();
       cancelSpinAnimation();
@@ -458,7 +458,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
         </div>
         {/* Add space on both sides to allow scrolling */}
         {/* NOTE: We need the element to have an height, otherwise, Safari will ignore it */}
-        {/*       We need a lot of extra space on the side, otherwise, the 360 will not have intertia on Safari */}
+        {/*       We need a lot of extra space on the side, otherwise, the 360 will not have inertia on Safari */}
         <div className="pointer-events-none -mt-px h-px w-[calc(100%+1024px)]" />
       </div>
     </div>

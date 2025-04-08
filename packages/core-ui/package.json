@@ -10,7 +10,8 @@
     "lint": "eslint . --ext ts,tsx --max-warnings 0"
   },
   "dependencies": {
-    "@car-cutter/core": "0.11.0"
+    "@car-cutter/core": "0.11.0",
+    "pannellum-react": "^1.2.4"
   },
   "peerDependencies": {
     "react": ">=16.8"
@@ -18,9 +19,9 @@
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
+    "@preact/preset-vite": "^2.9.1",
     "@types/node": "^20.16.5",
     "@types/react": "^18.3.3",
-    "@preact/preset-vite": "^2.9.1",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.20",
     "browserslist": "^4.23.3",

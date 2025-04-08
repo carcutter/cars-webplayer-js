@@ -32,7 +32,16 @@ type ThreeSixtyItem = {
   images: ImageWithHotspots[];
 };
 
-export type Item = ImageItem | VideoItem | ThreeSixtyItem;
+type InteriorThreeSixtyItem = {
+  type: "interior-360";
+  poster?: string;
+} & ImageWithHotspots;
+
+export type Item =
+  | ImageItem
+  | VideoItem
+  | ThreeSixtyItem
+  | InteriorThreeSixtyItem;
 
 export type Category = {
   id: string;
