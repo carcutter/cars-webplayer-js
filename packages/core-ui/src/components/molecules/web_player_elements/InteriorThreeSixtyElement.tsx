@@ -1,4 +1,4 @@
-import { Pannellum } from "pannellum-react";
+import { Pannellum } from "pannellum-react/es/elements/Pannellum";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useLoadingProgress } from "../../../hooks/useLoadingProgress";

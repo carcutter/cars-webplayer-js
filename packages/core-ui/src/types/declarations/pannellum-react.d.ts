@@ -1,4 +1,4 @@
-declare module "pannellum-react" {
+declare module "pannellum-react/es/elements/Pannellum" {
   import { Component, ReactNode } from "react";
 
   export interface PannellumProps {
