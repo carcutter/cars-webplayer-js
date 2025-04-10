@@ -1,4 +1,6 @@
-import { Pannellum } from "pannellum-react/es/elements/Pannellum";
+import Pannellum, {
+  Pannellum as PannellumType,
+} from "pannellum-react/es/elements/Pannellum";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useLoadingProgress } from "../../../hooks/useLoadingProgress";
@@ -66,8 +68,9 @@ type InteriorThreeSixtyElementProps = Extract<
   { type: "interior-360" }
 > & {
   itemIndex: number;
-  onLoaded: () => void;
-  onError: () => void;
+  onlyPreload?: boolean;
+  onLoaded?: () => void;
+  onError?: () => void;
 };
 
 const InteriorThreeSixtyElementInteractive: React.FC<
@@ -77,7 +80,7 @@ const InteriorThreeSixtyElementInteractive: React.FC<
   const { autoLoadInterior360 } = useGlobalContext();
   const { isShowingDetails, setItemInteraction } = useControlsContext();
   const [progress, isLoading] = useLoadingProgress(src);
-  const pannellumRef = useRef<Pannellum>(null);
+  const pannellumRef = useRef<PannellumType>(null);
 
   const [isPannellumLoaded, setIsPannellumLoaded] = useState(false);
 
@@ -135,7 +138,6 @@ const InteriorThreeSixtyElementInteractive: React.FC<
           <div className="relative size-full">
             <Pannellum
               ref={pannellumRef}
-              id="pannellum"
               panorama={src}
               preview={poster}
               width="100%"

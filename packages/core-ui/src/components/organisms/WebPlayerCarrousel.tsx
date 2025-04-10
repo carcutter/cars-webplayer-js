@@ -483,7 +483,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
                 imgSrc = item.images[0].src;
                 break;
               case "interior-360":
-                imgSrc = item.thumbnailSrc;
+                imgSrc = item.poster ?? "interior-360";
                 break;
               case "image":
                 imgSrc = item.src;
