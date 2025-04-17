@@ -81,6 +81,7 @@ declare module "pannellum-react/es/elements/Pannellum" {
     setYaw: (yaw: number) => void;
     setPitch: (pitch: number) => void;
     setHfov: (hfov: number) => void;
+    getHfov: () => number;
     setYawBounds: (bounds: [number, number]) => void;
     setPitchBounds: (bounds: [number, number]) => void;
     setHfovBounds: (bounds: [number, number]) => void;
