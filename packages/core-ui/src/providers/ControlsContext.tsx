@@ -348,6 +348,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     switch (currentItem.type) {
       case "image":
         return true;
+      case "interior-360":
+        return currentItemInteraction === "running";
       case "360":
         return currentItemInteraction === "running";
       default:
