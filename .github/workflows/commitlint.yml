@@ -10,5 +10,5 @@ jobs:
           fetch-depth: 0
       - uses: wagoid/commitlint-github-action@v4
         with:
-          configFile: ${{ github.workspace }}/commitlint.config.mjs
+          configFile: ${{ github.workspace }}/commitlint.config.js
           failOnWarnings: true

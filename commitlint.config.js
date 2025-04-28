@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   parserPreset: "conventional-changelog-conventionalcommits",
   rules: {
     "body-leading-blank": [1, "always"],
