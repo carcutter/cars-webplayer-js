@@ -12,15 +12,18 @@
 
     /* Set for popover */
     --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 100%;
     --ui-radius: 0.25rem;
   }
 
   .ui-blue {
     --primary: 216 100% 52%;
+    --primary-foreground: 0 0% 100%;
   }
 
   .ui-green {
     --primary: 130 75% 38%;
+    --primary-foreground: 0 0% 100%;
   }
   .ui-yellow {
     --primary: 56 96% 53%;
@@ -29,15 +32,18 @@
 
   .ui-black {
     --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 100%;
     --primary-light: 240 5.9% 95%;
   }
 
   .ui-orange {
     --primary: 33 100% 50%;
+    --primary-foreground: 0 0% 100%;
   }
 
   .ui-gray {
     --primary: 0 0% 30%;
+    --primary-foreground: 0 0% 100%;
     --primary-light: 0 0% 95%;
   }
 
