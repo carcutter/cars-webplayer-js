@@ -29,6 +29,7 @@ const config = {
       ],
     ],
   },
+  defaultIgnores: true,
   prompt: {
     questions: {
       type: {
