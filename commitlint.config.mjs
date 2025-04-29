@@ -8,7 +8,7 @@ const config = {
     "header-max-length": [2, "always", 100],
     "subject-case": [2, "always", ["sentence-case"]],
     "subject-empty": [2, "never"],
-    "subject-full-stop": [2, "always", "."],
+    "subject-full-stop": [0, "always", "."],
     "type-case": [2, "always", "lower-case"],
     "type-empty": [2, "never"],
     "type-enum": [
