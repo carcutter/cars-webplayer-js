@@ -9,14 +9,17 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/Popover";
 const CompositionUpdatePopover: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const { customer, setCustomer, id, setId } = useAppContext();
+  const { customer, setCustomer, isDefaultCustomer, id, setId, isDefaultId } =
+    useAppContext();
 
   const initialStateRef = useRef({ customer, id });
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const [formCustomer, setFormCustomer] = useState(customer);
-  const [formId, setFormId] = useState(id);
+  const [formCustomer, setFormCustomer] = useState(
+    !isDefaultCustomer ? customer : ""
+  );
+  const [formId, setFormId] = useState(!isDefaultId ? id : "");
 
   const onReset = () => {
     const { customer, id } = initialStateRef.current;
@@ -49,18 +52,20 @@ const CompositionUpdatePopover: React.FC<React.PropsWithChildren> = ({
               <Label htmlFor="customer">Customer</Label>
               <Input
                 id="customer"
+                className="col-span-2 h-8"
+                placeholder="Enter your Token"
                 value={formCustomer}
                 onChange={e => setFormCustomer(e.target.value)}
-                className="col-span-2 h-8"
               />
             </div>
             <div className="grid grid-cols-3 items-center gap-4">
               <Label htmlFor="id">ID</Label>
               <Input
                 id="id"
+                className="col-span-2 h-8"
+                placeholder="Enter the vehicle ID"
                 value={formId}
                 onChange={e => setFormId(e.target.value)}
-                className="col-span-2 h-8"
               />
             </div>
           </div>

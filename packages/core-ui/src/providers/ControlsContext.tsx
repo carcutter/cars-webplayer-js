@@ -8,19 +8,23 @@ import {
 } from "react";
 
 import {
+  EVENT_ITEM_CHANGE,
   EVENT_EXTEND_MODE_OFF,
   EVENT_EXTEND_MODE_ON,
   EVENT_GALLERY_CLOSE,
   EVENT_GALLERY_OPEN,
   EVENT_HOTSPOTS_OFF,
   EVENT_HOTSPOTS_ON,
+  type Item as CompositionItem,
 } from "@car-cutter/core";
 
 import { RESIZE_TRANSITION_DURATION } from "../const/browser";
 import { MAX_ZOOM, ZOOM_STEP } from "../const/zoom";
+import type { CustomizableItem } from "../types/customizable_item";
 import { clamp } from "../utils/math";
 
 import { useCompositionContext } from "./CompositionContext";
+import { useCustomizationContext } from "./CustomizationContext";
 import { useGlobalContext } from "./GlobalContext";
 
 type ItemInteraction = null | "ready" | "running";
@@ -30,6 +34,8 @@ type SpecialCommand = "instant" | "first_to_last" | "last_to_first";
 type Details = { src: string; title?: string; text?: string };
 
 type ContextType = {
+  items: CustomizableItem[];
+
   setItemInteraction: (index: number, value: ItemInteraction) => void;
   slidable: boolean;
 
@@ -100,18 +106,60 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 }) => {
   const {
     infiniteCarrousel,
-    preventFullScreen,
+    extendBehavior,
 
     emitEvent,
     isFullScreen,
     requestFullscreen,
     exitFullscreen,
   } = useGlobalContext();
-  const { categories, items } = useCompositionContext();
+
+  const { customMediaList } = useCustomizationContext();
+
+  const { categories, items: compositionItems } = useCompositionContext();
+
+  const items = useMemo(() => {
+    const compositionWithCustomItems = new Array<CustomizableItem>(
+      ...compositionItems
+    );
+
+    // Firstly, position positive indexes in ascending order (if it was descending, adding index A will shift to the right all "higher" indexes)
+    // Then, position negative indexes in descending order (if it was ascending, adding index A will shift to the left all "lower" indexes)
+    const sortedCustomMediaList = customMediaList.slice().sort((a, b) => {
+      if (a.index < 0 && b.index < 0) {
+        return b.index - a.index;
+      }
+      if (a.index < 0) {
+        return 1;
+      }
+      if (b.index < 0) {
+        return -1;
+      }
+      return a.index - b.index;
+    });
+
+    for (const customMedia of sortedCustomMediaList) {
+      let position = customMedia.index;
+      if (position < 0) {
+        position = compositionWithCustomItems.length + position + 1;
+      }
+      compositionWithCustomItems.splice(position, 0, {
+        type: "custom",
+        ...customMedia,
+      });
+    }
+
+    return compositionWithCustomItems;
+  }, [compositionItems, customMediaList]);
 
   const [itemInteractionList, setItemInteractionList] = useState<
     ItemInteraction[]
   >(items.map(() => null));
+
+  useEffect(() => {
+    // Reset interactions when items change
+    setItemInteractionList(items.map(() => null));
+  }, [items]);
 
   const setItemInteraction = useCallback(
     (index: number, value: ItemInteraction) => {
@@ -198,16 +246,44 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     [carrouselItemIndex, itemInteractionList]
   );
 
+  useEffect(() => {
+    emitEvent(EVENT_ITEM_CHANGE, {
+      index: masterItemIndex,
+      item: currentItem,
+    });
+  }, [currentItem, emitEvent, masterItemIndex]);
+
   // -- Categories
   const displayedCategoryId = useMemo(() => {
+    let usedItem: CompositionItem;
+
+    if (currentItem.type === "custom") {
+      // Find the first non-custom item before the custom item
+      // If there is no item before, find the first non-custom item after
+      const neighbourItem =
+        items
+          .slice(0, masterItemIndex)
+          .reverse()
+          .find(item => item.type !== "custom") ??
+        items.slice(masterItemIndex + 1).find(item => item.type !== "custom");
+
+      if (!neighbourItem) {
+        throw new Error("No non-custom item found");
+      }
+
+      usedItem = neighbourItem;
+    } else {
+      usedItem = currentItem;
+    }
+
     for (const category of categories) {
-      if (category.items.includes(currentItem)) {
+      if (category.items.includes(usedItem)) {
         return category.id;
       }
     }
 
     throw new Error("Current item not found in any category");
-  }, [categories, currentItem]);
+  }, [categories, currentItem, items, masterItemIndex]);
 
   const changeCategory = useCallback(
     (categoryId: string) => {
@@ -230,8 +306,11 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       case "image":
         return !!currentItem.hotspots?.length;
       case "360":
-        return currentItemInteraction === "running";
-      case "video":
+        return (
+          currentItemInteraction === "running" &&
+          currentItem.images.some(img => !!img.hotspots?.length)
+        );
+      default:
         return false;
     }
   }, [currentItem, currentItemInteraction]);
@@ -246,11 +325,10 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   // -- Gallery
   const showGalleryControls = useMemo(() => {
     switch (currentItem.type) {
-      case "image":
-      case "360":
-        return true;
       case "video":
         return currentItemInteraction !== "running";
+      default:
+        return true;
     }
   }, [currentItem, currentItemInteraction]);
 
@@ -272,7 +350,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         return true;
       case "360":
         return currentItemInteraction === "running";
-      case "video":
+      default:
         return false;
     }
   }, [currentItem.type, currentItemInteraction]);
@@ -324,7 +402,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const enableExtendMode = useCallback(async () => {
     triggerExtendTransition();
 
-    if (!preventFullScreen) {
+    if (extendBehavior === "full_screen") {
       const requestSucceed = await requestFullscreen();
 
       setFakeFullScreen(!requestSucceed);
@@ -339,7 +417,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     // - if fullscreen request failed (mainly Safari iOS)
     changeExtendMode(true);
   }, [
-    preventFullScreen,
+    extendBehavior,
     changeExtendMode,
     requestFullscreen,
     triggerExtendTransition,
@@ -348,7 +426,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const disableExtendMode = useCallback(async () => {
     triggerExtendTransition();
 
-    if (!preventFullScreen) {
+    if (extendBehavior === "full_screen") {
       setFakeFullScreen(false);
 
       const exitSucceed = await exitFullscreen();
@@ -363,7 +441,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     // - If fullscreen exit request failed (mainly Safari iOS)
     changeExtendMode(false);
   }, [
-    preventFullScreen,
+    extendBehavior,
     changeExtendMode,
     exitFullscreen,
     triggerExtendTransition,
@@ -379,7 +457,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
   // Listen to fullscreen changes (mandatory to get the full screen close with Echap)
   useEffect(() => {
-    if (preventFullScreen) {
+    if (extendBehavior !== "full_screen") {
       return;
     }
 
@@ -397,7 +475,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
     changeExtendMode(isFullScreen);
   }, [
-    preventFullScreen,
+    extendBehavior,
     changeExtendMode,
     extendMode,
     fakeFullScreen,
@@ -408,6 +486,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   return (
     <ControlsContext.Provider
       value={{
+        items,
+
         setItemInteraction,
         slidable: items.length > 1,
 

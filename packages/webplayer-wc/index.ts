@@ -3,12 +3,14 @@
 export {
   // - WebComponents
   WEB_PLAYER_WC_TAG,
+  WEB_PLAYER_CUSTOM_MEDIA_WC_TAG,
   WEB_PLAYER_ICON_WC_TAG,
   // - Events
   DEFAULT_EVENT_PREFIX,
   EVENT_COMPOSITION_LOADING,
   EVENT_COMPOSITION_LOADED,
   EVENT_COMPOSITION_LOAD_ERROR,
+  EVENT_ITEM_CHANGE,
   EVENT_EXTEND_MODE_ON,
   EVENT_EXTEND_MODE_OFF,
   EVENT_HOTSPOTS_ON,
@@ -18,22 +20,21 @@ export {
   // - Utils
   generateCompositionUrl,
   // - Types
+  type Item,
   type Composition,
+  type MediaLoadStrategy,
 } from "@car-cutter/core";
-
-export {
-  type WebPlayerProps,
-  type WebPlayerIconProps,
-} from "@car-cutter/core-ui";
 
 export {
   // - Utils
   checkCustomElementsDefinition,
-  defineCustomElements,
-  ensureCustomElementsDefinition,
   // - Components
   webPlayerPropsToAttributes,
   type WebPlayerAttributes,
+  webPlayerCustomMediaPropsToAttributes,
+  type WebPlayerCustomMediaAttributes,
   webPlayerIconPropsToAttributes,
   type WebPlayerIconAttributes,
 } from "@car-cutter/core-wc";
+
+export { ensureCustomElementsDefinition } from "@car-cutter/core-wc-react-18";

@@ -1,0 +1,102 @@
+---
+sidebar_position: 2
+sidebar_label: Iconography
+
+description: "Change default icons"
+---
+
+import Heading from "@theme/Heading";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Iconography
+
+If you need to change the WebPlayer's icons, here is how you can add your custom icons directly to the WebPlayer!
+
+## Adding Custom Icons
+
+<Tabs groupId="implementation-type">
+  <TabItem value="framework" label="Frameworks">
+    You can add custom icons to the WebPlayer by importing the `WebPlayerIcon` component.
+    It needs to be a child of the `WebPlayer` component.
+    You can then add any icon type to the WebPlayer, such as SVGs, simply by adding them as children of the `WebPlayerIcon` component.
+
+    <Heading as="h3">Example</Heading>
+
+    ```tsx title="WebPlayerWithCustomIcons.tsx"
+    // highlight-next-line
+    import { WebPlayer, WebPlayerIcon } from "@car-cutter/framework-webplayer";
+
+    <WebPlayer ...>
+      // highlight-start
+      <WebPlayerIcon name="UI_PLAY">
+        <svg>...</svg>
+      </WebPlayerIcon>
+      <WebPlayerIcon name="UI_PAUSE">
+        <svg>...</svg>
+      </WebPlayerIcon>
+      // highlight-end
+    </WebPlayer>
+    ```
+
+  </TabItem>
+
+  <TabItem value="native" label="Native">
+    You can add custom icons to the WebPlayer by using the `cc-webplayer-icon` component.
+    It needs to be a child of the `cc-webplayer` component.
+    You can then add any icon type to the WebPlayer, such as SVGs, simply by adding them as children of the `cc-webplayer-icon` component.
+
+    <Heading as="h3">Example</Heading>
+
+    ```html title="web-player-with-custom-icons.html"
+    <cc-webplayer ...>
+      // highlight-start
+      <cc-webplayer-icon name="UI_ARROW_RIGHT">
+        <svg>...</svg>
+      </cc-webplayer-icon>
+      <cc-webplayer-icon name="UI_CLOSE">
+        <svg>...</svg>
+      </cc-webplayer-icon>
+      // highlight-end
+    </cc-webplayer>
+    ```
+
+  </TabItem>
+</Tabs>
+
+### Properties
+
+- `name`: specify the name of the custom icon.
+  - This should match one of the predefined icon names if you want to change it
+  - or a custom name if you want to target an hotspot
+
+```ts
+type WebPlayerIconName =
+  | "UI_ARROW_RIGHT" // Right arrow navigation (is mirrored on X axis for left arrow)
+  | "UI_BURGER" // Toggle Burger menu
+  | "UI_CLOSE" // Exit zoom, details or full screen
+  | "UI_EXTEND" // Extend the view (and go full screen if possible)
+  | "UI_GALLERY" // Toggle gallery view
+  | "UI_HOTSPOTS" // Toggle Hotspots
+  | "UI_IMAGE" // Hotspot with detail image
+  | "UI_MINUS" // Reduce zoom
+  | "UI_PAUSE" // Pause video
+  | "UI_PLAY" // Play video
+  | "UI_PLUS" // Increase zoom
+  | "UI_REDUCE" // Reducing an extended view
+  | "UI_360" // 360-degree view
+  | "UI_VOLUME" // Video volume
+  | "UI_VOLUME_OFF" // Muted video
+  | "CONTROLS_PREV" // Go to previous media
+  | "CONTROLS_NEXT"; // Go to next media
+```
+
+<br />
+
+:::tip
+You can put as many custom icons as you want in the WebPlayer.
+:::
+
+:::warning
+Technically, you can add any HTML element as an icon, but keep in mind that it can interfere with the WebPlayer's functionalities.
+:::

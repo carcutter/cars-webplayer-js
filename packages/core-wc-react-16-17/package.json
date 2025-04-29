@@ -1,0 +1,26 @@
+{
+  "name": "@car-cutter/core-wc-react-16-17",
+  "version": "0.11.0",
+  "private": true,
+  "type": "module",
+  "main": "index.ts",
+  "scripts": {
+    "lint": "eslint . --ext ts,tsx --max-warnings 0"
+  },
+  "dependencies": {
+    "@car-cutter/core": "0.11.0",
+    "@car-cutter/core-ui": "0.11.0",
+    "@car-cutter/core-wc": "0.11.0",
+    "@r2wc/react-to-web-component": "^1.0.0"
+  },
+  "peerDependencies": {
+    "react": ">=16.8 <18",
+    "react-dom": ">=16.8 <18"
+  },
+  "devDependencies": {
+    "@car-cutter/eslint-config": "*",
+    "@car-cutter/typescript-config": "*",
+    "eslint": "^8.57.0",
+    "typescript": "^5.5.4"
+  }
+}

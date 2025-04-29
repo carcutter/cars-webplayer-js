@@ -5,7 +5,7 @@ import { useCompositionContext } from "../../providers/CompositionContext";
 import { useControlsContext } from "../../providers/ControlsContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
 import { easeOut } from "../../utils/animation";
-import { clamp, lerp, modulo } from "../../utils/math";
+import { clamp, lerp } from "../../utils/math";
 import { cn } from "../../utils/style";
 import WebPlayerElement from "../molecules/WebPlayerElement";
 import WebPlayerOverlay from "../molecules/WebPlayerOverlay";
@@ -18,10 +18,12 @@ type Props = {
  * ThreeSixtyElement component renders the carrousel of items.
  */
 const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
-  const { infiniteCarrousel, isFullScreen } = useGlobalContext();
-  const { items, aspectRatioStyle } = useCompositionContext();
+  const { infiniteCarrousel, preloadRange, isFullScreen } = useGlobalContext();
+  const { aspectRatioStyle } = useCompositionContext();
 
   const {
+    items,
+
     slidable,
 
     carrouselItemIndex,
@@ -83,16 +85,8 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       0
     );
 
-    if (specialCommand === "first_to_last") {
-      // The very last item is the first one (as we moved it to the end)
-      return modulo(closestIndex, items.length);
-    } else if (specialCommand === "last_to_first") {
-      // The very first item is the last one (as we moved it to the start). It shifts the index by 1
-      return modulo(closestIndex - 1, items.length);
-    } else {
-      return closestIndex;
-    }
-  }, [specialCommand, getSliderOrThrow, items.length]);
+    return closestIndex;
+  }, [getSliderOrThrow]);
 
   const setStyleCursor = useCallback(
     (cursor: "auto" | "grab" | "grabbing") => {
@@ -216,6 +210,10 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   // 1) when the user changes the category (need to reset the first index)
   // 2) when the user toggles the extend mode
   useEffect(() => {
+    if (specialCommand) {
+      return;
+    }
+
     const closestIndex = computeClosestIndex();
 
     // When changing layout with full-screen for instance, the scroll position can be messed-up
@@ -230,8 +228,9 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     scrollToIndex(carrouselItemIndex, "instant");
   }, [
     carrouselItemIndex,
-    scrollToIndex,
     computeClosestIndex,
+    scrollToIndex,
+    specialCommand,
     // - Run the effect when those values change
     items,
     resizeTransitionTimeout,
@@ -386,10 +385,8 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   }, [
     computeClosestIndex,
     extendTransition,
-    isRunningSpecialCommand,
     isResizing,
     itemIndexCommand,
-    items.length,
     setCarrouselItemIndex,
     setItemIndexCommand,
   ]);
@@ -400,22 +397,22 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       return;
     }
 
-    const cb = () => finishSpecialCommand();
+    const cb = () => {
+      // NOTE: timeout to avoid race condition (because we cannot really know when the instant scroll is done)
+      setTimeout(() => {
+        setItemIndexCommand(null);
+        finishSpecialCommand();
+      }, 75);
+    };
 
     switch (specialCommand) {
       case "first_to_last":
-        // Go to the "moved" first item instantly
-        scrollToIndex(items.length, "instant");
-        // Move to the last item
-        scrollToIndex(items.length - 1, "smooth", cb);
+        // Move to the last item instantly
+        scrollToIndex(items.length - 1, "instant", cb);
         break;
-
       case "last_to_first":
-        // Go to the "moved" last item instantly
-        scrollToIndex(0, "instant");
-
-        // Move to the first item (it shifted by 1 due to the "moved" last item)
-        scrollToIndex(1, "smooth", cb);
+        // Move to the first item instantly
+        scrollToIndex(0, "instant", cb);
         break;
       case "instant":
         scrollToIndex(itemIndexCommand, "instant", cb);
@@ -430,11 +427,8 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     itemIndexCommand,
     items.length,
     scrollToIndex,
+    setItemIndexCommand,
   ]);
-
-  const CyclePlaceholder = () => (
-    <div className="h-full" style={aspectRatioStyle} />
-  );
 
   return (
     <div
@@ -448,25 +442,12 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
         ref={sliderRef}
         className={`flex size-full ${slidable ? "overflow-x-auto no-scrollbar *:snap-start *:snap-always" : "justify-center"}`}
       >
-        {/* Empty element to allow cycling */}
-        {specialCommand === "last_to_first" && <CyclePlaceholder />}
-
         {items.map((item, index) => {
-          const imgSrc = item.type === "360" ? item.images[0] : item.src;
-
           const isShown = index === carrouselItemIndex;
           const isFirst = index === 0;
-          const lastIsShown = carrouselItemIndex === items.length - 1;
           const isLast = index === items.length - 1;
-          const firstIsShown = carrouselItemIndex === 0;
 
-          // Lazy param avoids loading images that are too far from the current one
-          const lazy =
-            Math.abs(index - carrouselItemIndex) > 1 && // Not next to the current one
-            !(infiniteCarrousel && isFirst && lastIsShown) && // Not the last one when the first one is shown (only for infinite carrousel)
-            !(infiniteCarrousel && isLast && firstIsShown); // Not the first one when the last one is shown (only for infinite carrousel)
-
-          const transformStyle = (() => {
+          const transformStyle: React.CSSProperties | undefined = (() => {
             if (specialCommand === "first_to_last" && isFirst) {
               return {
                 transform: `translateX(${100 * items.length}%)`,
@@ -478,27 +459,63 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
             }
           })();
 
+          // - "inDisplayRange" avoids loading medias that are too far from the current one
+          let inDisplayRange =
+            Math.abs(index - carrouselItemIndex) <= preloadRange; // Consider medias in the preload range
+          inDisplayRange ||= index === itemIndexCommand; // Consider the target media
+
+          if (infiniteCarrousel) {
+            // If we are at the start, consider medias at the end
+            inDisplayRange ||=
+              carrouselItemIndex < preloadRange &&
+              items.length - index <= preloadRange - carrouselItemIndex;
+
+            // If we are at the end, consider medias at the start
+            inDisplayRange ||=
+              carrouselItemIndex >= items.length - preloadRange &&
+              index <= preloadRange - (items.length - carrouselItemIndex);
+          }
+
+          const key = (() => {
+            let imgSrc: string;
+            switch (item.type) {
+              case "360":
+                imgSrc = item.images[0].src;
+                break;
+              case "interior-360":
+                imgSrc = item.poster ?? "interior-360";
+                break;
+              case "image":
+                imgSrc = item.src;
+                break;
+              case "video":
+                imgSrc = item.poster ?? "video";
+                break;
+              case "custom":
+                imgSrc = "custom";
+                break;
+              default:
+                imgSrc = "unknown";
+            }
+
+            return `${index}_${imgSrc}`;
+          })();
+
           return (
             <div
-              key={`${index}_${imgSrc}`}
+              key={key}
               className={cn(
                 "h-full bg-foreground/35",
                 carrouselItemIndex === index && "z-1" // Give high-ground to the shown item (to avoid 1px vertical line)
               )}
               style={{ ...aspectRatioStyle, ...transformStyle }}
             >
-              <WebPlayerElement
-                index={index}
-                item={item}
-                isShown={isShown}
-                lazy={lazy}
-              />
+              {inDisplayRange && (
+                <WebPlayerElement index={index} item={item} isShown={isShown} />
+              )}
             </div>
           );
         })}
-
-        {/*Empty element to allow cycling */}
-        {specialCommand === "first_to_last" && <CyclePlaceholder />}
       </div>
 
       <WebPlayerOverlay />

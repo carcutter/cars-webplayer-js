@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import type { ImageWithHotspots, Item } from "@car-cutter/core";
+import type { ImageWithHotspots } from "@car-cutter/core";
 
 import { useControlsContext } from "../../../providers/ControlsContext";
 import { useGlobalContext } from "../../../providers/GlobalContext";
+import { CustomizableItem } from "../../../types/customizable_item";
+import { clamp } from "../../../utils/math";
 import { cn } from "../../../utils/style";
 import CdnImage from "../../atoms/CdnImage";
 import PlayIcon from "../../icons/PlayIcon";
@@ -13,10 +15,13 @@ import Button from "../../ui/Button";
 
 import ImageElement from "./ImageElement";
 
-const DRAG_STEP_PX = 10;
-const SCROLL_STEP_PX = 15;
+const AUTO_SPIN_DELAY = 750;
+const AUTO_SPIN_DURATION = 1250;
 
-type ThreeSixtyElementProps = Extract<Item, { type: "360" }> & {
+const DRAG_SPIN_PX = 360; // 10px for each image of a 36 images spin
+const SCROLL_SPIN_PX = 480; // 15px for each image of a 36 images spin
+
+type ThreeSixtyElementProps = Extract<CustomizableItem, { type: "360" }> & {
   itemIndex: number;
   onlyPreload: boolean;
 };
@@ -25,7 +30,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   images,
   onlyPreload,
 }) => {
-  const { reverse360 } = useGlobalContext();
+  const { demoSpin, reverse360 } = useGlobalContext();
   const { isShowingDetails, isZooming } = useControlsContext();
 
   const disableSpin = isZooming || isShowingDetails; // We do not want to do anything while zooming or showing a detail image
@@ -33,6 +38,28 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   // - element refs
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
+
+  // - Value refs
+  const playDemoSpinRef = useRef(demoSpin);
+  const demoSpinTimeout = useRef<NodeJS.Timeout | null>(null);
+  const clearAutoSpinTimeout = useCallback(() => {
+    if (!demoSpinTimeout.current) {
+      return;
+    }
+
+    clearTimeout(demoSpinTimeout.current);
+    demoSpinTimeout.current = null;
+  }, []);
+
+  const spinAnimationFrame = useRef<number | null>(null);
+  const cancelSpinAnimation = () => {
+    if (!spinAnimationFrame.current) {
+      return;
+    }
+
+    cancelAnimationFrame(spinAnimationFrame.current);
+    spinAnimationFrame.current = null;
+  };
 
   // - Flip book image index & details
   const [imageIndex, setImageIndex] = useState(0);
@@ -49,6 +76,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   // - Event listeners to handle spinning
   useEffect(() => {
     if (disableSpin) {
+      clearAutoSpinTimeout();
       return;
     }
 
@@ -60,11 +88,49 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       return;
     }
 
+    // -- Auto-spin
+    if (playDemoSpinRef.current) {
+      playDemoSpinRef.current = false;
+
+      demoSpinTimeout.current = setTimeout(() => {
+        const startTime = Date.now();
+
+        const applyDemoSpin = () => {
+          const applyDemoSpinStep = () => {
+            const now = Date.now();
+
+            const progress = (now - startTime) / AUTO_SPIN_DURATION;
+
+            const easeOutQuad = (t: number) => t * (2 - t);
+
+            const stepIndex = Math.round(easeOutQuad(progress) * length);
+
+            const imageIndex = clamp(stepIndex % length, 0, length - 1);
+
+            setImageIndex(imageIndex);
+
+            if (stepIndex >= length) {
+              return;
+            }
+
+            applyDemoSpin();
+          };
+
+          spinAnimationFrame.current = requestAnimationFrame(applyDemoSpinStep);
+        };
+
+        applyDemoSpin();
+      }, AUTO_SPIN_DELAY);
+    }
+
+    // -- Inertia
+
+    const dragStepPx = DRAG_SPIN_PX / length;
+
     type PosX = { timestamp: number; value: number };
 
     let spinStartX: number | null = null;
     let lastPosXs: PosX[] = [];
-    let inertiaAnimationFrame: number | null = null;
 
     const addPosX = (posX: PosX) => {
       lastPosXs.push(posX);
@@ -74,8 +140,6 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     };
 
     const startInertiaAnimation = () => {
-      // -- Inertia
-      const startTime = Date.now();
       const startVelocity = (() => {
         // Filter out points that are too old (to avoid inertia even after the user stopped)
         const now = Date.now();
@@ -97,6 +161,8 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
         );
       })();
 
+      const startTime = Date.now();
+
       let walkX = 0;
       let lastFrameTime = startTime;
 
@@ -113,16 +179,16 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
           const timeSinceLastFrame = (now - lastFrameTime) / 1000;
           walkX += currentVelocity * timeSinceLastFrame;
 
-          // The intertia is very low, we can stop it
+          // The inertia is very low, we can stop it
           if (
-            Math.abs(currentVelocity) < 5 * DRAG_STEP_PX &&
-            Math.abs(walkX) < DRAG_STEP_PX
+            Math.abs(currentVelocity) < 5 * dragStepPx &&
+            Math.abs(walkX) < dragStepPx
           ) {
-            inertiaAnimationFrame = null;
+            spinAnimationFrame.current = null;
             return;
           }
 
-          if (Math.abs(walkX) >= DRAG_STEP_PX) {
+          if (Math.abs(walkX) >= dragStepPx) {
             if (walkX > 0 !== reverse360) {
               displayNextImage();
             } else {
@@ -137,22 +203,18 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
           applyInertia();
         };
 
-        inertiaAnimationFrame = requestAnimationFrame(applyInertiaStep);
+        spinAnimationFrame.current = requestAnimationFrame(applyInertiaStep);
       };
 
       applyInertia();
     };
 
-    const cancelInertiaAnimation = () => {
-      if (!inertiaAnimationFrame) {
-        return;
-      }
-
-      cancelAnimationFrame(inertiaAnimationFrame);
-      inertiaAnimationFrame = null;
+    // -- Mouse events (click &
+    const cancelAnimation = () => {
+      clearAutoSpinTimeout();
+      cancelSpinAnimation();
     };
 
-    // -- Mouse events (click & drag)
     // NOTE: As the useEffect should not re-render, we can use mutable variables. If it changes in the future, we should use useRef
 
     // Handle when the user just clicked on the 360 to start spinning
@@ -166,7 +228,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       e.stopPropagation(); // Prevents carrousel to slide
 
       // Cancel any ongoing inertia animation
-      cancelInertiaAnimation();
+      cancelAnimation();
 
       // Take snapshot of the starting state
       const x = e.clientX;
@@ -190,7 +252,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       const walkX = x - spinStartX;
 
       // If the user did not move enough, we do not want to rotate
-      if (Math.abs(walkX) < DRAG_STEP_PX) {
+      if (Math.abs(walkX) < dragStepPx) {
         return;
       }
 
@@ -226,6 +288,8 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
     // - Scroll events to update the image thanks to the "invisible scroller"
 
+    const scrollStepPx = SCROLL_SPIN_PX / length;
+
     const getScrollerWidth = () => scroller.getBoundingClientRect().width;
 
     const getScrollerCenterPosition = () =>
@@ -242,7 +306,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     const onScroll = () => {
       const walk = scroller.scrollLeft - getScrollerCenterPosition();
 
-      if (Math.abs(walk) < SCROLL_STEP_PX) {
+      if (Math.abs(walk) < scrollStepPx) {
         return;
       }
 
@@ -276,7 +340,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       }
 
       // Cancel any ongoing inertia animation
-      cancelInertiaAnimation();
+      cancelAnimation();
 
       // Take snapshot of the starting state
       const { identifier: id, clientX: x } = e.changedTouches[0];
@@ -311,7 +375,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       const walkX = x - spinStartX;
 
       // If the user did not move enough, we do not want to rotate
-      if (Math.abs(walkX) < DRAG_STEP_PX) {
+      if (Math.abs(walkX) < dragStepPx) {
         return;
       }
 
@@ -367,7 +431,14 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       scroller.removeEventListener("touchend", onTouchEnd);
       scroller.removeEventListener("touchcancel", onTouchEnd);
     };
-  }, [displayNextImage, displayPreviousImage, disableSpin, reverse360]);
+  }, [
+    clearAutoSpinTimeout,
+    displayNextImage,
+    displayPreviousImage,
+    disableSpin,
+    reverse360,
+    length,
+  ]);
 
   return (
     <div ref={containerRef} className="cursor-ew-resize">
@@ -387,7 +458,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
         </div>
         {/* Add space on both sides to allow scrolling */}
         {/* NOTE: We need the element to have an height, otherwise, Safari will ignore it */}
-        {/*       We need a lot of extra space on the side, otherwise, the 360 will not have intertia on Safari */}
+        {/*       We need a lot of extra space on the side, otherwise, the 360 will not have inertia on Safari */}
         <div className="pointer-events-none -mt-px h-px w-[calc(100%+1024px)]" />
       </div>
     </div>
@@ -404,6 +475,8 @@ type ThreeSixtyElementPlaceholderProps = {
 const ThreeSixtyElementPlaceholder: React.FC<
   ThreeSixtyElementPlaceholderProps
 > = ({ images, onPlaceholderImageLoaded, onSpinImagesLoaded, onError }) => {
+  const { autoLoad360 } = useGlobalContext();
+
   const imagesSrc = useMemo(() => images.map(({ src }) => src), [images]);
 
   const [loadingStatusMap, setLoadingStatusMap] = useState<Map<
@@ -433,6 +506,14 @@ const ThreeSixtyElementPlaceholder: React.FC<
     });
   }, []);
 
+  // If autoLoad360 is enabled, we start loading the images
+  useEffect(() => {
+    if (autoLoad360) {
+      fetchSpinImages();
+    }
+  }, [autoLoad360, fetchSpinImages]);
+
+  // When all images are loaded, we emit the event
   useEffect(() => {
     if (loadingProgress === 100) {
       onSpinImagesLoaded();
@@ -519,7 +600,9 @@ const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = props => {
     return (
       <ThreeSixtyElementPlaceholder
         {...props}
-        onPlaceholderImageLoaded={() => setStatus("placeholder")}
+        onPlaceholderImageLoaded={() =>
+          setStatus(s => (s === null ? "placeholder" : s))
+        }
         onSpinImagesLoaded={() => setStatus("spin")}
         onError={() => setStatus("error")}
       />

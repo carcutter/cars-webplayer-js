@@ -1,5 +1,8 @@
 import WebPlayer from "../src/WebPlayer";
+import WebPlayerCustomMedia from "../src/WebPlayerCustomMedia";
 import WebPlayerIcon from "../src/WebPlayerIcon";
+
+import "../src/index.css";
 
 const DevApp: React.FC = () => {
   return (
@@ -18,7 +21,7 @@ const DevApp: React.FC = () => {
             fontSize: "1.5rem",
           }}
         >
-          Carcutter Demo React
+          CarCutter Demo React
         </h2>
       </div>
 
@@ -30,27 +33,47 @@ const DevApp: React.FC = () => {
       >
         <WebPlayer
           // compositionUrl="/composition_mock_1.json"
-          compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
+          compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/interior-360.json"
+          // compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
           // compositionUrl="https://cdn.car-cutter.com/gallery/7de693a6dd8379eb743f6093499bdd13fe76876f135ae9a08b7d9ecbfb7f8664/WAUZZZF34N1097219/composition_v3.json"
-          // hideCategories
+          // hideCategoriesNav
           infiniteCarrousel
           permanentGallery
-          // imageLoadStrategy="speed"
-          // minImageWidth={300}
-          // maxImageWidth={1000}
-          // preventFullScreen
+          // mediaLoadStrategy="speed"
+          // minMediaWidth={300}
+          // maxMediaWidth={1000}
+          // preloadRange={3}
+          // autoLoad360
+          // autoLoadInterior360
+          // categoriesFilter="*rior|detail"
+          // extendBehavior="event"
           // eventPrefix="cc-event:"
+          demoSpin
           // reverse360
         >
-          <WebPlayerIcon name="TIRESPIN" color="#ff00ff">
+          <WebPlayerCustomMedia
+            index={4}
+            thumbnailSrc="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_thumbnail_audi.png"
+          >
+            <img src="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_image_1.jpg" />
+          </WebPlayerCustomMedia>
+          <WebPlayerCustomMedia index={-2}>
+            <img src="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_image_2.jpg" />
+          </WebPlayerCustomMedia>
+          {/* <WebPlayerCustomMedia index={-3}>
+            <img src="https://prod.pictures.autoscout24.net/listing-images/4ac589e2-40e3-47b8-a211-579d2e07125e_b277b9ec-63d5-4900-9003-77dd029364dc.jpg/720x540.webp" />
+          </WebPlayerCustomMedia> */}
+
+          <WebPlayerIcon name="TIRESPIN">
             <svg
-              style={{ color: "white" }}
               xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 -960 960 960"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
             >
               <path
                 fill="currentColor"
-                d="M230-450q-12.75 0-21.375-8.675-8.625-8.676-8.625-21.5 0-12.825 8.625-21.325T230-510h500q12.75 0 21.375 8.675 8.625 8.676 8.625 21.5 0 12.825-8.625 21.325T730-450H230Z"
+                d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"
               />
             </svg>
           </WebPlayerIcon>

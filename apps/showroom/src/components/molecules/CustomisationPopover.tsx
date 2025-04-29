@@ -3,7 +3,7 @@ import { COLOR_LIST, colorToClassName, colorToPretty } from "../../const/color";
 import { RADIUS_LIST, radiusToClassName } from "../../const/radius";
 import { cn } from "../../utils/style";
 import CopyLinkButton from "../atoms/CopyLinkButton";
-import { Button } from "../ui/Button";
+import { Button, getButtonClassName } from "../ui/Button";
 import { Checkbox } from "../ui/Checkbox";
 import { Input } from "../ui/Input";
 import { Label } from "../ui/Label";
@@ -20,20 +20,31 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
 
     permanentGallery,
     setPermanentGallery,
-    hideCategories,
-    setHideCategories,
+    hideCategoriesNav,
+    setHideCategoriesNav,
+    withCustomMedias,
+    setWithCustomMedias,
+    withCustomIcons,
+    setWithCustomIcons,
 
     color,
     setColor,
+    customColorStyle,
+
     radius,
     setRadius,
   } = useAppContext();
+
+  const isCustomColor = !!customColorStyle;
 
   return (
     <Popover>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent
         className="w-72 sm:w-80"
+        side="right"
+        sideOffset={16}
+        align="start"
         onOpenAutoFocus={e => e.preventDefault()}
       >
         <div className="space-y-6">
@@ -53,18 +64,20 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
                 <Label htmlFor="dealer">Dealer</Label>
                 <Input
                   id="dealer"
+                  className="col-span-2 h-8"
+                  placeholder="Enter the dealer name"
                   value={dealer}
                   onChange={e => setDealer(e.target.value)}
-                  className="col-span-2 h-8"
                 />
               </div>
               <div className="grid grid-cols-3 items-center gap-4">
                 <Label htmlFor="product">Product</Label>
                 <Input
                   id="product"
+                  className="col-span-2 h-8"
+                  placeholder="Enter the product name"
                   value={product}
                   onChange={e => setProduct(e.target.value)}
-                  className="col-span-2 h-8"
                 />
               </div>
             </div>
@@ -95,15 +108,35 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
                   Fixed Gallery
                 </Label>
 
-                {/* HideCategories */}
+                {/* Hide Categories */}
                 <Checkbox
-                  id="hideCategories"
-                  checked={!hideCategories}
+                  id="hideCategoriesNav"
+                  checked={!hideCategoriesNav}
                   onCheckedChange={checked =>
-                    setHideCategories(checked !== true)
+                    setHideCategoriesNav(checked !== true)
                   }
                 />
-                <Label htmlFor="hideCategories">Categories</Label>
+                <Label htmlFor="hideCategoriesNav">Categories</Label>
+
+                {/* Custom Medias */}
+                <Checkbox
+                  id="withCustomMedias"
+                  checked={withCustomMedias}
+                  onCheckedChange={checked =>
+                    setWithCustomMedias(checked === true)
+                  }
+                />
+                <Label htmlFor="withCustomMedias">Custom Medias</Label>
+
+                {/* Custom Icons */}
+                <Checkbox
+                  id="withCustomIcons"
+                  checked={withCustomIcons}
+                  onCheckedChange={checked =>
+                    setWithCustomIcons(checked === true)
+                  }
+                />
+                <Label htmlFor="withCustomIcons">Custom Icons</Label>
               </div>
             </div>
 
@@ -132,6 +165,31 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
                     <span>{colorToPretty(btnColor)}</span>
                   </Button>
                 ))}
+
+                <label
+                  className={cn(
+                    getButtonClassName({
+                      variant: "outline",
+                      color: "foreground",
+                      size: "sm",
+                    }),
+                    "w-full cursor-pointer border-border",
+                    isCustomColor && "border-foreground ring-1 ring-foreground"
+                  )}
+                >
+                  <input
+                    className="sr-only"
+                    type="color"
+                    value={color}
+                    onChange={e => setColor(e.target.value)}
+                  />
+
+                  <div
+                    className="size-3 rounded-full bg-primary"
+                    style={customColorStyle}
+                  />
+                  <span> Custom </span>
+                </label>
               </div>
             </div>
 

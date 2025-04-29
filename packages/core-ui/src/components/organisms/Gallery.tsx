@@ -7,11 +7,10 @@ import {
   Fragment as ReactFragment,
 } from "react";
 
-import type { Item } from "@car-cutter/core";
-
 import { useCompositionContext } from "../../providers/CompositionContext";
 import { useControlsContext } from "../../providers/ControlsContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
+import { CustomizableItem } from "../../types/customizable_item";
 import { clamp } from "../../utils/math";
 import { cn } from "../../utils/style";
 import GalleryElement from "../molecules/GalleryElement";
@@ -26,12 +25,18 @@ const Gallery: React.FC<Props> = ({
   className = "",
   containerClassName = "",
 }) => {
-  const { hideCategories, infiniteCarrousel, permanentGallery, isFullScreen } =
-    useGlobalContext();
+  const {
+    hideCategoriesNav,
+    infiniteCarrousel,
+    permanentGallery,
+    isFullScreen,
+  } = useGlobalContext();
 
-  const { categories, items, aspectRatioStyle } = useCompositionContext();
+  const { categories, aspectRatioStyle } = useCompositionContext();
 
   const {
+    items,
+
     extendMode,
     extendTransition,
 
@@ -44,23 +49,37 @@ const Gallery: React.FC<Props> = ({
   } = useControlsContext();
 
   const separatorIndexes = useMemo(() => {
-    if (hideCategories) {
+    if (hideCategoriesNav) {
       return [];
     }
 
     const indexes = new Array<number>();
 
-    let offset = 0;
+    let currentCategory = categories[0];
 
-    for (let i = 0; i < categories.length - 1; i++) {
-      const length = categories[i].items.length;
+    const findItemCategory = (item: CustomizableItem) => {
+      return categories.find(category =>
+        category.items.some(categoryItem => categoryItem === item)
+      );
+    };
 
-      indexes.push(offset + length);
-      offset += length;
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+
+      const itemCategory = findItemCategory(item);
+
+      if (!itemCategory) {
+        continue;
+      }
+
+      if (itemCategory !== currentCategory) {
+        indexes.push(i);
+        currentCategory = itemCategory;
+      }
     }
 
     return indexes;
-  }, [categories, hideCategories]);
+  }, [categories, hideCategoriesNav, items]);
 
   const sliderRef = useRef<HTMLDivElement>(null);
   const getSliderOrThrow = useCallback(() => {
@@ -210,7 +229,7 @@ const Gallery: React.FC<Props> = ({
     extendTransition,
   ]);
 
-  const onItemClicked = (_item: Item, targetIndex: number) => {
+  const onItemClicked = (itemIndex: number) => {
     // User is dragging the slider, ignore the click
     if (isDragging) {
       return;
@@ -219,18 +238,18 @@ const Gallery: React.FC<Props> = ({
     // Handle infinite carrousel
     if (
       infiniteCarrousel &&
-      targetIndex === items.length - 1 &&
+      itemIndex === items.length - 1 &&
       masterItemIndex === 0
     ) {
       prevItem();
     } else if (
       infiniteCarrousel &&
-      targetIndex === 0 &&
+      itemIndex === 0 &&
       masterItemIndex === items.length - 1
     ) {
       nextItem();
     } else {
-      scrollToItemIndex(targetIndex);
+      scrollToItemIndex(itemIndex);
     }
 
     resetView();
@@ -275,7 +294,7 @@ const Gallery: React.FC<Props> = ({
                   : "after:opacity-0 hover:after:opacity-70"
               )}
               style={aspectRatioStyle}
-              onClick={() => onItemClicked(item, index)}
+              onClick={() => onItemClicked(index)}
             >
               <GalleryElement item={item} />
             </div>

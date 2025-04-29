@@ -1,0 +1,105 @@
+---
+sidebar_position: 2
+sidebar_label: React.js
+
+description: "Use the WebPlayer with React.js"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# WebPlayer with React.js
+
+## Installation
+
+```bash npm2yarn
+npm install @car-cutter/react-webplayer
+```
+
+## Usage
+
+<Tabs groupId="react-version">
+  <TabItem value="react18" label="React 18+">
+
+```javascript
+import { WebPlayer } from "@car-cutter/react-webplayer";
+```
+
+  </TabItem>
+  <TabItem value="react16-17" label="React 16.8 - 17.x">
+
+```javascript
+import { WebPlayer } from "@car-cutter/react-webplayer/legacy";
+```
+
+  </TabItem>
+</Tabs>
+
+Then, use the component as: `<WebPlayer compositionUrl={url} />`
+
+### Quick start
+
+<Tabs groupId="react-version">
+  <TabItem value="react18" label="React 18+">
+
+```jsx title="/src/App.jsx"
+// highlight-next-line
+import { WebPlayer } from "@car-cutter/react-webplayer";
+
+const App = () => {
+  return (
+    <main>
+      <h1>React App</h1>
+      // highlight-start
+      <WebPlayer
+        style={{ maxWidth: "800px", marginInline: "auto", marginTop: "16px" }}
+        compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
+        infiniteCarrousel
+        onCompositionLoaded={() => console.log("Composition loaded")}
+      />
+      // highlight-end
+    </main>
+  );
+};
+
+export default App;
+```
+
+  </TabItem>
+  <TabItem value="react16-17" label="React 16.8 - 17.x">
+
+```jsx title="/src/App.jsx"
+// highlight-next-line
+import { WebPlayer } from "@car-cutter/react-webplayer/legacy";
+
+const App = () => {
+  return (
+    <main>
+      <h1>React App</h1>
+      // highlight-start
+      <WebPlayer
+        style={{ maxWidth: "800px", marginInline: "auto", marginTop: "16px" }}
+        compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
+        infiniteCarrousel
+        onCompositionLoaded={() => console.log("Composition loaded")}
+      />
+      // highlight-end
+    </main>
+  );
+};
+
+export default App;
+```
+
+  </TabItem>
+</Tabs>
+
+## Version Compatibility
+
+- React 18 and above: Use the default import from `@car-cutter/react-webplayer`
+- React 16.8 to 17.x: Use the legacy import from `@car-cutter/react-webplayer/legacy`
+- React versions below 16.8 are not supported
+
+## Next steps
+
+For more customisation, take a look at available **props** in the **[Properties](../properties.mdx)** section

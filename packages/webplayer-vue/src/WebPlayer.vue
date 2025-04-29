@@ -6,22 +6,41 @@ import {
   EVENT_COMPOSITION_LOADING,
   EVENT_COMPOSITION_LOADED,
   EVENT_COMPOSITION_LOAD_ERROR,
+  EVENT_ITEM_CHANGE,
   EVENT_EXTEND_MODE_ON,
   EVENT_EXTEND_MODE_OFF,
   EVENT_HOTSPOTS_ON,
   EVENT_HOTSPOTS_OFF,
   EVENT_GALLERY_OPEN,
   EVENT_GALLERY_CLOSE,
+  type Item,
   type Composition,
+  type WebPlayerProps as WebPlayerCoreProps,
 } from "@car-cutter/core";
-import { type WebPlayerProps } from "@car-cutter/core-ui";
-import { ensureCustomElementsDefinition } from "@car-cutter/wc-webplayer";
+import {
+  ensureCustomElementsDefinition,
+  webPlayerPropsToAttributes,
+} from "@car-cutter/wc-webplayer";
 
-export type { WebPlayerProps };
+ensureCustomElementsDefinition();
+
+export type WebPlayerProps = WebPlayerCoreProps & {
+  class?: string;
+  style?: HTMLElement["style"];
+};
+
+const props = defineProps<WebPlayerProps>();
+const { class: class_, style, ...wcProps } = props;
+const style_ = { display: "block", ...(style ?? {}) };
+
+const attributes = webPlayerPropsToAttributes(wcProps);
+
+// -- Event listeners
 export type WebPlayerEvents = {
   compositionLoading: [url: string];
   compositionLoaded: [composition: Composition];
   compositionLoadError: [error: unknown];
+  itemChange: [props: { index: number; item: Item }];
   extendModeOn: [];
   extendModeOff: [];
   hotspotsOn: [];
@@ -29,11 +48,6 @@ export type WebPlayerEvents = {
   galleryOpen: [];
   galleryClose: [];
 };
-
-const props = defineProps<WebPlayerProps>();
-ensureCustomElementsDefinition();
-
-// -- Event listeners
 const emit = defineEmits<WebPlayerEvents>();
 
 const eventPrefix = props.eventPrefix ?? DEFAULT_EVENT_PREFIX;
@@ -46,6 +60,8 @@ const eventListenerMap = {
     emit("compositionLoaded", composition),
   [EVENT_COMPOSITION_LOAD_ERROR]: (error: unknown) =>
     emit("compositionLoadError", error),
+  [EVENT_ITEM_CHANGE]: (props: { index: number; item: Item }) =>
+    emit("itemChange", props),
   [EVENT_EXTEND_MODE_ON]: () => emit("extendModeOn"),
   [EVENT_EXTEND_MODE_OFF]: () => emit("extendModeOff"),
   [EVENT_HOTSPOTS_ON]: () => emit("hotspotsOn"),
@@ -82,17 +98,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <cc-webplayer
-    :composition-url="compositionUrl"
-    :infinite-carrousel="infiniteCarrousel"
-    :permanent-gallery="permanentGallery"
-    :image-load-strategy="imageLoadStrategy"
-    :min-image-width="minImageWidth"
-    :max-image-width="maxImageWidth"
-    :hide-categories="hideCategories"
-    :prevent-full-screen="preventFullScreen"
-    :event-prefix="eventPrefix"
-    :reverse360="reverse360"
-  >
+  <cc-webplayer v-bind="attributes" :class="class_" :style="style_">
+    <slot></slot>
   </cc-webplayer>
 </template>

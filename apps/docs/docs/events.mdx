@@ -1,0 +1,29 @@
+---
+sidebar_position: 4
+---
+
+import WebPlayerEventsTable from "./_components/WebPlayerEventsTable";
+
+# Events
+
+The WebPlayer component provides various events that you can listen to or handle via callback props. These events allow you to respond to different states and actions within the WebPlayer.
+
+## Event Handling Options
+
+There are two main ways to handle WebPlayer events:
+
+1. Using callback props on the WebPlayer component when using frameworks
+2. Adding event listeners directly (vanilla JavaScript)
+
+The table below lists all available events, their types, and descriptions. An example of how to use these events is provided below each table.
+
+<WebPlayerEventsTable />
+
+<br />
+
+:::info
+
+- The default prefix for all WebPlayer events is `"cc-webplayer:"`. This prefix helps to avoid potential conflicts with other events in your application. You can access it through the constant `DEFAULT_EVENT_PREFIX`
+- You can customize the event prefix by setting the `eventPrefix` property on the WebPlayer component.
+
+:::

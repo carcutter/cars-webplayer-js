@@ -9,38 +9,48 @@ import {
 
 import {
   WEB_PLAYER_WC_TAG,
-  DEFAULT_HIDE_CATEGORIES,
+  DEFAULT_HIDE_CATEGORIES_NAV,
   DEFAULT_INFINITE_CARROUSEL,
   DEFAULT_PERMANENT_GALLERY,
-  DEFAULT_IMAGE_LOAD_STRATEGY,
-  DEFAULT_PREVENT_FULL_SCREEN,
+  DEFAULT_MEDIA_LOAD_STRATEGY,
+  DEFAULT_MIN_MEDIA_WIDTH,
+  DEFAULT_MAX_MEDIA_WIDTH,
+  DEFAULT_PRELOAD_RANGE,
+  DEFAULT_AUTO_LOAD_360,
+  DEFAULT_AUTO_LOAD_INTERIOR_360,
+  DEFAULT_CATEGORY_FILTER,
+  DEFAULT_EXTEND_BEHAVIOR,
   DEFAULT_EVENT_PREFIX,
+  DEFAULT_DEMO_SPIN,
   DEFAULT_REVERSE_360,
+  type WebPlayerProps,
 } from "@car-cutter/core";
 
 import WebPlayerContainer from "./components/organisms/WebPlayerContainer";
 import CustomizationContextProvider from "./providers/CustomizationContext";
 import GlobalContextProvider from "./providers/GlobalContext";
-import { WebPlayerProps } from "./types/WebPlayer.props";
-
-import "./index.css";
 
 const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   compositionUrl,
 
-  hideCategories = DEFAULT_HIDE_CATEGORIES,
+  hideCategoriesNav = DEFAULT_HIDE_CATEGORIES_NAV,
   infiniteCarrousel = DEFAULT_INFINITE_CARROUSEL,
   permanentGallery = DEFAULT_PERMANENT_GALLERY,
 
-  imageLoadStrategy = DEFAULT_IMAGE_LOAD_STRATEGY,
+  mediaLoadStrategy = DEFAULT_MEDIA_LOAD_STRATEGY,
+  minMediaWidth = DEFAULT_MIN_MEDIA_WIDTH,
+  maxMediaWidth = DEFAULT_MAX_MEDIA_WIDTH,
+  preloadRange = DEFAULT_PRELOAD_RANGE,
+  autoLoad360 = DEFAULT_AUTO_LOAD_360,
+  autoLoadInterior360 = DEFAULT_AUTO_LOAD_INTERIOR_360,
 
-  preventFullScreen = DEFAULT_PREVENT_FULL_SCREEN,
+  categoriesFilter = DEFAULT_CATEGORY_FILTER,
+  extendBehavior = DEFAULT_EXTEND_BEHAVIOR,
   eventPrefix = DEFAULT_EVENT_PREFIX,
+  demoSpin = DEFAULT_DEMO_SPIN,
   reverse360 = DEFAULT_REVERSE_360,
 
   children: customizationChildren, // NOTE: use to customize the player, not to display the content
-
-  ...props
 }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [playerInViewportWidthRatio, setPlayerInViewportWidthRatio] =
@@ -86,9 +96,9 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
     };
   }, [isFullScreen]);
 
-  // Handle fullscreen
+  // Handle fullscreenchange event
   useEffect(() => {
-    if (preventFullScreen) {
+    if (extendBehavior !== "full_screen") {
       return;
     }
 
@@ -112,7 +122,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
     return () => {
       document.removeEventListener("fullscreenchange", onFullscreenChange);
     };
-  }, [preventFullScreen]);
+  }, [extendBehavior]);
 
   const requestFullscreen = useCallback(async () => {
     const wrapper = wrapperRef.current;
@@ -142,13 +152,20 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   return (
     <GlobalContextProvider
       {...{
-        ...props,
-        reverse360,
-        imageLoadStrategy,
-        hideCategories,
+        compositionUrl,
+        hideCategoriesNav,
         infiniteCarrousel,
-        preventFullScreen,
         permanentGallery,
+        mediaLoadStrategy,
+        minMediaWidth,
+        maxMediaWidth,
+        preloadRange,
+        categoriesFilter,
+        autoLoad360,
+        autoLoadInterior360,
+        extendBehavior,
+        demoSpin,
+        reverse360,
 
         emitEvent,
 
@@ -160,11 +177,27 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
     >
       <CustomizationContextProvider>
         <div
-          id="cc-webplayer-wrapper"
           ref={wrapperRef}
           className="select-none text-foreground"
+          style={
+            {
+              "--background": "var(--cc-webplayer-background, 0 0% 100%)",
+              "--foreground": "var(--cc-webplayer-foreground, 240 10% 3.9%)",
+              "--primary": "var(--cc-webplayer-primary, 216 100% 52%)",
+              "--primary-foreground":
+                "var(--cc-webplayer-primary-foreground, var(--background))",
+              "--primary-light":
+                "var(--cc-webplayer-primary-light, var(--primary))",
+              "--neutral": "var(--cc-webplayer-neutral, 0 0% 39%)",
+              "--neutral-foreground":
+                "var(--cc-webplayer-neutral-foreground, var(--foreground))",
+              "--radius-ui": "var(--cc-webplayer-radius-ui, 16px)",
+              "--radius-carrousel": "var(--cc-webplayer-radius-carrousel, 0)",
+              "--radius-gallery": "var(--cc-webplayer-radius-gallery, 0)",
+            } as React.CSSProperties
+          }
         >
-          <WebPlayerContainer compositionUrl={compositionUrl} />
+          <WebPlayerContainer />
         </div>
         {customizationChildren}
       </CustomizationContextProvider>

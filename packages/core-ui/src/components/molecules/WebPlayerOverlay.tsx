@@ -32,15 +32,21 @@ import CategorySelect from "./CategorySelect";
  * - Details overlay when an hotspot with image is clicked
  */
 const WebPlayerOverlay: React.FC = () => {
-  const { hideCategories, infiniteCarrousel, permanentGallery } =
-    useGlobalContext();
+  const {
+    hideCategoriesNav,
+    infiniteCarrousel,
+    permanentGallery,
+    extendBehavior,
+  } = useGlobalContext();
 
   const {
-    items: { length: dataLength },
     aspectRatioStyle,
+    categories: { length: categoriesListLength },
   } = useCompositionContext();
 
   const {
+    items: { length: itemListLength },
+
     slidable,
 
     carrouselItemIndex,
@@ -93,7 +99,7 @@ const WebPlayerOverlay: React.FC = () => {
   return (
     <>
       {/* CategorySelect (on top) */}
-      {!hideCategories && (
+      {!hideCategoriesNav && categoriesListLength > 1 && (
         <CategorySelect
           sharedClassName={cn(
             sharedClassName,
@@ -108,7 +114,7 @@ const WebPlayerOverlay: React.FC = () => {
         <div className={cn(sharedClassName, positionToClassName("top-right"))}>
           <IndexIndicator
             currentIndex={carrouselItemIndex}
-            maxIndex={dataLength - 1}
+            maxIndex={itemListLength - 1}
           />
         </div>
       )}
@@ -127,8 +133,8 @@ const WebPlayerOverlay: React.FC = () => {
             onClick={prevItem}
             disabled={!infiniteCarrousel && masterItemIndex <= 0}
           >
-            <CustomizableIcon customizationKey="CONTROLS_ARROW_LEFT">
-              <ArrowRightIcon className="size-full rotate-180" />
+            <CustomizableIcon customizationKey="CONTROLS_PREV">
+              <ArrowRightIcon className="size-full -scale-x-100" />
             </CustomizableIcon>
           </Button>
           <Button
@@ -140,9 +146,11 @@ const WebPlayerOverlay: React.FC = () => {
               !isZooming ? "opacity-100" : "!pointer-events-none opacity-0"
             )}
             onClick={nextItem}
-            disabled={!infiniteCarrousel && masterItemIndex >= dataLength - 1}
+            disabled={
+              !infiniteCarrousel && masterItemIndex >= itemListLength - 1
+            }
           >
-            <CustomizableIcon customizationKey="CONTROLS_ARROW_RIGHT">
+            <CustomizableIcon customizationKey="CONTROLS_NEXT">
               <ArrowRightIcon className="size-full" />
             </CustomizableIcon>
           </Button>
@@ -171,9 +179,7 @@ const WebPlayerOverlay: React.FC = () => {
               shape="icon"
               onClick={toggleGallery}
             >
-              <CustomizableIcon customizationKey="CONTROLS_GALLERY">
-                <GalleryIcon className="size-full" />
-              </CustomizableIcon>
+              <GalleryIcon className="size-full" />
             </Button>
 
             {showGallery && (
@@ -231,18 +237,20 @@ const WebPlayerOverlay: React.FC = () => {
           )}
 
           {/* Extend/Reduce button */}
-          <Button
-            variant="fill"
-            color={extendMode ? "primary" : "neutral"}
-            shape="icon"
-            onClick={toggleExtendMode}
-          >
-            {!extendMode ? (
-              <ExtendIcon className="size-full" />
-            ) : (
-              <ReduceIcon className="size-full" />
-            )}
-          </Button>
+          {extendBehavior !== "none" && (
+            <Button
+              variant="fill"
+              color={extendMode ? "primary" : "neutral"}
+              shape="icon"
+              onClick={toggleExtendMode}
+            >
+              {!extendMode ? (
+                <ExtendIcon className="size-full" />
+              ) : (
+                <ReduceIcon className="size-full" />
+              )}
+            </Button>
+          )}
         </div>
       </div>
 

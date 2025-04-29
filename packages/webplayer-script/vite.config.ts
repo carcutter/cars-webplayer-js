@@ -13,13 +13,13 @@ export default defineConfig({
   },
   build: {
     lib: {
-      name: "script-webplayer",
+      name: "CarCutterWebplayerScript",
       fileName: () => `bundle-${version}.js`,
       entry: resolve(__dirname, "./index.ts"),
       formats: ["umd"],
     },
     target: browserslistToEsbuild(),
 
-    chunkSizeWarningLimit: 300,
+    chunkSizeWarningLimit: 250,
   },
 });

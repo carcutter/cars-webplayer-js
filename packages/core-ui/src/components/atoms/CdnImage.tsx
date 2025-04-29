@@ -32,43 +32,18 @@ const CdnImage: React.FC<CdnImageProps> = ({
   src,
   className,
   onLoad,
-
   imgInPlayerWidthRatio = 1,
   onlyThumbnail,
   fadeIn,
   ...props
 }) => {
-  const {
-    minImageWidth,
-    maxImageWidth,
-    imageLoadStrategy,
-    playerInViewportWidthRatio,
-  } = useGlobalContext();
+  const { mediaLoadStrategy, playerInViewportWidthRatio } = useGlobalContext();
 
-  const { imageHdWidth, imageSubWidths } = useCompositionContext();
+  const { imageHdWidth, usedMediaWidths } = useCompositionContext();
 
   const [srcSet, sizes] = useMemo(() => {
-    const imageWidths = imageSubWidths
-      .concat(imageHdWidth)
-      .sort((a, b) => a - b);
-
-    // Filter out composition' widths that are not within the attribute constraints
-    const usedImageWidths = imageWidths.filter(width => {
-      if (minImageWidth && width < minImageWidth) {
-        return false;
-      }
-      if (maxImageWidth && width > maxImageWidth) {
-        return false;
-      }
-      return true;
-    });
-
-    if (usedImageWidths.length === 0) {
-      throw new Error("No image widths available for the given constraints");
-    }
-
     // - Generate the srcSet attribute (list of image URLs with their widths)
-    const srcSetList = usedImageWidths.map(width => {
+    const srcSetList = usedMediaWidths.map(width => {
       const url = width !== imageHdWidth ? cdnImgSrcWithWidth(src, width) : src;
       return `${url} ${width}w`;
     });
@@ -81,29 +56,55 @@ const CdnImage: React.FC<CdnImageProps> = ({
       const viewportWidthMultiplier =
         1 / (imgInPlayerWidthRatio * playerInViewportWidthRatio);
 
-      if (imageLoadStrategy === "quality") {
-        const biggerWidth = usedImageWidths.pop();
+      switch (mediaLoadStrategy) {
+        case "quality": {
+          const mediaWidths = [...usedMediaWidths]; // Copy the array to avoid mutation
+          const biggestWidth = mediaWidths.pop();
 
-        sizesList = usedImageWidths.map(
-          imgWidth =>
-            `(max-width: ${viewportWidthMultiplier * imgWidth}px) ${imgWidth}px`
-        );
-
-        sizesList.push(`${biggerWidth}px`);
-      } else {
-        const smallestWidth = usedImageWidths.shift();
-
-        sizesList = usedImageWidths
-          .reverse()
-          .map(
-            imageWidth =>
-              `(min-width: ${viewportWidthMultiplier * imageWidth}px) ${imageWidth}px`
+          sizesList = mediaWidths.map(
+            mediaWidth =>
+              `(max-width: ${viewportWidthMultiplier * mediaWidth}px) ${mediaWidth}px`
           );
 
-        sizesList.push(`${smallestWidth}px`);
+          sizesList.push(`${biggestWidth}px`);
+          break;
+        }
+        case "balanced": {
+          sizesList = [];
+
+          for (let i = 0; i < usedMediaWidths.length - 1; i++) {
+            const mediaWidth = usedMediaWidths[i];
+            const nextMediaWidth = usedMediaWidths[i + 1];
+
+            const breakpoint = Math.round((mediaWidth + nextMediaWidth) / 2);
+
+            sizesList.push(
+              `(max-width: ${viewportWidthMultiplier * breakpoint}px) ${mediaWidth}px`
+            );
+          }
+
+          sizesList.push(`${usedMediaWidths[usedMediaWidths.length - 1]}px`);
+          break;
+        }
+        case "speed": {
+          const mediaWidths = [...usedMediaWidths]; // Copy the array to avoid mutation
+          const smallestWidth = mediaWidths.shift();
+
+          sizesList = mediaWidths
+            .reverse()
+            .map(
+              mediaWidth =>
+                `(min-width: ${viewportWidthMultiplier * mediaWidth}px) ${mediaWidth}px`
+            );
+
+          sizesList.push(`${smallestWidth}px`);
+          break;
+        }
       }
-    } else {
-      const smallestWidth = usedImageWidths.shift();
+    }
+    // Thumbnail
+    else {
+      const smallestWidth = usedMediaWidths[0];
 
       sizesList = [`${smallestWidth}px`];
     }
@@ -111,14 +112,12 @@ const CdnImage: React.FC<CdnImageProps> = ({
     return [srcSetList.join(", "), sizesList.join(", ")];
   }, [
     imageHdWidth,
-    imageLoadStrategy,
-    imageSubWidths,
     imgInPlayerWidthRatio,
-    maxImageWidth,
-    minImageWidth,
+    mediaLoadStrategy,
     onlyThumbnail,
     playerInViewportWidthRatio,
     src,
+    usedMediaWidths,
   ]);
 
   // - Fade-in effect

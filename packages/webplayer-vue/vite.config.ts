@@ -10,19 +10,19 @@ export default defineConfig({
     vue({
       template: {
         compilerOptions: {
-          isCustomElement: tag => ["cc-webplayer"].includes(tag),
+          isCustomElement: tag =>
+            [
+              "cc-webplayer",
+              "cc-webplayer-custom-media",
+              "cc-webplayer-icon",
+            ].includes(tag),
         },
       },
     }),
     dts({
       tsconfigPath: resolve(__dirname, "./tsconfig.app.json"),
       rollupTypes: true,
-      bundledPackages: [
-        "@car-cutter/core",
-        "@car-cutter/core-ui",
-        "@car-cutter/core-wc",
-        "@car-cutter/wc-webplayer",
-      ],
+      bundledPackages: ["@car-cutter/core", "@car-cutter/core-wc"],
     }),
   ],
 
@@ -33,20 +33,24 @@ export default defineConfig({
   },
   build: {
     lib: {
-      name: "vue-webplayer",
-      fileName: "index",
-      entry: resolve(__dirname, "./index.ts"),
+      name: "CarCutterWebplayerVue",
+      entry: {
+        index: resolve(__dirname, "src/index.ts"),
+        vue2: resolve(__dirname, "src/vue2/index.ts"),
+      },
     },
     target: browserslistToEsbuild(),
 
-    chunkSizeWarningLimit: 400,
+    chunkSizeWarningLimit: 5,
 
     // Vue is an external dependency, it should be provided by the consumer
     rollupOptions: {
-      external: ["vue"],
+      external: ["vue", "@car-cutter/wc-webplayer"],
       output: {
         globals: {
           vue: "Vue",
+
+          "@car-cutter/wc-webplayer": "CarCutterWebplayerWC",
         },
       },
     },

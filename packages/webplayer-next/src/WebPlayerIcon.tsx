@@ -1,23 +1,10 @@
 "use client";
 
-import { useEffect, type FC as ReactFC } from "react";
+import dynamic from "next/dynamic";
 
-import type { WebPlayerIconProps } from "@car-cutter/core-ui";
+const WebPlayerIcon = dynamic(
+  () => import("@car-cutter/react-webplayer").then(mod => mod.WebPlayerIcon),
+  { ssr: false }
+);
 
-const WebPlayer: ReactFC<WebPlayerIconProps> = ({ name, color }) => {
-  useEffect(() => {
-    (async () => {
-      const { ensureCustomElementsDefinition } = await import(
-        "@car-cutter/core-wc"
-      );
-      ensureCustomElementsDefinition();
-    })();
-  }, []);
-
-  // @ts-expect-error: [TODO] Should define into JSX.IntrinsicElements
-  return <cc-webplayer-icon name={name} color={color} />;
-};
-
-export { WebPlayerIconProps };
-
-export default WebPlayer;
+export { WebPlayerIcon };

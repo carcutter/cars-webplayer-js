@@ -1,6 +1,6 @@
 {
-  "extends": "@car-cutter/typescript-config/base.json",
+  "extends": "@car-cutter/typescript-config/react.json",
 
-  "include": ["index.ts", "src"],
+  "include": ["index.ts", "vite-env.d.ts"],
   "exclude": ["dist", "node_modules"]
 }

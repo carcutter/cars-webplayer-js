@@ -5,13 +5,13 @@ Use CarCutter WebPlayer with Vanilla JS/TS
 ## Usage
 
 1. Install package: `npm install @car-cutter/vanilla-webplayer`
-2. Import: `import { appendWebPlayerElement } from "@car-cutter/vanilla-webplayer"`
+2. Import: `import { appendWebPlayer } from "@car-cutter/vanilla-webplayer"`
 3. Use:
 
 ```js
 const targetElement = document.getElementById("target");
 
-appendWebPlayerElement(targetElement, {
+appendWebPlayer(targetElement, {
   compositionUrl: url,
 });
 ```

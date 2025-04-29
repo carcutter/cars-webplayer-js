@@ -1,4 +1,4 @@
-import { AspectRatio, ImageWidth } from "./misc";
+import { AspectRatio, MediaWidth } from "./misc";
 
 export type Hotspot = {
   title: string;
@@ -24,7 +24,7 @@ type ImageItem = { type: "image" } & ImageWithHotspots;
 type VideoItem = {
   type: "video";
   src: string;
-  poster: string;
+  poster?: string;
 };
 
 type ThreeSixtyItem = {
@@ -32,7 +32,16 @@ type ThreeSixtyItem = {
   images: ImageWithHotspots[];
 };
 
-export type Item = ImageItem | VideoItem | ThreeSixtyItem;
+type InteriorThreeSixtyItem = {
+  type: "interior-360";
+  poster?: string;
+} & ImageWithHotspots;
+
+export type Item =
+  | ImageItem
+  | VideoItem
+  | ThreeSixtyItem
+  | InteriorThreeSixtyItem;
 
 export type Category = {
   id: string;
@@ -42,7 +51,7 @@ export type Category = {
 
 export type Composition = {
   aspectRatio: AspectRatio;
-  imageHdWidth: ImageWidth;
-  imageSubWidths: ImageWidth[];
+  imageHdWidth: MediaWidth;
+  imageSubWidths: MediaWidth[];
   categories: Category[];
 };

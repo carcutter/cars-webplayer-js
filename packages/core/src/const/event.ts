@@ -2,6 +2,8 @@ export const EVENT_COMPOSITION_LOADING = "composition-loading";
 export const EVENT_COMPOSITION_LOADED = "composition-loaded";
 export const EVENT_COMPOSITION_LOAD_ERROR = "composition-load-error";
 
+export const EVENT_ITEM_CHANGE = "item-change";
+
 export const EVENT_EXTEND_MODE_ON = "extend-mode-on";
 export const EVENT_EXTEND_MODE_OFF = "extend-mode-off";
 

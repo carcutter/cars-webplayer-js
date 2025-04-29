@@ -8,21 +8,17 @@
   <body>
     <script type="module">
       import {
-        defineCustomElements,
+        ensureCustomElementsDefinition,
         DEFAULT_EVENT_PREFIX,
         EVENT_COMPOSITION_LOADED,
       } from "@car-cutter/wc-webplayer";
 
-      function init() {
-        defineCustomElements();
+      ensureCustomElementsDefinition();
 
-        document.addEventListener(
-          `${DEFAULT_EVENT_PREFIX}${EVENT_COMPOSITION_LOADED}`,
-          () => console.log("Composition loaded")
-        );
-      }
-
-      init();
+      document.addEventListener(
+        `${DEFAULT_EVENT_PREFIX}${EVENT_COMPOSITION_LOADED}`,
+        () => console.log("Composition loaded")
+      );
     </script>
 
     <h1>WC App</h1>
@@ -30,8 +26,28 @@
     <div style="max-width: 800px; margin-inline: auto">
       <cc-webplayer
         composition-url="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
-        hide-categories="true"
+        infinite-carrousel="true"
+        permanent-gallery="true"
       >
+        <cc-webplayer-custom-media index="4">
+          <img
+            src="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_image_1.jpg"
+          />
+        </cc-webplayer-custom-media>
+
+        <cc-webplayer-icon name="TIRESPIN">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"
+            />
+          </svg>
+        </cc-webplayer-icon>
       </cc-webplayer>
     </div>
   </body>

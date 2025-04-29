@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import type { Item } from "@car-cutter/core";
-
 import { useControlsContext } from "../../../providers/ControlsContext";
+import { CustomizableItem } from "../../../types/customizable_item";
 import { cn } from "../../../utils/style";
 import PlayButton from "../../atoms/PlayButton";
 import PauseIcon from "../../icons/PauseIcon";
@@ -14,7 +13,7 @@ import Spinner from "../../ui/Spinner";
 
 const HIDE_CONTROLS_DELAY = 3000;
 
-type Props = Extract<Item, { type: "video" }> & {
+type Props = Extract<CustomizableItem, { type: "video" }> & {
   itemIndex: number;
 };
 
@@ -29,7 +28,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, itemIndex }) => {
   // - Ref
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const getVideoElmtOrThrow = useCallback(() => {
+  const getVideoElementOrThrow = useCallback(() => {
     if (!videoRef.current) {
       throw new Error("videoRef.current is null");
     }
@@ -44,11 +43,11 @@ const VideoElement: React.FC<Props> = ({ src, poster, itemIndex }) => {
   // -- Play/Pause/Loading
 
   const play = useCallback(() => {
-    getVideoElmtOrThrow().play();
-  }, [getVideoElmtOrThrow]);
+    getVideoElementOrThrow().play();
+  }, [getVideoElementOrThrow]);
   const pause = useCallback(() => {
-    getVideoElmtOrThrow().pause();
-  }, [getVideoElmtOrThrow]);
+    getVideoElementOrThrow().pause();
+  }, [getVideoElementOrThrow]);
 
   // Pause the video when the video is not the carrousel active index
   useEffect(() => {
@@ -90,7 +89,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, itemIndex }) => {
   } | null>(null);
 
   const handleVolumeClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const videoElmt = getVideoElmtOrThrow();
+    const videoElmt = getVideoElementOrThrow();
 
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -101,7 +100,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, itemIndex }) => {
     videoElmt.muted = false;
   };
   const setMutedAttribute = (value: boolean) => {
-    const videoElmt = getVideoElmtOrThrow();
+    const videoElmt = getVideoElementOrThrow();
     videoElmt.muted = value;
   };
 
@@ -163,7 +162,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, itemIndex }) => {
   }, []);
 
   const handleProgressBarClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const video = getVideoElmtOrThrow();
+    const video = getVideoElementOrThrow();
 
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;

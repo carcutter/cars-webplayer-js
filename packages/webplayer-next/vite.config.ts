@@ -13,11 +13,7 @@ export default defineConfig({
     dts({
       tsconfigPath: resolve(__dirname, "./tsconfig.app.json"),
       rollupTypes: true,
-      bundledPackages: [
-        "@car-cutter/core",
-        "@car-cutter/core-ui",
-        "@car-cutter/core-wc",
-      ],
+      bundledPackages: ["@car-cutter/core"],
     }),
   ],
 
@@ -29,21 +25,41 @@ export default defineConfig({
 
   build: {
     lib: {
-      name: "next-webplayer",
-      fileName: "index",
-      entry: resolve(__dirname, "./index.ts"),
+      name: "CarCutterWebplayerNext",
+      entry: {
+        index: resolve(__dirname, "src/index.ts"),
+        legacy: resolve(__dirname, "src/legacy/index.ts"),
+      },
     },
     target: browserslistToEsbuild(),
 
-    chunkSizeWarningLimit: 125,
+    chunkSizeWarningLimit: 5,
 
     rollupOptions: {
-      external: ["react", "react-dom/client", "next"],
+      external: [
+        "react",
+        "react-dom",
+        "react-dom/client",
+        "react/jsx-runtime",
+
+        "next",
+        "next/dynamic",
+
+        "@car-cutter/react-webplayer",
+        "@car-cutter/react-webplayer/legacy",
+      ],
       output: {
         globals: {
           react: "React",
-          "react-dom/client": "ReactDOMClient",
+          "react-dom": "ReactDOM",
+          "react-dom/client": "ReactDOM",
+          "react/jsx-runtime": "jsx",
+
           next: "Next",
+          "next/dynamic": "NextDynamic",
+
+          "@car-cutter/react-webplayer": "CarCutterWebplayerReact",
+          "@car-cutter/react-webplayer/legacy": "CarCutterWebplayerReact",
         },
       },
     },

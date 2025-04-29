@@ -1,4 +1,6 @@
 export type AspectRatio = `${number}:${number}`;
-export type ImageWidth = number;
+export type MediaWidth = number;
 
-export type ImageLoadStrategy = "quality" | "speed";
+export type MediaLoadStrategy = "quality" | "balanced" | "speed";
+
+export type ExtendBehavior = "full_screen" | "event" | "none";

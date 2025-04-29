@@ -1,0 +1,116 @@
+---
+sidebar_position: 2
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+import WebPlayerPropertiesTable from "./_components/WebPlayerPropertiesTable";
+
+# Properties
+
+:::info
+
+- Frameworks are using camelCase
+- Native tools (VanillaJS, WebComponent) are using dashed-case to match HTML attributes (and use string values)
+
+:::
+
+<WebPlayerPropertiesTable />
+
+## Generate composition URL
+
+:::info
+
+The _composition URL_ could be any URL that returns a JSON object with the composition data.
+
+In the following example, we are using a URL that is specific to the Car Cutter platform, but you can replace it with your own URL if you have a different backend.
+
+:::
+
+<Tabs>
+  <TabItem value="package" label="NPM package">
+
+```ts
+import { generateCompositionUrl } from "@car-cutter/your-npm-package-webplayer";
+
+/**
+ * @param {string} customerToken - The CarCutter Customer Token (computed by hasing the Customer ID with SHA-256).
+ * @param {string} vin - The Vehicle Identification Number.
+ * @returns {string} The URL to fetch the composition JSON.
+ */
+const compositionUrl = generateCompositionUrl(customerToken, vin);
+```
+
+  </TabItem>
+
+  <TabItem value="script" label="<script/>">
+
+```ts
+/**
+ * Generates a URL for fetching the composition JSON for a given customer and vehicle.
+ *
+ * @param {string} customerToken - The CarCutter Customer Token (computed by hasing the Customer ID with SHA-256).
+ * @param {string} vin - The Vehicle Identification Number.
+ * @returns {string} The URL to fetch the composition JSON.
+ */
+export function generateCompositionUrl(
+  customerToken: string,
+  vin: string
+): string {
+  return `https://cdn.car-cutter.com/gallery/${customerToken}/${vin}/composition_v3.json`;
+}
+```
+
+  </TabItem>
+
+</Tabs>
+
+:::note
+
+In order to keep your Customer ID secret, we are using the Customer Token and not the Customer ID. Make sure to not include the Customer ID in your frontend code.
+
+:::
+
+## Categories Filter
+
+The `categoriesFilter` property allows you to filter which categories should be displayed in the WebPlayer. It supports wildcards (`*`) and multiple patterns separated by a vertical pipe (`|`).
+
+<Tabs>
+  <TabItem value="exact" label="Exact match">
+
+```jsx
+// Only show categories named exactly "exterior" or "interior"
+<WebPlayer categoriesFilter="exterior|interior" />
+```
+
+  </TabItem>
+
+  <TabItem value="wildcard" label="With wildcard">
+
+```jsx
+// Show all categories ending with "rior" (e.g., "exterior", "interior")
+<WebPlayer categoriesFilter="*rior" />
+
+// Show categories starting with "360" and categories named "detail"
+<WebPlayer categoriesFilter="360*|detail" />
+```
+
+  </TabItem>
+</Tabs>
+
+:::info
+When `categoriesFilter` is not specified, it defaults to `"*"` which shows all categories.
+:::
+
+## Extend Behavior
+
+The `extendBehavior` property controls how the WebPlayer reacts when its extend button is clicked.
+
+- `"full_screen"`: Uses the browser's Full Screen API when entering extend mode
+- `"event"`: Triggers an event when extend mode is requested
+- `"none"`: Hide the extend button and disable extend mode functionality
+
+:::tip
+When using `"event"` behavior, you can handle the extend mode in your own application using the `onExtendModeOn` callback (in React) or by listening to the `extendModeOn` event (in vanilla JavaScript).
+:::

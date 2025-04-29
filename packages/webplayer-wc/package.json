@@ -1,11 +1,12 @@
 {
   "name": "@car-cutter/wc-webplayer",
-  "version": "0.6.1",
-  "license": "UNLICENSED",
+  "version": "0.11.0",
+  "license": "Apache-2.0",
   "author": {
     "name": "CarCutter",
     "url": "https://www.car-cutter.com/"
   },
+  "homepage": "https://carcutter.github.io/cars-webplayer-js/",
   "description": "Use CarCutter WebPlayer as a WebComponent",
   "keywords": [
     "car-cutter",
@@ -20,7 +21,8 @@
   "files": [
     "dist",
     "package.json",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsc -b && vite build",
@@ -28,18 +30,20 @@
     "analyze": "vite-bundle-visualizer"
   },
   "devDependencies": {
-    "@car-cutter/core": "0.6.0",
-    "@car-cutter/core-ui": "0.6.1",
-    "@car-cutter/core-wc": "0.6.1",
+    "@car-cutter/core": "0.11.0",
+    "@car-cutter/core-ui": "0.11.0",
+    "@car-cutter/core-wc": "0.11.0",
+    "@car-cutter/core-wc-react-18": "0.11.0",
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
+    "@preact/preset-vite": "^2.9.1",
     "browserslist": "^4.23.3",
     "browserslist-to-esbuild": "^2.1.1",
     "eslint": "^8.57.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "preact": "^10.24.3",
+    "preact-compat": "^3.19.0",
     "typescript": "^5.5.4",
-    "vite": "^5.4.1",
+    "vite": "^5.4.18",
     "vite-bundle-visualizer": "^1.2.1",
     "vite-plugin-dts": "^4.2.1"
   },

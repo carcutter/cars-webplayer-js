@@ -1,0 +1,85 @@
+---
+sidebar_position: 1
+sidebar_label: Custom Medias
+
+description: "Add custom medias directly in the carrousel"
+---
+
+import Heading from "@theme/Heading";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Custom Medias
+
+If you need to add any of your medias to the WebPlayer's, without changing the composition file ... there is a way of adding your elements directly to the carrousel !
+
+## Adding Custom Media
+
+<Tabs groupId="implementation-type">
+  <TabItem value="framework" label="Frameworks">
+    You can add custom media to the WebPlayer by importing the `WebPlayerCustomMedia` component.
+    It needs to be a child of the `WebPlayer` component.
+    You can then add any media type to the carrousel, such as images, videos, ... simply by adding them as children of the `WebPlayerCustomMedia` component.
+
+    <Heading as="h3">Properties</Heading>
+
+    - `index`: specify the position of the custom media in the carrousel. You can use negative values to add the media at the end of the carrousel.
+    - `thumbnailSrc`: the thumbnail image to display in the gallery
+
+    <Heading as="h3">Example</Heading>
+
+    ```tsx title="WebPlayerWithCustomImages.tsx"
+    // highlight-next-line
+    import { WebPlayer, WebPlayerCustomMedia } from "@car-cutter/framework-webplayer";
+
+    <WebPlayer ...>
+      // highlight-start
+      <WebPlayerCustomMedia index={2} thumbnailSrc="...">
+        <img src="..." />
+      </WebPlayerCustomMedia>
+      <WebPlayerCustomMedia index={-1} thumbnailSrc="...">
+        <img src="..." />
+      </WebPlayerCustomMedia>
+      // highlight-end
+    </WebPlayer>
+    ```
+
+  </TabItem>
+
+  <TabItem value="native" label="Native">
+
+    You can add custom media to the WebPlayer by using the `cc-webplayer-custom-media` component.
+    It needs to be a child of the `cc-webplayer` component.
+    You can then add any media type to the carrousel, such as images, videos, ... simply by adding them as children of the `cc-webplayer-custom-media` component.
+
+    <Heading as="h3">Properties</Heading>
+
+    - `index`: specify the position of the custom media in the carrousel. You can use negative values to add the media at the end of the carrousel.
+    - `thumbnail-src`: the thumbnail image to display in the gallery
+
+    <Heading as="h3">Example</Heading>
+
+    ```html title="web-player-with-custom-images.html"
+    <cc-webplayer ...>
+      // highlight-start
+      <cc-webplayer-custom-media index="2" thumbnailSrc="...">
+        <img src="..." />
+      </cc-webplayer-custom-media>
+      <cc-webplayer-custom-media index="-1" thumbnailSrc="...">
+        <img src="..." />
+      </cc-webplayer-custom-media>
+      // highlight-end
+    </cc-webplayer>
+      ```
+    </TabItem>
+
+  </Tabs>
+
+:::tip
+You can put as many Custom Medias as you want in the Web Player.
+:::
+
+:::warning
+Technically, you can add any HTLM element to the carrousel but keep in mind that it can interfer
+with the WebPlayer's functionalities.
+:::

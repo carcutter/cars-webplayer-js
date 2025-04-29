@@ -15,18 +15,18 @@ npm install @car-cutter/vanilla-webplayer
 
 ## Usage
 
-1. Import: `import { appendWebPlayerElement } from "@car-cutter/vanilla-webplayer"`
+1. Import: `import { appendWebPlayer } from "@car-cutter/vanilla-webplayer"`
 
-2. Use the `appendWebPlayerElement` function to add the WebPlayer to your target element.
+2. Use the `appendWebPlayer` function to add the WebPlayer to your target element.
 
 ```js
-appendWebPlayerElement(document.getElementById("webplayer-wrapper"), {
+appendWebPlayer(document.getElementById("webplayer-wrapper"), {
   compositionUrl:
     "https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json",
 });
 ```
 
-### Vanilla implementation example
+### Quick start
 
 ```html title="/index.html"
 <!doctype html>
@@ -39,7 +39,7 @@ appendWebPlayerElement(document.getElementById("webplayer-wrapper"), {
   <body>
     <script type="module">
       import {
-        appendWebPlayerElement,
+        appendWebPlayer,
         DEFAULT_EVENT_PREFIX,
         EVENT_COMPOSITION_LOADED,
       } from "@car-cutter/vanilla-webplayer";
@@ -47,7 +47,7 @@ appendWebPlayerElement(document.getElementById("webplayer-wrapper"), {
       function init() {
         const targetElement = document.getElementById("webplayer-wrapper");
 
-        appendWebPlayerElement(targetElement, {
+        appendWebPlayer(targetElement, {
           compositionUrl:
             "https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json",
           infiniteCarrousel: true,
@@ -76,4 +76,4 @@ appendWebPlayerElement(document.getElementById("webplayer-wrapper"), {
 
 ## Next steps
 
-For more customisation, take a look at available **props** in the **Customisation** section.
+For more customisation, take a look at available **props** in the **[Properties](../properties.mdx)** section

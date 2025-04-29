@@ -25,7 +25,7 @@ defineCustomElements();
 
 2. Use the `<cc-webplayer>` element in your HTML.
 
-### WebComponent implementation example
+### Quick start
 
 ```html title="/index.html"
 <!doctype html>
@@ -60,7 +60,7 @@ defineCustomElements();
     <div style="max-width: 800px; margin-inline: auto">
       <cc-webplayer
         composition-url="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
-        hide-categories="true"
+        hide-categories-nav="true"
       >
       </cc-webplayer>
     </div>
@@ -70,4 +70,4 @@ defineCustomElements();
 
 ## Next steps
 
-For more customisation, take a look at available **props** in the **Customisation** section.
+For more customisation, take a look at available **props** in the **[Properties](../properties.mdx)** section

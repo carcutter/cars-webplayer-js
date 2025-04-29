@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CarCutter WebPlayerV3 - ahg - Demo integration</title>
+
+    <!-- REACT 17 -->
+    <!-- <script src="https://unpkg.com/react@17.0.1/umd/react.development.js"></script> -->
+    <!-- <script src="https://unpkg.com/react-dom@17.0.1/umd/react-dom.development.js"></script> -->
+    <script src="https://unpkg.com/react@17.0.1/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.1/umd/react-dom.production.min.js"></script>
+
+    <script src="../../packages/webplayer-script-react-16-17/dist/bundle-react-16-17@0.9.0.js"></script>
+
+    <!-- REACT 18 -->
+    <!-- <script src="https://unpkg.com/react@18/umd/react.development.js"></script> -->
+    <!-- <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script> -->
+    <!-- <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script> -->
+    <!-- <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script> -->
+
+    <!-- <script src="../../packages/webplayer-script-react-18/dist/bundle-react-18@0.9.0.js"></script> -->
+
+    <style>
+      /* BASE */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background-color: white;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-block: 0;
+      }
+
+      a {
+        color: black;
+        text-decoration: none;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      /* STYLE */
+      main {
+        max-width: 750px;
+        margin-inline: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Dealer.com</h1>
+    </header>
+
+    <main>
+      <cc-webplayer
+        composition-url="https://cdn.car-cutter.com/gallery/7de693a6dd8379eb743f6093499bdd13fe76876f135ae9a08b7d9ecbfb7f8664/WAUZZZF34N1097219/composition_v3.json"
+        hide-categories-nav="true"
+        infinite-carrousel="true"
+        permanent-gallery="true"
+      >
+      </cc-webplayer>
+    </main>
+  </body>
+</html>

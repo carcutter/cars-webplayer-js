@@ -213,7 +213,7 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
       // # This equation is quite simple but hard to pull out of the hat
       // 1/ The target point is the position of the mouse in the container PLUS the current translation
       // 2/ Whatever the zoom, the target point will always be in the same relative position in the image. That's why we multiply the target point by the zoomRatio value
-      // 3/ As the image is translated from the top-left corner, we have to substract the target point to the translation
+      // 3/ As the image is translated from the top-left corner, we have to subtract the target point to the translation
       // 4/ As the origin of the image is the top-left corner, we need to translate the image to the left & top : we need to reverse the sign of the translation
 
       // 1/
@@ -333,7 +333,7 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
         throw new Error("mouseStartXY.current is null");
       }
 
-      e.stopPropagation(); // Prevents parents' action (slider from draggin, rotating 360, ...)
+      e.stopPropagation(); // Prevents parents' action (slider from dragging, rotating 360, ...)
 
       const walkX = e.clientX - mouseStartXY.current.x;
       const walkY = e.clientY - mouseStartXY.current.y;
@@ -368,7 +368,7 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
     };
   }, [isZooming, offsetTransformXYStyle, onlyPreload]);
 
-  // - Listen to trackpad & wheel from zooming/scrolling
+  // - Listen to track pad & wheel from zooming/scrolling
   useEffect(() => {
     if (onlyPreload) {
       return;
@@ -484,16 +484,16 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
 
         const [touch1, touch2] = e.touches;
 
-        const intialTouch1 = touchStartXYmapRef.get(touch1.identifier);
-        const intialTouch2 = touchStartXYmapRef.get(touch2.identifier);
+        const initialTouch1 = touchStartXYmapRef.get(touch1.identifier);
+        const initialTouch2 = touchStartXYmapRef.get(touch2.identifier);
 
-        if (!intialTouch1 || !intialTouch2) {
-          throw new Error("intialTouch1 or intialTouch2 is null");
+        if (!initialTouch1 || !initialTouch2) {
+          throw new Error("initialTouch1 or initialTouch2 is null");
         }
 
         const initialDistance = computeTouchesDistance(
-          intialTouch1,
-          intialTouch2
+          initialTouch1,
+          initialTouch2
         );
         const currentDistance = computeTouchesDistance(touch1, touch2);
 

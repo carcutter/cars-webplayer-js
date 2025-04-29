@@ -1,8 +1,8 @@
 {
-  "extends": "@car-cutter/typescript-config/base.json",
+  "extends": "@car-cutter/typescript-config/react.json",
 
   "compilerOptions": {
     "jsx": "preserve"
   },
-  "include": ["index.ts", "src/**/*.vue"]
+  "include": ["src"]
 }

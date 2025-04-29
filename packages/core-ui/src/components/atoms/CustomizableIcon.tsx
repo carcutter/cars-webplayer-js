@@ -1,29 +1,28 @@
+import type { WebPlayerIconName } from "@car-cutter/core";
+
 import { useCustomizationContext } from "../../providers/CustomizationContext";
 
-type Props = { customizationKey: string; className?: string };
+type Props = { customizationKey: WebPlayerIconName; className?: string };
 
 const CustomizableIcon: React.FC<React.PropsWithChildren<Props>> = ({
   customizationKey,
-  className = "",
+  className,
   children: fallbackIcon,
 }) => {
   const { getIconConfig } = useCustomizationContext();
   const iconConfig = getIconConfig(customizationKey);
 
-  if (!iconConfig) {
+  const customIcon = iconConfig?.Icon;
+
+  if (!customIcon) {
     return fallbackIcon;
   }
 
-  return (
-    <div
-      className={className}
-      // Override the background color with the one from the config if available
-      style={{ color: iconConfig?.color }}
-    >
-      {/* Use the icon from the config if available. Else, replace it if needed */}
-      {iconConfig?.Icon ?? fallbackIcon}
-    </div>
-  );
+  if (!className) {
+    return customIcon;
+  }
+
+  return <div className={className}>{customIcon}</div>;
 };
 
 export default CustomizableIcon;

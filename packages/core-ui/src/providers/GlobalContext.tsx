@@ -1,26 +1,33 @@
 import { createContext, useContext } from "react";
 
-import type { WebPlayerProps } from "../types/WebPlayer.props";
+import type { WebPlayerProps } from "@car-cutter/core";
 
 type ProviderProps = Required<
   Pick<
     WebPlayerProps,
-    | "hideCategories"
+    | "compositionUrl"
+    | "hideCategoriesNav"
     | "infiniteCarrousel"
     | "permanentGallery"
-    | "imageLoadStrategy"
-    | "preventFullScreen"
+    | "mediaLoadStrategy"
+    | "minMediaWidth"
+    | "maxMediaWidth"
+    | "preloadRange"
+    | "autoLoad360"
+    | "autoLoadInterior360"
+    | "categoriesFilter"
+    | "extendBehavior"
+    | "demoSpin"
     | "reverse360"
   >
-> &
-  Pick<WebPlayerProps, "minImageWidth" | "maxImageWidth"> & {
-    emitEvent: (name: string, detail?: unknown) => void;
+> & {
+  emitEvent: (name: string, detail?: unknown) => void;
 
-    playerInViewportWidthRatio: number;
-    isFullScreen: boolean;
-    requestFullscreen: () => Promise<boolean>;
-    exitFullscreen: () => Promise<boolean>;
-  };
+  playerInViewportWidthRatio: number;
+  isFullScreen: boolean;
+  requestFullscreen: () => Promise<boolean>;
+  exitFullscreen: () => Promise<boolean>;
+};
 
 type ContextType = ProviderProps;
 
