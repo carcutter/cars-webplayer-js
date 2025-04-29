@@ -26,7 +26,7 @@ const generateCompositionUrl = (customer: string, id: string) => {
   return generateCompositionUrlWithCustomerToken(customerToken, id);
 };
 
-const isNotToken = (customerId: string) => {
+const isNotHashed = (customerId: string) => {
   return /^[a-f0-9]{64}$/i.test(customerId);
 };
 
@@ -48,7 +48,7 @@ const AppContent: React.FC = () => {
     radius,
   } = useAppContext();
 
-  if (!customer || !isNotToken(customer)) {
+  if (!customer || !isNotHashed(customer)) {
     const url = new URL(window.location.href);
     url.search = "";
     window.history.replaceState({}, document.title, url.toString());
