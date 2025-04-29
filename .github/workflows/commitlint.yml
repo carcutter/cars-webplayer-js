@@ -10,5 +10,6 @@ jobs:
           fetch-depth: 0
       - uses: wagoid/commitlint-github-action@v6
         with:
+          pr-title: true
           configFile: ${{ github.workspace }}/commitlint.config.mjs
           failOnWarnings: true
