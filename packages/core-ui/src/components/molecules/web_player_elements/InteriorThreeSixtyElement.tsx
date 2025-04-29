@@ -3,10 +3,14 @@ import Pannellum, {
 } from "pannellum-react/es/elements/Pannellum";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { HFOV, MAX_HFOV, MIN_HFOV, PITCH, YAW } from "../../../const/pannellum";
+import { MAX_ZOOM, ZOOM_STEP } from "../../../const/zoom";
 import { useLoadingProgress } from "../../../hooks/useLoadingProgress";
 import { useControlsContext } from "../../../providers/ControlsContext";
 import { useGlobalContext } from "../../../providers/GlobalContext";
 import { CustomizableItem } from "../../../types/customizable_item";
+import { createThrottleDebounce } from "../../../utils/debounce";
+import { convertPannellumHfovToBidirectionalSteppedScale } from "../../../utils/math";
 import { cn } from "../../../utils/style";
 import InteriorThreeSixtyIcon from "../../icons/InteriorThreeSixtyIcon";
 import PlayIcon from "../../icons/PlayIcon";
@@ -78,9 +82,11 @@ const InteriorThreeSixtyElementInteractive: React.FC<
 > = props => {
   const { itemIndex, src, poster, onLoaded, onError } = props;
   const { autoLoadInterior360 } = useGlobalContext();
-  const { isShowingDetails, setItemInteraction } = useControlsContext();
+  const { isShowingDetails, setItemInteraction, zoom, isZooming, setZoom } =
+    useControlsContext();
   const [progress, isLoading] = useLoadingProgress(src);
   const pannellumRef = useRef<PannellumType>(null);
+  const pannellumContainerRef = useRef<HTMLDivElement>(null);
 
   const [isPannellumLoaded, setIsPannellumLoaded] = useState(false);
 
@@ -112,6 +118,77 @@ const InteriorThreeSixtyElementInteractive: React.FC<
     }
   }, []);
 
+  useEffect(() => {
+    if (pannellumRef.current && isPannellumLoaded) {
+      const viewer = pannellumRef.current.getViewer();
+      if (viewer) {
+        const currentPannellumContainer = pannellumContainerRef.current;
+
+        const handleWheel = (event: WheelEvent) => {
+          event.preventDefault();
+          const zoom = convertPannellumHfovToBidirectionalSteppedScale(
+            viewer.getHfov(),
+            MIN_HFOV,
+            MAX_HFOV,
+            MAX_ZOOM,
+            ZOOM_STEP
+          );
+          const direction = event.deltaY < 0 ? "zoom-in" : "zoom-out";
+          const newZoom =
+            direction === "zoom-in"
+              ? Math.min(zoom + ZOOM_STEP, MAX_ZOOM)
+              : Math.max(zoom - ZOOM_STEP, 1);
+          setZoom(newZoom);
+        };
+
+        const handleWheelDebounced = createThrottleDebounce(
+          handleWheel,
+          100,
+          150
+        );
+
+        const handleDblClick = (event: MouseEvent) => {
+          event.preventDefault();
+          const zoom = convertPannellumHfovToBidirectionalSteppedScale(
+            viewer.getHfov(),
+            MIN_HFOV,
+            MAX_HFOV,
+            MAX_ZOOM,
+            ZOOM_STEP,
+            true
+          );
+          setZoom(zoom);
+        };
+
+        if (currentPannellumContainer !== null) {
+          currentPannellumContainer.addEventListener(
+            "wheel",
+            handleWheelDebounced
+          );
+          currentPannellumContainer.addEventListener(
+            "dblclick",
+            handleDblClick
+          );
+        }
+
+        const zoomFactor = Math.abs(1 - Math.abs(zoom));
+        const maxHfovReduction = MAX_HFOV - MIN_HFOV;
+        const newHfov = HFOV - zoomFactor * maxHfovReduction;
+        viewer.setHfov(newHfov);
+
+        return () => {
+          if (currentPannellumContainer) {
+            currentPannellumContainer.removeEventListener("wheel", handleWheel);
+            currentPannellumContainer.removeEventListener(
+              "dblclick",
+              handleDblClick
+            );
+          }
+        };
+      }
+    }
+  }, [zoom, isPannellumLoaded, isZooming, setZoom]);
+
   return (
     <>
       <div className={cn("relative size-full overflow-hidden bg-transparent")}>
@@ -135,7 +212,7 @@ const InteriorThreeSixtyElementInteractive: React.FC<
             }
           `}
           </style>
-          <div className="relative size-full">
+          <div className="relative size-full" ref={pannellumContainerRef}>
             <Pannellum
               ref={pannellumRef}
               panorama={src}
@@ -143,10 +220,11 @@ const InteriorThreeSixtyElementInteractive: React.FC<
               width="100%"
               height="100%"
               image={src}
-              pitch={0}
-              yaw={0}
-              hfov={100}
-              maxHfov={100}
+              pitch={PITCH}
+              yaw={YAW}
+              hfov={HFOV}
+              maxHfov={MAX_HFOV}
+              minHfov={MIN_HFOV}
               compass={false}
               showControls={false}
               onLoad={onLoad}

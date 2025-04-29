@@ -1,5 +1,8 @@
-module.exports = {
+const config = {
   parserPreset: "conventional-changelog-conventionalcommits",
+  ignores: [
+    (commit) => commit.includes("(#")
+  ],
   rules: {
     "body-leading-blank": [1, "always"],
     "body-max-line-length": [2, "always", 100],
@@ -130,3 +133,5 @@ module.exports = {
     },
   },
 };
+
+export default config;
