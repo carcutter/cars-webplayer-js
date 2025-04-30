@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/core-wc",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "private": true,
   "type": "module",
   "main": "index.ts",
@@ -8,7 +8,7 @@
     "lint": "eslint . --ext ts,tsx --max-warnings 0"
   },
   "dependencies": {
-    "@car-cutter/core": "0.11.0"
+    "@car-cutter/core": "0.12.0"
   },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
