@@ -1,0 +1,118 @@
+name: Continuous Deployment
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get package version
+        run: echo "VERSION=$(cat packages/core/package.json | grep -m 1 version | sed 's/[^0-9.]//g')" >> $GITHUB_ENV
+
+      - name: Ensure artifact tags are present
+        run: |
+          if ! git tag --list | grep "@car-cutter/next-webplayer@$VERSION" ; then
+            echo "Artifact tag not found -> @car-cutter/next-webplayer@$VERSION"
+            exit 1
+          fi
+
+          if ! git tag --list | grep "@car-cutter/react-webplayer@$VERSION" ; then
+            echo "Artifact tag not found -> @car-cutter/react-webplayer@$VERSION"
+            exit 1
+          fi
+
+          if ! git tag --list | grep "@car-cutter/vanilla-webplayer@$VERSION" ; then
+            echo "Artifact tag not found -> @car-cutter/vanilla-webplayer@$VERSION"
+            exit 1
+          fi
+
+          if ! git tag --list | grep "@car-cutter/vue-webplayer@$VERSION" ; then
+            echo "Artifact tag not found -> @car-cutter/vue-webplayer@$VERSION"
+            exit 1
+          fi
+
+          if ! git tag --list | grep "@car-cutter/wc-webplayer@$VERSION" ; then
+            echo "Artifact tag not found -> @car-cutter/wc-webplayer@$VERSION"
+            exit 1
+          fi
+
+      - name: Ensure Release tag is not present
+        run: |
+          if git tag --list | grep "WebPlayer-$VERSION" ; then
+            echo "Release tag already exists -> webplayer@$VERSION"
+            exit 1
+          fi
+
+      # https://github.com/marketplace/actions/setup-yarn
+      - name: Install Node.js and Yarn
+        uses: mskelton/setup-yarn@v3
+        with:
+          node-version: "20"
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Build
+        run: yarn build
+
+      - name: Prepare artifacts for release
+        run: |
+          mkdir -p artifacts
+          cp "packages/webplayer-script/dist/bundle-$VERSION.js" "artifacts/bundle-$VERSION.js"
+          cp "packages/webplayer-script-react-16-17/dist/bundle-react-16-17@$VERSION.js" "artifacts/bundle-react-16-17@$VERSION.js"
+          cp "packages/webplayer-script-react-18/dist/bundle-react-18@$VERSION.js" "artifacts/bundle-react-18@$VERSION.js"
+          ls -la artifacts/
+
+      # https://github.com/marketplace/actions/create-release
+      - name: Create release on GitHub
+        uses: ncipollo/release-action@v1
+        with:
+          tag: "WebPlayer-${{ env.VERSION }}"
+          name: "WebPlayer ${{ env.VERSION }}"
+          draft: false
+          makeLatest: true
+          allowUpdates: true
+          updateOnlyUnreleased: true
+          skipIfReleaseExists: true
+          prerelease: false
+          artifacts: "artifacts/*.js"
+          artifactContentType: "application/javascript"
+          artifactErrorsFailBuild: true
+          removeArtifacts: true
+          replacesArtifacts: true
+          generateReleaseNotes: false
+          body: |
+            **[Changes](https://github.com/carcutter/cars-webplayer-js/commits/@car-cutter/wc-webplayer@${{ env.VERSION }})**
+
+      - name: Prepare artifacts for S3 deployment
+        run: |
+          mkdir -p artifacts
+          cp "artifacts/bundle-$VERSION.js" "artifacts/bundle.js"
+          cp "artifacts/bundle-react-16-17@$VERSION.js" "artifacts/bundle-react-16-17.js"
+          cp "artifacts/bundle-react-18@$VERSION.js" "artifacts/bundle-react-18.js"
+          ls -la artifacts/
+
+      # https://github.com/marketplace/actions/s3-sync
+      - uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --dryrun
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_ACCESS_SECRET_KEY }}
+          AWS_S3_BUCKET: "carcutter-cdn-ireland"
+          AWS_REGION: "eu-west-1"
+          SOURCE_DIR: "artifacts"
+          DEST_DIR: "libs/web-player/v3/"
+
+      - name: Publish documentation
+        run: yarn publish:docs
+
+      - name: Publish to `npm`
+        run: yarn publish:packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
