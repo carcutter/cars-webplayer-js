@@ -17,3 +17,6 @@ yarn-error.log*
 
 # Secrets
 .secrets
+
+# GitHub actions
+!.github/**

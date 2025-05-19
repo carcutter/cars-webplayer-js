@@ -1,8 +1,6 @@
 name: Continuous Integration
 on:
-  push:
-    branches:
-      - develop
+  pull_request:
     paths:
       - "apps/**"
       - "packages/**"
@@ -12,20 +10,35 @@ on:
       - "yarn.lock"
 
 jobs:
-  deploy:
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # https://github.com/marketplace/actions/setup-yarn
-      - name: Install Node.js and Yarn
-        uses: mskelton/setup-yarn@v3
-        with:
-          node-version: "20"
+      - uses: ./.github/actions/install_tools
 
       - name: Lint
         run: yarn lint
 
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/install_tools
+
       - name: Build
         run: yarn build
+
+  # test:
+  #   name: Test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+
+  #     - uses: ./.github/actions/install_tools
+
+  #     - name: Test
+  #       run: yarn test

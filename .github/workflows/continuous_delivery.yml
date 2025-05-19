@@ -1,0 +1,57 @@
+name: Continuous Delivery
+on:
+  release:
+    types: [released]
+
+jobs:
+  docs:
+    name: doc
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare delivery
+        uses: ./.github/actions/prepare_delivery
+
+      - name: Publish documentation
+        run: yarn publish:docs
+
+  npm:
+    name: npm
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare delivery
+        uses: ./.github/actions/prepare_delivery
+
+      - name: Publish to npm
+        run: yarn publish:packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+
+  cdn:
+    name: cdn
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare delivery
+        uses: ./.github/actions/prepare_delivery
+
+      - name: Prepare artifacts for release
+        uses: ./.github/actions/prepare_release_artifacts
+
+      - name: Prepare artifacts for S3 deployment
+        run: |
+          mkdir -p artifacts
+          cp "artifacts/bundle-$VERSION.js" "artifacts/bundle.js"
+          cp "artifacts/bundle-react-16-17@$VERSION.js" "artifacts/bundle-react-16-17.js"
+          cp "artifacts/bundle-react-18@$VERSION.js" "artifacts/bundle-react-18.js"
+          ls -la artifacts/
+
+      # https://github.com/marketplace/actions/s3-sync
+      - uses: jakejarvis/s3-sync-action@master
+        # with:
+        #   args: --dryrun
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_ACCESS_SECRET_KEY }}
+          AWS_S3_BUCKET: "carcutter-cdn-ireland"
+          AWS_REGION: "eu-west-1"
+          SOURCE_DIR: "artifacts"
+          DEST_DIR: "libs/web-player/v3/"

@@ -1,0 +1,12 @@
+name: Get Package Version
+runs:
+  using: composite
+  steps:
+    - uses: ./.github/actions/get_package_version
+
+    - name: Ensure release tag is not present
+      run: |
+        if git tag --list | grep "$RELEASE_TAG" ; then
+          echo "Release tag already exists -> $RELEASE_TAG"
+          exit 1
+        fi

@@ -1,0 +1,12 @@
+name: Install Tools, Lint and Build
+runs:
+  using: composite
+  steps:
+    - name: Install tools
+      uses: ./.github/actions/install_tools
+
+    - name: Lint
+      run: yarn lint
+
+    - name: Build
+      run: yarn build
