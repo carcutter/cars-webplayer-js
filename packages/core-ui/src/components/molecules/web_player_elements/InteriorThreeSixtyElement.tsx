@@ -87,15 +87,7 @@ const InteriorThreeSixtyElementInteractive: React.FC<
   const [progress, isLoading] = useLoadingProgress(src);
   const pannellumRef = useRef<PannellumType>(null);
 
-  const [pannellumContainer, setPannellumContainer] =
-    useState<HTMLDivElement | null>(null);
-
-  const pannellumContainerRef = useCallback(
-    (element: HTMLDivElement | null) => {
-      setPannellumContainer(element);
-    },
-    []
-  );
+  const pannellumContainerRef = useRef<HTMLDivElement | null>(null);
 
   const [isPannellumLoaded, setIsPannellumLoaded] = useState(false);
 
@@ -126,8 +118,10 @@ const InteriorThreeSixtyElementInteractive: React.FC<
   }, []);
 
   useEffect(() => {
-    if (pannellumRef.current && isPannellumLoaded && pannellumContainer) {
+    if (pannellumRef.current && isPannellumLoaded && pannellumContainerRef.current) {
       const viewer = pannellumRef.current.getViewer();
+      const container = pannellumContainerRef.current;
+      
       if (viewer) {
         const handleWheel = (event: WheelEvent) => {
           event.preventDefault();
@@ -165,8 +159,8 @@ const InteriorThreeSixtyElementInteractive: React.FC<
           setZoom(zoom);
         };
 
-        pannellumContainer.addEventListener("wheel", handleWheelDebounced);
-        pannellumContainer.addEventListener("dblclick", handleDblClick);
+        container.addEventListener("wheel", handleWheelDebounced);
+        container.addEventListener("dblclick", handleDblClick);
 
         const zoomFactor = Math.abs(1 - Math.abs(zoom));
         const maxHfovReduction = MAX_HFOV - MIN_HFOV;
@@ -174,14 +168,12 @@ const InteriorThreeSixtyElementInteractive: React.FC<
         viewer.setHfov(newHfov);
 
         return () => {
-          if (pannellumContainer) {
-            pannellumContainer.removeEventListener("wheel", handleWheel);
-            pannellumContainer.removeEventListener("dblclick", handleDblClick);
-          }
+          container.removeEventListener("wheel", handleWheel);
+          container.removeEventListener("dblclick", handleDblClick);
         };
       }
     }
-  }, [zoom, isPannellumLoaded, isZooming, setZoom, pannellumContainer]);
+  }, [zoom, isPannellumLoaded, isZooming, setZoom]);
 
   return (
     <>
@@ -206,10 +198,10 @@ const InteriorThreeSixtyElementInteractive: React.FC<
                 }
               `}
             </style>
-            {pannellumContainer && (
+            {pannellumContainerRef.current && (
               <Pannellum
                 ref={pannellumRef}
-                id={pannellumContainer}
+                id={pannellumContainerRef.current}
                 panorama={src}
                 preview={poster}
                 width="0"
