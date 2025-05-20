@@ -3,6 +3,7 @@ runs:
   using: composite
   steps:
     - name: Get package version
+      shell: bash
       run: |
         echo "VERSION=$(cat packages/core/package.json | grep -m 1 version | sed 's/[^0-9.]//g')" >> $GITHUB_ENV
         echo "RELEASE_TAG=WebPlayer-$VERSION" >> $GITHUB_ENV

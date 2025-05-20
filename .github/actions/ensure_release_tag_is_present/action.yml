@@ -5,6 +5,7 @@ runs:
     - uses: ./.github/actions/get_package_version
 
     - name: Ensure release tag is present
+      shell: bash
       run: |
         if ! git tag --list | grep "$RELEASE_TAG" ; then
           echo "Release tag missing -> $RELEASE_TAG"

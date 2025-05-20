@@ -37,6 +37,7 @@ jobs:
         uses: ./.github/actions/prepare_release_artifacts
 
       - name: Prepare artifacts for S3 deployment
+        shell: bash
         run: |
           mkdir -p artifacts
           cp "artifacts/bundle-$VERSION.js" "artifacts/bundle.js"
