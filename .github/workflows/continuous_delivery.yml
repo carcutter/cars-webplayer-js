@@ -8,6 +8,11 @@ jobs:
     name: doc
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: "main"
+
       - name: Prepare delivery
         uses: ./.github/actions/prepare_delivery
 
@@ -19,6 +24,11 @@ jobs:
     name: npm
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: "main"
+
       - name: Prepare delivery
         uses: ./.github/actions/prepare_delivery
 
@@ -32,6 +42,11 @@ jobs:
     name: cdn
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: "main"
+
       - name: Prepare delivery
         uses: ./.github/actions/prepare_delivery
 
