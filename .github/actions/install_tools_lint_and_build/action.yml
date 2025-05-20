@@ -6,7 +6,9 @@ runs:
       uses: ./.github/actions/install_tools
 
     - name: Lint
+      shell: bash
       run: yarn lint
 
     - name: Build
+      shell: bash
       run: yarn build
