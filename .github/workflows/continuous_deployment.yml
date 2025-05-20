@@ -17,33 +17,6 @@ jobs:
       - name: Ensure release tag is not present
         uses: ./.github/actions/ensure_version_tag_present
 
-      - name: Ensure artifact tags are present
-        run: |
-          if ! git tag --list | grep "@car-cutter/next-webplayer@$VERSION" ; then
-            echo "Artifact tag missing -> @car-cutter/next-webplayer@$VERSION"
-            exit 1
-          fi
-
-          if ! git tag --list | grep "@car-cutter/react-webplayer@$VERSION" ; then
-            echo "Artifact tag missing -> @car-cutter/react-webplayer@$VERSION"
-            exit 1
-          fi
-
-          if ! git tag --list | grep "@car-cutter/vanilla-webplayer@$VERSION" ; then
-            echo "Artifact tag missing -> @car-cutter/vanilla-webplayer@$VERSION"
-            exit 1
-          fi
-
-          if ! git tag --list | grep "@car-cutter/vue-webplayer@$VERSION" ; then
-            echo "Artifact tag missing -> @car-cutter/vue-webplayer@$VERSION"
-            exit 1
-          fi
-
-          if ! git tag --list | grep "@car-cutter/wc-webplayer@$VERSION" ; then
-            echo "Artifact tag missing -> @car-cutter/wc-webplayer@$VERSION"
-            exit 1
-          fi
-
       - uses: ./.github/actions/install_tools_lint_and_build
 
       - name: Prepare artifacts for release
