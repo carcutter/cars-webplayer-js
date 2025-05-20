@@ -3,7 +3,7 @@ declare module "pannellum-react/es/elements/Pannellum" {
 
   export interface PannellumProps {
     children?: ReactNode;
-    id?: string;
+    id?: string | HTMLDivElement | null;
     width?: string;
     height?: string;
     image?: string;

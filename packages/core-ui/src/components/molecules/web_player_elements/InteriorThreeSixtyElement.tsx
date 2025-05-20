@@ -86,7 +86,8 @@ const InteriorThreeSixtyElementInteractive: React.FC<
     useControlsContext();
   const [progress, isLoading] = useLoadingProgress(src);
   const pannellumRef = useRef<PannellumType>(null);
-  const pannellumContainerRef = useRef<HTMLDivElement>(null);
+
+  const pannellumContainerRef = useRef<HTMLDivElement | null>(null);
 
   const [isPannellumLoaded, setIsPannellumLoaded] = useState(false);
 
@@ -100,7 +101,6 @@ const InteriorThreeSixtyElementInteractive: React.FC<
   }, [itemIndex, setItemInteraction, onLoaded]);
 
   const onMouse = useCallback((e: Event) => {
-    // Ignore event if the user is not using the main button
     if (e instanceof MouseEvent && e.button !== 0) {
       return;
     }
@@ -111,7 +111,6 @@ const InteriorThreeSixtyElementInteractive: React.FC<
   }, []);
 
   const loadScene = useCallback(() => {
-    // Load the scene
     const viewer = pannellumRef.current?.getViewer();
     if (viewer) {
       viewer.loadScene();
@@ -119,11 +118,11 @@ const InteriorThreeSixtyElementInteractive: React.FC<
   }, []);
 
   useEffect(() => {
-    if (pannellumRef.current && isPannellumLoaded) {
+    if (pannellumRef.current && isPannellumLoaded && pannellumContainerRef.current) {
       const viewer = pannellumRef.current.getViewer();
+      const container = pannellumContainerRef.current;
+      
       if (viewer) {
-        const currentPannellumContainer = pannellumContainerRef.current;
-
         const handleWheel = (event: WheelEvent) => {
           event.preventDefault();
           const zoom = convertPannellumHfovToBidirectionalSteppedScale(
@@ -160,16 +159,8 @@ const InteriorThreeSixtyElementInteractive: React.FC<
           setZoom(zoom);
         };
 
-        if (currentPannellumContainer !== null) {
-          currentPannellumContainer.addEventListener(
-            "wheel",
-            handleWheelDebounced
-          );
-          currentPannellumContainer.addEventListener(
-            "dblclick",
-            handleDblClick
-          );
-        }
+        container.addEventListener("wheel", handleWheelDebounced);
+        container.addEventListener("dblclick", handleDblClick);
 
         const zoomFactor = Math.abs(1 - Math.abs(zoom));
         const maxHfovReduction = MAX_HFOV - MIN_HFOV;
@@ -177,13 +168,8 @@ const InteriorThreeSixtyElementInteractive: React.FC<
         viewer.setHfov(newHfov);
 
         return () => {
-          if (currentPannellumContainer) {
-            currentPannellumContainer.removeEventListener("wheel", handleWheel);
-            currentPannellumContainer.removeEventListener(
-              "dblclick",
-              handleDblClick
-            );
-          }
+          container.removeEventListener("wheel", handleWheel);
+          container.removeEventListener("dblclick", handleDblClick);
         };
       }
     }
@@ -193,56 +179,59 @@ const InteriorThreeSixtyElementInteractive: React.FC<
     <>
       <div className={cn("relative size-full overflow-hidden bg-transparent")}>
         <div
-          // Scale effect on show details
           className={cn(
             "size-full duration-details",
             isShowingDetails ? "scale-105" : "scale-100"
           )}
         >
-          <style>
-            {`
-            .pnlm-load-button {
-              display: none !important;
-            }
-            .pnlm-load-box {
-              display: none !important;
-            }
-            .pnlm-container {
-              background-image: none !important;
-            }
-          `}
-          </style>
-          <div className="relative size-full" ref={pannellumContainerRef}>
-            <Pannellum
-              ref={pannellumRef}
-              panorama={src}
-              preview={poster}
-              width="100%"
-              height="100%"
-              image={src}
-              pitch={PITCH}
-              yaw={YAW}
-              hfov={HFOV}
-              maxHfov={MAX_HFOV}
-              minHfov={MIN_HFOV}
-              compass={false}
-              showControls={false}
-              onLoad={onLoad}
-              onError={onError}
-              onMousedown={onMouse}
-              onTouchstart={onMouse}
-              onTouchend={onMouse}
-              onMouseup={onMouse}
-              autoLoad={false}
-            />
-            <InteriorThreeSixtyElementLoadControls
-              isPannellumLoaded={isPannellumLoaded}
-              isLoading={isLoading}
-              progress={progress}
-              autoloadInterior360={autoLoadInterior360}
-              loadScene={loadScene}
-            />
+          <div ref={pannellumContainerRef}>
+            <style>
+              {`
+                .pnlm-load-button {
+                  display: none !important;
+                }
+                .pnlm-load-box {
+                  display: none !important;
+                }
+                .pnlm-container {
+                  background-image: none !important;
+                }
+              `}
+            </style>
+            {pannellumContainerRef.current && (
+              <Pannellum
+                ref={pannellumRef}
+                id={pannellumContainerRef.current}
+                panorama={src}
+                preview={poster}
+                width="0"
+                height="0"
+                image={src}
+                pitch={PITCH}
+                yaw={YAW}
+                hfov={HFOV}
+                maxHfov={MAX_HFOV}
+                minHfov={MIN_HFOV}
+                compass={false}
+                showControls={false}
+                keyboardZoom={false}
+                onLoad={onLoad}
+                onError={onError}
+                onMousedown={onMouse}
+                onTouchstart={onMouse}
+                onTouchend={onMouse}
+                onMouseup={onMouse}
+                autoLoad={false}
+              />
+            )}
           </div>
+          <InteriorThreeSixtyElementLoadControls
+            isPannellumLoaded={isPannellumLoaded}
+            isLoading={isLoading}
+            progress={progress}
+            autoloadInterior360={autoLoadInterior360}
+            loadScene={loadScene}
+          />
         </div>
       </div>
     </>
