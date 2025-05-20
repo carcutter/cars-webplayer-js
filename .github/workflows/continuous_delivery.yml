@@ -19,6 +19,12 @@ jobs:
 
       - name: Publish documentation
         shell: bash
+        env:
+          GIT_PASS: ${{ secrets.GIT_PAT }}
+          GIT_USER: "car-cutter"
+          GIT_USER_NAME: "CarCutter"
+          GIT_USER_EMAIL: "it@car-cutter.com"
+          CURRENT_BRANCH: "main"
         run: yarn publish:docs
 
   npm:
@@ -36,9 +42,9 @@ jobs:
 
       - name: Publish to npm
         shell: bash
-        run: yarn publish:packages
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+        run: yarn publish:packages
 
   cdn:
     name: cdn
