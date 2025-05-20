@@ -3,6 +3,7 @@ runs:
   using: composite
   steps:
     - name: Prepare artifacts for release
+      shell: bash
       run: |
         mkdir -p artifacts
         cp "packages/webplayer-script/dist/bundle-$VERSION.js" "artifacts/bundle-$VERSION.js"
