@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Ensure release tag is not present
-        uses: ./.github/actions/ensure_version_tag_is_not_present
+        uses: ./.github/actions/ensure_release_tag_is_not_present
 
       - uses: ./.github/actions/install_tools_lint_and_build
 
