@@ -26,6 +26,7 @@ jobs:
       - name: Create release on GitHub
         uses: ncipollo/release-action@v1
         with:
+          token: ${{ secrets.RELEASE_TOKEN }}
           tag: ${{ env.RELEASE_TAG }}
           name: "WebPlayer ${{ env.VERSION }}"
           commit: "main"
