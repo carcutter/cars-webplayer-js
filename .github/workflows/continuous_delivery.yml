@@ -12,6 +12,7 @@ jobs:
         uses: ./.github/actions/prepare_delivery
 
       - name: Publish documentation
+        shell: bash
         run: yarn publish:docs
 
   npm:
@@ -22,6 +23,7 @@ jobs:
         uses: ./.github/actions/prepare_delivery
 
       - name: Publish to npm
+        shell: bash
         run: yarn publish:packages
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
