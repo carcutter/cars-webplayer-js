@@ -12,6 +12,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: "main"
+          fetch-tags: true
 
       - name: Prepare delivery
         uses: ./.github/actions/prepare_delivery
@@ -28,6 +29,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: "main"
+          fetch-tags: true
 
       - name: Prepare delivery
         uses: ./.github/actions/prepare_delivery
@@ -46,6 +48,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: "main"
+          fetch-tags: true
 
       - name: Prepare delivery
         uses: ./.github/actions/prepare_delivery
