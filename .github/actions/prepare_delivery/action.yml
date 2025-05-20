@@ -8,7 +8,7 @@ runs:
         ref: "main"
 
     - name: Ensure release tag is present
-      uses: ./.github/actions/ensure_release_is_tag_present
+      uses: ./.github/actions/ensure_release_tag_is_present
 
     - name: Install tools, lint and build
       uses: ./.github/actions/install_tools_lint_and_build
