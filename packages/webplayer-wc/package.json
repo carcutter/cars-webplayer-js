@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/wc-webplayer",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "license": "Apache-2.0",
   "author": {
     "name": "CarCutter",
@@ -30,10 +30,10 @@
     "analyze": "vite-bundle-visualizer"
   },
   "devDependencies": {
-    "@car-cutter/core": "0.12.0",
-    "@car-cutter/core-ui": "0.12.0",
-    "@car-cutter/core-wc": "0.12.0",
-    "@car-cutter/core-wc-react-18": "0.12.0",
+    "@car-cutter/core": "0.13.0",
+    "@car-cutter/core-ui": "0.13.0",
+    "@car-cutter/core-wc": "0.13.0",
+    "@car-cutter/core-wc-react-18": "0.13.0",
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
     "@preact/preset-vite": "^2.9.1",
