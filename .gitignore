@@ -14,3 +14,9 @@ node_modules
 
 yarn-debug.log*
 yarn-error.log*
+
+# Secrets
+.secrets
+
+# GitHub actions
+!.github/**

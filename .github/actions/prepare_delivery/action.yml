@@ -1,0 +1,14 @@
+name: Prepare Delivery
+runs:
+  using: composite
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        ref: "main"
+
+    - name: Ensure release tag is present
+      uses: ./.github/actions/ensure_release_is_tag_present
+
+    - name: Install tools, lint and build
+      uses: ./.github/actions/install_tools_lint_and_build

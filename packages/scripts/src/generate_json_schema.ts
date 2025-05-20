@@ -14,7 +14,7 @@ const settings: TJS.PartialArgs = {
 };
 const jsonSchema = TJS.generateSchema(program, "Composition", settings);
 
-const savePath = "../../schemas/composition.schema.json";
+const savePath = "../../schemata/composition.schema.json";
 
 saveJsonToFile(savePath, jsonSchema);
 

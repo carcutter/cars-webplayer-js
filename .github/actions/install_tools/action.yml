@@ -1,0 +1,9 @@
+name: Install Tools
+runs:
+  using: composite
+  steps:
+    # https://github.com/marketplace/actions/setup-yarn
+    - name: Install Node.js and Yarn
+      uses: mskelton/setup-yarn@v3
+      with:
+        node-version: "20"

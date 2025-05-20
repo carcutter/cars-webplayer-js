@@ -17,13 +17,20 @@
     "**/apps/showroom/**/*.css": "tailwindcss"
   },
   "cSpell.words": [
+    "carcutter",
+    "commitlint",
+    "dryrun",
     "hfov",
     "hotspot",
     "hotspots",
+    "jakejarvis",
     "lerp",
+    "mskelton",
+    "ncipollo",
     "pannellum",
     "pnlm",
     "rior",
+    "wagoid",
     "webplayer",
     "XYmap",
     "zoomable"
