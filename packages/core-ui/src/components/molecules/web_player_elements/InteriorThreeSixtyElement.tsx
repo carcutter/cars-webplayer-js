@@ -118,7 +118,11 @@ const InteriorThreeSixtyElementInteractive: React.FC<
   }, []);
 
   useEffect(() => {
-    if (pannellumRef.current && isPannellumLoaded && pannellumContainerRef.current) {
+    if (
+      pannellumRef.current &&
+      isPannellumLoaded &&
+      pannellumContainerRef.current
+    ) {
       const viewer = pannellumRef.current.getViewer();
       const container = pannellumContainerRef.current;
       
@@ -195,6 +199,17 @@ const InteriorThreeSixtyElementInteractive: React.FC<
                 }
                 .pnlm-container {
                   background-image: none !important;
+                }
+                .pnlm-about-msg {
+                  width: 0;
+                  height: 0;
+                  padding: 0;
+                  visibility: hidden;
+                }
+
+                .pnlm-about-msg a {
+                  display: none;
+                  visibility: hidden;
                 }
               `}
             </style>
