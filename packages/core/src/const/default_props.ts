@@ -15,6 +15,7 @@ export const DEFAULT_MAX_MEDIA_WIDTH = Infinity satisfies MediaWidth;
 export const DEFAULT_PRELOAD_RANGE = 1 satisfies number;
 export const DEFAULT_AUTO_LOAD_360 = false satisfies boolean;
 export const DEFAULT_AUTO_LOAD_INTERIOR_360 = false satisfies boolean;
+export const DEFAULT_MAX_ITEMS_SHOWN = 1 satisfies number;
 
 export const DEFAULT_CATEGORY_FILTER = "*" satisfies string;
 export const DEFAULT_EXTEND_BEHAVIOR = "full_screen" satisfies ExtendBehavior;

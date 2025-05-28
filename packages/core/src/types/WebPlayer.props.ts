@@ -7,6 +7,7 @@ export type WebPlayerProps = {
   hideCategoriesNav?: boolean;
   infiniteCarrousel?: boolean;
   permanentGallery?: boolean;
+  maxItemsShown?: number;
 
   // Medias loading
   mediaLoadStrategy?: MediaLoadStrategy;

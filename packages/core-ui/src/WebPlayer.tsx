@@ -12,6 +12,7 @@ import {
   DEFAULT_HIDE_CATEGORIES_NAV,
   DEFAULT_INFINITE_CARROUSEL,
   DEFAULT_PERMANENT_GALLERY,
+  DEFAULT_MAX_ITEMS_SHOWN,
   DEFAULT_MEDIA_LOAD_STRATEGY,
   DEFAULT_MIN_MEDIA_WIDTH,
   DEFAULT_MAX_MEDIA_WIDTH,
@@ -36,6 +37,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   hideCategoriesNav = DEFAULT_HIDE_CATEGORIES_NAV,
   infiniteCarrousel = DEFAULT_INFINITE_CARROUSEL,
   permanentGallery = DEFAULT_PERMANENT_GALLERY,
+  maxItemsShown = DEFAULT_MAX_ITEMS_SHOWN,
 
   mediaLoadStrategy = DEFAULT_MEDIA_LOAD_STRATEGY,
   minMediaWidth = DEFAULT_MIN_MEDIA_WIDTH,
@@ -156,6 +158,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
         hideCategoriesNav,
         infiniteCarrousel,
         permanentGallery,
+        maxItemsShown,
         mediaLoadStrategy,
         minMediaWidth,
         maxMediaWidth,

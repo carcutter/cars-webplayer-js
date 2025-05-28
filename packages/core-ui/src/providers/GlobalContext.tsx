@@ -9,6 +9,7 @@ type ProviderProps = Required<
     | "hideCategoriesNav"
     | "infiniteCarrousel"
     | "permanentGallery"
+    | "maxItemsShown"
     | "mediaLoadStrategy"
     | "minMediaWidth"
     | "maxMediaWidth"
