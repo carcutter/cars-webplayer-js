@@ -1,8 +1,6 @@
 const config = {
   parserPreset: "conventional-changelog-conventionalcommits",
-  ignores: [
-    (commit) => commit.includes("(#")
-  ],
+  ignores: [commit => commit.includes("(#")],
   rules: {
     "body-leading-blank": [1, "always"],
     "body-max-line-length": [2, "always", 100],
@@ -11,7 +9,7 @@ const config = {
     "header-max-length": [2, "always", 100],
     "subject-case": [2, "always", ["sentence-case"]],
     "subject-empty": [2, "never"],
-    "subject-full-stop": [2, "always", "."],
+    "subject-full-stop": [0, "never", "."],
     "type-case": [2, "always", "lower-case"],
     "type-empty": [2, "never"],
     "type-enum": [
