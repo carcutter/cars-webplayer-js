@@ -12,6 +12,7 @@ on:
 
 jobs:
   lint:
+    if: github.event.pull_request.draft == false
     name: Lint
     runs-on: ubuntu-latest
     steps:
@@ -23,6 +24,7 @@ jobs:
         run: yarn lint
 
   build:
+    if: github.event.pull_request.draft == false
     name: Build
     runs-on: ubuntu-latest
     steps:
@@ -34,6 +36,7 @@ jobs:
         run: yarn build
 
   # test:
+  #   if: github.event.pull_request.draft == false
   #   name: Test
   #   runs-on: ubuntu-latest
   #   steps:
