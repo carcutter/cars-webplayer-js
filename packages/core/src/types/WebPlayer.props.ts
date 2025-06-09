@@ -3,11 +3,14 @@ import type { ExtendBehavior, MediaLoadStrategy, MediaWidth } from "./misc";
 export type WebPlayerProps = {
   compositionUrl: string;
 
+  // Integration mode
+  integration?: boolean;
+  maxItemsShown?: number;
+
   // Layout
   hideCategoriesNav?: boolean;
   infiniteCarrousel?: boolean;
   permanentGallery?: boolean;
-  maxItemsShown?: number;
 
   // Medias loading
   mediaLoadStrategy?: MediaLoadStrategy;

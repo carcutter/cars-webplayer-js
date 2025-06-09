@@ -125,7 +125,7 @@ const InteriorThreeSixtyElementInteractive: React.FC<
     ) {
       const viewer = pannellumRef.current.getViewer();
       const container = pannellumContainerRef.current;
-      
+
       if (viewer) {
         const handleWheel = (event: WheelEvent) => {
           event.preventDefault();
@@ -181,7 +181,11 @@ const InteriorThreeSixtyElementInteractive: React.FC<
 
   return (
     <>
-      <div className={cn("relative size-full overflow-hidden bg-transparent")}>
+      <div
+        className={cn(
+          "relative aspect-[4/3] w-full overflow-hidden bg-transparent"
+        )}
+      >
         <div
           className={cn(
             "size-full duration-details",

@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useMemo } from "react";
 
 import { RESIZE_TRANSITION_DURATION } from "../../const/browser";
+import { useIntegration } from "../../hooks/useIntegration";
 import { useCompositionContext } from "../../providers/CompositionContext";
 import { useControlsContext } from "../../providers/ControlsContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
@@ -18,7 +19,13 @@ type Props = {
  * ThreeSixtyElement component renders the carrousel of items.
  */
 const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
-  const { infiniteCarrousel, preloadRange, isFullScreen } = useGlobalContext();
+  const {
+    infiniteCarrousel,
+    preloadRange,
+    isFullScreen,
+    maxItemsShown,
+    integration,
+  } = useGlobalContext();
   const { aspectRatioStyle } = useCompositionContext();
 
   const {
@@ -37,6 +44,9 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     extendMode,
     extendTransition,
   } = useControlsContext();
+
+  // Memoized effective max items shown calculation
+  const { effectiveMaxItemsShown } = useIntegration();
 
   // -- Refs -- //
   // - element refs
@@ -68,25 +78,55 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     const children = Array.from(slider.children) as HTMLElement[];
 
     const currentScroll = slider.scrollLeft;
+    // const containerWidth = slider.clientWidth;
+    // const itemWidth = containerWidth / maxItemsShown;
 
-    const closestIndex = children.reduce(
-      (currentClosestIndex, child, childIndex) => {
-        const childScroll = child.offsetLeft;
+    // For multiple items shown, find the leftmost visible item
+    let closestIndex = 0;
+    let minDistance = Infinity;
 
-        if (
-          Math.abs(childScroll - currentScroll) <
-          Math.abs(children[currentClosestIndex].offsetLeft - currentScroll)
-        ) {
-          return childIndex;
-        }
+    children.forEach((child, childIndex) => {
+      const childScroll = child.offsetLeft;
+      const distance = Math.abs(childScroll - currentScroll);
 
-        return currentClosestIndex;
-      },
-      0
-    );
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestIndex = childIndex;
+      }
+    });
+
+    // Ensure we don't go beyond the valid range when showing multiple items
+    if (effectiveMaxItemsShown > 1) {
+      const visibleItemsCount = Math.ceil(effectiveMaxItemsShown);
+      // Account for the extra empty slide when maxItemsShown has fractional part and infinite carousel is disabled
+      const totalSlides =
+        items.length +
+        (integration && !infiniteCarrousel && effectiveMaxItemsShown % 1 !== 0
+          ? 1
+          : 0);
+      const maxValidIndex = Math.max(0, totalSlides - visibleItemsCount);
+      closestIndex = Math.min(closestIndex, maxValidIndex);
+
+      // In integration mode, when we're at the end position that shows the empty slide,
+      // ensure carrouselItemIndex points to the last actual content item for proper display
+      if (
+        integration &&
+        !infiniteCarrousel &&
+        effectiveMaxItemsShown % 1 !== 0
+      ) {
+        const maxContentIndex = items.length - 1;
+        closestIndex = Math.min(closestIndex, maxContentIndex);
+      }
+    }
 
     return closestIndex;
-  }, [getSliderOrThrow]);
+  }, [
+    getSliderOrThrow,
+    effectiveMaxItemsShown,
+    items.length,
+    infiniteCarrousel,
+    integration,
+  ]);
 
   const setStyleCursor = useCallback(
     (cursor: "auto" | "grab" | "grabbing") => {
@@ -121,7 +161,27 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
       const children = Array.from(slider.children) as HTMLElement[];
 
       const startScroll = slider.scrollLeft;
-      const targetScroll = children[index].offsetLeft;
+
+      // Calculate target scroll position considering maxItemsShown
+      let targetScroll = children[index].offsetLeft;
+
+      // For the last few items, adjust scroll to ensure they're fully visible
+      const containerWidth = slider.clientWidth;
+      const maxScroll = slider.scrollWidth - containerWidth;
+
+      // If we're near the end and showing multiple items, limit the scroll
+      if (effectiveMaxItemsShown > 1) {
+        const visibleItemsCount = Math.ceil(effectiveMaxItemsShown);
+        // Account for the extra empty slide when maxItemsShown has fractional part and infinite carousel is disabled
+        const totalSlides =
+          items.length +
+          (integration && !infiniteCarrousel && effectiveMaxItemsShown % 1 !== 0
+            ? 1
+            : 0);
+        if (index >= totalSlides - visibleItemsCount) {
+          targetScroll = Math.min(targetScroll, maxScroll);
+        }
+      }
 
       const setScrollInstant = (scroll: number) => {
         slider.scrollTo({
@@ -178,7 +238,15 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
 
       animate();
     },
-    [cancelScrollAnimation, getSliderOrThrow, setStyleSnapState]
+    [
+      cancelScrollAnimation,
+      getSliderOrThrow,
+      setStyleSnapState,
+      effectiveMaxItemsShown,
+      items.length,
+      infiniteCarrousel,
+      integration,
+    ]
   );
 
   // - Listen to resizing to avoid layer shift
@@ -301,7 +369,19 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
           throw new Error("[onMouseMove] scrollLeft is null");
         }
 
-        slider.scrollLeft = startScrollLeft.current - walk;
+        let scrollLeft = startScrollLeft.current - walk;
+
+        // Block dragging to the right when there are no more slides
+        if (!infiniteCarrousel) {
+          const maxScroll = slider.scrollWidth - slider.clientWidth;
+
+          // If we're trying to drag beyond the right edge (past the last slide)
+          if (scrollLeft > maxScroll) {
+            scrollLeft = maxScroll;
+          }
+        }
+
+        slider.scrollLeft = scrollLeft;
       });
     };
 
@@ -338,6 +418,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
   }, [
     cancelScrollAnimation,
     computeClosestIndex,
+    infiniteCarrousel,
     isRunningSpecialCommand,
     scrollToIndex,
     setStyleCursor,
@@ -387,6 +468,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     extendTransition,
     isResizing,
     itemIndexCommand,
+    maxItemsShown,
     setCarrouselItemIndex,
     setItemIndexCommand,
   ]);
@@ -406,10 +488,22 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     };
 
     switch (specialCommand) {
-      case "first_to_last":
-        // Move to the last item instantly
-        scrollToIndex(items.length - 1, "instant", cb);
+      case "first_to_last": {
+        // Move to the last valid position considering maxItemsShown
+        const visibleItemsCount = Math.ceil(effectiveMaxItemsShown);
+        // Account for the extra empty slide when maxItemsShown has fractional part and infinite carousel is disabled
+        const totalSlides =
+          items.length +
+          (integration && !infiniteCarrousel && effectiveMaxItemsShown % 1 !== 0
+            ? 1
+            : 0);
+        const lastValidIndex =
+          effectiveMaxItemsShown > 1
+            ? Math.max(0, totalSlides - visibleItemsCount)
+            : items.length - 1;
+        scrollToIndex(lastValidIndex, "instant", cb);
         break;
+      }
       case "last_to_first":
         // Move to the first item instantly
         scrollToIndex(0, "instant", cb);
@@ -428,7 +522,27 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     items.length,
     scrollToIndex,
     setItemIndexCommand,
+    effectiveMaxItemsShown,
+    infiniteCarrousel,
+    integration,
   ]);
+
+  const containerStyles = useMemo(() => {
+    if (!integration || isFullScreen) {
+      return aspectRatioStyle;
+    }
+    return { aspectRatio: "auto" };
+  }, [integration, isFullScreen, aspectRatioStyle]);
+
+  const carouselItemStyles = useMemo(
+    () => ({
+      ...aspectRatioStyle,
+      minWidth: `${100 / effectiveMaxItemsShown}%`,
+      width: `${100 / effectiveMaxItemsShown}%`,
+      flexShrink: 0,
+    }),
+    [aspectRatioStyle, effectiveMaxItemsShown]
+  );
 
   return (
     <div
@@ -436,7 +550,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
         "relative overflow-hidden rounded-carrousel transition-radius",
         className
       )}
-      style={aspectRatioStyle}
+      style={containerStyles}
     >
       <div
         ref={sliderRef}
@@ -448,32 +562,45 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
           const isLast = index === items.length - 1;
 
           const transformStyle: React.CSSProperties | undefined = (() => {
+            const visibleItemsCount = Math.ceil(effectiveMaxItemsShown);
             if (specialCommand === "first_to_last" && isFirst) {
               return {
-                transform: `translateX(${100 * items.length}%)`,
+                transform: `translateX(${(100 * items.length) / visibleItemsCount}%)`,
               };
             } else if (specialCommand === "last_to_first" && isLast) {
               return {
-                transform: `translateX(-${100 * items.length}%)`,
+                transform: `translateX(-${(100 * items.length) / visibleItemsCount}%)`,
               };
             }
           })();
 
           // - "inDisplayRange" avoids loading medias that are too far from the current one
+          const visibleItemsCount = Math.ceil(effectiveMaxItemsShown); // Number of items that are visible (including partial)
+          const expandedPreloadRange = Math.max(
+            preloadRange,
+            visibleItemsCount
+          );
+
           let inDisplayRange =
-            Math.abs(index - carrouselItemIndex) <= preloadRange; // Consider medias in the preload range
+            Math.abs(index - carrouselItemIndex) <= expandedPreloadRange; // Consider medias in the expanded preload range
           inDisplayRange ||= index === itemIndexCommand; // Consider the target media
+
+          // Also consider items currently visible in the viewport
+          inDisplayRange ||=
+            index >= carrouselItemIndex &&
+            index < carrouselItemIndex + visibleItemsCount;
 
           if (infiniteCarrousel) {
             // If we are at the start, consider medias at the end
             inDisplayRange ||=
-              carrouselItemIndex < preloadRange &&
-              items.length - index <= preloadRange - carrouselItemIndex;
+              carrouselItemIndex < expandedPreloadRange &&
+              items.length - index <= expandedPreloadRange - carrouselItemIndex;
 
             // If we are at the end, consider medias at the start
             inDisplayRange ||=
-              carrouselItemIndex >= items.length - preloadRange &&
-              index <= preloadRange - (items.length - carrouselItemIndex);
+              carrouselItemIndex >= items.length - expandedPreloadRange &&
+              index <=
+                expandedPreloadRange - (items.length - carrouselItemIndex);
           }
 
           const key = (() => {
@@ -508,7 +635,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
                 "h-full bg-foreground/35",
                 carrouselItemIndex === index && "z-1" // Give high-ground to the shown item (to avoid 1px vertical line)
               )}
-              style={{ ...aspectRatioStyle, ...transformStyle }}
+              style={{ ...carouselItemStyles, ...transformStyle }}
             >
               {inDisplayRange && (
                 <WebPlayerElement index={index} item={item} isShown={isShown} />
@@ -516,6 +643,17 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
             </div>
           );
         })}
+        {/* Empty transparent slide at the end to compensate for partial slides */}
+        {integration &&
+          !infiniteCarrousel &&
+          !isFullScreen &&
+          maxItemsShown % 1 !== 0 && (
+            <div
+              key="empty-slide"
+              className="h-full"
+              style={carouselItemStyles}
+            />
+          )}
       </div>
 
       <WebPlayerOverlay />

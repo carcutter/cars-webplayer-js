@@ -6,9 +6,9 @@ import { useControlsContext } from "../../providers/ControlsContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
 import { cn, positionToClassName } from "../../utils/style";
 import { isSelfEvent } from "../../utils/web";
-import CdnImage from "../atoms/CdnImage";
 import CloseButton from "../atoms/CloseButton";
 import CustomizableIcon from "../atoms/CustomizableIcon";
+import DetailsOverlay from "../atoms/DetailsOverlay";
 import IndexIndicator from "../atoms/IndexIndicator";
 import ArrowRightIcon from "../icons/ArrowRightIcon";
 import ExtendIcon from "../icons/ExtendIcon";
@@ -31,12 +31,16 @@ import CategorySelect from "./CategorySelect";
  * - Gallery
  * - Details overlay when an hotspot with image is clicked
  */
+
 const WebPlayerOverlay: React.FC = () => {
   const {
     hideCategoriesNav,
     infiniteCarrousel,
     permanentGallery,
     extendBehavior,
+    maxItemsShown,
+    isFullScreen,
+    integration,
   } = useGlobalContext();
 
   const {
@@ -57,7 +61,7 @@ const WebPlayerOverlay: React.FC = () => {
     showGalleryControls,
 
     enableHotspotsControl,
-    showHotspots,
+    currentItemHotspotsVisible,
     toggleHotspots,
     showGallery,
     toggleGallery,
@@ -96,6 +100,34 @@ const WebPlayerOverlay: React.FC = () => {
 
   const sharedClassName = "absolute z-overlay";
 
+  // Handle index count when integration is enabled
+  const getIntegrationIndicatorNumbers = () => {
+    // For single item view, just return the current index
+    if (maxItemsShown === 1) return carrouselItemIndex;
+
+    // Calculate visible complete items
+    const visibleCompleteItems = Math.floor(maxItemsShown);
+
+    // Adjust index based on visible items (subtract 1 because first item is already counted in carrouselItemIndex)
+    const indexOffset = visibleCompleteItems - 1;
+
+    return carrouselItemIndex + indexOffset;
+  };
+
+  // Calculate master index when integration is enabled
+  const getMasterIndex = () => {
+    // Return regular index when integration is disabled
+    if (!integration) return masterItemIndex;
+
+    // Calculate visible complete items
+    const visibleCompleteItems = Math.floor(maxItemsShown);
+
+    // Apply the same offset calculation for consistency
+    const indexOffset = visibleCompleteItems - 1;
+
+    return masterItemIndex + indexOffset;
+  };
+
   return (
     <>
       {/* CategorySelect (on top) */}
@@ -113,7 +145,10 @@ const WebPlayerOverlay: React.FC = () => {
       {slidable && !isZooming && (
         <div className={cn(sharedClassName, positionToClassName("top-right"))}>
           <IndexIndicator
-            currentIndex={carrouselItemIndex}
+            currentIndex={(() => {
+              if (!integration || isFullScreen) return carrouselItemIndex;
+              return getIntegrationIndicatorNumbers();
+            })()}
             maxIndex={itemListLength - 1}
           />
         </div>
@@ -147,7 +182,7 @@ const WebPlayerOverlay: React.FC = () => {
             )}
             onClick={nextItem}
             disabled={
-              !infiniteCarrousel && masterItemIndex >= itemListLength - 1
+              !infiniteCarrousel && getMasterIndex() >= itemListLength - 1
             }
           >
             <CustomizableIcon customizationKey="CONTROLS_NEXT">
@@ -205,14 +240,14 @@ const WebPlayerOverlay: React.FC = () => {
                 "transition-opacity",
                 !isZooming ? "opacity-100" : "!pointer-events-none opacity-0"
               )}
-              enabled={showHotspots}
+              enabled={currentItemHotspotsVisible}
               onToggle={toggleHotspots}
             >
               <HotspotsIcon className="size-full" />
             </Switch>
           )}
           {/* Zoom buttons */}
-          {showZoomControls && (
+          {showZoomControls && (!integration || isFullScreen) && (
             <div className="max-small:hidden">
               <Button
                 className="rounded-b-none"
@@ -253,65 +288,27 @@ const WebPlayerOverlay: React.FC = () => {
           )}
         </div>
       </div>
-
-      {/* Details overlay */}
-      <div
-        className={cn(
-          sharedClassName,
-          "inset-0 flex justify-end overflow-hidden bg-foreground/60 transition-opacity duration-details",
-          isShowingDetails ? "opacity-100" : "pointer-events-none opacity-0"
-        )}
-        onClick={handleDetailsOverlayClick}
+      {/* Details Overlay */}
+      <DetailsOverlay
+        isVisible={isShowingDetails}
+        className={sharedClassName}
+        url={shownDetails?.src}
+        title={shownDetails?.title}
+        description={shownDetails?.text}
+        clickHandler={handleDetailsOverlayClick}
+        extendMode={extendMode}
+        maxItemsShown={maxItemsShown}
+        aspectRatioStyle={aspectRatioStyle}
       >
-        <div
-          className={cn(
-            "h-full w-3/5 bg-background transition-transform duration-details",
-            isShowingDetails ? "translate-x-0" : "translate-x-full"
-          )}
-        >
-          {!!shownDetails && (
-            <>
-              <CdnImage
-                className="w-full bg-foreground/65"
-                style={aspectRatioStyle}
-                src={shownDetails.src}
-                imgInPlayerWidthRatio={0.6}
-              />
-
-              <div
-                className={cn(
-                  "space-y-1 px-2 py-1 small:p-3",
-                  extendMode && "large:p-4"
-                )}
-              >
-                {shownDetails.title && (
-                  <span
-                    className={cn(
-                      "text-sm font-semibold small:text-base small:font-bold",
-                      extendMode && "large:text-lg"
-                    )}
-                  >
-                    {shownDetails.title}
-                  </span>
-                )}
-                {shownDetails.text && (
-                  <p
-                    className={cn(
-                      "text-xs text-foreground/65 small:text-sm",
-                      extendMode && "large:text-base"
-                    )}
-                  >
-                    {shownDetails.text}
-                  </p>
-                )}
-              </div>
-            </>
-          )}
-        </div>
-      </div>
+        {/* Button that closes the overlay */}
+        <CloseButton
+          className="absolute right-2 top-2 z-10"
+          onClick={resetShownDetails}
+        />
+      </DetailsOverlay>
 
       {/* Close button */}
-      {(isZooming || isShowingDetails) && (
+      {isZooming && (
         <CloseButton
           className={cn(sharedClassName, positionToClassName("top-right"))}
           onClick={resetView}
