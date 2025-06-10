@@ -1,0 +1,24 @@
+name: Lint Commit Messages
+on:
+  pull_request:
+    types: [opened, reopened, edited, synchronize, ready_for_review]
+
+jobs:
+  lint:
+    if: github.event.pull_request.draft == false
+    name: Squash & Merge
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/install_tools
+
+      - name: Install commitlint and config
+        run: |
+          yarn add --dev -W @commitlint/cli @commitlint/config-conventional
+
+      - name: Lint Pull Request Title
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          echo "$TITLE" | yarn commitlint --verbose
