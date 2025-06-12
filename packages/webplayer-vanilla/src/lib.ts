@@ -16,55 +16,55 @@ import {
 export function appendWebPlayer(
   parentElement: HTMLElement,
   webPlayerProps: WebPlayerProps,
-  customisation?: {
+  customization?: {
     customMedias?: (WebPlayerCustomMediaProps & { element: HTMLElement })[];
     icons?: (WebPlayerIconProps & { element: HTMLElement })[];
   }
 ) {
   const setAttributes = (
-    elmt: HTMLElement,
+    element: HTMLElement,
     attributes: Record<string, string>
   ) => {
     Object.entries(attributes).forEach(([key, value]) =>
-      elmt.setAttribute(key, value)
+      element.setAttribute(key, value)
     );
   };
 
   ensureCustomElementsDefinition();
 
   // - Create WebPlayer
-  const webPlayerElmt = document.createElement(WEB_PLAYER_WC_TAG);
+  const webPlayerElement = document.createElement(WEB_PLAYER_WC_TAG);
   const webPlayerAttributes = webPlayerPropsToAttributes(webPlayerProps);
-  setAttributes(webPlayerElmt, webPlayerAttributes);
+  setAttributes(webPlayerElement, webPlayerAttributes);
 
-  // - Customisation
+  // - Customization
   // Custom medias
-  customisation?.customMedias?.forEach(customMedia => {
-    const customMediaElmt = document.createElement(
+  customization?.customMedias?.forEach(customMedia => {
+    const customMediaElement = document.createElement(
       WEB_PLAYER_CUSTOM_MEDIA_WC_TAG
     );
 
     const { element, ...props } = customMedia;
 
-    customMediaElmt.appendChild(element);
+    customMediaElement.appendChild(element);
 
     const mediaAttributes = webPlayerCustomMediaPropsToAttributes(props);
-    setAttributes(customMediaElmt, mediaAttributes);
-    webPlayerElmt.appendChild(customMediaElmt);
+    setAttributes(customMediaElement, mediaAttributes);
+    webPlayerElement.appendChild(customMediaElement);
   });
   // Custom icons
-  customisation?.icons?.forEach(icon => {
-    const iconElmt = document.createElement(WEB_PLAYER_ICON_WC_TAG);
+  customization?.icons?.forEach(icon => {
+    const iconElement = document.createElement(WEB_PLAYER_ICON_WC_TAG);
 
     const { element, ...props } = icon;
 
-    iconElmt.appendChild(element);
+    iconElement.appendChild(element);
 
     const iconAttributes = webPlayerIconPropsToAttributes(props);
-    setAttributes(iconElmt, iconAttributes);
-    webPlayerElmt.appendChild(iconElmt);
+    setAttributes(iconElement, iconAttributes);
+    webPlayerElement.appendChild(iconElement);
   });
 
   // - Append Element to Dom
-  parentElement.appendChild(webPlayerElmt);
+  parentElement.appendChild(webPlayerElement);
 }

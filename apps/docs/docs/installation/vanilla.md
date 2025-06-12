@@ -2,7 +2,7 @@
 sidebar_position: 5
 sidebar_label: Vanilla JS
 
-description: "Use the WebPlayer with Vanilla JavaScript/TypsScript"
+description: "Use the WebPlayer with Vanilla JavaScript/TypeScript"
 ---
 
 # WebPlayer with Vanilla JS/TS
@@ -76,4 +76,4 @@ appendWebPlayer(document.getElementById("webplayer-wrapper"), {
 
 ## Next steps
 
-For more customisation, take a look at available **props** in the **[Properties](../properties.mdx)** section
+For more customization, take a look at available **props** in the **[Properties](../properties.mdx)** section

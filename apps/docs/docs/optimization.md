@@ -2,7 +2,7 @@
 sidebar_position: 6
 ---
 
-# Optimisation
+# Optimization
 
 To ensure the WebPlayer loads quickly and efficiently, you can use several techniques to optimize the initial load and defer loading of additional media until later. This guide will walk you through the available options.
 
@@ -22,7 +22,7 @@ The `mediaLoadStrategy` prop allows you to control how medias are loaded. You ca
 
 ### Media Width Limits
 
-CarCutter provides several medias resolution to optimise the user experience by providing the right size for each media.
+CarCutter provides several medias resolution to optimize the user experience by providing the right size for each media.
 If you do not want your medias to go below/over a certain width, you can use the `minMediaWidth` and `maxMediaWidth` props.
 
 ```tsx
@@ -52,7 +52,7 @@ What you can do is to increase the value as soon as the user can interact with y
 
 You can defer loading higher quality media until the user interacts with the WebPlayer. For example, you can set a lower `maxMediaWidth` initially and increase it after user interaction.
 
-### Complete Optimisation Example
+### Complete Optimization Example
 
 ```tsx title="OptimizedWebPlayer.tsx"
 import { useState, useEffect } from "react";

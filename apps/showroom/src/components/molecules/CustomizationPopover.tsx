@@ -9,7 +9,7 @@ import { Input } from "../ui/Input";
 import { Label } from "../ui/Label";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/Popover";
 
-const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
+const CustomizationPopover: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const {
@@ -41,7 +41,7 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
     <Popover>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent
-        className="w-72 sm:w-80"
+        className="sm:w-80 w-72"
         side="right"
         sideOffset={16}
         align="start"
@@ -55,7 +55,7 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
             <div className="space-y-0.5">
               <h4 className="font-medium">Showroom</h4>
               <p className="text-sm text-foreground/75">
-                Customise the Showroom page.
+                Customize the Showroom page.
               </p>
             </div>
 
@@ -90,7 +90,7 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
             <div className="space-y-0.5">
               <h4 className="font-medium">WebPlayer</h4>
               <p className="text-sm text-foreground/75">
-                Customise the WebPlayer looks.
+                Customize the WebPlayer looks.
               </p>
             </div>
 
@@ -173,7 +173,7 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
                       color: "foreground",
                       size: "sm",
                     }),
-                    "w-full cursor-pointer border-border",
+                    "border-border w-full cursor-pointer",
                     isCustomColor && "border-foreground ring-1 ring-foreground"
                   )}
                 >
@@ -230,4 +230,4 @@ const CustomisationPopover: React.FC<React.PropsWithChildren> = ({
   );
 };
 
-export default CustomisationPopover;
+export default CustomizationPopover;

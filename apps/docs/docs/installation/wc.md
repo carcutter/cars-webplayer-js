@@ -70,4 +70,4 @@ defineCustomElements();
 
 ## Next steps
 
-For more customisation, take a look at available **props** in the **[Properties](../properties.mdx)** section
+For more customization, take a look at available **props** in the **[Properties](../properties.mdx)** section

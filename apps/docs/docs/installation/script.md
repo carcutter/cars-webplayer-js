@@ -51,4 +51,4 @@ description: "Use the WebPlayer without any package manager"
 
 ## Next steps
 
-For more customisation, take a look at available **attributes** in the **[Attributes](../properties.mdx)** section
+For more customization, take a look at available **props** in the **[Properties](../properties.mdx)** section
