@@ -269,7 +269,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, itemIndex }) => {
   }, [clearHideControlsTimeout, pause, restartHideControlsTimeout]);
 
   return (
-    <div ref={containerRef} className="relative size-full">
+    <div ref={containerRef} className="relative aspect-[4/3] w-full">
       <video
         ref={videoRef}
         className="size-full"

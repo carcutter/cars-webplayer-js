@@ -12,6 +12,8 @@ import {
   DEFAULT_HIDE_CATEGORIES_NAV,
   DEFAULT_INFINITE_CARROUSEL,
   DEFAULT_PERMANENT_GALLERY,
+  DEFAULT_INTEGRATION,
+  DEFAULT_MAX_ITEMS_SHOWN,
   DEFAULT_MEDIA_LOAD_STRATEGY,
   DEFAULT_MIN_MEDIA_WIDTH,
   DEFAULT_MAX_MEDIA_WIDTH,
@@ -27,11 +29,19 @@ import {
 } from "@car-cutter/core";
 
 import WebPlayerContainer from "./components/organisms/WebPlayerContainer";
+import {
+  integrationConfig,
+  validMaxItemsShownValues,
+} from "./const/integration";
 import CustomizationContextProvider from "./providers/CustomizationContext";
 import GlobalContextProvider from "./providers/GlobalContext";
+import { findClosestValidNumberInRange } from "./utils/math";
 
 const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   compositionUrl,
+
+  integration = DEFAULT_INTEGRATION,
+  maxItemsShown = DEFAULT_MAX_ITEMS_SHOWN,
 
   hideCategoriesNav = DEFAULT_HIDE_CATEGORIES_NAV,
   infiniteCarrousel = DEFAULT_INFINITE_CARROUSEL,
@@ -52,6 +62,12 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
 
   children: customizationChildren, // NOTE: use to customize the player, not to display the content
 }) => {
+  //maxItemsShown validation and substitution if not valid
+  maxItemsShown = findClosestValidNumberInRange(
+    maxItemsShown,
+    validMaxItemsShownValues
+  );
+
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [playerInViewportWidthRatio, setPlayerInViewportWidthRatio] =
     useState(0.5); // NOTE: Hardcoded for typing convenience, but will be updated in the useEffect
@@ -153,9 +169,11 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
     <GlobalContextProvider
       {...{
         compositionUrl,
+        integration,
         hideCategoriesNav,
         infiniteCarrousel,
         permanentGallery,
+        maxItemsShown,
         mediaLoadStrategy,
         minMediaWidth,
         maxMediaWidth,
@@ -173,6 +191,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
         isFullScreen,
         requestFullscreen,
         exitFullscreen,
+        ...(integration ? integrationConfig : {}),
       }}
     >
       <CustomizationContextProvider>

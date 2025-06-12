@@ -126,6 +126,8 @@ Run `yarn publish:docs`
 | `eventPrefix`         | `string`                           | `"cc-webplayer:"` | Prefix of cc-player events                                |
 | `demoSpin`            | `boolean`                          | `false`           | Run a spin once the 360 images has been loaded            |
 | `reverse360`          | `boolean`                          | `false`           | Reverse the 360-degree rotation                           |
+| `integration`         | `boolean`                          | `false`           | Allows to use maxItemsShown and disables permanentGallery with infiniteCarrousel, enables hideCategoriesNav              |
+| `maxItemsShown`       | `number`                           | `1`               | Maximum number of items to display in the gallery         |
 
 _NOTE: If you are using the WebComponent directly, you need to transform the props to HTML attributes
 (which are in dashed-case and take `string` as value type)_

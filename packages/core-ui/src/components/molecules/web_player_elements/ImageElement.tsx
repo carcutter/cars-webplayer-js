@@ -22,7 +22,7 @@ const ImageElement: React.FC<Props> = ({
   onLoad,
   ...props
 }) => {
-  const { isShowingDetails, showHotspots, setItemInteraction } =
+  const { isShowingDetails, currentItemHotspotsVisible, setItemInteraction } =
     useControlsContext();
 
   return (
@@ -45,7 +45,7 @@ const ImageElement: React.FC<Props> = ({
           }}
           {...props}
         />
-        {showHotspots &&
+        {currentItemHotspotsVisible &&
           hotspots?.map((hotspot, index) => (
             <Hotspot key={index} hotspot={hotspot} />
           ))}

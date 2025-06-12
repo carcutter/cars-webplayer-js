@@ -30,6 +30,7 @@ const Gallery: React.FC<Props> = ({
     infiniteCarrousel,
     permanentGallery,
     isFullScreen,
+    maxItemsShown,
   } = useGlobalContext();
 
   const { categories, aspectRatioStyle } = useCompositionContext();
@@ -249,10 +250,28 @@ const Gallery: React.FC<Props> = ({
     ) {
       nextItem();
     } else {
-      scrollToItemIndex(itemIndex);
+      if (
+        !isFullScreen &&
+        maxItemsShown !== 1 &&
+        itemIndex === items.length - 1
+      ) {
+        const visibleItemsCount = Math.ceil(maxItemsShown);
+        const totalSlides = items.length + 1; // +1 for compensation slide
+        const targetIndex = Math.max(0, totalSlides - visibleItemsCount);
+        scrollToItemIndex(targetIndex);
+      } else {
+        scrollToItemIndex(itemIndex);
+      }
     }
 
     resetView();
+  };
+
+  // Function to determine the class for each gallery item when hovering or active
+  const getGalleryItemClass = (index: number, masterIndex: number) => {
+    if (maxItemsShown !== 1) return "after:opacity-0 hover:after:opacity-70";
+    if (index === masterIndex) return "after:opacity-100";
+    return "after:opacity-0 hover:after:opacity-70";
   };
 
   return (
@@ -289,9 +308,7 @@ const Gallery: React.FC<Props> = ({
                 "relative h-full overflow-hidden rounded-gallery transition-radius",
                 !isDragging && "cursor-pointer",
                 "after:absolute after:inset-0 after:rounded-gallery after:border-2 after:border-primary after:transition-all",
-                index === masterItemIndex
-                  ? "after:opacity-100"
-                  : "after:opacity-0 hover:after:opacity-70"
+                getGalleryItemClass(index, masterItemIndex)
               )}
               style={aspectRatioStyle}
               onClick={() => onItemClicked(index)}

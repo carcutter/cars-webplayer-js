@@ -19,8 +19,10 @@ type ProviderProps = Required<
     | "extendBehavior"
     | "demoSpin"
     | "reverse360"
+    | "integration"
   >
 > & {
+  maxItemsShown: number;
   emitEvent: (name: string, detail?: unknown) => void;
 
   playerInViewportWidthRatio: number;

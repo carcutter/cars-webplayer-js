@@ -118,10 +118,14 @@ const InteriorThreeSixtyElementInteractive: React.FC<
   }, []);
 
   useEffect(() => {
-    if (pannellumRef.current && isPannellumLoaded && pannellumContainerRef.current) {
+    if (
+      pannellumRef.current &&
+      isPannellumLoaded &&
+      pannellumContainerRef.current
+    ) {
       const viewer = pannellumRef.current.getViewer();
       const container = pannellumContainerRef.current;
-      
+
       if (viewer) {
         const handleWheel = (event: WheelEvent) => {
           event.preventDefault();
@@ -177,7 +181,11 @@ const InteriorThreeSixtyElementInteractive: React.FC<
 
   return (
     <>
-      <div className={cn("relative size-full overflow-hidden bg-transparent")}>
+      <div
+        className={cn(
+          "relative aspect-[4/3] w-full overflow-hidden bg-transparent"
+        )}
+      >
         <div
           className={cn(
             "size-full duration-details",
@@ -195,6 +203,17 @@ const InteriorThreeSixtyElementInteractive: React.FC<
                 }
                 .pnlm-container {
                   background-image: none !important;
+                }
+                .pnlm-about-msg {
+                  width: 0;
+                  height: 0;
+                  padding: 0;
+                  visibility: hidden;
+                }
+
+                .pnlm-about-msg a {
+                  display: none;
+                  visibility: hidden;
                 }
               `}
             </style>

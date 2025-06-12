@@ -20,6 +20,7 @@ import {
 
 import { RESIZE_TRANSITION_DURATION } from "../const/browser";
 import { MAX_ZOOM, ZOOM_STEP } from "../const/zoom";
+import { useIntegration } from "../hooks/useIntegration";
 import type { CustomizableItem } from "../types/customizable_item";
 import { clamp } from "../utils/math";
 
@@ -56,6 +57,7 @@ type ContextType = {
 
   enableHotspotsControl: boolean;
   showHotspots: boolean;
+  currentItemHotspotsVisible: boolean;
   toggleHotspots: () => void;
 
   showGalleryControls: boolean;
@@ -107,6 +109,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const {
     infiniteCarrousel,
     extendBehavior,
+    integration,
 
     emitEvent,
     isFullScreen,
@@ -182,6 +185,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const isRunningSpecialCommand = !!specialCommand;
   const finishSpecialCommand = useCallback(() => setSpecialCommand(null), []);
 
+  const { effectiveMaxItemsShown } = useIntegration();
+
   const prevItem = useCallback(() => {
     // Command still running
     if (isRunningSpecialCommand || itemIndexCommand !== null) {
@@ -194,7 +199,19 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       setItemIndexCommand(target);
     } else if (infiniteCarrousel) {
       setSpecialCommand("first_to_last");
-      setItemIndexCommand(items.length - 1);
+      // For multiple items shown, target the last valid position
+      const visibleItemsCount = Math.ceil(effectiveMaxItemsShown);
+      // Account for the extra empty slide when maxItemsShown has fractional part and infinite carousel is disabled
+      const totalSlides =
+        items.length +
+        (integration && !infiniteCarrousel && effectiveMaxItemsShown % 1 !== 0
+          ? 1
+          : 0);
+      const lastValidIndex =
+        effectiveMaxItemsShown > 1
+          ? Math.max(0, totalSlides - visibleItemsCount)
+          : items.length - 1;
+      setItemIndexCommand(lastValidIndex);
     }
   }, [
     isRunningSpecialCommand,
@@ -202,6 +219,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     carrouselItemIndex,
     infiniteCarrousel,
     items.length,
+    integration,
+    effectiveMaxItemsShown,
   ]);
 
   const nextItem = useCallback(() => {
@@ -211,8 +230,20 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     }
 
     const target = carrouselItemIndex + 1;
+    const visibleItemsCount = Math.ceil(effectiveMaxItemsShown);
+    // Account for the extra empty slide when maxItemsShown has fractional part and infinite carousel is disabled
+    const totalSlides =
+      items.length +
+      (integration && !infiniteCarrousel && effectiveMaxItemsShown % 1 !== 0
+        ? 1
+        : 0);
+    const maxValidIndex =
+      effectiveMaxItemsShown > 1
+        ? Math.max(0, totalSlides - visibleItemsCount)
+        : items.length - 1;
+
     // Check if we not need to cycle
-    if (target < items.length) {
+    if (target <= maxValidIndex) {
       setItemIndexCommand(target);
     } else if (infiniteCarrousel) {
       setSpecialCommand("last_to_first");
@@ -224,6 +255,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     carrouselItemIndex,
     items.length,
     infiniteCarrousel,
+    integration,
+    effectiveMaxItemsShown,
   ]);
 
   const scrollToItemIndex = useCallback(
@@ -302,6 +335,21 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
   // -- Hotspots
   const enableHotspotsControl = useMemo(() => {
+    // In integration mode and NOT fullscreen, check if ANY item in the carousel has hotspots
+    if (integration && !isFullScreen) {
+      return items.some(item => {
+        switch (item.type) {
+          case "image":
+            return !!item.hotspots?.length;
+          case "360":
+            return item.images.some(img => !!img.hotspots?.length);
+          default:
+            return false;
+        }
+      });
+    }
+
+    // Normal mode OR fullscreen mode: only check current item
     switch (currentItem.type) {
       case "image":
         return !!currentItem.hotspots?.length;
@@ -313,14 +361,56 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       default:
         return false;
     }
-  }, [currentItem, currentItemInteraction]);
+  }, [currentItem, currentItemInteraction, integration, items, isFullScreen]);
 
+  // Global hotspot state (for integration mode)
   const [showHotspots, setShowHotspots] = useState(true);
+
+  // Per-slide hotspot state (for fullscreen mode)
+  const [perSlideHotspots, setPerSlideHotspots] = useState<
+    Record<number, boolean>
+  >({});
+
+  // Get the effective hotspot state for the current item
+  const currentItemHotspotsVisible = useMemo(() => {
+    if (integration && isFullScreen) {
+      // In fullscreen mode, use per-slide state
+      return perSlideHotspots[masterItemIndex] ?? true;
+    }
+    // In normal mode or integration non-fullscreen, use global state
+    return showHotspots;
+  }, [
+    integration,
+    isFullScreen,
+    perSlideHotspots,
+    masterItemIndex,
+    showHotspots,
+  ]);
+
   const toggleHotspots = useCallback(() => {
-    const newValue = !showHotspots;
-    setShowHotspots(newValue);
-    emitEvent(newValue ? EVENT_HOTSPOTS_ON : EVENT_HOTSPOTS_OFF);
-  }, [emitEvent, showHotspots]);
+    if (integration && isFullScreen) {
+      // In fullscreen mode, toggle per-slide hotspots
+      const currentState = perSlideHotspots[masterItemIndex] ?? true;
+      const newValue = !currentState;
+      setPerSlideHotspots(prev => ({
+        ...prev,
+        [masterItemIndex]: newValue,
+      }));
+      emitEvent(newValue ? EVENT_HOTSPOTS_ON : EVENT_HOTSPOTS_OFF);
+    } else {
+      // In normal mode or integration non-fullscreen, toggle global hotspots
+      const newValue = !showHotspots;
+      setShowHotspots(newValue);
+      emitEvent(newValue ? EVENT_HOTSPOTS_ON : EVENT_HOTSPOTS_OFF);
+    }
+  }, [
+    emitEvent,
+    showHotspots,
+    integration,
+    isFullScreen,
+    perSlideHotspots,
+    masterItemIndex,
+  ]);
 
   // -- Gallery
   const showGalleryControls = useMemo(() => {
@@ -510,6 +600,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
         enableHotspotsControl,
         showHotspots,
+        currentItemHotspotsVisible,
         toggleHotspots,
 
         showGalleryControls,

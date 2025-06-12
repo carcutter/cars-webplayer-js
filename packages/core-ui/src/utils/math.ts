@@ -32,3 +32,26 @@ export const convertPannellumHfovToBidirectionalSteppedScale = (
 
   return clamp(steppedValue, 1, maxZoom);
 };
+
+export const findClosestValidNumberInRange = (
+  num: number,
+  range: readonly number[]
+) => {
+  // If the number is already valid, return it
+  if (range.includes(num)) {
+    return num;
+  }
+
+  // Find the closest value
+  let closest = range[0];
+  let minDiff = Math.abs(num - closest);
+
+  for (let i = 1; i < range.length; i++) {
+    const diff = Math.abs(num - range[i]);
+    if (diff < minDiff) {
+      minDiff = diff;
+      closest = range[i];
+    }
+  }
+  return closest;
+};

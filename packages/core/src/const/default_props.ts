@@ -21,3 +21,5 @@ export const DEFAULT_EXTEND_BEHAVIOR = "full_screen" satisfies ExtendBehavior;
 export const DEFAULT_EVENT_PREFIX = "cc-webplayer:" satisfies string;
 export const DEFAULT_DEMO_SPIN = false satisfies boolean;
 export const DEFAULT_REVERSE_360 = false satisfies boolean;
+export const DEFAULT_INTEGRATION = false satisfies boolean;
+export const DEFAULT_MAX_ITEMS_SHOWN = 1 satisfies number;

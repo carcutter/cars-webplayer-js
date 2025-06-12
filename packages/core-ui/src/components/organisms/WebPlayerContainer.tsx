@@ -23,7 +23,7 @@ import Gallery from "./Gallery";
 import WebPlayerCarrousel from "./WebPlayerCarrousel";
 
 const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
-  const { permanentGallery } = useGlobalContext();
+  const { permanentGallery, integration } = useGlobalContext();
 
   const { aspectRatioStyle } = useCompositionContext();
 
@@ -150,7 +150,7 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
             extendMode &&
               "mx-auto flex min-h-0 w-full max-w-[1600px] justify-center"
           )}
-          style={aspectRatioStyle}
+          style={!integration ? aspectRatioStyle : {}}
         >
           <WebPlayerCarrousel className={cn(extendMode && "h-full min-w-0")} />
         </div>

@@ -521,7 +521,7 @@ const ThreeSixtyElementPlaceholder: React.FC<
   }, [loadingProgress, onSpinImagesLoaded]);
 
   return (
-    <div className="relative size-full">
+    <div className="relative aspect-[4/3] w-full">
       {loadingProgress !== null && loadingProgress !== 100 && (
         // Add images to DOM to preload them
         <div className="hidden">
