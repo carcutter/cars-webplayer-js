@@ -41,7 +41,7 @@ const CustomizationPopover: React.FC<React.PropsWithChildren> = ({
     <Popover>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent
-        className="sm:w-80 w-72"
+        className={cn("w-72", "sm:w-80")}
         side="right"
         sideOffset={16}
         align="start"
@@ -146,6 +146,7 @@ const CustomizationPopover: React.FC<React.PropsWithChildren> = ({
                 {COLOR_LIST.map(btnColor => (
                   <Button
                     key={btnColor}
+                    // eslint-disable-next-line tailwindcss/no-custom-classname
                     className={cn(
                       "border-border",
                       btnColor === color &&
@@ -167,13 +168,15 @@ const CustomizationPopover: React.FC<React.PropsWithChildren> = ({
                 ))}
 
                 <label
+                  // eslint-disable-next-line tailwindcss/no-custom-classname
                   className={cn(
                     getButtonClassName({
                       variant: "outline",
                       color: "foreground",
                       size: "sm",
                     }),
-                    "border-border w-full cursor-pointer",
+                    "border-border",
+                    "w-full cursor-pointer",
                     isCustomColor && "border-foreground ring-1 ring-foreground"
                   )}
                 >
@@ -199,6 +202,7 @@ const CustomizationPopover: React.FC<React.PropsWithChildren> = ({
                 {RADIUS_LIST.map(btnRadius => (
                   <Button
                     key={btnRadius}
+                    // eslint-disable-next-line tailwindcss/no-custom-classname
                     className={cn(
                       "border-border",
                       btnRadius === radius &&

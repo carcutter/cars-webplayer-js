@@ -59,7 +59,8 @@ const AppContent: React.FC = () => {
   return (
     <div
       className={cn(
-        "sm:p-2 mx-auto flex min-h-screen max-w-3xl flex-col justify-center gap-y-4 p-1.5",
+        "mx-auto flex min-h-screen max-w-3xl flex-col justify-center gap-y-4 p-1.5",
+        "sm:p-2",
         isColor(color) && colorToClassName(color),
         radiusToClassName(radius)
       )}
@@ -123,14 +124,16 @@ const AppContent: React.FC = () => {
       </main>
       <footer className="flex-[2] self-center">
         <div className="flex gap-x-2">
-          <span className="sm:text-base text-sm opacity-70">Powered by</span>
+          <span className={cn("text-sm opacity-70", "sm:text-base")}>
+            Powered by
+          </span>
           <a
             href="https://www.car-cutter.com"
             rel="noopener noreferrer"
             target="_blank"
           >
             <img
-              className="sm:h-6 h-4"
+              className={cn("h-4", "sm:h-6")}
               src="https://cloud.car-cutter.com/web-player/app/share/CarCutter.svg"
               alt="CarCutter"
             />
