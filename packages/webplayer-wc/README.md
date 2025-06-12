@@ -17,4 +17,4 @@ defineCustomElements();
 
 ### Next Steps
 
-For more customisation, take a look at the **[Online Documentation](https://carcutter.github.io/cars-webplayer-js/)**
+For more customization, take a look at the **[Online Documentation](https://carcutter.github.io/cars-webplayer-js/)**

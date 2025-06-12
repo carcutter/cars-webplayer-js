@@ -9,7 +9,7 @@ import {
 
 import AppContextProvider, { useAppContext } from "./AppContext";
 import CompositionUpdatePopover from "./components/molecules/CompositionUpdatePopover";
-import CustomisationPopover from "./components/molecules/CustomisationPopover";
+import CustomizationPopover from "./components/molecules/CustomizationPopover";
 import { Button } from "./components/ui/Button";
 import { colorToClassName, isColor } from "./const/color";
 import { radiusToClassName } from "./const/radius";
@@ -59,7 +59,8 @@ const AppContent: React.FC = () => {
   return (
     <div
       className={cn(
-        "mx-auto flex min-h-screen max-w-3xl flex-col justify-center gap-y-4 p-1.5 sm:p-2",
+        "mx-auto flex min-h-screen max-w-3xl flex-col justify-center gap-y-4 p-1.5",
+        "sm:p-2",
         isColor(color) && colorToClassName(color),
         radiusToClassName(radius)
       )}
@@ -68,7 +69,7 @@ const AppContent: React.FC = () => {
       <header className="flex flex-1 items-center justify-between gap-y-2">
         <div className="space-y-2">
           {dealer && (
-            <h2 className="w-fit rounded-ui bg-primary/20 px-4 py-1 text-sm text-primary-contrast transition-all">
+            <h2 className="w-fit rounded-ui bg-primary/20 px-4 py-1 text-sm transition-all">
               {dealer}
             </h2>
           )}
@@ -80,9 +81,9 @@ const AppContent: React.FC = () => {
             <Button>Change vehicle</Button>
           </CompositionUpdatePopover>
 
-          <CustomisationPopover>
-            <Button variant="outline">Customise</Button>
-          </CustomisationPopover>
+          <CustomizationPopover>
+            <Button variant="outline">Customize</Button>
+          </CustomizationPopover>
         </div>
       </header>
       <main className="w-full">
@@ -123,14 +124,16 @@ const AppContent: React.FC = () => {
       </main>
       <footer className="flex-[2] self-center">
         <div className="flex gap-x-2">
-          <span className="text-sm opacity-70 sm:text-base">Powered by</span>
+          <span className={cn("text-sm opacity-70", "sm:text-base")}>
+            Powered by
+          </span>
           <a
             href="https://www.car-cutter.com"
             rel="noopener noreferrer"
             target="_blank"
           >
             <img
-              className="h-4 sm:h-6"
+              className={cn("h-4", "sm:h-6")}
               src="https://cloud.car-cutter.com/web-player/app/share/CarCutter.svg"
               alt="CarCutter"
             />

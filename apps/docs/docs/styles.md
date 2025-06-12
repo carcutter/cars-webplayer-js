@@ -1,10 +1,10 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 # Styles
 
-You can customise the WebPlayer color & roundness with CSS Variables
+You can customize the WebPlayer color & roundness with CSS Variables
 
 | CSS Variable                        | Description                        | Default Value     |
 | ----------------------------------- | ---------------------------------- | ----------------- |

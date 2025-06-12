@@ -43,4 +43,4 @@ jobs:
           replacesArtifacts: true
           generateReleaseNotes: false
           body: |
-            **[Changes](https://github.com/carcutter/cars-webplayer-js/commits/@car-cutter/wc-webplayer@${{ env.VERSION }})**
+            **[Changes](https://github.com/carcutter/cars-webplayer-js/commits/${{ env.RELEASE_TAG }})**
