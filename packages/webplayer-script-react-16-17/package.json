@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/script-webplayer-react-16-17",
-  "version": "0.13.0",
+  "version": "3.0.0",
   "private": true,
   "license": "Apache-2.0",
   "type": "module",
@@ -10,7 +10,7 @@
     "analyze": "vite-bundle-visualizer"
   },
   "dependencies": {
-    "@car-cutter/core-wc-react-16-17": "0.13.0"
+    "@car-cutter/core-wc-react-16-17": "3.0.0"
   },
   "peerDependencies": {
     "react": ">=16.8 <18",

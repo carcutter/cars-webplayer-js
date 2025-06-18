@@ -1,4 +1,4 @@
-# Car-Cutter WebPlayer Monorepo [![Lint Commit Messages](https://github.com/carcutter/cars-webplayer-js/actions/workflows/commitlint.yml/badge.svg)](https://github.com/carcutter/cars-webplayer-js/actions/workflows/commitlint.yml)
+# Car-Cutter WebPlayer Monorepo[![Lint Commit Messages](https://github.com/carcutter/cars-webplayer-js/actions/workflows/lint_commits.yml/badge.svg)](https://github.com/carcutter/cars-webplayer-js/actions/workflows/lint_commits.yml) [![Continuous Delivery](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_delivery.yml/badge.svg)](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_delivery.yml) [![Continuous Deployment](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_deployment.yml/badge.svg)](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_deployment.yml) [![Continuous Integration](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_integration.yml/badge.svg)](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_integration.yml)
 
 This monorepo hosts the WebPlayer project, which includes multiple demo applications and several packages for different web technologies. The project is structured to support various frameworks and libraries, enabling reusable components and configurations.
 
@@ -109,25 +109,25 @@ Run `yarn publish:docs`
 
 ### Properties
 
-| Prop                  | Type                               | Default           | Description                                               |
-| --------------------- | ---------------------------------- | ----------------- | --------------------------------------------------------- |
-| `compositionUrl`      | `string`                           | ❌ Required       | URL to the composition data                               |
-| `hideCategoriesNav`   | `boolean`                          | `false`           | Hide the category-based navigation                        |
-| `infiniteCarrousel`   | `boolean`                          | `false`           | Allow to navigate from 1st to last media (and vice versa) |
-| `permanentGallery`    | `boolean`                          | `false`           | Display gallery under the carrousel                       |
-| `mediaLoadStrategy`   | `"quality"`/`"balanced"`/`"speed"` | `"quality"`       | Strategy for loading medias.                              |
-| `minMediaWidth`       | `number`                           | `0`               | Force minimum media width (in pixels)                     |
-| `maxMediaWidth`       | `number`                           | `Infinity`        | Force maximum media width (in pixels)                     |
-| `preloadRange`        | `number`                           | `1`               | Number of items to preload before and after the viewport  |
-| `autoLoad360`         | `boolean`                          | `false`           | Load 360 images without having to click                   |
-| `autoLoadInterior360` | `boolean`                          | `false`           | Load interior 360 images without having to click          |
-| `categoriesFilter`    | `string`                           | `*`               | Only display certain categories                           |
-| `extendBehavior`      | `"full_screen"`/`"event"`/`"none"` | `"full_screen"`   | Handle extend mode                                        |
-| `eventPrefix`         | `string`                           | `"cc-webplayer:"` | Prefix of cc-player events                                |
-| `demoSpin`            | `boolean`                          | `false`           | Run a spin once the 360 images has been loaded            |
-| `reverse360`          | `boolean`                          | `false`           | Reverse the 360-degree rotation                           |
-| `integration`         | `boolean`                          | `false`           | Allows to use maxItemsShown and disables permanentGallery with infiniteCarrousel, enables hideCategoriesNav              |
-| `maxItemsShown`       | `number`                           | `1`               | Maximum number of items to display in the gallery         |
+| Prop                  | Type                               | Default           | Description                                                                                                 |
+| --------------------- | ---------------------------------- | ----------------- | ----------------------------------------------------------------------------------------------------------- |
+| `compositionUrl`      | `string`                           | ❌ Required       | URL to the composition data                                                                                 |
+| `hideCategoriesNav`   | `boolean`                          | `false`           | Hide the category-based navigation                                                                          |
+| `infiniteCarrousel`   | `boolean`                          | `false`           | Allow to navigate from 1st to last media (and vice versa)                                                   |
+| `permanentGallery`    | `boolean`                          | `false`           | Display gallery under the carrousel                                                                         |
+| `mediaLoadStrategy`   | `"quality"`/`"balanced"`/`"speed"` | `"quality"`       | Strategy for loading medias.                                                                                |
+| `minMediaWidth`       | `number`                           | `0`               | Force minimum media width (in pixels)                                                                       |
+| `maxMediaWidth`       | `number`                           | `Infinity`        | Force maximum media width (in pixels)                                                                       |
+| `preloadRange`        | `number`                           | `1`               | Number of items to preload before and after the viewport                                                    |
+| `autoLoad360`         | `boolean`                          | `false`           | Load 360 images without having to click                                                                     |
+| `autoLoadInterior360` | `boolean`                          | `false`           | Load interior 360 images without having to click                                                            |
+| `categoriesFilter`    | `string`                           | `*`               | Only display certain categories                                                                             |
+| `extendBehavior`      | `"full_screen"`/`"event"`/`"none"` | `"full_screen"`   | Handle extend mode                                                                                          |
+| `eventPrefix`         | `string`                           | `"cc-webplayer:"` | Prefix of cc-player events                                                                                  |
+| `demoSpin`            | `boolean`                          | `false`           | Run a spin once the 360 images has been loaded                                                              |
+| `reverse360`          | `boolean`                          | `false`           | Reverse the 360-degree rotation                                                                             |
+| `integration`         | `boolean`                          | `false`           | Allows to use maxItemsShown and disables permanentGallery with infiniteCarrousel, enables hideCategoriesNav |
+| `maxItemsShown`       | `number`                           | `1`               | Maximum number of items to display in the gallery                                                           |
 
 _NOTE: If you are using the WebComponent directly, you need to transform the props to HTML attributes
 (which are in dashed-case and take `string` as value type)_
