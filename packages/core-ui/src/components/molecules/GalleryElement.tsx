@@ -95,14 +95,14 @@ const GalleryElement: React.FC<GalleryElementProps> = ({ item }) => {
     case "360":
       overlayIcon = (
         <GalleryIconWrapper>
-          <ThreeSixtyIcon className="size-full text-primary-light" />
+          <ThreeSixtyIcon className="size-full" />
         </GalleryIconWrapper>
       );
       break;
     case "interior-360":
       overlayIcon = (
         <GalleryIconWrapper>
-          <InteriorThreeSixtyIcon className="size-full text-primary-light" />
+          <InteriorThreeSixtyIcon className="size-full" />
         </GalleryIconWrapper>
       );
       break;

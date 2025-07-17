@@ -11,8 +11,10 @@ export type WebPlayerIconName =
   | "UI_PLAY" // Play video
   | "UI_PLUS" // Increase zoom
   | "UI_REDUCE" // Reducing an extended view
-  | "UI_360" // 360-degree view
-  | "UI_INTERIOR_360" // interior 360 view
+  | "UI_360" // Exterior 360 view
+  | "UI_360_PLAY" // Play exterior 360
+  | "UI_INTERIOR_360" // Interior 360 view
+  | "UI_INTERIOR_360_PLAY" // Play interior 360 view
   | "UI_VOLUME" // Video volume
   | "UI_VOLUME_OFF" // Muted video
   | "CONTROLS_PREV" // Go to previous media

@@ -8,7 +8,7 @@ import { CustomizableItem } from "../../../types/customizable_item";
 import { clamp } from "../../../utils/math";
 import { cn } from "../../../utils/style";
 import CdnImage from "../../atoms/CdnImage";
-import PlayIcon from "../../icons/PlayIcon";
+import Exterior360PlayIcon from "../../icons/Exterior360PlayIcon";
 import ThreeSixtyIcon from "../../icons/ThreeSixtyIcon";
 import ErrorTemplate from "../../template/ErrorTemplate";
 import Button from "../../ui/Button";
@@ -444,7 +444,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     <div ref={containerRef} className="cursor-ew-resize">
       {/* Scroller is element larger than the image to capture scroll event and then, make the 360 spin */}
       {/* NOTE: ImageElement is within so that it can capture events first */}
-      <div ref={scrollerRef} className="overflow-x-scroll no-scrollbar">
+      <div ref={scrollerRef} className=" overflow-x-scroll">
         <div className="sticky left-0 top-0">
           {/* Flip book (Ensures image are already in the DOM) */}
           {images.map(image => (
@@ -542,10 +542,10 @@ const ThreeSixtyElementPlaceholder: React.FC<
         onLoad={onPlaceholderImageLoaded}
       />
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
-        <ThreeSixtyIcon className="size-20 text-primary-light" />
+        <ThreeSixtyIcon className="size-20" />
 
         <Button color="neutral" shape="icon" onClick={fetchSpinImages}>
-          <PlayIcon className="size-full" />
+          <Exterior360PlayIcon className="size-full" />
         </Button>
 
         <div
