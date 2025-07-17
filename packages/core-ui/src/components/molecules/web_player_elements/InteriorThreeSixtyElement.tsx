@@ -45,7 +45,7 @@ const InteriorThreeSixtyElementLoadControls: React.FC<
   return (
     <div className="pointer-events-auto absolute inset-0 flex flex-col items-center justify-center gap-y-4">
       <div className="pointer-events-auto absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
-        <InteriorThreeSixtyIcon className="text-primary-light size-20" />
+        <InteriorThreeSixtyIcon className="size-20" />
 
         <Button color="neutral" shape="icon" onClick={loadScene}>
           <Interior360PlayIcon className="size-full" />
@@ -188,7 +188,7 @@ const InteriorThreeSixtyElementInteractive: React.FC<
       >
         <div
           className={cn(
-            "duration-details size-full",
+            "size-full",
             isShowingDetails ? "scale-105" : "scale-100"
           )}
         >

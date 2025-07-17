@@ -444,7 +444,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     <div ref={containerRef} className="cursor-ew-resize">
       {/* Scroller is element larger than the image to capture scroll event and then, make the 360 spin */}
       {/* NOTE: ImageElement is within so that it can capture events first */}
-      <div ref={scrollerRef} className="no-scrollbar overflow-x-scroll">
+      <div ref={scrollerRef} className=" overflow-x-scroll">
         <div className="sticky left-0 top-0">
           {/* Flip book (Ensures image are already in the DOM) */}
           {images.map(image => (
@@ -542,7 +542,7 @@ const ThreeSixtyElementPlaceholder: React.FC<
         onLoad={onPlaceholderImageLoaded}
       />
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
-        <ThreeSixtyIcon className="text-primary-light size-20" />
+        <ThreeSixtyIcon className="size-20" />
 
         <Button color="neutral" shape="icon" onClick={fetchSpinImages}>
           <Exterior360PlayIcon className="size-full" />
