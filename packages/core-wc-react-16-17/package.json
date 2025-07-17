@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/core-wc-react-16-17",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "private": true,
   "type": "module",
   "main": "index.ts",
@@ -8,9 +8,9 @@
     "lint": "eslint . --ext ts,tsx --max-warnings 0"
   },
   "dependencies": {
-    "@car-cutter/core": "3.0.0",
-    "@car-cutter/core-ui": "3.0.0",
-    "@car-cutter/core-wc": "3.0.0",
+    "@car-cutter/core": "3.0.1",
+    "@car-cutter/core-ui": "3.0.1",
+    "@car-cutter/core-wc": "3.0.1",
     "@r2wc/react-to-web-component": "^1.0.0"
   },
   "peerDependencies": {
