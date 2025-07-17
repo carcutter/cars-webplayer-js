@@ -12,8 +12,8 @@ import { CustomizableItem } from "../../../types/customizable_item";
 import { createThrottleDebounce } from "../../../utils/debounce";
 import { convertPannellumHfovToBidirectionalSteppedScale } from "../../../utils/math";
 import { cn } from "../../../utils/style";
+import Interior360PlayIcon from "../../icons/Interior360PlayIcon";
 import InteriorThreeSixtyIcon from "../../icons/InteriorThreeSixtyIcon";
-import PlayIcon from "../../icons/PlayIcon";
 import ErrorTemplate from "../../template/ErrorTemplate";
 import Button from "../../ui/Button";
 
@@ -45,10 +45,10 @@ const InteriorThreeSixtyElementLoadControls: React.FC<
   return (
     <div className="pointer-events-auto absolute inset-0 flex flex-col items-center justify-center gap-y-4">
       <div className="pointer-events-auto absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
-        <InteriorThreeSixtyIcon className="size-20 text-primary-light" />
+        <InteriorThreeSixtyIcon className="text-primary-light size-20" />
 
         <Button color="neutral" shape="icon" onClick={loadScene}>
-          <PlayIcon className="size-full" />
+          <Interior360PlayIcon className="size-full" />
         </Button>
 
         <div
@@ -188,7 +188,7 @@ const InteriorThreeSixtyElementInteractive: React.FC<
       >
         <div
           className={cn(
-            "size-full duration-details",
+            "duration-details size-full",
             isShowingDetails ? "scale-105" : "scale-100"
           )}
         >
