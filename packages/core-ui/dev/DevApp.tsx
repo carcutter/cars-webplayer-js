@@ -52,7 +52,7 @@ const DevApp: React.FC = () => {
           // reverse360
           analyticsUrl="https://webhook.site/c741ae58-f329-41c6-84a4-136aba2cfd96"
           analyticsBearer="1234567890"
-          analyticsSimpleRequestsOnly={true}
+          analyticsSimpleRequestsOnly={false}
           analyticsDryRun={false}
           analyticsDebug={true}
         >

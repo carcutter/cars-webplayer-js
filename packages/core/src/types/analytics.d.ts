@@ -15,15 +15,6 @@ export declare type AnalyticsEventBase = {
 };
 
 // - Props
-export declare type AnalyticsIdentifyEventPropsWpProperties = Omit<
-  WebPlayerProps,
-  | "analyticsUrl"
-  | "analyticsBearer"
-  | "analyticsSimpleRequestsOnly"
-  | "analyticsDryRun"
-  | "analyticsDebug"
->;
-
 export declare type AnalyticsIdentifyEventProps = {
   type: AnalyticsEventTypeIdentify;
   browser_id: string;
@@ -32,7 +23,33 @@ export declare type AnalyticsIdentifyEventProps = {
   origin: string;
   page_url: string;
   user_agent: string;
-  wp_properties: AnalyticsIdentifyEventPropsWpProperties;
+  wp_properties: {
+    composition_url: string;
+
+    // Integration mode
+    integration: boolean;
+    max_items_shown: number;
+
+    // Layout
+    hide_categories_nav: boolean;
+    infinite_carrousel: boolean;
+    permanent_gallery: boolean;
+
+    // Medias loading
+    media_load_strategy: MediaLoadStrategy;
+    min_media_width: number;
+    max_media_width: number;
+    preload_range: number;
+    auto_load_360: boolean;
+    auto_load_interior_360: boolean;
+
+    // Miscellaneous
+    categories_filter: string;
+    extend_behavior: ExtendBehavior;
+    event_prefix: string;
+    demo_spin: boolean;
+    reverse_360: boolean;
+  };
 };
 
 export declare type AnalyticsPageEventProps = {

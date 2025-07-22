@@ -81,7 +81,6 @@ export type {
 
   // Props
   AnalyticsIdentifyEventProps,
-  AnalyticsIdentifyEventPropsWpProperties,
   AnalyticsPageEventProps,
   AnalyticsTrackEventProps,
   AnalyticsEventProps,

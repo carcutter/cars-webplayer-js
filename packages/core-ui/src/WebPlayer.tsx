@@ -76,26 +76,6 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   analyticsDebug = DEFAULT_ANALYTICS_DEBUG,
   children: customizationChildren, // NOTE: use to customize the player, not to display the content
 }) => {
-  const [initialWpProperties] = useState<WebPlayerProps>({
-    compositionUrl,
-    integration,
-    maxItemsShown,
-    hideCategoriesNav,
-    infiniteCarrousel,
-    permanentGallery,
-    mediaLoadStrategy,
-    minMediaWidth,
-    maxMediaWidth,
-    preloadRange,
-    autoLoad360,
-    autoLoadInterior360,
-    categoriesFilter,
-    extendBehavior,
-    eventPrefix,
-    demoSpin,
-    reverse360,
-  });
-
   //maxItemsShown validation and substitution if not valid
   maxItemsShown = findClosestValidNumberInRange(
     maxItemsShown,
@@ -148,6 +128,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
         const headers: HeadersInit = new Headers();
         if (!analyticsSimpleRequestsOnly) {
           headers.append("Content-Type", "application/json");
+          headers.append("Cache-Control", "no-cache");
           if (analyticsBearer) {
             headers.append("Authorization", `Bearer ${analyticsBearer}`);
           }
@@ -183,7 +164,25 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
     origin: window.location.origin,
     page_url: window.location.href,
     user_agent: navigator.userAgent,
-    wp_properties: initialWpProperties,
+    wp_properties: {
+      composition_url: compositionUrl,
+      integration,
+      max_items_shown: maxItemsShown,
+      hide_categories_nav: hideCategoriesNav,
+      infinite_carrousel: infiniteCarrousel,
+      permanent_gallery: permanentGallery,
+      media_load_strategy: mediaLoadStrategy,
+      min_media_width: minMediaWidth,
+      max_media_width: maxMediaWidth,
+      preload_range: preloadRange,
+      auto_load_360: autoLoad360,
+      auto_load_interior_360: autoLoadInterior360,
+      categories_filter: categoriesFilter,
+      extend_behavior: extendBehavior,
+      event_prefix: eventPrefix,
+      demo_spin: demoSpin,
+      reverse_360: reverse360,
+    },
   });
   useEffect(() => {
     const timeout = setTimeout(() => {
