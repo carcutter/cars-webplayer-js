@@ -28,6 +28,7 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedStyles, {
     reverse360: "boolean",
 
     // Analytics
+    analyticsEventPrefix: "string",
     analyticsUrl: "string",
     analyticsBearer: "string",
     analyticsSimpleRequestsOnly: "boolean",

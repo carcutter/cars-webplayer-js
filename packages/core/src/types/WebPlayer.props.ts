@@ -28,6 +28,7 @@ export type WebPlayerProps = {
   reverse360?: boolean;
 
   // Analytics
+  analyticsEventPrefix?: string;
   analyticsUrl?: string;
   analyticsBearer?: string;
   analyticsSimpleRequestsOnly?: boolean;

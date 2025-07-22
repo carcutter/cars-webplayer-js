@@ -120,6 +120,13 @@ const properties: Array<Property> = [
     description: "Reverse the 360-degree rotation",
   },
   {
+    propName: "analyticsEventPrefix",
+    attribute: "analytics-event-prefix",
+    type: "string",
+    defaultValue: '"cc-analytics:"',
+    description: "Prefix of cc-analytics events",
+  },
+  {
     propName: "analyticsUrl",
     attribute: "analytics-url",
     type: "string",

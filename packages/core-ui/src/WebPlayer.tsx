@@ -25,6 +25,7 @@ import {
   DEFAULT_EVENT_PREFIX,
   DEFAULT_DEMO_SPIN,
   DEFAULT_REVERSE_360,
+  DEFAULT_ANALYTICS_EVENT_PREFIX,
   DEFAULT_ANALYTICS_URL,
   DEFAULT_ANALYTICS_BEARER,
   DEFAULT_ANALYTICS_SIMPLE_REQUESTS_ONLY,
@@ -69,6 +70,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   eventPrefix = DEFAULT_EVENT_PREFIX,
   demoSpin = DEFAULT_DEMO_SPIN,
   reverse360 = DEFAULT_REVERSE_360,
+  analyticsEventPrefix = DEFAULT_ANALYTICS_EVENT_PREFIX,
   analyticsUrl = DEFAULT_ANALYTICS_URL,
   analyticsBearer = DEFAULT_ANALYTICS_BEARER,
   analyticsSimpleRequestsOnly = DEFAULT_ANALYTICS_SIMPLE_REQUESTS_ONLY,
@@ -118,26 +120,33 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
         // Dry run
         if (analyticsDryRun) {
           // eslint-disable-next-line no-console
-          console.debug("Analytics event:", payload);
+          console.log("[DRY RUN] AnalyticsEvent:", payload);
           return;
         }
 
-        // Prepare request
-        const method = "POST" as const;
+        // Dispatch event
+        const analyticsEventName = analyticsEventPrefix + event.type;
+        const dispatchEvent = new CustomEvent(analyticsEventName, {
+          detail: payload,
+        });
+        document.dispatchEvent(dispatchEvent);
 
-        const headers: HeadersInit = new Headers();
-        if (!analyticsSimpleRequestsOnly) {
-          headers.append("Content-Type", "application/json");
-          headers.append("Cache-Control", "no-cache");
-          if (analyticsBearer) {
-            headers.append("Authorization", `Bearer ${analyticsBearer}`);
+        // Send event to `analyticsUrl`
+        if (analyticsUrl) {
+          // Prepare request
+          const method = "POST" as const;
+          const headers: HeadersInit = new Headers();
+          if (!analyticsSimpleRequestsOnly) {
+            headers.append("Content-Type", "application/json");
+            headers.append("Cache-Control", "no-cache");
+            if (analyticsBearer) {
+              headers.append("Authorization", `Bearer ${analyticsBearer}`);
+            }
           }
+          const body = JSON.stringify(payload);
+          // Send event
+          await fetch(analyticsUrl, { method, headers, body });
         }
-
-        const body = JSON.stringify(payload);
-
-        // Send event
-        await fetch(analyticsUrl, { method, headers, body });
       } catch (error) {
         // Debug mode
         if (!analyticsDebug) return;
@@ -146,6 +155,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
       }
     },
     [
+      analyticsEventPrefix,
       analyticsUrl,
       analyticsBearer,
       analyticsSimpleRequestsOnly,

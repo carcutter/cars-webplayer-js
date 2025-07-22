@@ -1,3 +1,5 @@
+import { DEFAULT_ANALYTICS_EVENT_PREFIX } from "./const/default_props";
+import { AnalyticsEvent, AnalyticsEventType } from "./types/analytics";
 import type { MediaWidth } from "./types/misc";
 
 /**
@@ -77,4 +79,38 @@ export function getOrGenerateSessionId(): string {
  */
 export function getOrGenerateInstanceId(): string {
   return crypto.randomUUID();
+}
+
+/**
+ * Adds event listeners to the document and removes previous listeners for the same event name.
+ *
+ * @param {string} eventName - The name of the event to listen to.
+ * @param {Function} listener - The listener function to add.
+ */
+const _analyticsEventListeners = new Map<string, (event: Event) => void>();
+const _addEventListenersAndRemovePrevious = (
+  eventName: string,
+  listener: (event: Event) => void
+) => {
+  // Remove the previous listener
+  const currentListener = _analyticsEventListeners.get(eventName);
+  if (currentListener) document.removeEventListener(eventName, currentListener);
+  // Add the new listener
+  _analyticsEventListeners.set(eventName, listener);
+  document.addEventListener(eventName, listener);
+};
+
+export function subscribeToAnalyticsEvents<
+  TType extends AnalyticsEventType,
+  TEvent extends AnalyticsEvent,
+>(
+  type: TType,
+  onEvent: (event: TEvent) => void,
+  analyticsEventPrefix?: string
+) {
+  const prefix = analyticsEventPrefix ?? DEFAULT_ANALYTICS_EVENT_PREFIX;
+  const eventName = prefix + type;
+  _addEventListenersAndRemovePrevious(eventName, (event: Event) => {
+    onEvent((event as CustomEvent<TEvent>).detail);
+  });
 }

@@ -24,6 +24,7 @@ export const DEFAULT_REVERSE_360 = false satisfies boolean;
 export const DEFAULT_INTEGRATION = false satisfies boolean;
 export const DEFAULT_MAX_ITEMS_SHOWN = 1 satisfies number;
 
+export const DEFAULT_ANALYTICS_EVENT_PREFIX = "cc-analytics:" satisfies string;
 export const DEFAULT_ANALYTICS_URL = "" satisfies string;
 export const DEFAULT_ANALYTICS_BEARER = "" satisfies string;
 export const DEFAULT_ANALYTICS_SIMPLE_REQUESTS_ONLY = false satisfies boolean;

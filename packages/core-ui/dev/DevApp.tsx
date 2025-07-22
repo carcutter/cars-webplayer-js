@@ -1,10 +1,74 @@
+import { useCallback, useEffect, useMemo } from "react";
+
+import {
+  AnalyticsIdentifyEvent,
+  AnalyticsPageEvent,
+  AnalyticsTrackEvent,
+} from "@car-cutter/core";
+import { subscribeToAnalyticsEvents } from "@car-cutter/core/src/utils";
+
 import WebPlayer from "../src/WebPlayer";
 import WebPlayerCustomMedia from "../src/WebPlayerCustomMedia";
 import WebPlayerIcon from "../src/WebPlayerIcon";
 
 import "../src/index.css";
 
+const useAnalytics = () => {
+  const useCustomAnalyticsEventPrefix = false;
+  const analyticsEventPrefix: string | undefined = useMemo(
+    () => (useCustomAnalyticsEventPrefix ? "cc-analytics-yolo:" : undefined),
+    [useCustomAnalyticsEventPrefix]
+  );
+  const onAnalyticsIdentifyEvent = useCallback(
+    (event: AnalyticsIdentifyEvent) => {
+      // eslint-disable-next-line no-console
+      console.log("AnalyticsIdentifyEvent", event);
+    },
+    []
+  );
+  useEffect(() => {
+    subscribeToAnalyticsEvents(
+      "identify",
+      onAnalyticsIdentifyEvent,
+      analyticsEventPrefix
+    );
+  }, [analyticsEventPrefix, onAnalyticsIdentifyEvent]);
+
+  const onAnalyticsPageEvent = useCallback((event: AnalyticsPageEvent) => {
+    // eslint-disable-next-line no-console
+    console.log("AnalyticsPageEvent", event);
+  }, []);
+
+  useEffect(() => {
+    subscribeToAnalyticsEvents(
+      "page",
+      onAnalyticsPageEvent,
+      analyticsEventPrefix
+    );
+  }, [analyticsEventPrefix, onAnalyticsPageEvent]);
+
+  const onAnalyticsTrackEvent = useCallback((event: AnalyticsTrackEvent) => {
+    // eslint-disable-next-line no-console
+    console.log("AnalyticsTrackEvent", event);
+  }, []);
+
+  useEffect(() => {
+    subscribeToAnalyticsEvents(
+      "track",
+      onAnalyticsTrackEvent,
+      analyticsEventPrefix
+    );
+  }, [analyticsEventPrefix, onAnalyticsTrackEvent]);
+
+  return {
+    analyticsEventPrefix,
+  };
+};
+
 const DevApp: React.FC = () => {
+  // Analytics
+  const { analyticsEventPrefix } = useAnalytics();
+
   return (
     <div>
       {/* FUTURE: Add some stuff to make it appear like a real app */}
@@ -50,7 +114,8 @@ const DevApp: React.FC = () => {
           // eventPrefix="cc-event:"
           demoSpin
           // reverse360
-          analyticsUrl="https://webhook.site/c741ae58-f329-41c6-84a4-136aba2cfd96"
+          analyticsEventPrefix={analyticsEventPrefix}
+          // analyticsUrl="https://webhook.site/62a6ddb1-a038-4207-85ff-fe961fafe904"
           analyticsBearer="1234567890"
           analyticsSimpleRequestsOnly={false}
           analyticsDryRun={false}
@@ -84,6 +149,7 @@ const DevApp: React.FC = () => {
           </WebPlayerIcon>
         </WebPlayer>
       </div>
+      <script></script>
     </div>
   );
 };

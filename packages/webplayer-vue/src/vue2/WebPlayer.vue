@@ -46,6 +46,7 @@ export default defineComponent({
     demoSpin: Boolean,
     reverse360: Boolean,
 
+    analyticsEventPrefix: String,
     analyticsUrl: String,
     analyticsBearer: String,
     analyticsSimpleRequestsOnly: Boolean,
