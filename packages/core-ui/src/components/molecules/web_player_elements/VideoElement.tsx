@@ -254,7 +254,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, itemIndex }) => {
     container.addEventListener("mousemove", onMouseMove);
     container.addEventListener("mouseleave", hideControls);
 
-    video.addEventListener("touchstart", onTouchStart);
+    video.addEventListener("touchstart", onTouchStart, { passive: true });
 
     return () => {
       container.removeEventListener("mousedown", onMouseDown);

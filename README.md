@@ -111,25 +111,30 @@ Run `yarn publish:docs`
 
 ### Properties
 
-| Prop                  | Type                               | Default           | Description                                                                                                 |
-| --------------------- | ---------------------------------- | ----------------- | ----------------------------------------------------------------------------------------------------------- |
-| `compositionUrl`      | `string`                           | ❌ Required       | URL to the composition data                                                                                 |
-| `hideCategoriesNav`   | `boolean`                          | `false`           | Hide the category-based navigation                                                                          |
-| `infiniteCarrousel`   | `boolean`                          | `false`           | Allow to navigate from 1st to last media (and vice versa)                                                   |
-| `permanentGallery`    | `boolean`                          | `false`           | Display gallery under the carrousel                                                                         |
-| `mediaLoadStrategy`   | `"quality"`/`"balanced"`/`"speed"` | `"quality"`       | Strategy for loading medias.                                                                                |
-| `minMediaWidth`       | `number`                           | `0`               | Force minimum media width (in pixels)                                                                       |
-| `maxMediaWidth`       | `number`                           | `Infinity`        | Force maximum media width (in pixels)                                                                       |
-| `preloadRange`        | `number`                           | `1`               | Number of items to preload before and after the viewport                                                    |
-| `autoLoad360`         | `boolean`                          | `false`           | Load 360 images without having to click                                                                     |
-| `autoLoadInterior360` | `boolean`                          | `false`           | Load interior 360 images without having to click                                                            |
-| `categoriesFilter`    | `string`                           | `*`               | Only display certain categories                                                                             |
-| `extendBehavior`      | `"full_screen"`/`"event"`/`"none"` | `"full_screen"`   | Handle extend mode                                                                                          |
-| `eventPrefix`         | `string`                           | `"cc-webplayer:"` | Prefix of cc-player events                                                                                  |
-| `demoSpin`            | `boolean`                          | `false`           | Run a spin once the 360 images has been loaded                                                              |
-| `reverse360`          | `boolean`                          | `false`           | Reverse the 360-degree rotation                                                                             |
-| `integration`         | `boolean`                          | `false`           | Allows to use maxItemsShown and disables permanentGallery with infiniteCarrousel, enables hideCategoriesNav |
-| `maxItemsShown`       | `number`                           | `1`               | Maximum number of items to display in the gallery                                                           |
+| Prop                          | Type                               | Default           | Description                                                                                                                                      |
+| ----------------------------- | ---------------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `compositionUrl`              | `string`                           | ❌ Required       | URL to the composition data                                                                                                                      |
+| `hideCategoriesNav`           | `boolean`                          | `false`           | Hide the category-based navigation                                                                                                               |
+| `infiniteCarrousel`           | `boolean`                          | `false`           | Allow to navigate from 1st to last media (and vice versa)                                                                                        |
+| `permanentGallery`            | `boolean`                          | `false`           | Display gallery under the carrousel                                                                                                              |
+| `mediaLoadStrategy`           | `"quality"`/`"balanced"`/`"speed"` | `"quality"`       | Strategy for loading medias.                                                                                                                     |
+| `minMediaWidth`               | `number`                           | `0`               | Force minimum media width (in pixels)                                                                                                            |
+| `maxMediaWidth`               | `number`                           | `Infinity`        | Force maximum media width (in pixels)                                                                                                            |
+| `preloadRange`                | `number`                           | `1`               | Number of items to preload before and after the viewport                                                                                         |
+| `autoLoad360`                 | `boolean`                          | `false`           | Load 360 images without having to click                                                                                                          |
+| `autoLoadInterior360`         | `boolean`                          | `false`           | Load interior 360 images without having to click                                                                                                 |
+| `categoriesFilter`            | `string`                           | `*`               | Only display certain categories                                                                                                                  |
+| `extendBehavior`              | `"full_screen"`/`"event"`/`"none"` | `"full_screen"`   | Handle extend mode                                                                                                                               |
+| `eventPrefix`                 | `string`                           | `"cc-webplayer:"` | Prefix of cc-player events                                                                                                                       |
+| `demoSpin`                    | `boolean`                          | `false`           | Run a spin once the 360 images has been loaded                                                                                                   |
+| `reverse360`                  | `boolean`                          | `false`           | Reverse the 360-degree rotation                                                                                                                  |
+| `integration`                 | `boolean`                          | `false`           | Allows to use maxItemsShown and disables permanentGallery with infiniteCarrousel, enables hideCategoriesNav                                      |
+| `maxItemsShown`               | `number`                           | `1`               | Maximum number of items to display in the gallery                                                                                                |
+| `analyticsUrl`                | `string`                           | ``                | A URL to send simple tracking / analytic events                                                                                                  |
+| `analyticsBearer`             | `string`                           | ``                | A Bearer token to authenticate when sending requests to `analyticUrl`                                                                            |
+| `analyticsSimpleRequestsOnly` | `boolean`                          | `false`           | A flag if only Simple-Requests should be sent. Will disable `analyticsBearer`. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS |
+| `analyticsDryRun`             | `boolean`                          | `false`           | A flag if the tracking / analytic events should be just output to the console instead of actually send to the `analyticsUrl`                     |
+| `analyticsDebug`              | `boolean`                          | `false`           | A flag if the tracking / analytic events should output debug information to the console                                                          |
 
 _NOTE: If you are using the WebComponent directly, you need to transform the props to HTML attributes
 (which are in dashed-case and take `string` as value type)_

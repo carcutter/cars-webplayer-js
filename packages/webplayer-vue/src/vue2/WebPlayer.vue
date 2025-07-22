@@ -45,6 +45,12 @@ export default defineComponent({
     eventPrefix: String,
     demoSpin: Boolean,
     reverse360: Boolean,
+
+    analyticsUrl: String,
+    analyticsBearer: String,
+    analyticsSimpleRequestsOnly: Boolean,
+    analyticsDryRun: Boolean,
+    analyticsDebug: Boolean,
   },
   data() {
     return {

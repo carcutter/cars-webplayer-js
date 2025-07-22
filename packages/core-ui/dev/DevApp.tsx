@@ -50,6 +50,11 @@ const DevApp: React.FC = () => {
           // eventPrefix="cc-event:"
           demoSpin
           // reverse360
+          analyticsUrl="https://webhook.site/c741ae58-f329-41c6-84a4-136aba2cfd96"
+          analyticsBearer="1234567890"
+          analyticsSimpleRequestsOnly={true}
+          analyticsDryRun={false}
+          analyticsDebug={true}
         >
           <WebPlayerCustomMedia
             index={4}
@@ -64,7 +69,7 @@ const DevApp: React.FC = () => {
             <img src="https://prod.pictures.autoscout24.net/listing-images/4ac589e2-40e3-47b8-a211-579d2e07125e_b277b9ec-63d5-4900-9003-77dd029364dc.jpg/720x540.webp" />
           </WebPlayerCustomMedia> */}
 
-          <WebPlayerIcon name="TIRESPIN">
+          <WebPlayerIcon name="UI_360_PLAY">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"

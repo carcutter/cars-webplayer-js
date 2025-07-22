@@ -1,6 +1,6 @@
 {
   "extends": "@car-cutter/typescript-config/base.json",
 
-  "include": ["index.ts", "src"],
+  "include": ["index.ts", "src", "../core-ui/src/hooks/analytics.hooks.ts"],
   "exclude": ["dist", "node_modules"]
 }
