@@ -44,6 +44,7 @@ export type DetailsOverlayProps = {
  * - Renders CdnImage with dynamic srcSet and sizes attributes
  * - Different aspect ratios per variant (50% height for centered, flexible for aside, 85% for fullwidth)
  * - Object-contain fitting with background fallback
+ * - Intelligent aspect ratio style application that respects variant-specific layout constraints
  *
  * @param className - Optional CSS class name for additional styling
  * @param children - Optional React children (typically close button or other controls)
@@ -56,6 +57,7 @@ export type DetailsOverlayProps = {
  * @param extendMode - Whether extend mode is active (affects text sizing)
  * @param variant - Layout variant override ("centered" | "aside" | "fullwidth")
  * @param maxItemsShown - Number of items shown in carousel (affects width calculation, defaults to 1)
+ * @param aspectRatioStyle - Optional CSS properties for aspect ratio styling applied to images
  *
  * @example
  * ```tsx
@@ -94,7 +96,49 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
     return "aside";
   };
 
+  const hasDescriptions = () => Boolean(title || description);
+
   const currentVariant = determineVariant();
+
+  /**
+   * Intelligently applies aspectRatioStyle based on variant and existing CSS constraints
+   * to avoid conflicts with variant-specific layout requirements
+   */
+  const getImageStyle = (variant: "centered" | "aside" | "fullwidth") => {
+    if (!aspectRatioStyle) return {};
+
+    switch (variant) {
+      case "centered":
+        // For centered variant, respect the max-height constraint
+        // Only apply aspect ratio if it doesn't conflict with height constraints
+        return {
+          ...aspectRatioStyle,
+          // Preserve max-height constraint from CSS classes
+          maxHeight: hasDescriptions() ? "50%" : "100%",
+        };
+
+      case "aside":
+        // For aside variant, the image uses flex-1, so aspect ratio should work well
+        // But we need to ensure it doesn't break the flex layout
+        return {
+          ...aspectRatioStyle,
+          // Ensure the image can still flex properly
+          minHeight: 0,
+          flex: "1 1 auto",
+        };
+
+      case "fullwidth":
+        // For fullwidth variant, respect the 85% height constraint
+        return {
+          ...aspectRatioStyle,
+          // Preserve height constraint from CSS classes
+          height: "85%",
+        };
+
+      default:
+        return aspectRatioStyle;
+    }
+  };
 
   if (currentVariant === "centered") {
     return (
@@ -108,46 +152,52 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
       >
         <div
           className={cn(
-            "flex h-full max-w-[60%] flex-col bg-background transition-transform duration-details",
-            isVisible ? "translate-x-0" : "translate-x-full"
+            "flex h-full flex-col bg-background transition-transform duration-details",
+            isVisible ? "translate-x-0" : "translate-x-full",
+            hasDescriptions() ? "max-w-[60%]" : "w-full"
           )}
         >
           {children}
           {isVisible && (
             <>
               <CdnImage
-                className="max-h-[50%] w-full bg-foreground/65 object-contain"
+                className={cn(
+                  hasDescriptions() ? "max-h-[50%]" : "h-full",
+                  "w-full bg-foreground/65 object-contain"
+                )}
                 src={url || ""}
-                style={aspectRatioStyle}
+                style={getImageStyle("centered")}
                 imgInPlayerWidthRatio={0.6}
               />
-              <div
-                className={cn(
-                  "flex-1 space-y-1 overflow-y-auto px-2 py-1 small:p-3",
-                  extendMode && "large:p-4"
-                )}
-              >
-                {title && (
-                  <span
-                    className={cn(
-                      "text-sm font-semibold small:text-base small:font-bold",
-                      extendMode && "large:text-lg"
-                    )}
-                  >
-                    {title}
-                  </span>
-                )}
-                {description && (
-                  <p
-                    className={cn(
-                      "text-xs text-foreground/65 small:text-sm",
-                      extendMode && "large:text-base"
-                    )}
-                  >
-                    {description}
-                  </p>
-                )}
-              </div>
+              {hasDescriptions() && (
+                <div
+                  className={cn(
+                    "flex-1 space-y-1 overflow-y-auto px-2 py-1 small:p-3",
+                    extendMode && "large:p-4"
+                  )}
+                >
+                  {title && (
+                    <span
+                      className={cn(
+                        "text-sm font-semibold small:text-base small:font-bold",
+                        extendMode && "large:text-lg"
+                      )}
+                    >
+                      {title}
+                    </span>
+                  )}
+                  {description && (
+                    <p
+                      className={cn(
+                        "text-xs text-foreground/65 small:text-sm",
+                        extendMode && "large:text-base"
+                      )}
+                    >
+                      {description}
+                    </p>
+                  )}
+                </div>
+              )}
             </>
           )}
         </div>
@@ -182,7 +232,7 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
               <CdnImage
                 className="min-h-0 w-full flex-1 bg-foreground/65 object-contain"
                 src={url || ""}
-                style={aspectRatioStyle}
+                style={getImageStyle("aside")}
                 imgInPlayerWidthRatio={0.6}
               />
               <div className="min-h-[15%] shrink-0 space-y-1 p-2 small:p-3">
@@ -240,6 +290,7 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
             <CdnImage
               className="h-[85%] w-full bg-foreground/65 object-contain"
               src={url}
+              style={getImageStyle("fullwidth")}
               imgInPlayerWidthRatio={0.6}
             />
             <div className="h-[15%] space-y-1 overflow-y-auto px-2 py-1 small:p-3">
