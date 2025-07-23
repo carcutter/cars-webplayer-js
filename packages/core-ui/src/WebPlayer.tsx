@@ -165,7 +165,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
     ]
   );
 
-  // Identify event
+  // Analytics - Identify
   const [identifyEvent] = useState<AnalyticsIdentifyEventProps>({
     type: "identify" as const,
     browser_id: analyticsBrowserId,
@@ -195,9 +195,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
     },
   });
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      emitAnalyticsEvent(identifyEvent);
-    }, 0);
+    const timeout = setTimeout(() => emitAnalyticsEvent(identifyEvent), 0);
     return () => clearTimeout(timeout);
   }, [emitAnalyticsEvent, identifyEvent]);
 

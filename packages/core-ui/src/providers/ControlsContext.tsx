@@ -16,6 +16,7 @@ import {
   EVENT_HOTSPOTS_OFF,
   EVENT_HOTSPOTS_ON,
   type Item as CompositionItem,
+  AnalyticsPageEventProps,
 } from "@car-cutter/core";
 
 import { RESIZE_TRANSITION_DURATION } from "../const/browser";
@@ -110,8 +111,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     infiniteCarrousel,
     extendBehavior,
     integration,
-
     emitEvent,
+    emitAnalyticsEvent,
     isFullScreen,
     requestFullscreen,
     exitFullscreen,
@@ -293,18 +294,18 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     if (currentItem.type === "custom") {
       // Find the first non-custom item before the custom item
       // If there is no item before, find the first non-custom item after
-      const neighbourItem =
+      const neighborItem =
         items
           .slice(0, masterItemIndex)
           .reverse()
           .find(item => item.type !== "custom") ??
         items.slice(masterItemIndex + 1).find(item => item.type !== "custom");
 
-      if (!neighbourItem) {
+      if (!neighborItem) {
         throw new Error("No non-custom item found");
       }
 
-      usedItem = neighbourItem;
+      usedItem = neighborItem;
     } else {
       usedItem = currentItem;
     }
@@ -459,7 +460,6 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const zoomOut = useCallback(() => shiftZoom(-ZOOM_STEP), [shiftZoom]);
 
   // -- Side effects
-
   const resetView = useCallback(() => {
     resetZoom();
     resetShownDetails();
@@ -547,7 +547,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     }
   }, [disableExtendMode, enableExtendMode, extendMode]);
 
-  // Listen to fullscreen changes (mandatory to get the full screen close with Echap)
+  // Listen to fullscreen changes (mandatory to get the full screen close with ESC)
   useEffect(() => {
     if (extendBehavior !== "full_screen") {
       return;
@@ -573,6 +573,34 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     fakeFullScreen,
     isFullScreen,
     triggerExtendTransition,
+  ]);
+
+  // Analytics - Page
+  const displayedCategoryName = useMemo(
+    () =>
+      categories.find(({ id }) => id === displayedCategoryId)?.title ??
+      displayedCategoryId,
+    [categories, displayedCategoryId]
+  );
+  const categorySize = useMemo(() => items.length, [items]);
+  useEffect(() => {
+    const pageEvent: AnalyticsPageEventProps = {
+      type: "page",
+      category_id: displayedCategoryId,
+      category_name: displayedCategoryName,
+      category_size: categorySize,
+      item_type: currentItem.type,
+      item_position: carrouselItemIndex,
+    };
+    const timeout = setTimeout(() => emitAnalyticsEvent(pageEvent), 0);
+    return () => clearTimeout(timeout);
+  }, [
+    displayedCategoryId,
+    displayedCategoryName,
+    categorySize,
+    currentItem.type,
+    carrouselItemIndex,
+    emitAnalyticsEvent,
   ]);
 
   return (

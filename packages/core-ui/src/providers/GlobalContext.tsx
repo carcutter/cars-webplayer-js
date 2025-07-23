@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 
-import type { WebPlayerProps } from "@car-cutter/core";
+import type { AnalyticsEventProps, WebPlayerProps } from "@car-cutter/core";
 
 type ProviderProps = Required<
   Pick<
@@ -24,7 +24,7 @@ type ProviderProps = Required<
 > & {
   maxItemsShown: number;
   emitEvent: (name: string, detail?: unknown) => void;
-
+  emitAnalyticsEvent: (event: AnalyticsEventProps) => Promise<void>;
   playerInViewportWidthRatio: number;
   isFullScreen: boolean;
   requestFullscreen: () => Promise<boolean>;
