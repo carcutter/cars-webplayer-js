@@ -9,7 +9,7 @@ import Hotspot from "../Hotspot";
 
 type Props = ZoomableCdnImageProps &
   ImageWithHotspots & {
-    itemIndex?: number;
+    itemIndex: number;
   };
 
 /**
@@ -37,7 +37,7 @@ const ImageElement: React.FC<Props> = ({
         <ZoomableCdnImage
           className="size-full object-cover"
           onLoad={e => {
-            if (itemIndex !== undefined) {
+            if (itemIndex !== undefined && itemIndex >= 0) {
               setItemInteraction(itemIndex, "ready");
             }
 
@@ -47,7 +47,14 @@ const ImageElement: React.FC<Props> = ({
         />
         {currentItemHotspotsVisible &&
           hotspots?.map((hotspot, index) => (
-            <Hotspot key={index} hotspot={hotspot} />
+            <Hotspot
+              key={index}
+              hotspot={hotspot}
+              item={{
+                item_type: "image",
+                item_position: itemIndex,
+              }}
+            />
           ))}
       </div>
     </div>

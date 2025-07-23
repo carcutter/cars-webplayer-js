@@ -57,8 +57,10 @@ export declare type AnalyticsPageEventProps = {
   category_id: string;
   category_name: string;
   category_size: number;
-  item_type: string;
-  item_position: number;
+  page_properties: {
+    item_type: string;
+    item_position: number;
+  };
 };
 
 export declare type AnalyticsTrackEventProps = {
@@ -75,7 +77,8 @@ export declare type AnalyticsTrackEventProps = {
       | number
       | string
       | symbol
-      | undefined;
+      | undefined
+      | object;
   };
 };
 

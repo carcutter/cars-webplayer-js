@@ -1,22 +1,75 @@
+import { useCallback, useMemo, useState } from "react";
+
 import type { Hotspot as HotspotType } from "@car-cutter/core";
 
 import { useControlsContext } from "../../providers/ControlsContext";
 import { useCustomizationContext } from "../../providers/CustomizationContext";
+import { useGlobalContext } from "../../providers/GlobalContext";
 import { cn } from "../../utils/style";
 import ImageIcon from "../icons/ImageIcon";
 
 type HotspotProps = {
   hotspot: HotspotType;
+  item: {
+    item_type: "image";
+    item_position: number;
+  };
 };
-type IconHotspotProps = HotspotProps;
+type IconHotspotProps = HotspotProps & {
+  analyticsValue: object;
+};
 
-const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
+const IconHotspot: React.FC<IconHotspotProps> = ({
+  hotspot,
+  item,
+  analyticsValue,
+}) => {
   const { title, icon, description, position, detail } = hotspot;
+  const { emitAnalyticsEvent } = useGlobalContext();
+  const {
+    extendMode,
+    setShownDetails,
+    displayedCategoryId,
+    displayedCategoryName,
+  } = useControlsContext();
+
+  const emitAnalyticsEventHotspot = useCallback(
+    (type: "click" | "hover") => {
+      const actionName =
+        type === "click" ? "Hotspot Clicked" : "Hotspot Hovered";
+      const actionField =
+        type === "click" ? "hotspot_clicked" : "hotspot_hovered";
+      emitAnalyticsEvent({
+        type: "track",
+        category_id: displayedCategoryId,
+        category_name: displayedCategoryName,
+        action_properties: {
+          action_name: actionName,
+          action_field: actionField,
+          action_value: {
+            item,
+            ...(analyticsValue ? analyticsValue : {}),
+          },
+        },
+      });
+    },
+    [
+      emitAnalyticsEvent,
+      displayedCategoryId,
+      displayedCategoryName,
+      item,
+      analyticsValue,
+    ]
+  );
+  const emitAnalyticsEventHotspotClicked = useCallback(() => {
+    emitAnalyticsEventHotspot("click");
+  }, [emitAnalyticsEventHotspot]);
+  const emitAnalyticsEventHotspotHovered = useCallback(() => {
+    emitAnalyticsEventHotspot("hover");
+  }, [emitAnalyticsEventHotspot]);
 
   const { getIconConfig } = useCustomizationContext();
   const hotspotConfig = icon ? getIconConfig(icon) : undefined;
-
-  const { extendMode, setShownDetails } = useControlsContext();
 
   const clickable = !!detail;
   const withImage = detail?.type === "image";
@@ -29,6 +82,8 @@ const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
   );
 
   const onClick = () => {
+    emitAnalyticsEventHotspotClicked();
+
     if (!withImage) {
       // Do nothing as the <a> tag will handle the click
       return;
@@ -41,6 +96,18 @@ const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
     });
   };
 
+  const [over, setOver] = useState(false);
+  const onMouseEnter = useCallback(() => {
+    if (over) return;
+    setOver(true);
+    emitAnalyticsEventHotspotHovered();
+  }, [over, setOver, emitAnalyticsEventHotspotHovered]);
+
+  const onMouseLeave = useCallback(() => {
+    if (!over) return;
+    setOver(false);
+  }, [over, setOver]);
+
   return (
     <div
       className={cn(
@@ -52,6 +119,8 @@ const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
         left: `${100 * hotspot.position.x}%`,
       }}
       onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <div
         // Hoverable icon
@@ -101,10 +170,46 @@ const IconHotspot: React.FC<IconHotspotProps> = ({ hotspot }) => {
   );
 };
 
-const Hotspot: React.FC<HotspotProps> = ({ hotspot }) => {
-  const { detail } = hotspot;
+const Hotspot: React.FC<HotspotProps> = ({ hotspot, item }) => {
+  const { detail, title, description, position } = hotspot;
 
-  const IconComp = <IconHotspot hotspot={hotspot} />;
+  const text = useMemo(
+    () =>
+      title || description
+        ? {
+            ...(title ? { title } : {}),
+            ...(description ? { description } : {}),
+          }
+        : undefined,
+    [title, description]
+  );
+
+  const hotspotInfo = useMemo(
+    () =>
+      text || position
+        ? {
+            ...(text ? { text } : {}),
+            ...(position ? { position } : {}),
+          }
+        : undefined,
+    [text, position]
+  );
+
+  const analyticsValue = useMemo(
+    () => ({
+      ...(hotspotInfo ? { hotspot: hotspotInfo } : {}),
+      ...(detail ? { detail } : {}),
+    }),
+    [hotspotInfo, detail]
+  );
+
+  const IconComp = (
+    <IconHotspot
+      hotspot={hotspot}
+      item={item}
+      analyticsValue={analyticsValue}
+    />
+  );
 
   switch (detail?.type) {
     case "link":

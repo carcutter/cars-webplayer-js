@@ -454,7 +454,11 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
               className="pointer-events-none !absolute left-0 top-0 -z-10"
             />
           ))}
-          <ImageElement {...images[imageIndex]} onlyPreload={onlyPreload} />
+          <ImageElement
+            {...images[imageIndex]}
+            onlyPreload={onlyPreload}
+            itemIndex={-1}
+          />
         </div>
         {/* Add space on both sides to allow scrolling */}
         {/* NOTE: We need the element to have an height, otherwise, Safari will ignore it */}
@@ -475,7 +479,8 @@ type ThreeSixtyElementPlaceholderProps = {
 const ThreeSixtyElementPlaceholder: React.FC<
   ThreeSixtyElementPlaceholderProps
 > = ({ images, onPlaceholderImageLoaded, onSpinImagesLoaded, onError }) => {
-  const { autoLoad360 } = useGlobalContext();
+  const { autoLoad360, emitAnalyticsEvent } = useGlobalContext();
+  const { displayedCategoryId, displayedCategoryName } = useControlsContext();
 
   const imagesSrc = useMemo(() => images.map(({ src }) => src), [images]);
 
@@ -490,13 +495,37 @@ const ThreeSixtyElementPlaceholder: React.FC<
       100
     : null;
 
-  const fetchSpinImages = useCallback(() => {
-    if (loadingProgress !== null) {
-      return;
-    }
+  const fetchSpinImages = useCallback(
+    (type: "click" | "auto") => {
+      if (loadingProgress !== null) {
+        return;
+      }
 
-    setLoadingStatusMap(new Map(imagesSrc.map(src => [src, false])));
-  }, [imagesSrc, loadingProgress]);
+      setLoadingStatusMap(new Map(imagesSrc.map(src => [src, false])));
+      emitAnalyticsEvent({
+        type: "track",
+        category_id: displayedCategoryId,
+        category_name: displayedCategoryName,
+        action_properties: {
+          action_name: "Exterior 360 Play",
+          action_field: "exterior_360_play",
+          action_value: type,
+        },
+      });
+    },
+    [
+      imagesSrc,
+      loadingProgress,
+      emitAnalyticsEvent,
+      displayedCategoryId,
+      displayedCategoryName,
+    ]
+  );
+
+  // Click play
+  const onClickPLayButton = useCallback(() => {
+    fetchSpinImages("click");
+  }, [fetchSpinImages]);
 
   const onImageLoaded = useCallback((image: string) => {
     setLoadingStatusMap(prev => {
@@ -506,10 +535,10 @@ const ThreeSixtyElementPlaceholder: React.FC<
     });
   }, []);
 
-  // If autoLoad360 is enabled, we start loading the images
+  // Autoplay
   useEffect(() => {
     if (autoLoad360) {
-      fetchSpinImages();
+      fetchSpinImages("auto");
     }
   }, [autoLoad360, fetchSpinImages]);
 
@@ -544,7 +573,7 @@ const ThreeSixtyElementPlaceholder: React.FC<
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
         <ThreeSixtyIcon className="size-20" />
 
-        <Button color="neutral" shape="icon" onClick={fetchSpinImages}>
+        <Button color="neutral" shape="icon" onClick={onClickPLayButton}>
           <Exterior360PlayIcon className="size-full" />
         </Button>
 

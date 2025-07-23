@@ -54,6 +54,7 @@ type ContextType = {
   scrollToItemIndex: (index: number) => void;
 
   displayedCategoryId: string;
+  displayedCategoryName: string;
   changeCategory: (categoryId: string) => void;
 
   enableHotspotsControl: boolean;
@@ -114,8 +115,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     emitEvent,
     emitAnalyticsEvent,
     isFullScreen,
-    requestFullscreen,
-    exitFullscreen,
+    requestFullscreen: _requestFullscreen,
+    exitFullscreen: _exitFullscreen,
   } = useGlobalContext();
 
   const { customMediaList } = useCustomizationContext();
@@ -188,78 +189,6 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
   const { effectiveMaxItemsShown } = useIntegration();
 
-  const prevItem = useCallback(() => {
-    // Command still running
-    if (isRunningSpecialCommand || itemIndexCommand !== null) {
-      return;
-    }
-
-    const target = carrouselItemIndex - 1;
-    // Check if we not need to cycle
-    if (target >= 0) {
-      setItemIndexCommand(target);
-    } else if (infiniteCarrousel) {
-      setSpecialCommand("first_to_last");
-      // For multiple items shown, target the last valid position
-      const visibleItemsCount = Math.ceil(effectiveMaxItemsShown);
-      // Account for the extra empty slide when maxItemsShown has fractional part and infinite carousel is disabled
-      const totalSlides =
-        items.length +
-        (integration && !infiniteCarrousel && effectiveMaxItemsShown % 1 !== 0
-          ? 1
-          : 0);
-      const lastValidIndex =
-        effectiveMaxItemsShown > 1
-          ? Math.max(0, totalSlides - visibleItemsCount)
-          : items.length - 1;
-      setItemIndexCommand(lastValidIndex);
-    }
-  }, [
-    isRunningSpecialCommand,
-    itemIndexCommand,
-    carrouselItemIndex,
-    infiniteCarrousel,
-    items.length,
-    integration,
-    effectiveMaxItemsShown,
-  ]);
-
-  const nextItem = useCallback(() => {
-    // Command still running
-    if (isRunningSpecialCommand || itemIndexCommand !== null) {
-      return;
-    }
-
-    const target = carrouselItemIndex + 1;
-    const visibleItemsCount = Math.ceil(effectiveMaxItemsShown);
-    // Account for the extra empty slide when maxItemsShown has fractional part and infinite carousel is disabled
-    const totalSlides =
-      items.length +
-      (integration && !infiniteCarrousel && effectiveMaxItemsShown % 1 !== 0
-        ? 1
-        : 0);
-    const maxValidIndex =
-      effectiveMaxItemsShown > 1
-        ? Math.max(0, totalSlides - visibleItemsCount)
-        : items.length - 1;
-
-    // Check if we not need to cycle
-    if (target <= maxValidIndex) {
-      setItemIndexCommand(target);
-    } else if (infiniteCarrousel) {
-      setSpecialCommand("last_to_first");
-      setItemIndexCommand(0);
-    }
-  }, [
-    isRunningSpecialCommand,
-    itemIndexCommand,
-    carrouselItemIndex,
-    items.length,
-    infiniteCarrousel,
-    integration,
-    effectiveMaxItemsShown,
-  ]);
-
   const scrollToItemIndex = useCallback(
     (index: number) => {
       // Check if everything is ready between carrousel and command
@@ -279,13 +208,6 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     },
     [carrouselItemIndex, itemInteractionList]
   );
-
-  useEffect(() => {
-    emitEvent(EVENT_ITEM_CHANGE, {
-      index: masterItemIndex,
-      item: currentItem,
-    });
-  }, [currentItem, emitEvent, masterItemIndex]);
 
   // -- Categories
   const displayedCategoryId = useMemo(() => {
@@ -318,7 +240,13 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
     throw new Error("Current item not found in any category");
   }, [categories, currentItem, items, masterItemIndex]);
-
+  const displayedCategoryName = useMemo(
+    () =>
+      categories.find(({ id }) => id === displayedCategoryId)?.title ??
+      displayedCategoryId,
+    [categories, displayedCategoryId]
+  );
+  const categorySize = useMemo(() => items.length, [items]);
   const changeCategory = useCallback(
     (categoryId: string) => {
       const target = categories.find(({ id }) => id === categoryId)?.items[0];
@@ -333,6 +261,133 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     },
     [categories, items, scrollToItemIndex]
   );
+
+  const prevItem = useCallback(() => {
+    // Command still running
+    if (isRunningSpecialCommand || itemIndexCommand !== null) {
+      return;
+    }
+
+    const target = carrouselItemIndex - 1;
+    // Check if we not need to cycle
+    if (target >= 0) {
+      setItemIndexCommand(target);
+    } else if (infiniteCarrousel) {
+      setSpecialCommand("first_to_last");
+      // For multiple items shown, target the last valid position
+      const visibleItemsCount = Math.ceil(effectiveMaxItemsShown);
+      // Account for the extra empty slide when maxItemsShown has fractional part and infinite carousel is disabled
+      const totalSlides =
+        items.length +
+        (integration && !infiniteCarrousel && effectiveMaxItemsShown % 1 !== 0
+          ? 1
+          : 0);
+      const lastValidIndex =
+        effectiveMaxItemsShown > 1
+          ? Math.max(0, totalSlides - visibleItemsCount)
+          : items.length - 1;
+      setItemIndexCommand(lastValidIndex);
+    }
+    emitAnalyticsEvent({
+      type: "track",
+      category_id: displayedCategoryId,
+      category_name: displayedCategoryName,
+      action_properties: {
+        action_name: "Item Navigation",
+        action_field: "item_navigation",
+        action_value: "prev",
+      },
+    });
+  }, [
+    isRunningSpecialCommand,
+    itemIndexCommand,
+    carrouselItemIndex,
+    infiniteCarrousel,
+    items.length,
+    integration,
+    effectiveMaxItemsShown,
+    emitAnalyticsEvent,
+    displayedCategoryId,
+    displayedCategoryName,
+  ]);
+  const nextItem = useCallback(() => {
+    // Command still running
+    if (isRunningSpecialCommand || itemIndexCommand !== null) {
+      return;
+    }
+
+    const target = carrouselItemIndex + 1;
+    const visibleItemsCount = Math.ceil(effectiveMaxItemsShown);
+    // Account for the extra empty slide when maxItemsShown has fractional part and infinite carousel is disabled
+    const totalSlides =
+      items.length +
+      (integration && !infiniteCarrousel && effectiveMaxItemsShown % 1 !== 0
+        ? 1
+        : 0);
+    const maxValidIndex =
+      effectiveMaxItemsShown > 1
+        ? Math.max(0, totalSlides - visibleItemsCount)
+        : items.length - 1;
+
+    // Check if we not need to cycle
+    if (target <= maxValidIndex) {
+      setItemIndexCommand(target);
+    } else if (infiniteCarrousel) {
+      setSpecialCommand("last_to_first");
+      setItemIndexCommand(0);
+    }
+    emitAnalyticsEvent({
+      type: "track",
+      category_id: displayedCategoryId,
+      category_name: displayedCategoryName,
+      action_properties: {
+        action_name: "Item Navigation",
+        action_field: "item_navigation",
+        action_value: "next",
+      },
+    });
+  }, [
+    isRunningSpecialCommand,
+    itemIndexCommand,
+    carrouselItemIndex,
+    items.length,
+    infiniteCarrousel,
+    integration,
+    effectiveMaxItemsShown,
+    emitAnalyticsEvent,
+    displayedCategoryId,
+    displayedCategoryName,
+  ]);
+
+  useEffect(() => {
+    emitEvent(EVENT_ITEM_CHANGE, {
+      index: masterItemIndex,
+      item: currentItem,
+    });
+  }, [currentItem, emitEvent, masterItemIndex]);
+
+  // Analytics - Page
+  useEffect(() => {
+    const pageEvent: AnalyticsPageEventProps = {
+      type: "page",
+      category_id: displayedCategoryId,
+      category_name: displayedCategoryName,
+      category_size: categorySize,
+      page_properties: {
+        item_type: currentItem.type,
+        item_position: carrouselItemIndex,
+      },
+    };
+    const timeout = setTimeout(() => emitAnalyticsEvent(pageEvent), 0);
+    return () => clearTimeout(timeout);
+  }, [
+    displayedCategoryId,
+    displayedCategoryName,
+    categorySize,
+    currentItem.type,
+    carrouselItemIndex,
+    emitAnalyticsEvent,
+  ]);
 
   // -- Hotspots
   const enableHotspotsControl = useMemo(() => {
@@ -398,14 +453,37 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         [masterItemIndex]: newValue,
       }));
       emitEvent(newValue ? EVENT_HOTSPOTS_ON : EVENT_HOTSPOTS_OFF);
+      emitAnalyticsEvent({
+        type: "track",
+        category_id: displayedCategoryId,
+        category_name: displayedCategoryName,
+        action_properties: {
+          action_name: "Hotspots Toggle Clicked",
+          action_field: "hotspots_toggle_state",
+          action_value: newValue,
+        },
+      });
     } else {
       // In normal mode or integration non-fullscreen, toggle global hotspots
       const newValue = !showHotspots;
       setShowHotspots(newValue);
       emitEvent(newValue ? EVENT_HOTSPOTS_ON : EVENT_HOTSPOTS_OFF);
+      emitAnalyticsEvent({
+        type: "track",
+        category_id: displayedCategoryId,
+        category_name: displayedCategoryName,
+        action_properties: {
+          action_name: "Hotspots Toggle Clicked",
+          action_field: "hotspots_toggle_state",
+          action_value: newValue,
+        },
+      });
     }
   }, [
     emitEvent,
+    emitAnalyticsEvent,
+    displayedCategoryId,
+    displayedCategoryName,
     showHotspots,
     integration,
     isFullScreen,
@@ -429,7 +507,24 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
     setShowGallery(newValue);
     emitEvent(newValue ? EVENT_GALLERY_OPEN : EVENT_GALLERY_CLOSE);
-  }, [emitEvent, showGallery]);
+    emitAnalyticsEvent({
+      type: "track",
+      category_id: displayedCategoryId,
+      category_name: displayedCategoryName,
+      action_properties: {
+        action_name: "Gallery Toggle Clicked",
+        action_field: "gallery_toggle_state",
+        action_value: newValue,
+      },
+    });
+  }, [
+    showGallery,
+    setShowGallery,
+    emitEvent,
+    emitAnalyticsEvent,
+    displayedCategoryId,
+    displayedCategoryName,
+  ]);
 
   const [shownDetails, setShownDetails] = useState<Details | null>(null);
   const resetShownDetails = useCallback(() => setShownDetails(null), []);
@@ -447,15 +542,44 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         return false;
     }
   }, [currentItem.type, currentItemInteraction]);
-  const [zoom, setZoom] = useState(1);
+  const [zoom, _setZoom] = useState(1);
+  const setZoom = useCallback(
+    (setter: React.SetStateAction<number>) => {
+      const zoomLevel = typeof setter === "function" ? setter(zoom) : setter;
+      if (zoom === zoomLevel) {
+        return;
+      }
+      _setZoom(zoomLevel);
+      emitAnalyticsEvent({
+        type: "track",
+        category_id: displayedCategoryId,
+        category_name: displayedCategoryName,
+        action_properties: {
+          action_name: "Zoom Changed",
+          action_field: "zoom_level",
+          action_value: zoomLevel,
+        },
+      });
+    },
+    [
+      zoom,
+      _setZoom,
+      emitAnalyticsEvent,
+      displayedCategoryId,
+      displayedCategoryName,
+    ]
+  );
   const isZooming = zoom !== 1;
   const canZoomIn = zoom < MAX_ZOOM;
   const canZoomOut = zoom > 1;
 
-  const shiftZoom = useCallback((shift: number) => {
-    setZoom(prev => clamp(prev + shift, 1, MAX_ZOOM));
-  }, []);
-  const resetZoom = useCallback(() => setZoom(1), []);
+  const shiftZoom = useCallback(
+    (shift: number) => {
+      setZoom(prev => clamp(prev + shift, 1, MAX_ZOOM));
+    },
+    [setZoom]
+  );
+  const resetZoom = useCallback(() => setZoom(1), [setZoom]);
   const zoomIn = useCallback(() => shiftZoom(ZOOM_STEP), [shiftZoom]);
   const zoomOut = useCallback(() => shiftZoom(-ZOOM_STEP), [shiftZoom]);
 
@@ -477,8 +601,24 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       resetView();
       setExtendMode(newValue);
       emitEvent(newValue ? EVENT_EXTEND_MODE_ON : EVENT_EXTEND_MODE_OFF);
+      emitAnalyticsEvent({
+        type: "track",
+        category_id: displayedCategoryId,
+        category_name: displayedCategoryName,
+        action_properties: {
+          action_name: "Fake Fullscreen Toggle Clicked",
+          action_field: "fake_fullscreen_toggle_state",
+          action_value: newValue,
+        },
+      });
     },
-    [emitEvent, resetView]
+    [
+      emitEvent,
+      emitAnalyticsEvent,
+      resetView,
+      displayedCategoryId,
+      displayedCategoryName,
+    ]
   );
 
   // The extend transition allows to freeze the UI while resizing to avoid layer shifts & flickering
@@ -490,6 +630,50 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
     setExtendTransitionTimeout(timeout);
   }, [extendTransitionTimeout]);
+
+  const requestFullscreen = useCallback(async () => {
+    const success = await _requestFullscreen();
+    if (success) {
+      emitAnalyticsEvent({
+        type: "track",
+        category_id: displayedCategoryId,
+        category_name: displayedCategoryName,
+        action_properties: {
+          action_name: "Fullscreen Toggle Clicked",
+          action_field: "fullscreen_toggle_state",
+          action_value: true,
+        },
+      });
+    }
+    return success;
+  }, [
+    _requestFullscreen,
+    emitAnalyticsEvent,
+    displayedCategoryId,
+    displayedCategoryName,
+  ]);
+
+  const exitFullscreen = useCallback(async () => {
+    const success = await _exitFullscreen();
+    if (success) {
+      emitAnalyticsEvent({
+        type: "track",
+        category_id: displayedCategoryId,
+        category_name: displayedCategoryName,
+        action_properties: {
+          action_name: "Fullscreen Toggle Clicked",
+          action_field: "fullscreen_toggle_state",
+          action_value: false,
+        },
+      });
+    }
+    return success;
+  }, [
+    _exitFullscreen,
+    emitAnalyticsEvent,
+    displayedCategoryId,
+    displayedCategoryName,
+  ]);
 
   const enableExtendMode = useCallback(async () => {
     triggerExtendTransition();
@@ -575,34 +759,6 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     triggerExtendTransition,
   ]);
 
-  // Analytics - Page
-  const displayedCategoryName = useMemo(
-    () =>
-      categories.find(({ id }) => id === displayedCategoryId)?.title ??
-      displayedCategoryId,
-    [categories, displayedCategoryId]
-  );
-  const categorySize = useMemo(() => items.length, [items]);
-  useEffect(() => {
-    const pageEvent: AnalyticsPageEventProps = {
-      type: "page",
-      category_id: displayedCategoryId,
-      category_name: displayedCategoryName,
-      category_size: categorySize,
-      item_type: currentItem.type,
-      item_position: carrouselItemIndex,
-    };
-    const timeout = setTimeout(() => emitAnalyticsEvent(pageEvent), 0);
-    return () => clearTimeout(timeout);
-  }, [
-    displayedCategoryId,
-    displayedCategoryName,
-    categorySize,
-    currentItem.type,
-    carrouselItemIndex,
-    emitAnalyticsEvent,
-  ]);
-
   return (
     <ControlsContext.Provider
       value={{
@@ -624,6 +780,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         scrollToItemIndex,
 
         displayedCategoryId,
+        displayedCategoryName,
         changeCategory,
 
         enableHotspotsControl,
