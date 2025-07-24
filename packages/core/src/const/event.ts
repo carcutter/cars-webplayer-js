@@ -1,11 +1,5 @@
 // Functional events
 
-import {
-  AnalyticsEventTypeIdentify,
-  AnalyticsEventTypePage,
-  AnalyticsEventTypeTrack,
-} from "../types/analytics";
-
 export const EVENT_COMPOSITION_LOADING = "composition-loading";
 export const EVENT_COMPOSITION_LOADED = "composition-loaded";
 export const EVENT_COMPOSITION_LOAD_ERROR = "composition-load-error";
@@ -23,7 +17,6 @@ export const EVENT_GALLERY_CLOSE = "gallery-close";
 
 // Analytics events
 
-export const ANALYTICS_EVENT_IDENTIFY =
-  "identify" satisfies AnalyticsEventTypeIdentify;
-export const ANALYTICS_EVENT_PAGE = "page" satisfies AnalyticsEventTypePage;
-export const ANALYTICS_EVENT_TRACK = "track" satisfies AnalyticsEventTypeTrack;
+export const ANALYTICS_EVENT_IDENTIFY = "analytics-identify";
+export const ANALYTICS_EVENT_PAGE = "analytics-page";
+export const ANALYTICS_EVENT_TRACK = "analytics-track";

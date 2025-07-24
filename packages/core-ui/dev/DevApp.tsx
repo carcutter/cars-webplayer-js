@@ -4,8 +4,8 @@ import {
   AnalyticsIdentifyEvent,
   AnalyticsPageEvent,
   AnalyticsTrackEvent,
+  subscribeToAnalyticsEvents,
 } from "@car-cutter/core";
-import { subscribeToAnalyticsEvents } from "@car-cutter/core/src/utils";
 
 import WebPlayer from "../src/WebPlayer";
 import WebPlayerCustomMedia from "../src/WebPlayerCustomMedia";
@@ -116,10 +116,10 @@ const DevApp: React.FC = () => {
           // reverse360
           analyticsEventPrefix={analyticsEventPrefix}
           // analyticsUrl="https://webhook.site/62a6ddb1-a038-4207-85ff-fe961fafe904"
-          analyticsBearer="1234567890"
-          analyticsSimpleRequestsOnly={false}
-          analyticsDryRun={false}
-          analyticsDebug={true}
+          // analyticsBearer="1234567890"
+          // analyticsSimpleRequestsOnly=f{false}
+          // analyticsDryRun={false}
+          // analyticsDebug={true}
         >
           <WebPlayerCustomMedia
             index={4}

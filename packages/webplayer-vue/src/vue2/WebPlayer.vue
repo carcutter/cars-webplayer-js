@@ -15,11 +15,20 @@ import {
   type Item,
   type Composition,
   type WebPlayerProps,
+  AnalyticsIdentifyEvent,
+  AnalyticsPageEvent,
+  AnalyticsTrackEvent,
+  DEFAULT_ANALYTICS_EVENT_PREFIX,
 } from "@car-cutter/core";
 import {
   ensureCustomElementsDefinition,
   webPlayerPropsToAttributes,
 } from "@car-cutter/wc-webplayer";
+import {
+  ANALYTICS_EVENT_IDENTIFY,
+  ANALYTICS_EVENT_PAGE,
+  ANALYTICS_EVENT_TRACK,
+} from "@car-cutter/core/src/const/event";
 
 ensureCustomElementsDefinition();
 
@@ -56,6 +65,7 @@ export default defineComponent({
   data() {
     return {
       eventCbMap: new Map<string, EventListener>(),
+      analyticsEventCbMap: new Map<string, EventListener>(),
     };
   },
   computed: {
@@ -64,6 +74,7 @@ export default defineComponent({
     },
   },
   methods: {
+    // Functional events
     generateEventName(event: string): string {
       const eventPrefix = this.eventPrefix || DEFAULT_EVENT_PREFIX;
       return `${eventPrefix}${event}`;
@@ -97,12 +108,42 @@ export default defineComponent({
         document.addEventListener(eventName, eventListener);
       });
     },
+    // Analytics events
+    generateAnalyticsEventName(event: string): string {
+      const eventPrefix =
+        this.analyticsEventPrefix || DEFAULT_ANALYTICS_EVENT_PREFIX;
+      return `${eventPrefix}${event}`;
+    },
+    setupAnalyticsEventListeners(): void {
+      const eventListenerMap = {
+        [ANALYTICS_EVENT_IDENTIFY]: (event: AnalyticsIdentifyEvent) =>
+          this.$emit("analyticsIdentify", event),
+        [ANALYTICS_EVENT_PAGE]: (event: AnalyticsPageEvent) =>
+          this.$emit("analyticsPage", event),
+        [ANALYTICS_EVENT_TRACK]: (event: AnalyticsTrackEvent) =>
+          this.$emit("analyticsTrack", event),
+      };
+      Object.entries(eventListenerMap).forEach(([event, listener]) => {
+        if (!listener) return;
+
+        const eventName = this.generateAnalyticsEventName(event);
+        const eventListener = (event: Event) =>
+          listener((event as CustomEvent).detail);
+
+        this.analyticsEventCbMap.set(eventName, eventListener);
+        document.addEventListener(eventName, eventListener);
+      });
+    },
   },
   mounted() {
     this.setupEventListeners();
+    this.setupAnalyticsEventListeners();
   },
   beforeDestroy() {
     this.eventCbMap.forEach((eventListener, eventName) => {
+      document.removeEventListener(eventName, eventListener);
+    });
+    this.analyticsEventCbMap.forEach((eventListener, eventName) => {
       document.removeEventListener(eventName, eventListener);
     });
   },

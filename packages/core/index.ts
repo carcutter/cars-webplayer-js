@@ -19,6 +19,12 @@ export {
 } from "./src/const/event";
 
 export {
+  ANALYTICS_EVENT_IDENTIFY,
+  ANALYTICS_EVENT_PAGE,
+  ANALYTICS_EVENT_TRACK,
+} from "./src/const/event";
+
+export {
   DEFAULT_ANALYTICS_EVENT_PREFIX,
   DEFAULT_ANALYTICS_URL,
   DEFAULT_ANALYTICS_BEARER,
@@ -92,3 +98,5 @@ export type {
   AnalyticsTrackEvent,
   AnalyticsEvent,
 } from "./src/types/analytics";
+
+export { subscribeToAnalyticsEvents } from "./src/utils";
