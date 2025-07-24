@@ -30,9 +30,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
 
   const {
     items,
-
     slidable,
-
     carrouselItemIndex,
     setCarrouselItemIndex,
     itemIndexCommand,
@@ -40,7 +38,6 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     specialCommand,
     isRunningSpecialCommand,
     finishSpecialCommand,
-
     extendMode,
     extendTransition,
   } = useControlsContext();
@@ -241,11 +238,11 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     [
       cancelScrollAnimation,
       getSliderOrThrow,
-      setStyleSnapState,
       effectiveMaxItemsShown,
+      setStyleSnapState,
       items.length,
-      infiniteCarrousel,
       integration,
+      infiniteCarrousel,
     ]
   );
 

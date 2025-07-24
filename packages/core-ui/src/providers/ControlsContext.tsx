@@ -472,7 +472,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         item_type: currentItem.type,
         item_position: carrouselItemIndex,
         action_properties: {
-          action_name: "Hotspots Toggle Clicked",
+          action_name: "Hotspots Toggled",
           action_field: "hotspots_toggle_state",
           action_value: newValue,
         },
@@ -489,7 +489,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         item_type: currentItem.type,
         item_position: carrouselItemIndex,
         action_properties: {
-          action_name: "Hotspots Toggle Clicked",
+          action_name: "Hotspots Toggled",
           action_field: "hotspots_toggle_state",
           action_value: newValue,
         },
@@ -532,7 +532,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       item_type: currentItem.type,
       item_position: carrouselItemIndex,
       action_properties: {
-        action_name: "Gallery Toggle Clicked",
+        action_name: "Gallery Toggled",
         action_field: "gallery_toggle_state",
         action_value: newValue,
       },
@@ -632,7 +632,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         item_type: currentItem.type,
         item_position: carrouselItemIndex,
         action_properties: {
-          action_name: "Fake Fullscreen Toggle Clicked",
+          action_name: "Fake Fullscreen Toggled",
           action_field: "fake_fullscreen_toggle_state",
           action_value: newValue,
         },
@@ -669,7 +669,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         item_type: currentItem.type,
         item_position: carrouselItemIndex,
         action_properties: {
-          action_name: "Fullscreen Toggle Clicked",
+          action_name: "Fullscreen Toggled",
           action_field: "fullscreen_toggle_state",
           action_value: true,
         },
@@ -695,7 +695,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         item_type: currentItem.type,
         item_position: carrouselItemIndex,
         action_properties: {
-          action_name: "Fullscreen Toggle Clicked",
+          action_name: "Fullscreen Toggled",
           action_field: "fullscreen_toggle_state",
           action_value: false,
         },
