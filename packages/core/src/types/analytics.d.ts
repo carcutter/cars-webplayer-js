@@ -67,6 +67,8 @@ export declare type AnalyticsTrackEventProps = {
   type: AnalyticsEventTypeTrack;
   category_id: string;
   category_name: string;
+  item_type: string;
+  item_position: number;
   action_properties: {
     action_name: string;
     action_field: string;

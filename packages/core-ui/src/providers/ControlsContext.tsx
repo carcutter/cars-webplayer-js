@@ -243,7 +243,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const displayedCategoryName = useMemo(
     () =>
       categories.find(({ id }) => id === displayedCategoryId)?.title ??
-      displayedCategoryId,
+      "Unnamed Category",
     [categories, displayedCategoryId]
   );
   const categorySize = useMemo(() => items.length, [items]);
@@ -292,6 +292,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       type: "track",
       category_id: displayedCategoryId,
       category_name: displayedCategoryName,
+      item_type: currentItem.type,
+      item_position: carrouselItemIndex,
       action_properties: {
         action_name: "Item Navigation",
         action_field: "item_navigation",
@@ -303,12 +305,13 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     itemIndexCommand,
     carrouselItemIndex,
     infiniteCarrousel,
-    items.length,
-    integration,
-    effectiveMaxItemsShown,
     emitAnalyticsEvent,
     displayedCategoryId,
     displayedCategoryName,
+    currentItem.type,
+    effectiveMaxItemsShown,
+    items.length,
+    integration,
   ]);
   const nextItem = useCallback(() => {
     // Command still running
@@ -340,6 +343,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       type: "track",
       category_id: displayedCategoryId,
       category_name: displayedCategoryName,
+      item_type: currentItem.type,
+      item_position: carrouselItemIndex,
       action_properties: {
         action_name: "Item Navigation",
         action_field: "item_navigation",
@@ -350,13 +355,14 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     isRunningSpecialCommand,
     itemIndexCommand,
     carrouselItemIndex,
-    items.length,
-    infiniteCarrousel,
-    integration,
     effectiveMaxItemsShown,
+    items.length,
+    integration,
+    infiniteCarrousel,
     emitAnalyticsEvent,
     displayedCategoryId,
     displayedCategoryName,
+    currentItem.type,
   ]);
 
   useEffect(() => {
@@ -368,6 +374,10 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
   // Analytics - Page
   useEffect(() => {
+    if (isRunningSpecialCommand || itemIndexCommand !== null) {
+      return;
+    }
+
     const pageEvent: AnalyticsPageEventProps = {
       type: "page",
       category_id: displayedCategoryId,
@@ -387,6 +397,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     currentItem.type,
     carrouselItemIndex,
     emitAnalyticsEvent,
+    isRunningSpecialCommand,
+    itemIndexCommand,
   ]);
 
   // -- Hotspots
@@ -457,6 +469,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         type: "track",
         category_id: displayedCategoryId,
         category_name: displayedCategoryName,
+        item_type: currentItem.type,
+        item_position: carrouselItemIndex,
         action_properties: {
           action_name: "Hotspots Toggle Clicked",
           action_field: "hotspots_toggle_state",
@@ -472,6 +486,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         type: "track",
         category_id: displayedCategoryId,
         category_name: displayedCategoryName,
+        item_type: currentItem.type,
+        item_position: carrouselItemIndex,
         action_properties: {
           action_name: "Hotspots Toggle Clicked",
           action_field: "hotspots_toggle_state",
@@ -480,15 +496,17 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       });
     }
   }, [
-    emitEvent,
-    emitAnalyticsEvent,
-    displayedCategoryId,
-    displayedCategoryName,
-    showHotspots,
     integration,
     isFullScreen,
     perSlideHotspots,
     masterItemIndex,
+    emitEvent,
+    emitAnalyticsEvent,
+    displayedCategoryId,
+    displayedCategoryName,
+    currentItem.type,
+    carrouselItemIndex,
+    showHotspots,
   ]);
 
   // -- Gallery
@@ -511,6 +529,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       type: "track",
       category_id: displayedCategoryId,
       category_name: displayedCategoryName,
+      item_type: currentItem.type,
+      item_position: carrouselItemIndex,
       action_properties: {
         action_name: "Gallery Toggle Clicked",
         action_field: "gallery_toggle_state",
@@ -519,11 +539,12 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     });
   }, [
     showGallery,
-    setShowGallery,
     emitEvent,
     emitAnalyticsEvent,
     displayedCategoryId,
     displayedCategoryName,
+    currentItem.type,
+    carrouselItemIndex,
   ]);
 
   const [shownDetails, setShownDetails] = useState<Details | null>(null);
@@ -554,6 +575,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         type: "track",
         category_id: displayedCategoryId,
         category_name: displayedCategoryName,
+        item_type: currentItem.type,
+        item_position: carrouselItemIndex,
         action_properties: {
           action_name: "Zoom Changed",
           action_field: "zoom_level",
@@ -563,10 +586,11 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     },
     [
       zoom,
-      _setZoom,
       emitAnalyticsEvent,
       displayedCategoryId,
       displayedCategoryName,
+      currentItem.type,
+      carrouselItemIndex,
     ]
   );
   const isZooming = zoom !== 1;
@@ -605,6 +629,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         type: "track",
         category_id: displayedCategoryId,
         category_name: displayedCategoryName,
+        item_type: currentItem.type,
+        item_position: carrouselItemIndex,
         action_properties: {
           action_name: "Fake Fullscreen Toggle Clicked",
           action_field: "fake_fullscreen_toggle_state",
@@ -613,11 +639,13 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       });
     },
     [
+      resetView,
       emitEvent,
       emitAnalyticsEvent,
-      resetView,
       displayedCategoryId,
       displayedCategoryName,
+      currentItem.type,
+      carrouselItemIndex,
     ]
   );
 
@@ -638,6 +666,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         type: "track",
         category_id: displayedCategoryId,
         category_name: displayedCategoryName,
+        item_type: currentItem.type,
+        item_position: carrouselItemIndex,
         action_properties: {
           action_name: "Fullscreen Toggle Clicked",
           action_field: "fullscreen_toggle_state",
@@ -651,6 +681,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     emitAnalyticsEvent,
     displayedCategoryId,
     displayedCategoryName,
+    currentItem.type,
+    carrouselItemIndex,
   ]);
 
   const exitFullscreen = useCallback(async () => {
@@ -660,6 +692,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         type: "track",
         category_id: displayedCategoryId,
         category_name: displayedCategoryName,
+        item_type: currentItem.type,
+        item_position: carrouselItemIndex,
         action_properties: {
           action_name: "Fullscreen Toggle Clicked",
           action_field: "fullscreen_toggle_state",
@@ -673,6 +707,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     emitAnalyticsEvent,
     displayedCategoryId,
     displayedCategoryName,
+    currentItem.type,
+    carrouselItemIndex,
   ]);
 
   const enableExtendMode = useCallback(async () => {

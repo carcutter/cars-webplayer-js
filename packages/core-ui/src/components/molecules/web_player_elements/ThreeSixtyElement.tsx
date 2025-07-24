@@ -470,6 +470,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 };
 
 type ThreeSixtyElementPlaceholderProps = {
+  itemIndex: number;
   images: ImageWithHotspots[];
   onPlaceholderImageLoaded: () => void;
   onSpinImagesLoaded: () => void;
@@ -478,7 +479,13 @@ type ThreeSixtyElementPlaceholderProps = {
 
 const ThreeSixtyElementPlaceholder: React.FC<
   ThreeSixtyElementPlaceholderProps
-> = ({ images, onPlaceholderImageLoaded, onSpinImagesLoaded, onError }) => {
+> = ({
+  itemIndex,
+  images,
+  onPlaceholderImageLoaded,
+  onSpinImagesLoaded,
+  onError,
+}) => {
   const { autoLoad360, emitAnalyticsEvent } = useGlobalContext();
   const { displayedCategoryId, displayedCategoryName } = useControlsContext();
 
@@ -506,6 +513,8 @@ const ThreeSixtyElementPlaceholder: React.FC<
         type: "track",
         category_id: displayedCategoryId,
         category_name: displayedCategoryName,
+        item_type: "exterior-360",
+        item_position: itemIndex,
         action_properties: {
           action_name: "Exterior 360 Play",
           action_field: "exterior_360_play",
@@ -514,11 +523,12 @@ const ThreeSixtyElementPlaceholder: React.FC<
       });
     },
     [
-      imagesSrc,
       loadingProgress,
+      imagesSrc,
       emitAnalyticsEvent,
       displayedCategoryId,
       displayedCategoryName,
+      itemIndex,
     ]
   );
 

@@ -43,13 +43,12 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
         type: "track",
         category_id: displayedCategoryId,
         category_name: displayedCategoryName,
+        item_type: item.item_type,
+        item_position: item.item_position,
         action_properties: {
           action_name: actionName,
           action_field: actionField,
-          action_value: {
-            item,
-            ...(analyticsValue ? analyticsValue : {}),
-          },
+          action_value: analyticsValue,
         },
       });
     },

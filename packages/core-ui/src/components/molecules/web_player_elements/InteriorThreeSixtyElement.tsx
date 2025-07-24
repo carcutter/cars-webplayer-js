@@ -18,6 +18,7 @@ import ErrorTemplate from "../../template/ErrorTemplate";
 import Button from "../../ui/Button";
 
 type InteriorThreeSixtyElementLoadControlsProps = {
+  itemIndex: number;
   isPannellumLoaded: boolean;
   isLoading: boolean;
   progress: number;
@@ -28,6 +29,7 @@ type InteriorThreeSixtyElementLoadControlsProps = {
 const InteriorThreeSixtyElementLoadControls: React.FC<
   InteriorThreeSixtyElementLoadControlsProps
 > = ({
+  itemIndex,
   isPannellumLoaded,
   isLoading,
   progress,
@@ -43,6 +45,8 @@ const InteriorThreeSixtyElementLoadControls: React.FC<
         type: "track",
         category_id: displayedCategoryId,
         category_name: displayedCategoryName,
+        item_type: "interior-360",
+        item_position: itemIndex,
         action_properties: {
           action_name: "Interior 360 Play",
           action_field: "interior_360_play",
@@ -50,7 +54,7 @@ const InteriorThreeSixtyElementLoadControls: React.FC<
         },
       });
     },
-    [emitAnalyticsEvent, displayedCategoryId, displayedCategoryName]
+    [emitAnalyticsEvent, displayedCategoryId, displayedCategoryName, itemIndex]
   );
 
   // Click play
@@ -278,6 +282,7 @@ const InteriorThreeSixtyElementInteractive: React.FC<
             progress={progress}
             autoloadInterior360={autoLoadInterior360}
             loadScene={loadScene}
+            itemIndex={itemIndex}
           />
         </div>
       </div>
