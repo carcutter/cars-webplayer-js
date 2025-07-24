@@ -119,6 +119,50 @@ const properties: Array<Property> = [
     defaultValue: "false",
     description: "Reverse the 360-degree rotation",
   },
+  {
+    propName: "analyticsEventPrefix",
+    attribute: "analytics-event-prefix",
+    type: "string",
+    defaultValue: '"cc-analytics:"',
+    description: "Prefix of cc-analytics events",
+  },
+  {
+    propName: "analyticsUrl",
+    attribute: "analytics-url",
+    type: "string",
+    description: "A URL to send simple tracking / analytic events",
+  },
+  {
+    propName: "analyticsBearer",
+    attribute: "analytics-bearer",
+    type: "string",
+    description:
+      "A Bearer token to authenticate when sending requests to `analyticsUrl`",
+  },
+  {
+    propName: "analyticsSimpleRequestsOnly",
+    attribute: "analytics-simple-requests-only",
+    type: "boolean",
+    defaultValue: "false",
+    description:
+      "A flag if only Simple-Requests should be sent. Will disable `analyticsBearer`.",
+  },
+  {
+    propName: "analyticsDryRun",
+    attribute: "analytics-dry-run",
+    type: "boolean",
+    defaultValue: "false",
+    description:
+      "A flag if the tracking / analytic events should be just output to the console instead of actually send to the `analyticsUrl`",
+  },
+  {
+    propName: "analyticsDebug",
+    attribute: "analytics-debug",
+    type: "boolean",
+    defaultValue: "false",
+    description:
+      "A flag if the tracking / analytic events should output debug information to the console",
+  },
 ];
 
 const WebPlayerPropertiesTable: React.FC = () => {

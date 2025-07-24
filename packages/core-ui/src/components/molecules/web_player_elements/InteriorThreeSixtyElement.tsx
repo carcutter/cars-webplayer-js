@@ -18,6 +18,7 @@ import ErrorTemplate from "../../template/ErrorTemplate";
 import Button from "../../ui/Button";
 
 type InteriorThreeSixtyElementLoadControlsProps = {
+  itemIndex: number;
   isPannellumLoaded: boolean;
   isLoading: boolean;
   progress: number;
@@ -28,18 +29,49 @@ type InteriorThreeSixtyElementLoadControlsProps = {
 const InteriorThreeSixtyElementLoadControls: React.FC<
   InteriorThreeSixtyElementLoadControlsProps
 > = ({
+  itemIndex,
   isPannellumLoaded,
   isLoading,
   progress,
   autoloadInterior360,
   loadScene,
 }) => {
+  const { emitAnalyticsEvent } = useGlobalContext();
+  const { displayedCategoryId, displayedCategoryName } = useControlsContext();
+
+  const emitAnalyticsEventInterior360Play = useCallback(
+    (type: "click" | "auto") => {
+      emitAnalyticsEvent({
+        type: "track",
+        category_id: displayedCategoryId,
+        category_name: displayedCategoryName,
+        item_type: "interior-360",
+        item_position: itemIndex,
+        action_properties: {
+          action_name: "Interior 360 Play",
+          action_field: "interior_360_play",
+          action_value: type,
+        },
+      });
+    },
+    [emitAnalyticsEvent, displayedCategoryId, displayedCategoryName, itemIndex]
+  );
+
+  // Click play
+  const onClickPLayButton = useCallback(() => {
+    loadScene();
+    emitAnalyticsEventInterior360Play("click");
+  }, [loadScene, emitAnalyticsEventInterior360Play]);
+
+  // Autoplay
+  useEffect(() => {
+    if (!autoloadInterior360) return;
+    loadScene();
+    emitAnalyticsEventInterior360Play("auto");
+  }, [autoloadInterior360, loadScene, emitAnalyticsEventInterior360Play]);
+
   if (isPannellumLoaded) {
     return null;
-  }
-
-  if (autoloadInterior360) {
-    loadScene();
   }
 
   return (
@@ -47,7 +79,7 @@ const InteriorThreeSixtyElementLoadControls: React.FC<
       <div className="pointer-events-auto absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
         <InteriorThreeSixtyIcon className="size-20" />
 
-        <Button color="neutral" shape="icon" onClick={loadScene}>
+        <Button color="neutral" shape="icon" onClick={onClickPLayButton}>
           <Interior360PlayIcon className="size-full" />
         </Button>
 
@@ -250,6 +282,7 @@ const InteriorThreeSixtyElementInteractive: React.FC<
             progress={progress}
             autoloadInterior360={autoLoadInterior360}
             loadScene={loadScene}
+            itemIndex={itemIndex}
           />
         </div>
       </div>

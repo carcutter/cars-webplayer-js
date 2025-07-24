@@ -16,6 +16,7 @@ import {
   EVENT_HOTSPOTS_OFF,
   EVENT_HOTSPOTS_ON,
   type Item as CompositionItem,
+  AnalyticsPageEventProps,
 } from "@car-cutter/core";
 
 import { RESIZE_TRANSITION_DURATION } from "../const/browser";
@@ -53,6 +54,7 @@ type ContextType = {
   scrollToItemIndex: (index: number) => void;
 
   displayedCategoryId: string;
+  displayedCategoryName: string;
   changeCategory: (categoryId: string) => void;
 
   enableHotspotsControl: boolean;
@@ -110,11 +112,11 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     infiniteCarrousel,
     extendBehavior,
     integration,
-
     emitEvent,
+    emitAnalyticsEvent,
     isFullScreen,
-    requestFullscreen,
-    exitFullscreen,
+    requestFullscreen: _requestFullscreen,
+    exitFullscreen: _exitFullscreen,
   } = useGlobalContext();
 
   const { customMediaList } = useCustomizationContext();
@@ -187,6 +189,79 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
   const { effectiveMaxItemsShown } = useIntegration();
 
+  const scrollToItemIndex = useCallback(
+    (index: number) => {
+      // Check if everything is ready between carrousel and command
+      const min = Math.min(carrouselItemIndex, index);
+      const max = Math.max(carrouselItemIndex, index);
+
+      // We allow 2 not ready items
+      const shouldBeInstant =
+        itemInteractionList.slice(min, max + 1).filter(value => value === null)
+          .length > 2;
+
+      if (shouldBeInstant) {
+        setSpecialCommand("instant");
+      }
+
+      setItemIndexCommand(index);
+    },
+    [carrouselItemIndex, itemInteractionList]
+  );
+
+  // -- Categories
+  const displayedCategoryId = useMemo(() => {
+    let usedItem: CompositionItem;
+
+    if (currentItem.type === "custom") {
+      // Find the first non-custom item before the custom item
+      // If there is no item before, find the first non-custom item after
+      const neighborItem =
+        items
+          .slice(0, masterItemIndex)
+          .reverse()
+          .find(item => item.type !== "custom") ??
+        items.slice(masterItemIndex + 1).find(item => item.type !== "custom");
+
+      if (!neighborItem) {
+        throw new Error("No non-custom item found");
+      }
+
+      usedItem = neighborItem;
+    } else {
+      usedItem = currentItem;
+    }
+
+    for (const category of categories) {
+      if (category.items.includes(usedItem)) {
+        return category.id;
+      }
+    }
+
+    throw new Error("Current item not found in any category");
+  }, [categories, currentItem, items, masterItemIndex]);
+  const displayedCategoryName = useMemo(
+    () =>
+      categories.find(({ id }) => id === displayedCategoryId)?.title ??
+      "Unnamed Category",
+    [categories, displayedCategoryId]
+  );
+  const categorySize = useMemo(() => items.length, [items]);
+  const changeCategory = useCallback(
+    (categoryId: string) => {
+      const target = categories.find(({ id }) => id === categoryId)?.items[0];
+
+      if (target === undefined) {
+        throw new Error("Failed to find target category");
+      }
+
+      const targetIndex = items.findIndex(item => item === target);
+
+      scrollToItemIndex(targetIndex);
+    },
+    [categories, items, scrollToItemIndex]
+  );
+
   const prevItem = useCallback(() => {
     // Command still running
     if (isRunningSpecialCommand || itemIndexCommand !== null) {
@@ -213,16 +288,31 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
           : items.length - 1;
       setItemIndexCommand(lastValidIndex);
     }
+    emitAnalyticsEvent({
+      type: "track",
+      category_id: displayedCategoryId,
+      category_name: displayedCategoryName,
+      item_type: currentItem.type,
+      item_position: carrouselItemIndex,
+      action_properties: {
+        action_name: "Item Navigation",
+        action_field: "item_navigation",
+        action_value: "prev",
+      },
+    });
   }, [
     isRunningSpecialCommand,
     itemIndexCommand,
     carrouselItemIndex,
     infiniteCarrousel,
+    emitAnalyticsEvent,
+    displayedCategoryId,
+    displayedCategoryName,
+    currentItem.type,
+    effectiveMaxItemsShown,
     items.length,
     integration,
-    effectiveMaxItemsShown,
   ]);
-
   const nextItem = useCallback(() => {
     // Command still running
     if (isRunningSpecialCommand || itemIndexCommand !== null) {
@@ -249,35 +339,31 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       setSpecialCommand("last_to_first");
       setItemIndexCommand(0);
     }
+    emitAnalyticsEvent({
+      type: "track",
+      category_id: displayedCategoryId,
+      category_name: displayedCategoryName,
+      item_type: currentItem.type,
+      item_position: carrouselItemIndex,
+      action_properties: {
+        action_name: "Item Navigation",
+        action_field: "item_navigation",
+        action_value: "next",
+      },
+    });
   }, [
     isRunningSpecialCommand,
     itemIndexCommand,
     carrouselItemIndex,
-    items.length,
-    infiniteCarrousel,
-    integration,
     effectiveMaxItemsShown,
+    items.length,
+    integration,
+    infiniteCarrousel,
+    emitAnalyticsEvent,
+    displayedCategoryId,
+    displayedCategoryName,
+    currentItem.type,
   ]);
-
-  const scrollToItemIndex = useCallback(
-    (index: number) => {
-      // Check if everything is ready between carrousel and command
-      const min = Math.min(carrouselItemIndex, index);
-      const max = Math.max(carrouselItemIndex, index);
-
-      // We allow 2 not ready items
-      const shouldBeInstant =
-        itemInteractionList.slice(min, max + 1).filter(value => value === null)
-          .length > 2;
-
-      if (shouldBeInstant) {
-        setSpecialCommand("instant");
-      }
-
-      setItemIndexCommand(index);
-    },
-    [carrouselItemIndex, itemInteractionList]
-  );
 
   useEffect(() => {
     emitEvent(EVENT_ITEM_CHANGE, {
@@ -286,52 +372,34 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     });
   }, [currentItem, emitEvent, masterItemIndex]);
 
-  // -- Categories
-  const displayedCategoryId = useMemo(() => {
-    let usedItem: CompositionItem;
-
-    if (currentItem.type === "custom") {
-      // Find the first non-custom item before the custom item
-      // If there is no item before, find the first non-custom item after
-      const neighbourItem =
-        items
-          .slice(0, masterItemIndex)
-          .reverse()
-          .find(item => item.type !== "custom") ??
-        items.slice(masterItemIndex + 1).find(item => item.type !== "custom");
-
-      if (!neighbourItem) {
-        throw new Error("No non-custom item found");
-      }
-
-      usedItem = neighbourItem;
-    } else {
-      usedItem = currentItem;
+  // Analytics - Page
+  useEffect(() => {
+    if (isRunningSpecialCommand || itemIndexCommand !== null) {
+      return;
     }
 
-    for (const category of categories) {
-      if (category.items.includes(usedItem)) {
-        return category.id;
-      }
-    }
-
-    throw new Error("Current item not found in any category");
-  }, [categories, currentItem, items, masterItemIndex]);
-
-  const changeCategory = useCallback(
-    (categoryId: string) => {
-      const target = categories.find(({ id }) => id === categoryId)?.items[0];
-
-      if (target === undefined) {
-        throw new Error("Failed to find target category");
-      }
-
-      const targetIndex = items.findIndex(item => item === target);
-
-      scrollToItemIndex(targetIndex);
-    },
-    [categories, items, scrollToItemIndex]
-  );
+    const pageEvent: AnalyticsPageEventProps = {
+      type: "page",
+      category_id: displayedCategoryId,
+      category_name: displayedCategoryName,
+      items_count: categorySize,
+      page_properties: {
+        item_type: currentItem.type,
+        item_position: carrouselItemIndex,
+      },
+    };
+    const timeout = setTimeout(() => emitAnalyticsEvent(pageEvent), 0);
+    return () => clearTimeout(timeout);
+  }, [
+    displayedCategoryId,
+    displayedCategoryName,
+    categorySize,
+    currentItem.type,
+    carrouselItemIndex,
+    emitAnalyticsEvent,
+    isRunningSpecialCommand,
+    itemIndexCommand,
+  ]);
 
   // -- Hotspots
   const enableHotspotsControl = useMemo(() => {
@@ -397,19 +465,48 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         [masterItemIndex]: newValue,
       }));
       emitEvent(newValue ? EVENT_HOTSPOTS_ON : EVENT_HOTSPOTS_OFF);
+      emitAnalyticsEvent({
+        type: "track",
+        category_id: displayedCategoryId,
+        category_name: displayedCategoryName,
+        item_type: currentItem.type,
+        item_position: carrouselItemIndex,
+        action_properties: {
+          action_name: "Hotspots Toggled",
+          action_field: "hotspots_toggle_state",
+          action_value: newValue,
+        },
+      });
     } else {
       // In normal mode or integration non-fullscreen, toggle global hotspots
       const newValue = !showHotspots;
       setShowHotspots(newValue);
       emitEvent(newValue ? EVENT_HOTSPOTS_ON : EVENT_HOTSPOTS_OFF);
+      emitAnalyticsEvent({
+        type: "track",
+        category_id: displayedCategoryId,
+        category_name: displayedCategoryName,
+        item_type: currentItem.type,
+        item_position: carrouselItemIndex,
+        action_properties: {
+          action_name: "Hotspots Toggled",
+          action_field: "hotspots_toggle_state",
+          action_value: newValue,
+        },
+      });
     }
   }, [
-    emitEvent,
-    showHotspots,
     integration,
     isFullScreen,
     perSlideHotspots,
     masterItemIndex,
+    emitEvent,
+    emitAnalyticsEvent,
+    displayedCategoryId,
+    displayedCategoryName,
+    currentItem.type,
+    carrouselItemIndex,
+    showHotspots,
   ]);
 
   // -- Gallery
@@ -428,7 +525,27 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
     setShowGallery(newValue);
     emitEvent(newValue ? EVENT_GALLERY_OPEN : EVENT_GALLERY_CLOSE);
-  }, [emitEvent, showGallery]);
+    emitAnalyticsEvent({
+      type: "track",
+      category_id: displayedCategoryId,
+      category_name: displayedCategoryName,
+      item_type: currentItem.type,
+      item_position: carrouselItemIndex,
+      action_properties: {
+        action_name: "Gallery Toggled",
+        action_field: "gallery_toggle_state",
+        action_value: newValue,
+      },
+    });
+  }, [
+    showGallery,
+    emitEvent,
+    emitAnalyticsEvent,
+    displayedCategoryId,
+    displayedCategoryName,
+    currentItem.type,
+    carrouselItemIndex,
+  ]);
 
   const [shownDetails, setShownDetails] = useState<Details | null>(null);
   const resetShownDetails = useCallback(() => setShownDetails(null), []);
@@ -446,20 +563,51 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         return false;
     }
   }, [currentItem.type, currentItemInteraction]);
-  const [zoom, setZoom] = useState(1);
+  const [zoom, _setZoom] = useState(1);
+  const setZoom = useCallback(
+    (setter: React.SetStateAction<number>) => {
+      const zoomLevel = typeof setter === "function" ? setter(zoom) : setter;
+      if (zoom === zoomLevel) {
+        return;
+      }
+      _setZoom(zoomLevel);
+      emitAnalyticsEvent({
+        type: "track",
+        category_id: displayedCategoryId,
+        category_name: displayedCategoryName,
+        item_type: currentItem.type,
+        item_position: carrouselItemIndex,
+        action_properties: {
+          action_name: "Zoom Changed",
+          action_field: "zoom_level",
+          action_value: zoomLevel,
+        },
+      });
+    },
+    [
+      zoom,
+      emitAnalyticsEvent,
+      displayedCategoryId,
+      displayedCategoryName,
+      currentItem.type,
+      carrouselItemIndex,
+    ]
+  );
   const isZooming = zoom !== 1;
   const canZoomIn = zoom < MAX_ZOOM;
   const canZoomOut = zoom > 1;
 
-  const shiftZoom = useCallback((shift: number) => {
-    setZoom(prev => clamp(prev + shift, 1, MAX_ZOOM));
-  }, []);
-  const resetZoom = useCallback(() => setZoom(1), []);
+  const shiftZoom = useCallback(
+    (shift: number) => {
+      setZoom(prev => clamp(prev + shift, 1, MAX_ZOOM));
+    },
+    [setZoom]
+  );
+  const resetZoom = useCallback(() => setZoom(1), [setZoom]);
   const zoomIn = useCallback(() => shiftZoom(ZOOM_STEP), [shiftZoom]);
   const zoomOut = useCallback(() => shiftZoom(-ZOOM_STEP), [shiftZoom]);
 
   // -- Side effects
-
   const resetView = useCallback(() => {
     resetZoom();
     resetShownDetails();
@@ -477,8 +625,28 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       resetView();
       setExtendMode(newValue);
       emitEvent(newValue ? EVENT_EXTEND_MODE_ON : EVENT_EXTEND_MODE_OFF);
+      emitAnalyticsEvent({
+        type: "track",
+        category_id: displayedCategoryId,
+        category_name: displayedCategoryName,
+        item_type: currentItem.type,
+        item_position: carrouselItemIndex,
+        action_properties: {
+          action_name: "Fake Fullscreen Toggled",
+          action_field: "fake_fullscreen_toggle_state",
+          action_value: newValue,
+        },
+      });
     },
-    [emitEvent, resetView]
+    [
+      resetView,
+      emitEvent,
+      emitAnalyticsEvent,
+      displayedCategoryId,
+      displayedCategoryName,
+      currentItem.type,
+      carrouselItemIndex,
+    ]
   );
 
   // The extend transition allows to freeze the UI while resizing to avoid layer shifts & flickering
@@ -490,6 +658,58 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
     setExtendTransitionTimeout(timeout);
   }, [extendTransitionTimeout]);
+
+  const requestFullscreen = useCallback(async () => {
+    const success = await _requestFullscreen();
+    if (success) {
+      emitAnalyticsEvent({
+        type: "track",
+        category_id: displayedCategoryId,
+        category_name: displayedCategoryName,
+        item_type: currentItem.type,
+        item_position: carrouselItemIndex,
+        action_properties: {
+          action_name: "Fullscreen Toggled",
+          action_field: "fullscreen_toggle_state",
+          action_value: true,
+        },
+      });
+    }
+    return success;
+  }, [
+    _requestFullscreen,
+    emitAnalyticsEvent,
+    displayedCategoryId,
+    displayedCategoryName,
+    currentItem.type,
+    carrouselItemIndex,
+  ]);
+
+  const exitFullscreen = useCallback(async () => {
+    const success = await _exitFullscreen();
+    if (success) {
+      emitAnalyticsEvent({
+        type: "track",
+        category_id: displayedCategoryId,
+        category_name: displayedCategoryName,
+        item_type: currentItem.type,
+        item_position: carrouselItemIndex,
+        action_properties: {
+          action_name: "Fullscreen Toggled",
+          action_field: "fullscreen_toggle_state",
+          action_value: false,
+        },
+      });
+    }
+    return success;
+  }, [
+    _exitFullscreen,
+    emitAnalyticsEvent,
+    displayedCategoryId,
+    displayedCategoryName,
+    currentItem.type,
+    carrouselItemIndex,
+  ]);
 
   const enableExtendMode = useCallback(async () => {
     triggerExtendTransition();
@@ -547,7 +767,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     }
   }, [disableExtendMode, enableExtendMode, extendMode]);
 
-  // Listen to fullscreen changes (mandatory to get the full screen close with Echap)
+  // Listen to fullscreen changes (mandatory to get the full screen close with ESC)
   useEffect(() => {
     if (extendBehavior !== "full_screen") {
       return;
@@ -596,6 +816,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
         scrollToItemIndex,
 
         displayedCategoryId,
+        displayedCategoryName,
         changeCategory,
 
         enableHotspotsControl,

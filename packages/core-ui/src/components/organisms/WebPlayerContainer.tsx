@@ -28,12 +28,8 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
   const { aspectRatioStyle } = useCompositionContext();
 
   const {
-    prevItem,
-    nextItem,
-
     isShowingDetails,
     resetShownDetails,
-
     extendMode,
     disableExtendMode,
     isZooming,
@@ -118,8 +114,6 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
     disableExtendMode,
     isShowingDetails,
     isZooming,
-    nextItem,
-    prevItem,
     resetShownDetails,
     resetZoom,
   ]);

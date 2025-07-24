@@ -25,7 +25,17 @@ import {
   DEFAULT_EVENT_PREFIX,
   DEFAULT_DEMO_SPIN,
   DEFAULT_REVERSE_360,
+  DEFAULT_ANALYTICS_EVENT_PREFIX,
+  DEFAULT_ANALYTICS_URL,
+  DEFAULT_ANALYTICS_BEARER,
+  DEFAULT_ANALYTICS_SIMPLE_REQUESTS_ONLY,
+  DEFAULT_ANALYTICS_DRY_RUN,
+  DEFAULT_ANALYTICS_DEBUG,
   type WebPlayerProps,
+  type AnalyticsEvent,
+  type AnalyticsEventBase,
+  type AnalyticsEventProps,
+  type AnalyticsIdentifyEventProps,
 } from "@car-cutter/core";
 
 import WebPlayerContainer from "./components/organisms/WebPlayerContainer";
@@ -33,33 +43,39 @@ import {
   integrationConfig,
   validMaxItemsShownValues,
 } from "./const/integration";
+import {
+  useAnalyticsBrowserId,
+  useAnalyticsInstanceId,
+  useAnalyticsSessionId,
+} from "./hooks/analytics.hooks";
 import CustomizationContextProvider from "./providers/CustomizationContext";
 import GlobalContextProvider from "./providers/GlobalContext";
 import { findClosestValidNumberInRange } from "./utils/math";
 
 const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   compositionUrl,
-
   integration = DEFAULT_INTEGRATION,
   maxItemsShown = DEFAULT_MAX_ITEMS_SHOWN,
-
   hideCategoriesNav = DEFAULT_HIDE_CATEGORIES_NAV,
   infiniteCarrousel = DEFAULT_INFINITE_CARROUSEL,
   permanentGallery = DEFAULT_PERMANENT_GALLERY,
-
   mediaLoadStrategy = DEFAULT_MEDIA_LOAD_STRATEGY,
   minMediaWidth = DEFAULT_MIN_MEDIA_WIDTH,
   maxMediaWidth = DEFAULT_MAX_MEDIA_WIDTH,
   preloadRange = DEFAULT_PRELOAD_RANGE,
   autoLoad360 = DEFAULT_AUTO_LOAD_360,
   autoLoadInterior360 = DEFAULT_AUTO_LOAD_INTERIOR_360,
-
   categoriesFilter = DEFAULT_CATEGORY_FILTER,
   extendBehavior = DEFAULT_EXTEND_BEHAVIOR,
   eventPrefix = DEFAULT_EVENT_PREFIX,
   demoSpin = DEFAULT_DEMO_SPIN,
   reverse360 = DEFAULT_REVERSE_360,
-
+  analyticsEventPrefix = DEFAULT_ANALYTICS_EVENT_PREFIX,
+  analyticsUrl = DEFAULT_ANALYTICS_URL,
+  analyticsBearer = DEFAULT_ANALYTICS_BEARER,
+  analyticsSimpleRequestsOnly = DEFAULT_ANALYTICS_SIMPLE_REQUESTS_ONLY,
+  analyticsDryRun = DEFAULT_ANALYTICS_DRY_RUN,
+  analyticsDebug = DEFAULT_ANALYTICS_DEBUG,
   children: customizationChildren, // NOTE: use to customize the player, not to display the content
 }) => {
   //maxItemsShown validation and substitution if not valid
@@ -82,6 +98,106 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
     },
     [eventPrefix]
   );
+
+  // Analytics
+  const analyticsBrowserId = useAnalyticsBrowserId();
+  const analyticsSessionId = useAnalyticsSessionId();
+  const analyticsInstanceId = useAnalyticsInstanceId();
+  const emitAnalyticsEvent = useCallback(
+    async (event: AnalyticsEventProps) => {
+      try {
+        // Build event
+        const baseEvent: AnalyticsEventBase = {
+          type: event.type,
+          timestamp: new Date().toISOString(),
+          instance_id: analyticsInstanceId,
+        };
+        const payload: AnalyticsEvent = {
+          ...baseEvent,
+          ...event,
+        };
+
+        // Dry run
+        if (analyticsDryRun) {
+          // eslint-disable-next-line no-console
+          console.log("[DRY RUN] AnalyticsEvent:", payload);
+          return;
+        }
+
+        // Dispatch event
+        const analyticsEventName = analyticsEventPrefix + event.type;
+        const dispatchEvent = new CustomEvent(analyticsEventName, {
+          detail: payload,
+        });
+        document.dispatchEvent(dispatchEvent);
+
+        // Send event to `analyticsUrl`
+        if (analyticsUrl) {
+          // Prepare request
+          const method = "POST" as const;
+          const headers: HeadersInit = new Headers();
+          if (!analyticsSimpleRequestsOnly) {
+            headers.append("Content-Type", "application/json");
+            headers.append("Cache-Control", "no-cache");
+            if (analyticsBearer) {
+              headers.append("Authorization", `Bearer ${analyticsBearer}`);
+            }
+          }
+          const body = JSON.stringify(payload);
+          // Send event
+          await fetch(analyticsUrl, { method, headers, body });
+        }
+      } catch (error) {
+        // Debug mode
+        if (!analyticsDebug) return;
+        // eslint-disable-next-line no-console
+        console.error("Error while sending analytics event:", error);
+      }
+    },
+    [
+      analyticsEventPrefix,
+      analyticsUrl,
+      analyticsBearer,
+      analyticsSimpleRequestsOnly,
+      analyticsDryRun,
+      analyticsDebug,
+      analyticsInstanceId,
+    ]
+  );
+
+  // Analytics - Identify
+  const [identifyEvent] = useState<AnalyticsIdentifyEventProps>({
+    type: "identify" as const,
+    browser_id: analyticsBrowserId,
+    session_id: analyticsSessionId,
+    referrer: document.referrer,
+    origin: window.location.origin,
+    page_url: window.location.href,
+    user_agent: navigator.userAgent,
+    wp_properties: {
+      composition_url: compositionUrl,
+      integration,
+      max_items_shown: maxItemsShown,
+      hide_categories_nav: hideCategoriesNav,
+      infinite_carrousel: infiniteCarrousel,
+      permanent_gallery: permanentGallery,
+      media_load_strategy: mediaLoadStrategy,
+      min_media_width: minMediaWidth,
+      max_media_width: maxMediaWidth,
+      preload_range: preloadRange,
+      auto_load_360: autoLoad360,
+      auto_load_interior_360: autoLoadInterior360,
+      categories_filter: categoriesFilter,
+      extend_behavior: extendBehavior,
+      event_prefix: eventPrefix,
+      demo_spin: demoSpin,
+      reverse_360: reverse360,
+    },
+  });
+  useEffect(() => {
+    const timeout = setTimeout(() => emitAnalyticsEvent(identifyEvent), 0);
+    return () => clearTimeout(timeout);
+  }, [emitAnalyticsEvent, identifyEvent]);
 
   // Compute player width ratio in viewport (to handle imgs' srcSet)
   useEffect(() => {
@@ -186,6 +302,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
         reverse360,
 
         emitEvent,
+        emitAnalyticsEvent,
 
         playerInViewportWidthRatio,
         isFullScreen,

@@ -34,20 +34,24 @@ const Gallery: React.FC<Props> = ({
   } = useGlobalContext();
 
   const { categories, aspectRatioStyle } = useCompositionContext();
-
+  const { emitAnalyticsEvent } = useGlobalContext();
   const {
     items,
-
     extendMode,
     extendTransition,
-
     masterItemIndex,
     prevItem,
     nextItem,
     scrollToItemIndex,
-
     resetView,
+    displayedCategoryId,
+    displayedCategoryName,
   } = useControlsContext();
+
+  const currentItemType = useMemo(
+    () => items[masterItemIndex].type,
+    [items, masterItemIndex]
+  );
 
   const separatorIndexes = useMemo(() => {
     if (hideCategoriesNav) {
@@ -230,49 +234,93 @@ const Gallery: React.FC<Props> = ({
     extendTransition,
   ]);
 
-  const onItemClicked = (itemIndex: number) => {
-    // User is dragging the slider, ignore the click
-    if (isDragging) {
-      return;
-    }
+  const emitAnalyticsEventGalleryItemClicked = useCallback(
+    (targetItemIndex: number) => {
+      emitAnalyticsEvent({
+        type: "track",
+        category_id: displayedCategoryId,
+        category_name: displayedCategoryName,
+        item_type: currentItemType,
+        item_position: masterItemIndex,
+        action_properties: {
+          action_name: "Gallery Item Clicked",
+          action_field: "gallery_item_clicked",
+          action_value: targetItemIndex,
+        },
+      });
+    },
+    [
+      emitAnalyticsEvent,
+      displayedCategoryId,
+      displayedCategoryName,
+      currentItemType,
+      masterItemIndex,
+    ]
+  );
 
-    // Handle infinite carrousel
-    if (
-      infiniteCarrousel &&
-      itemIndex === items.length - 1 &&
-      masterItemIndex === 0
-    ) {
-      prevItem();
-    } else if (
-      infiniteCarrousel &&
-      itemIndex === 0 &&
-      masterItemIndex === items.length - 1
-    ) {
-      nextItem();
-    } else {
-      if (
-        !isFullScreen &&
-        maxItemsShown !== 1 &&
-        itemIndex === items.length - 1
-      ) {
-        const visibleItemsCount = Math.ceil(maxItemsShown);
-        const totalSlides = items.length + 1; // +1 for compensation slide
-        const targetIndex = Math.max(0, totalSlides - visibleItemsCount);
-        scrollToItemIndex(targetIndex);
-      } else {
-        scrollToItemIndex(itemIndex);
+  const onItemClicked = useCallback(
+    (itemIndex: number) => {
+      // User is dragging the slider, ignore the click
+      if (isDragging) {
+        return;
       }
-    }
 
-    resetView();
-  };
+      emitAnalyticsEventGalleryItemClicked(itemIndex);
+
+      // Handle infinite carrousel
+      if (
+        infiniteCarrousel &&
+        itemIndex === items.length - 1 &&
+        masterItemIndex === 0
+      ) {
+        prevItem();
+      } else if (
+        infiniteCarrousel &&
+        itemIndex === 0 &&
+        masterItemIndex === items.length - 1
+      ) {
+        nextItem();
+      } else {
+        if (
+          !isFullScreen &&
+          maxItemsShown !== 1 &&
+          itemIndex === items.length - 1
+        ) {
+          const visibleItemsCount = Math.ceil(maxItemsShown);
+          const totalSlides = items.length + 1; // +1 for compensation slide
+          const targetIndex = Math.max(0, totalSlides - visibleItemsCount);
+          scrollToItemIndex(targetIndex);
+        } else {
+          scrollToItemIndex(itemIndex);
+        }
+      }
+
+      resetView();
+    },
+    [
+      isDragging,
+      emitAnalyticsEventGalleryItemClicked,
+      infiniteCarrousel,
+      items.length,
+      masterItemIndex,
+      resetView,
+      prevItem,
+      nextItem,
+      isFullScreen,
+      maxItemsShown,
+      scrollToItemIndex,
+    ]
+  );
 
   // Function to determine the class for each gallery item when hovering or active
-  const getGalleryItemClass = (index: number, masterIndex: number) => {
-    if (maxItemsShown !== 1) return "after:opacity-0 hover:after:opacity-70";
-    if (index === masterIndex) return "after:opacity-100";
-    return "after:opacity-0 hover:after:opacity-70";
-  };
+  const getGalleryItemClass = useCallback(
+    (index: number, masterIndex: number) => {
+      if (maxItemsShown !== 1) return "after:opacity-0 hover:after:opacity-70";
+      if (index === masterIndex) return "after:opacity-100";
+      return "after:opacity-0 hover:after:opacity-70";
+    },
+    [maxItemsShown]
+  );
 
   return (
     <div

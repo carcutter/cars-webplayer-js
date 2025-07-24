@@ -1,10 +1,74 @@
+import { useCallback, useEffect, useMemo } from "react";
+
+import {
+  AnalyticsIdentifyEvent,
+  AnalyticsPageEvent,
+  AnalyticsTrackEvent,
+  subscribeToAnalyticsEvents,
+} from "@car-cutter/core";
+
 import WebPlayer from "../src/WebPlayer";
 import WebPlayerCustomMedia from "../src/WebPlayerCustomMedia";
 import WebPlayerIcon from "../src/WebPlayerIcon";
 
 import "../src/index.css";
 
+const useAnalytics = () => {
+  const useCustomAnalyticsEventPrefix = false;
+  const analyticsEventPrefix: string | undefined = useMemo(
+    () => (useCustomAnalyticsEventPrefix ? "cc-analytics-yolo:" : undefined),
+    [useCustomAnalyticsEventPrefix]
+  );
+  const onAnalyticsIdentifyEvent = useCallback(
+    (event: AnalyticsIdentifyEvent) => {
+      // eslint-disable-next-line no-console
+      console.log("AnalyticsIdentifyEvent", event);
+    },
+    []
+  );
+  useEffect(() => {
+    subscribeToAnalyticsEvents(
+      "identify",
+      onAnalyticsIdentifyEvent,
+      analyticsEventPrefix
+    );
+  }, [analyticsEventPrefix, onAnalyticsIdentifyEvent]);
+
+  const onAnalyticsPageEvent = useCallback((event: AnalyticsPageEvent) => {
+    // eslint-disable-next-line no-console
+    console.log("AnalyticsPageEvent", event);
+  }, []);
+
+  useEffect(() => {
+    subscribeToAnalyticsEvents(
+      "page",
+      onAnalyticsPageEvent,
+      analyticsEventPrefix
+    );
+  }, [analyticsEventPrefix, onAnalyticsPageEvent]);
+
+  const onAnalyticsTrackEvent = useCallback((event: AnalyticsTrackEvent) => {
+    // eslint-disable-next-line no-console
+    console.log("AnalyticsTrackEvent", event);
+  }, []);
+
+  useEffect(() => {
+    subscribeToAnalyticsEvents(
+      "track",
+      onAnalyticsTrackEvent,
+      analyticsEventPrefix
+    );
+  }, [analyticsEventPrefix, onAnalyticsTrackEvent]);
+
+  return {
+    analyticsEventPrefix,
+  };
+};
+
 const DevApp: React.FC = () => {
+  // Analytics
+  const { analyticsEventPrefix } = useAnalytics();
+
   return (
     <div>
       {/* FUTURE: Add some stuff to make it appear like a real app */}
@@ -38,7 +102,7 @@ const DevApp: React.FC = () => {
           // compositionUrl="https://cdn.car-cutter.com/gallery/7de693a6dd8379eb743f6093499bdd13fe76876f135ae9a08b7d9ecbfb7f8664/WAUZZZF34N1097219/composition_v3.json"
           // hideCategoriesNav
           infiniteCarrousel
-          permanentGallery
+          // permanentGallery
           // mediaLoadStrategy="speed"
           // minMediaWidth={300}
           // maxMediaWidth={1000}
@@ -50,6 +114,12 @@ const DevApp: React.FC = () => {
           // eventPrefix="cc-event:"
           demoSpin
           // reverse360
+          analyticsEventPrefix={analyticsEventPrefix}
+          // analyticsUrl="https://webhook.site/62a6ddb1-a038-4207-85ff-fe961fafe904"
+          // analyticsBearer="1234567890"
+          // analyticsSimpleRequestsOnly=f{false}
+          // analyticsDryRun={false}
+          // analyticsDebug={true}
         >
           <WebPlayerCustomMedia
             index={4}
@@ -64,7 +134,7 @@ const DevApp: React.FC = () => {
             <img src="https://prod.pictures.autoscout24.net/listing-images/4ac589e2-40e3-47b8-a211-579d2e07125e_b277b9ec-63d5-4900-9003-77dd029364dc.jpg/720x540.webp" />
           </WebPlayerCustomMedia> */}
 
-          <WebPlayerIcon name="TIRESPIN">
+          <WebPlayerIcon name="UI_360_PLAY">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -79,6 +149,7 @@ const DevApp: React.FC = () => {
           </WebPlayerIcon>
         </WebPlayer>
       </div>
+      <script></script>
     </div>
   );
 };

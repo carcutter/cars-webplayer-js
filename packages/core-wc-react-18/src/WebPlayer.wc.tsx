@@ -28,6 +28,14 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedStyles, {
     eventPrefix: "string",
     demoSpin: "boolean",
     reverse360: "boolean",
+
+    // Analytics
+    analyticsEventPrefix: "string",
+    analyticsUrl: "string",
+    analyticsBearer: "string",
+    analyticsSimpleRequestsOnly: "boolean",
+    analyticsDryRun: "boolean",
+    analyticsDebug: "boolean",
   },
 });
 

@@ -2,7 +2,11 @@
 import { onMounted, onUnmounted } from "vue";
 
 import {
+  ANALYTICS_EVENT_IDENTIFY,
+  ANALYTICS_EVENT_PAGE,
+  ANALYTICS_EVENT_TRACK,
   DEFAULT_EVENT_PREFIX,
+  DEFAULT_ANALYTICS_EVENT_PREFIX,
   EVENT_COMPOSITION_LOADING,
   EVENT_COMPOSITION_LOADED,
   EVENT_COMPOSITION_LOAD_ERROR,
@@ -13,6 +17,9 @@ import {
   EVENT_HOTSPOTS_OFF,
   EVENT_GALLERY_OPEN,
   EVENT_GALLERY_CLOSE,
+  type AnalyticsIdentifyEvent,
+  type AnalyticsPageEvent,
+  type AnalyticsTrackEvent,
   type Item,
   type Composition,
   type WebPlayerProps as WebPlayerCoreProps,
@@ -47,12 +54,20 @@ export type WebPlayerEvents = {
   hotspotsOff: [];
   galleryOpen: [];
   galleryClose: [];
+  analyticsIdentify: [event: AnalyticsIdentifyEvent];
+  analyticsPage: [event: AnalyticsPageEvent];
+  analyticsTrack: [event: AnalyticsTrackEvent];
 };
+
 const emit = defineEmits<WebPlayerEvents>();
 
 const eventPrefix = props.eventPrefix ?? DEFAULT_EVENT_PREFIX;
+const analyticsEventPrefix =
+  props.analyticsEventPrefix ?? DEFAULT_ANALYTICS_EVENT_PREFIX;
 
 const generateEventName = (event: string) => `${eventPrefix}${event}`;
+const generateAnalyticsEventName = (event: string) =>
+  `${analyticsEventPrefix}${event}`;
 
 const eventListenerMap = {
   [EVENT_COMPOSITION_LOADING]: (url: string) => emit("compositionLoading", url),
@@ -70,7 +85,17 @@ const eventListenerMap = {
   [EVENT_GALLERY_CLOSE]: () => emit("galleryClose"),
 };
 
+const analyticsEventListenerMap = {
+  [ANALYTICS_EVENT_IDENTIFY]: (event: AnalyticsIdentifyEvent) =>
+    emit("analyticsIdentify", event),
+  [ANALYTICS_EVENT_PAGE]: (event: AnalyticsPageEvent) =>
+    emit("analyticsPage", event),
+  [ANALYTICS_EVENT_TRACK]: (event: AnalyticsTrackEvent) =>
+    emit("analyticsTrack", event),
+};
+
 const eventCbMap = new Map<string, EventListener>();
+const analyticsEventCbMap = new Map<string, EventListener>();
 
 Object.entries(eventListenerMap).forEach(([event, listener]) => {
   if (!listener) {
@@ -84,14 +109,32 @@ Object.entries(eventListenerMap).forEach(([event, listener]) => {
   eventCbMap.set(eventName, eventListener);
 });
 
+Object.entries(analyticsEventListenerMap).forEach(([event, listener]) => {
+  if (!listener) {
+    return;
+  }
+
+  const eventName = generateAnalyticsEventName(event);
+  const eventListener = (event: Event) =>
+    listener((event as CustomEvent).detail);
+
+  analyticsEventCbMap.set(eventName, eventListener);
+});
+
 onMounted(() => {
   eventCbMap.forEach((eventListener, eventName) => {
+    document.addEventListener(eventName, eventListener);
+  });
+  analyticsEventCbMap.forEach((eventListener, eventName) => {
     document.addEventListener(eventName, eventListener);
   });
 });
 
 onUnmounted(() => {
   eventCbMap.forEach((eventListener, eventName) => {
+    document.removeEventListener(eventName, eventListener);
+  });
+  analyticsEventCbMap.forEach((eventListener, eventName) => {
     document.removeEventListener(eventName, eventListener);
   });
 });
