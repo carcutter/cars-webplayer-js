@@ -382,7 +382,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       type: "page",
       category_id: displayedCategoryId,
       category_name: displayedCategoryName,
-      category_size: categorySize,
+      items_count: categorySize,
       page_properties: {
         item_type: currentItem.type,
         item_position: carrouselItemIndex,

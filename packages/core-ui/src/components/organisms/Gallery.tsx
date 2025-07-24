@@ -48,6 +48,11 @@ const Gallery: React.FC<Props> = ({
     displayedCategoryName,
   } = useControlsContext();
 
+  const currentItemType = useMemo(
+    () => items[masterItemIndex].type,
+    [items, masterItemIndex]
+  );
+
   const separatorIndexes = useMemo(() => {
     if (hideCategoriesNav) {
       return [];
@@ -235,7 +240,7 @@ const Gallery: React.FC<Props> = ({
         type: "track",
         category_id: displayedCategoryId,
         category_name: displayedCategoryName,
-        item_type: "interior-360",
+        item_type: currentItemType,
         item_position: masterItemIndex,
         action_properties: {
           action_name: "Gallery Item Clicked",
@@ -248,6 +253,7 @@ const Gallery: React.FC<Props> = ({
       emitAnalyticsEvent,
       displayedCategoryId,
       displayedCategoryName,
+      currentItemType,
       masterItemIndex,
     ]
   );

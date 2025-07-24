@@ -54,14 +54,12 @@ export type WebPlayerEvents = {
   hotspotsOff: [];
   galleryOpen: [];
   galleryClose: [];
-};
-export type WebPlayerAnalyticsEvents = {
   analyticsIdentify: [event: AnalyticsIdentifyEvent];
   analyticsPage: [event: AnalyticsPageEvent];
   analyticsTrack: [event: AnalyticsTrackEvent];
 };
+
 const emit = defineEmits<WebPlayerEvents>();
-const emitAnalytics = defineEmits<WebPlayerAnalyticsEvents>();
 
 const eventPrefix = props.eventPrefix ?? DEFAULT_EVENT_PREFIX;
 const analyticsEventPrefix =
@@ -89,11 +87,11 @@ const eventListenerMap = {
 
 const analyticsEventListenerMap = {
   [ANALYTICS_EVENT_IDENTIFY]: (event: AnalyticsIdentifyEvent) =>
-    emitAnalytics("analyticsIdentify", event),
+    emit("analyticsIdentify", event),
   [ANALYTICS_EVENT_PAGE]: (event: AnalyticsPageEvent) =>
-    emitAnalytics("analyticsPage", event),
+    emit("analyticsPage", event),
   [ANALYTICS_EVENT_TRACK]: (event: AnalyticsTrackEvent) =>
-    emitAnalytics("analyticsTrack", event),
+    emit("analyticsTrack", event),
 };
 
 const eventCbMap = new Map<string, EventListener>();

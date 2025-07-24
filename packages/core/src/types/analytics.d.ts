@@ -36,7 +36,7 @@ export declare type AnalyticsIdentifyEventProps = {
     permanent_gallery: boolean;
 
     // Medias loading
-    media_load_strategy: MediaLoadStrategy;
+    media_load_strategy: string;
     min_media_width: number;
     max_media_width: number;
     preload_range: number;
@@ -45,7 +45,7 @@ export declare type AnalyticsIdentifyEventProps = {
 
     // Miscellaneous
     categories_filter: string;
-    extend_behavior: ExtendBehavior;
+    extend_behavior: string;
     event_prefix: string;
     demo_spin: boolean;
     reverse_360: boolean;
@@ -56,7 +56,7 @@ export declare type AnalyticsPageEventProps = {
   type: AnalyticsEventTypePage;
   category_id: string;
   category_name: string;
-  category_size: number;
+  items_count: number;
   page_properties: {
     item_type: string;
     item_position: number;
