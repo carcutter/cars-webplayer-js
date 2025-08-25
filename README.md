@@ -146,18 +146,20 @@ _NOTE: If you are using the WebComponent directly, you need to transform the pro
 
 You can customize the WebPlayer CSS with CSS Variables
 
-| CSS Variable                        | Description                        | Default Value               |
-| ----------------------------------- | ---------------------------------- | --------------------------- |
-| `--cc-webplayer-background`         | Background color (contrast texts)  | `0 0% 100%`                 |
-| `--cc-webplayer-foreground`         | Foreground color (text color)      | `240 10% 3.9%`              |
-| `--cc-webplayer-primary`            | Primary color (buttons)            | `216 100% 52%`              |
-| `--cc-webplayer-primary-foreground` | Foreground color for primary items | `--cc-webplayer-background` |
-| `--cc-webplayer-primary-light`      | Alternative to primary if too dark | `--cc-webplayer-primary`    |
-| `--cc-webplayer-neutral`            | Neutral color                      | `0 0% 39%`                  |
-| `--cc-webplayer-neutral-foreground` | Foreground color for neutral items | `--cc-webplayer-foreground` |
-| `--cc-webplayer-radius-ui`          | UI element Border radius (buttons) | `16px`                      |
-| `--cc-webplayer-radius-carrousel`   | Carrousel border radius            | `0`                         |
-| `--cc-webplayer-radius-gallery`     | Gallery medias border radius       | `0`                         |
+| CSS Variable                           | Description                        | Default Value               |
+| -------------------------------------- | ---------------------------------- | --------------------------- |
+| `--cc-webplayer-background`            | Background color (contrast texts)  | `0 0% 100%`                 |
+| `--cc-webplayer-foreground`            | Foreground color (text color)      | `240 10% 3.9%`              |
+| `--cc-webplayer-primary`               | Primary color (buttons)            | `216 100% 52%`              |
+| `--cc-webplayer-primary-foreground`    | Foreground color for primary items | `--cc-webplayer-background` |
+| `--cc-webplayer-primary-light`         | Alternative to primary if too dark | `--cc-webplayer-primary`    |
+| `--cc-webplayer-neutral`               | Neutral color                      | `0 0% 39%`                  |
+| `--cc-webplayer-neutral-foreground`    | Foreground color for neutral items | `--cc-webplayer-foreground` |
+| `--cc-webplayer-hotspot-damage-color`  | Color for damage hotspots          | `37 89% 52%`                |
+| `--cc-webplayer-hotspot-feature-color` | Color for feature hotspots         | `--cc-primary`              |
+| `--cc-webplayer-radius-ui`             | UI element Border radius (buttons) | `16px`                      |
+| `--cc-webplayer-radius-carrousel`      | Carrousel border radius            | `0`                         |
+| `--cc-webplayer-radius-gallery`        | Gallery medias border radius       | `0`                         |
 
 ### More customization
 

@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/next-webplayer",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "license": "Apache-2.0",
   "author": {
     "name": "CarCutter",
@@ -41,7 +41,7 @@
     "analyze": "vite-bundle-visualizer"
   },
   "dependencies": {
-    "@car-cutter/react-webplayer": "3.0.1"
+    "@car-cutter/react-webplayer": "3.0.2"
   },
   "peerDependencies": {
     "next": ">=10"
