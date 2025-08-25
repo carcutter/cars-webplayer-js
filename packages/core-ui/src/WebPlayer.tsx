@@ -330,6 +330,10 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
               "--radius-ui": "var(--cc-webplayer-radius-ui, 16px)",
               "--radius-carrousel": "var(--cc-webplayer-radius-carrousel, 0)",
               "--radius-gallery": "var(--cc-webplayer-radius-gallery, 0)",
+              "--hotspot-damage-color":
+                "hsl(var(--cc-webplayer-hotspot-damage-color, 37 89% 52%))",
+              "--hotspot-feature-color":
+                "hsl(var(--cc-webplayer-hotspot-feature-color, var(--primary)))",
             } as React.CSSProperties
           }
         >
