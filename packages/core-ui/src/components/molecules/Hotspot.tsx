@@ -7,6 +7,7 @@ import { useCustomizationContext } from "../../providers/CustomizationContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
 import { cn } from "../../utils/style";
 import ImageIcon from "../icons/ImageIcon";
+import WarningIcon from "../icons/WarningIcon";
 
 type HotspotProps = {
   hotspot: HotspotType;
@@ -24,7 +25,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   item,
   analyticsValue,
 }) => {
-  const { title, icon, description, position, detail } = hotspot;
+  const { title, icon, description, position, detail, type } = hotspot;
   const { emitAnalyticsEvent } = useGlobalContext();
   const {
     extendMode,
@@ -76,6 +77,8 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
 
   const DefaultIcon = withImage ? (
     <ImageIcon className="size-4" />
+  ) : type === "damage" ? (
+    <WarningIcon className="size-4" />
   ) : (
     <div className="size-1" />
   );
@@ -107,6 +110,20 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     setOver(false);
   }, [over, setOver]);
 
+  // Determine which CSS variable to use based on hotspot type
+  const getHotspotColorVariable = useCallback(() => {
+    if (type === "damage") {
+      return "var(--hotspot-damage-color)";
+    }
+    if (type === "feature") {
+      return "var(--hotspot-feature-color)";
+    }
+    // Default: if no type, use feature color with fallback to primary
+    return "var(--hotspot-feature-color)";
+  }, [type]);
+
+  const hotspotColorVariable = getHotspotColorVariable();
+
   return (
     <div
       className={cn(
@@ -124,10 +141,12 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       <div
         // Hoverable icon
         className="relative flex items-center justify-center rounded-full border-2 border-background bg-primary text-primary-foreground"
+        style={{ backgroundColor: hotspotColorVariable }}
       >
         <div
           // Ping animation
-          className="pointer-events-none absolute -z-20 size-8 animate-hotspot-ping rounded-full border-2 border-background"
+          className="pointer-events-none absolute -z-20 size-8 animate-hotspot-ping rounded-full border-2 border-background bg-primary"
+          style={{ backgroundColor: hotspotColorVariable }}
         />
 
         {/* Use the icon from the config if available. Else, replace it if needed */}
