@@ -76,9 +76,11 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   const withText = !!title || !!description;
 
   const DefaultIcon = withImage ? (
-    <ImageIcon className="size-4" />
-  ) : type === "damage" ? (
-    <WarningIcon className="size-4" />
+    type === "damage" ? (
+      <WarningIcon className="size-4" />
+    ) : (
+      <ImageIcon className="size-4" />
+    )
   ) : (
     <div className="size-1" />
   );
