@@ -1,14 +1,16 @@
-name: Install Tools, Lint and Build
+name: Install Tools
 runs:
   using: composite
   steps:
-    - name: Install tools
-      uses: ./.github/actions/install_tools
+    - uses: actions/setup-node@v4
+      with:
+        node-version: "22"
+        registry-url: "https://registry.npmjs.org"
 
-    - name: Lint
+    - name: Enable corepack
       shell: bash
-      run: yarn lint
+      run: corepack enable
 
-    - name: Build
+    - name: Install dependencies
       shell: bash
-      run: yarn build
+      run: yarn ci
