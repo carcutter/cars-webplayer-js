@@ -1,4 +1,5 @@
 name: Install Tools
+description: "Installs dependencies"
 runs:
   using: composite
   steps:
@@ -13,4 +14,12 @@ runs:
 
     - name: Install dependencies
       shell: bash
-      run: yarn ci
+      run: yarn
+
+    - name: Build
+      shell: bash
+      run: yarn build
+
+    - name: Lint
+      shell: bash
+      run: yarn lint
