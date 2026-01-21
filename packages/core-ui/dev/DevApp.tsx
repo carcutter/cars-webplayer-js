@@ -36,7 +36,6 @@ const useAnalytics = () => {
 
   const onAnalyticsPageEvent = useCallback((event: AnalyticsPageEvent) => {
     // eslint-disable-next-line no-console
-    console.log("AnalyticsPageEvent", event);
   }, []);
 
   useEffect(() => {
@@ -49,7 +48,7 @@ const useAnalytics = () => {
 
   const onAnalyticsTrackEvent = useCallback((event: AnalyticsTrackEvent) => {
     // eslint-disable-next-line no-console
-    console.log("AnalyticsTrackEvent", event);
+    // console.log("AnalyticsTrackEvent", event);
   }, []);
 
   useEffect(() => {
@@ -97,7 +96,7 @@ const DevApp: React.FC = () => {
       >
         <WebPlayer
           // compositionUrl="/composition_mock_1.json"
-          compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/next-360.json"          // compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/interior-360.json"
+          compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/next-360.json" // compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/interior-360.json"
           // compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
           // compositionUrl="https://cdn.car-cutter.com/gallery/7de693a6dd8379eb743f6093499bdd13fe76876f135ae9a08b7d9ecbfb7f8664/WAUZZZF34N1097219/composition_v3.json"
           // hideCategoriesNav
