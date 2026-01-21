@@ -247,7 +247,7 @@ const NextThreeSixtyElementInteractive: React.FC<
         // Filter out points that are too old (to avoid inertia even after the user stopped)
         const now = Date.now();
         const filteredMouseXs = lastPosXs.filter(
-          point => now - point.timestamp < 50
+          point => now - point.timestamp < 100
         );
 
         if (filteredMouseXs.length < 2) {
@@ -264,44 +264,66 @@ const NextThreeSixtyElementInteractive: React.FC<
         );
       })();
 
-      const startTime = Date.now();
+      // Skip inertia if velocity is too low
+      const absVelocity = Math.abs(startVelocity);
+      if (absVelocity < 100) {
+        return;
+      }
 
-      let walkX = 0;
-      let lastFrameTime = startTime;
+      // Calculate total distance to travel based on velocity
+      // Higher deceleration = shorter distance, less sensitive
+      const deceleration = 6000; // px/s² - how quickly to slow down
+      const totalDistance = (absVelocity * absVelocity) / (2 * deceleration) * 0.5; // 0.5 multiplier to reduce travel
+
+      // Calculate duration based on physics: t = v / a
+      const duration = (absVelocity / deceleration) * 1000; // in ms
+
+      // Clamp duration for UX (not too short, not too long)
+      const clampedDuration = clamp(duration, 150, 800);
+
+      const direction = startVelocity > 0 ? 1 : -1;
+      const startTime = performance.now();
+      let lastDistance = 0;
+
+      // Ease-out quart for smooth deceleration
+      // Starts fast, gradually slows to a very smooth stop
+      const easeOutQuart = (t: number): number => 1 - Math.pow(1 - t, 4);
 
       const applyInertia = () => {
         const applyInertiaStep = () => {
-          const now = Date.now();
+          const now = performance.now();
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / clampedDuration, 1);
 
-          // Apply friction
-          const elapsedSeconds = (now - startTime) / 1000;
-          const decayFactor = Math.pow(0.05, elapsedSeconds); // NOTE: could be configurable
-          const currentVelocity = startVelocity * decayFactor;
+          // Apply easing to get current position in the animation
+          const easedProgress = easeOutQuart(progress);
 
-          // Update walk
-          const timeSinceLastFrame = (now - lastFrameTime) / 1000;
-          walkX += currentVelocity * timeSinceLastFrame;
+          // Calculate how far we should have traveled by now
+          const currentDistance = totalDistance * easedProgress * direction;
 
-          // The inertia is very low, we can stop it
-          if (
-            Math.abs(currentVelocity) < 5 * dragStepPx &&
-            Math.abs(walkX) < dragStepPx
-          ) {
-            spinAnimationFrame.current = null;
-            return;
-          }
+          // Calculate delta since last frame
+          const deltaDistance = currentDistance - lastDistance;
+          lastDistance = currentDistance;
 
-          if (Math.abs(walkX) >= dragStepPx) {
-            if (walkX > 0 !== reverse360) {
+          // Accumulate and process into image changes
+          accumulatedWalkX += deltaDistance;
+
+          while (Math.abs(accumulatedWalkX) >= dragStepPx) {
+            if (accumulatedWalkX > 0 !== reverse360) {
               displayNextImage();
+              accumulatedWalkX -= dragStepPx;
             } else {
               displayPreviousImage();
+              accumulatedWalkX += dragStepPx;
             }
-
-            walkX = 0;
           }
 
-          lastFrameTime = now;
+          // Animation complete
+          if (progress >= 1) {
+            spinAnimationFrame.current = null;
+            accumulatedWalkX = 0;
+            return;
+          }
 
           applyInertia();
         };
