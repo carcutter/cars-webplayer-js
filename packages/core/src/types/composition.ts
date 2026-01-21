@@ -33,6 +33,11 @@ type ThreeSixtyItem = {
   images: ImageWithHotspots[];
 };
 
+type NextGenThreeSixtyItem = {
+  type: "next360";
+  images: ImageWithHotspots[];
+};
+
 type InteriorThreeSixtyItem = {
   type: "interior-360";
   poster?: string;
@@ -42,6 +47,7 @@ export type Item =
   | ImageItem
   | VideoItem
   | ThreeSixtyItem
+  | NextGenThreeSixtyItem
   | InteriorThreeSixtyItem;
 
 export type Category = {

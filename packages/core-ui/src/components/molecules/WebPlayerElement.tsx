@@ -3,6 +3,7 @@ import { CustomizableItem } from "../../types/customizable_item";
 import CustomElement from "./web_player_elements/CustomElement";
 import ImageElement from "./web_player_elements/ImageElement";
 import InteriorThreeSixtyElement from "./web_player_elements/InteriorThreeSixtyElement";
+import NextGenThreeSixtyElement from "./web_player_elements/NextGenThreeSixtyElement";
 import ThreeSixtyElement from "./web_player_elements/ThreeSixtyElement";
 import VideoElement from "./web_player_elements/VideoElement";
 
@@ -30,6 +31,11 @@ const WebPlayerElement: React.FC<Props> = ({ index, item, isShown }) => {
     case "360":
       Comp = (
         <ThreeSixtyElement itemIndex={index} onlyPreload={!isShown} {...item} />
+      );
+      break;
+    case "next360":
+      Comp = (
+        <NextGenThreeSixtyElement itemIndex={index} onlyPreload={!isShown} {...item} />
       );
       break;
     case "interior-360":
