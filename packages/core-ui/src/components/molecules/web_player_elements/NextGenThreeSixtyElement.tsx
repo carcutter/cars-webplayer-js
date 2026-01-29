@@ -13,17 +13,15 @@ import ThreeSixtyIcon from "../../icons/ThreeSixtyIcon";
 import ErrorTemplate from "../../template/ErrorTemplate";
 import Button from "../../ui/Button";
 
-import ImageElement from "./ImageElement";
+// ImageElement not used in 360 spin to avoid srcSet mismatches - using CdnImage directly
 
 const AUTO_SPIN_DELAY = 750;
 const AUTO_SPIN_DURATION = 1250;
 
-// Total pixels to drag/scroll for a complete 360° spin (all images)
-// Lower values = faster/more sensitive spin
-const FULL_SPIN_DRAG_PX = 900; // ~700px drag for full rotation
-const FULL_SPIN_SCROLL_PX = 1000; // ~800px scroll for full rotation
+const DRAG_SPIN_PX = 360; // 10px for each image of a 36 images spin
+const SCROLL_SPIN_PX = 480; // 15px for each image of a 36 images spin
 
-type NextThreeSixtyElementProps = Extract<
+type NextGenThreeSixtyElementProps = Extract<
   CustomizableItem,
   { type: "next360" }
 > & {
@@ -31,47 +29,9 @@ type NextThreeSixtyElementProps = Extract<
   onlyPreload: boolean;
 };
 
-/**
- * Custom hook to preload images into memory for smooth canvas rendering
- */
-const useImageCache = (images: ImageWithHotspots[]) => {
-  const imageCacheRef = useRef<Map<string, HTMLImageElement>>(new Map());
-  const [isReady, setIsReady] = useState(false);
-
-  useEffect(() => {
-    const cache = imageCacheRef.current;
-    let loadedCount = 0;
-
-    images.forEach(({ src }) => {
-      if (cache.has(src)) {
-        loadedCount++;
-        return;
-      }
-
-      const img = new Image();
-      img.crossOrigin = "anonymous";
-      img.src = src;
-      img.onload = () => {
-        cache.set(src, img);
-        loadedCount++;
-        if (loadedCount === images.length) {
-          setIsReady(true);
-        }
-      };
-    });
-
-    // Check if all images were already cached
-    if (loadedCount === images.length) {
-      setIsReady(true);
-    }
-  }, [images]);
-
-  return { imageCache: imageCacheRef.current, isReady };
-};
-
-const NextThreeSixtyElementInteractive: React.FC<
-  NextThreeSixtyElementProps
-> = ({ images, onlyPreload }) => {
+const NextGenThreeSixtyElementInteractive: React.FC<
+  NextGenThreeSixtyElementProps
+> = ({ images, onlyPreload: _onlyPreload }) => {
   const { demoSpin, reverse360 } = useGlobalContext();
   const { isShowingDetails, isZooming } = useControlsContext();
 
@@ -80,10 +40,6 @@ const NextThreeSixtyElementInteractive: React.FC<
   // - element refs
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  // - Image cache for smooth canvas rendering
-  const { imageCache, isReady: isCacheReady } = useImageCache(images);
 
   // - Value refs
   const playDemoSpinRef = useRef(demoSpin);
@@ -107,75 +63,17 @@ const NextThreeSixtyElementInteractive: React.FC<
     spinAnimationFrame.current = null;
   };
 
-  // - Flip book image index (using ref for immediate updates, state for render sync)
+  // - Flip book image index & details
   const [imageIndex, setImageIndex] = useState(0);
-  const imageIndexRef = useRef(0);
-  const pendingRenderRef = useRef<number | null>(null);
 
   const length = images.length;
 
-  // Calculate pixels per image change - fewer pixels = faster spin
-  // For 180 images: 400px / 180 ≈ 2.2px per image (very responsive)
-  // For 36 images: 400px / 36 ≈ 11px per image
-  const dragStepPx = useMemo(() => FULL_SPIN_DRAG_PX / length, [length]);
-  const scrollStepPx = useMemo(() => FULL_SPIN_SCROLL_PX / length, [length]);
-
-  // Draw image to canvas - GPU accelerated
-  const drawImageToCanvas = useCallback(
-    (index: number) => {
-      const canvas = canvasRef.current;
-      const ctx = canvas?.getContext("2d");
-      if (!canvas || !ctx) return;
-
-      const imageSrc = images[index]?.src;
-      const img = imageCache.get(imageSrc);
-
-      if (img) {
-        // Set canvas size to match image (only once or on resize)
-        if (canvas.width !== img.naturalWidth) {
-          canvas.width = img.naturalWidth;
-          canvas.height = img.naturalHeight;
-        }
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0);
-      }
-    },
-    [images, imageCache]
-  );
-
-  // Batched render update using rAF for smooth 60fps updates
-  const scheduleRender = useCallback(
-    (newIndex: number) => {
-      imageIndexRef.current = newIndex;
-
-      if (pendingRenderRef.current === null) {
-        pendingRenderRef.current = requestAnimationFrame(() => {
-          drawImageToCanvas(imageIndexRef.current);
-          setImageIndex(imageIndexRef.current);
-          pendingRenderRef.current = null;
-        });
-      }
-    },
-    [drawImageToCanvas]
-  );
-
   const displayPreviousImage = useCallback(() => {
-    const newIndex = (imageIndexRef.current - 1 + length) % length;
-    scheduleRender(newIndex);
-  }, [length, scheduleRender]);
-
+    setImageIndex(currentIndex => (currentIndex - 1 + length) % length);
+  }, [length]);
   const displayNextImage = useCallback(() => {
-    const newIndex = (imageIndexRef.current + 1) % length;
-    scheduleRender(newIndex);
-  }, [length, scheduleRender]);
-
-  // Initial canvas draw when cache is ready
-  useEffect(() => {
-    if (isCacheReady) {
-      drawImageToCanvas(imageIndex);
-    }
-  }, [isCacheReady, drawImageToCanvas, imageIndex]);
+    setImageIndex(currentIndex => (currentIndex + 1) % length);
+  }, [length]);
 
   // - Event listeners to handle spinning
   useEffect(() => {
@@ -209,9 +107,9 @@ const NextThreeSixtyElementInteractive: React.FC<
 
             const stepIndex = Math.round(easeOutQuad(progress) * length);
 
-            const newImageIndex = clamp(stepIndex % length, 0, length - 1);
+            const imageIndex = clamp(stepIndex % length, 0, length - 1);
 
-            scheduleRender(newImageIndex);
+            setImageIndex(imageIndex);
 
             if (stepIndex >= length) {
               return;
@@ -229,11 +127,12 @@ const NextThreeSixtyElementInteractive: React.FC<
 
     // -- Inertia
 
+    const dragStepPx = DRAG_SPIN_PX / length;
+
     type PosX = { timestamp: number; value: number };
 
     let spinStartX: number | null = null;
     let lastPosXs: PosX[] = [];
-    let accumulatedWalkX = 0; // Track sub-pixel movement for smooth high-image-count spins
 
     const addPosX = (posX: PosX) => {
       lastPosXs.push(posX);
@@ -247,7 +146,7 @@ const NextThreeSixtyElementInteractive: React.FC<
         // Filter out points that are too old (to avoid inertia even after the user stopped)
         const now = Date.now();
         const filteredMouseXs = lastPosXs.filter(
-          point => now - point.timestamp < 100
+          point => now - point.timestamp < 50
         );
 
         if (filteredMouseXs.length < 2) {
@@ -264,67 +163,44 @@ const NextThreeSixtyElementInteractive: React.FC<
         );
       })();
 
-      // Skip inertia if velocity is too low
-      const absVelocity = Math.abs(startVelocity);
-      if (absVelocity < 100) {
-        return;
-      }
+      const startTime = Date.now();
 
-      // Calculate total distance to travel based on velocity
-      // Higher deceleration = shorter distance, less sensitive
-      const deceleration = 6000; // px/s² - how quickly to slow down
-      const totalDistance =
-        ((absVelocity * absVelocity) / (2 * deceleration)) * 0.5; // 0.5 multiplier to reduce travel
-
-      // Calculate duration based on physics: t = v / a
-      const duration = (absVelocity / deceleration) * 1000; // in ms
-
-      // Clamp duration for UX (not too short, not too long)
-      const clampedDuration = clamp(duration, 150, 800);
-
-      const direction = startVelocity > 0 ? 1 : -1;
-      const startTime = performance.now();
-      let lastDistance = 0;
-
-      // Ease-out quart for smooth deceleration
-      // Starts fast, gradually slows to a very smooth stop
-      const easeOutQuart = (t: number): number => 1 - Math.pow(1 - t, 4);
+      let walkX = 0;
+      let lastFrameTime = startTime;
 
       const applyInertia = () => {
         const applyInertiaStep = () => {
-          const now = performance.now();
-          const elapsed = now - startTime;
-          const progress = Math.min(elapsed / clampedDuration, 1);
+          const now = Date.now();
 
-          // Apply easing to get current position in the animation
-          const easedProgress = easeOutQuart(progress);
+          // Apply friction
+          const elapsedSeconds = (now - startTime) / 1000;
+          const decayFactor = Math.pow(0.05, elapsedSeconds); // NOTE: could be configurable
+          const currentVelocity = startVelocity * decayFactor;
 
-          // Calculate how far we should have traveled by now
-          const currentDistance = totalDistance * easedProgress * direction;
+          // Update walk
+          const timeSinceLastFrame = (now - lastFrameTime) / 1000;
+          walkX += currentVelocity * timeSinceLastFrame;
 
-          // Calculate delta since last frame
-          const deltaDistance = currentDistance - lastDistance;
-          lastDistance = currentDistance;
-
-          // Accumulate and process into image changes
-          accumulatedWalkX += deltaDistance;
-
-          while (Math.abs(accumulatedWalkX) >= dragStepPx) {
-            if (accumulatedWalkX > 0 !== reverse360) {
-              displayNextImage();
-              accumulatedWalkX -= dragStepPx;
-            } else {
-              displayPreviousImage();
-              accumulatedWalkX += dragStepPx;
-            }
-          }
-
-          // Animation complete
-          if (progress >= 1) {
+          // The inertia is very low, we can stop it
+          if (
+            Math.abs(currentVelocity) < 5 * dragStepPx &&
+            Math.abs(walkX) < dragStepPx
+          ) {
             spinAnimationFrame.current = null;
-            accumulatedWalkX = 0;
             return;
           }
+
+          if (Math.abs(walkX) >= dragStepPx) {
+            if (walkX > 0 !== reverse360) {
+              displayNextImage();
+            } else {
+              displayPreviousImage();
+            }
+
+            walkX = 0;
+          }
+
+          lastFrameTime = now;
 
           applyInertia();
         };
@@ -359,7 +235,6 @@ const NextThreeSixtyElementInteractive: React.FC<
       // Take snapshot of the starting state
       const x = e.clientX;
       spinStartX = x;
-      accumulatedWalkX = 0;
       lastPosXs = [{ timestamp: Date.now(), value: x }];
     };
 
@@ -376,21 +251,22 @@ const NextThreeSixtyElementInteractive: React.FC<
       // Take a snapshot of the current state
       addPosX({ timestamp: Date.now(), value: x });
 
-      // Accumulate movement for sub-pixel precision with many images
-      accumulatedWalkX += x - spinStartX;
-      spinStartX = x;
+      const walkX = x - spinStartX;
 
-      // Process accumulated movement
-      while (Math.abs(accumulatedWalkX) >= dragStepPx) {
-        // XOR operation to reverse the logic
-        if (accumulatedWalkX > 0 !== reverse360) {
-          displayNextImage();
-          accumulatedWalkX -= dragStepPx;
-        } else {
-          displayPreviousImage();
-          accumulatedWalkX += dragStepPx;
-        }
+      // If the user did not move enough, we do not want to rotate
+      if (Math.abs(walkX) < dragStepPx) {
+        return;
       }
+
+      // XOR operation to reverse the logic
+      if (walkX > 0 !== reverse360) {
+        displayNextImage();
+      } else {
+        displayPreviousImage();
+      }
+
+      // Reset the starting point to the current position
+      spinStartX = x;
     };
 
     // Handle when the user releases the 360 or leaves the spinning area
@@ -402,7 +278,6 @@ const NextThreeSixtyElementInteractive: React.FC<
 
       // Clear the starting point
       spinStartX = null;
-      accumulatedWalkX = 0;
 
       startInertiaAnimation();
     };
@@ -414,6 +289,8 @@ const NextThreeSixtyElementInteractive: React.FC<
     document.addEventListener("contextmenu", onStopDragging);
 
     // - Scroll events to update the image thanks to the "invisible scroller"
+
+    const scrollStepPx = SCROLL_SPIN_PX / length;
 
     const getScrollerWidth = () => scroller.getBoundingClientRect().width;
 
@@ -472,7 +349,6 @@ const NextThreeSixtyElementInteractive: React.FC<
       mainTouchId = id;
 
       spinStartX = x;
-      accumulatedWalkX = 0;
       lastPosXs = [{ timestamp: Date.now(), value: x }];
     };
 
@@ -498,21 +374,22 @@ const NextThreeSixtyElementInteractive: React.FC<
       // Take a snapshot of the current state
       addPosX({ timestamp: Date.now(), value: x });
 
-      // Accumulate movement for sub-pixel precision with many images
-      accumulatedWalkX += x - spinStartX;
-      spinStartX = x;
+      const walkX = x - spinStartX;
 
-      // Process accumulated movement
-      while (Math.abs(accumulatedWalkX) >= dragStepPx) {
-        // XOR operation to reverse the logic
-        if (accumulatedWalkX > 0 !== reverse360) {
-          displayNextImage();
-          accumulatedWalkX -= dragStepPx;
-        } else {
-          displayPreviousImage();
-          accumulatedWalkX += dragStepPx;
-        }
+      // If the user did not move enough, we do not want to rotate
+      if (Math.abs(walkX) < dragStepPx) {
+        return;
       }
+
+      // XOR operation to reverse the logic
+      if (walkX > 0 !== reverse360) {
+        displayNextImage();
+      } else {
+        displayPreviousImage();
+      }
+
+      // Reset the starting point to the current position
+      spinStartX = x;
     };
 
     const onTouchEnd = (e: TouchEvent) => {
@@ -533,7 +410,6 @@ const NextThreeSixtyElementInteractive: React.FC<
       // Clear the starting point
       mainTouchId = null;
       spinStartX = null;
-      accumulatedWalkX = 0;
 
       startInertiaAnimation();
     };
@@ -556,11 +432,6 @@ const NextThreeSixtyElementInteractive: React.FC<
       scroller.removeEventListener("touchmove", onTouchMove);
       scroller.removeEventListener("touchend", onTouchEnd);
       scroller.removeEventListener("touchcancel", onTouchEnd);
-
-      // Clean up pending render
-      if (pendingRenderRef.current !== null) {
-        cancelAnimationFrame(pendingRenderRef.current);
-      }
     };
   }, [
     clearAutoSpinTimeout,
@@ -569,9 +440,6 @@ const NextThreeSixtyElementInteractive: React.FC<
     disableSpin,
     reverse360,
     length,
-    dragStepPx,
-    scrollStepPx,
-    scheduleRender,
   ]);
 
   return (
@@ -580,18 +448,18 @@ const NextThreeSixtyElementInteractive: React.FC<
       {/* NOTE: ImageElement is within so that it can capture events first */}
       <div ref={scrollerRef} className=" overflow-x-scroll">
         <div className="sticky left-0 top-0">
-          {/* Canvas for smooth GPU-accelerated rendering */}
-          <canvas
-            ref={canvasRef}
-            className="pointer-events-none absolute left-0 top-0 size-full"
-            style={{ willChange: "contents" }}
-          />
-          {/* Fallback ImageElement for hotspots and initial render */}
-          <ImageElement
-            {...images[imageIndex]}
-            onlyPreload={onlyPreload}
-            itemIndex={-1}
-          />
+          {/* All images rendered and kept in DOM - switching done via opacity for instant display */}
+          {images.map((image, index) => (
+            <CdnImage
+              key={image.src}
+              src={image.src}
+              className={cn(
+                "pointer-events-none size-full object-cover",
+                index === 0 ? "relative" : "absolute inset-0",
+                index === imageIndex ? "opacity-100" : "opacity-0"
+              )}
+            />
+          ))}
         </div>
         {/* Add space on both sides to allow scrolling */}
         {/* NOTE: We need the element to have an height, otherwise, Safari will ignore it */}
@@ -602,7 +470,7 @@ const NextThreeSixtyElementInteractive: React.FC<
   );
 };
 
-type NextThreeSixtyElementPlaceholderProps = {
+type NextGenThreeSixtyElementPlaceholderProps = {
   itemIndex: number;
   images: ImageWithHotspots[];
   onPlaceholderImageLoaded: () => void;
@@ -610,8 +478,8 @@ type NextThreeSixtyElementPlaceholderProps = {
   onError: () => void;
 };
 
-const NextThreeSixtyElementPlaceholder: React.FC<
-  NextThreeSixtyElementPlaceholderProps
+const NextGenThreeSixtyElementPlaceholder: React.FC<
+  NextGenThreeSixtyElementPlaceholderProps
 > = ({
   itemIndex,
   images,
@@ -646,11 +514,11 @@ const NextThreeSixtyElementPlaceholder: React.FC<
         type: "track",
         category_id: displayedCategoryId,
         category_name: displayedCategoryName,
-        item_type: "next-360",
+        item_type: "exterior-360",
         item_position: itemIndex,
         action_properties: {
-          action_name: "Next 360 Play",
-          action_field: "next_360_play",
+          action_name: "Exterior 360 Play",
+          action_field: "exterior_360_play",
           action_value: type,
         },
       });
@@ -738,12 +606,14 @@ const NextThreeSixtyElementPlaceholder: React.FC<
 };
 
 /**
- * NextThreeSixtyElement component renders a carrousel's 360
+ * NextGenThreeSixtyElement component renders a carrousel's 360
  *
  * @prop `onlyPreload`: If true, zoom will not affect the 360. It is useful to pre-fetch images.
  * @prop `index`: The index of the item in the carrousel. Used to share state.
  */
-const NextThreeSixtyElement: React.FC<NextThreeSixtyElementProps> = props => {
+const NextGenThreeSixtyElement: React.FC<
+  NextGenThreeSixtyElementProps
+> = props => {
   const { itemIndex } = props;
 
   const { setItemInteraction } = useControlsContext();
@@ -770,7 +640,7 @@ const NextThreeSixtyElement: React.FC<NextThreeSixtyElementProps> = props => {
     );
   } else if (status !== "spin") {
     return (
-      <NextThreeSixtyElementPlaceholder
+      <NextGenThreeSixtyElementPlaceholder
         {...props}
         onPlaceholderImageLoaded={() =>
           setStatus(s => (s === null ? "placeholder" : s))
@@ -780,8 +650,8 @@ const NextThreeSixtyElement: React.FC<NextThreeSixtyElementProps> = props => {
       />
     );
   } else {
-    return <NextThreeSixtyElementInteractive {...props} />;
+    return <NextGenThreeSixtyElementInteractive {...props} />;
   }
 };
 
-export default NextThreeSixtyElement;
+export default NextGenThreeSixtyElement;
