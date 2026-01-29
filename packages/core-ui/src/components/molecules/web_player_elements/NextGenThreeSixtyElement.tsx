@@ -20,8 +20,8 @@ const AUTO_SPIN_DURATION = 1250;
 
 // Total pixels to drag/scroll for a complete 360° spin (all images)
 // Lower values = faster/more sensitive spin
-const FULL_SPIN_DRAG_PX = 800; // ~700px drag for full rotation
-const FULL_SPIN_SCROLL_PX = 900; // ~800px scroll for full rotation
+const FULL_SPIN_DRAG_PX = 900; // ~700px drag for full rotation
+const FULL_SPIN_SCROLL_PX = 1000; // ~800px scroll for full rotation
 
 type NextThreeSixtyElementProps = Extract<
   CustomizableItem,
@@ -273,7 +273,8 @@ const NextThreeSixtyElementInteractive: React.FC<
       // Calculate total distance to travel based on velocity
       // Higher deceleration = shorter distance, less sensitive
       const deceleration = 6000; // px/s² - how quickly to slow down
-      const totalDistance = (absVelocity * absVelocity) / (2 * deceleration) * 0.5; // 0.5 multiplier to reduce travel
+      const totalDistance =
+        ((absVelocity * absVelocity) / (2 * deceleration)) * 0.5; // 0.5 multiplier to reduce travel
 
       // Calculate duration based on physics: t = v / a
       const duration = (absVelocity / deceleration) * 1000; // in ms
