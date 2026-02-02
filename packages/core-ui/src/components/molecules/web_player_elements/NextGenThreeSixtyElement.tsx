@@ -43,12 +43,14 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
   // - Refs for direct DOM manipulation (avoids React re-renders on iOS)
   const imageIndexRef = useRef(0);
-  const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
+  const mainImageRef = useRef<HTMLImageElement | null>(null);
 
   // - Throttling refs for iOS performance (avoid processing every touch event)
   const pendingUpdateRef = useRef<number | null>(null);
   const lastTouchXRef = useRef<number | null>(null);
   const touchStartXRef = useRef<number | null>(null);
+  const lastProcessTimeRef = useRef(0);
+  const MIN_PROCESS_INTERVAL = 16; // ~60fps max, helps older iOS devices
 
   // - Velocity tracking with pre-allocated ring buffer (avoids array allocations)
   const velocityBufferRef = useRef<{
@@ -95,21 +97,22 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
   const length = images.length;
 
-  // - Direct DOM manipulation functions (bypass React re-renders for iOS performance)
-  const updateVisibleImage = useCallback((newIndex: number) => {
-    const prevIndex = imageIndexRef.current;
-    if (prevIndex === newIndex) return;
+  // - Direct DOM manipulation: change src of single image element (most memory efficient for iOS)
+  const updateVisibleImage = useCallback(
+    (newIndex: number) => {
+      const prevIndex = imageIndexRef.current;
+      if (prevIndex === newIndex) return;
 
-    // Hide previous image via direct DOM manipulation
-    const prevImage = imageRefs.current[prevIndex];
-    if (prevImage) prevImage.style.opacity = "0";
+      // Change src directly - images are preloaded so this should be instant from cache
+      const img = mainImageRef.current;
+      if (img) {
+        img.src = images[newIndex].src;
+      }
 
-    // Show new image via direct DOM manipulation
-    const newImage = imageRefs.current[newIndex];
-    if (newImage) newImage.style.opacity = "1";
-
-    imageIndexRef.current = newIndex;
-  }, []);
+      imageIndexRef.current = newIndex;
+    },
+    [images]
+  );
 
   const displayNextImageDirect = useCallback(() => {
     const newIndex = (imageIndexRef.current + 1) % length;
@@ -229,6 +232,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
       let walkX = 0;
       let lastFrameTime = startTime;
+      let lastImageSwitchTime = startTime;
 
       const applyInertia = () => {
         const applyInertiaStep = () => {
@@ -254,7 +258,12 @@ const NextGenThreeSixtyElementInteractive: React.FC<
             return;
           }
 
-          if (Math.abs(walkX) >= dragStepPx) {
+          // Time-based throttle for image switches during inertia (helps older iOS devices)
+          const timeSinceLastSwitch = now - lastImageSwitchTime;
+          if (
+            Math.abs(walkX) >= dragStepPx &&
+            timeSinceLastSwitch >= MIN_PROCESS_INTERVAL
+          ) {
             if (walkX > 0 !== reverse360) {
               displayNextImageDirect();
             } else {
@@ -262,6 +271,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
             }
 
             walkX = 0;
+            lastImageSwitchTime = now;
           }
 
           lastFrameTime = now;
@@ -396,9 +406,18 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
     let mainTouchId: Touch["identifier"] | null = null;
 
-    // Throttled touch processing (processes at most once per animation frame)
+    // Throttled touch processing (processes at most once per animation frame AND respects min interval)
     const processTouchUpdate = () => {
       pendingUpdateRef.current = null;
+
+      // Time-based throttle for older iOS devices (iPhone 12, etc.)
+      const now = performance.now();
+      if (now - lastProcessTimeRef.current < MIN_PROCESS_INTERVAL) {
+        // Schedule another check on next frame if we skipped this one
+        pendingUpdateRef.current = requestAnimationFrame(processTouchUpdate);
+        return;
+      }
+      lastProcessTimeRef.current = now;
 
       const x = lastTouchXRef.current;
       const startX = touchStartXRef.current;
@@ -564,22 +583,14 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       {/* NOTE: ImageElement is within so that it can capture events first */}
       <div ref={scrollerRef} className=" overflow-x-scroll">
         <div className="sticky left-0 top-0">
-          {/* All images rendered and kept in DOM - switching done via opacity for instant display */}
-          {/* Using refs and inline styles for direct DOM manipulation to avoid React re-renders on iOS */}
-          {images.map((image, index) => (
-            <CdnImage
-              key={image.src}
-              ref={el => {
-                imageRefs.current[index] = el;
-              }}
-              src={image.src}
-              className={cn(
-                "pointer-events-none size-full object-cover",
-                index === 0 ? "relative" : "absolute inset-0"
-              )}
-              style={{ opacity: index === imageIndex ? 1 : 0 }}
-            />
-          ))}
+          {/* Single image element - src changed via direct DOM manipulation */}
+          {/* Images are preloaded by placeholder, so src changes are instant from cache */}
+          <img
+            ref={mainImageRef}
+            src={images[imageIndex].src}
+            className="pointer-events-none size-full object-cover"
+            alt=""
+          />
         </div>
         {/* Add space on both sides to allow scrolling */}
         {/* NOTE: We need the element to have an height, otherwise, Safari will ignore it */}
