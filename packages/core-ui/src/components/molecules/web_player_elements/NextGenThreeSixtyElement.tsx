@@ -645,11 +645,11 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
         type: "track",
         category_id: displayedCategoryId,
         category_name: displayedCategoryName,
-        item_type: "exterior-360",
+        item_type: "next360",
         item_position: itemIndex,
         action_properties: {
-          action_name: "Exterior 360 Play",
-          action_field: "exterior_360_play",
+          action_name: "Next 360 Play",
+          action_field: "next360_play",
           action_value: type,
         },
       });
@@ -751,7 +751,7 @@ const NextGenThreeSixtyElement: React.FC<
 
   const [status, setStatus] = useState<
     null | "placeholder" | "spin" | "error"
-  >();
+  >(null);
 
   // Update the item interaction state according to the readiness of the 360
   useEffect(() => {
