@@ -40,7 +40,7 @@
     "browserslist": "^4.23.3",
     "browserslist-to-esbuild": "^2.1.1",
     "eslint": "^8.57.0",
-    "preact": "^10.24.3",
+    "preact": "^10.27.3",
     "preact-compat": "^3.19.0",
     "typescript": "^5.5.4",
     "vite": "^5.4.21",
