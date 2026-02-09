@@ -578,7 +578,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
   ]);
 
   return (
-    <div ref={containerRef} className="cursor-ew-resize">
+    <div ref={containerRef} className="cursor-[url('cursor.svg'),grab]">
       {/* Scroller is element larger than the image to capture scroll event and then, make the 360 spin */}
       {/* NOTE: ImageElement is within so that it can capture events first */}
       <div ref={scrollerRef} className=" overflow-x-scroll">
