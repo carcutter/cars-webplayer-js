@@ -1,10 +1,11 @@
 name: Install Tools
+description: Install tools, lint, and build the project
 runs:
   using: composite
   steps:
     - uses: actions/setup-node@v4
       with:
-        node-version: "22"
+        node-version: "22.14"
         registry-url: "https://registry.npmjs.org"
 
     - name: Enable corepack
