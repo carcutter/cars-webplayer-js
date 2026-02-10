@@ -13,7 +13,7 @@ import ThreeSixtyIcon from "../../icons/ThreeSixtyIcon";
 import ErrorTemplate from "../../template/ErrorTemplate";
 import Button from "../../ui/Button";
 
-import ImageElement from "./ImageElement";
+// ImageElement not used in 360 spin to avoid srcSet mismatches - using CdnImage directly
 
 const AUTO_SPIN_DELAY = 750;
 const AUTO_SPIN_DURATION = 1250;
@@ -21,15 +21,17 @@ const AUTO_SPIN_DURATION = 1250;
 const DRAG_SPIN_PX = 360; // 10px for each image of a 36 images spin
 const SCROLL_SPIN_PX = 480; // 15px for each image of a 36 images spin
 
-type ThreeSixtyElementProps = Extract<CustomizableItem, { type: "360" }> & {
+type NextGenThreeSixtyElementProps = Extract<
+  CustomizableItem,
+  { type: "next360" }
+> & {
   itemIndex: number;
   onlyPreload: boolean;
 };
 
-const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
-  images,
-  onlyPreload,
-}) => {
+const NextGenThreeSixtyElementInteractive: React.FC<
+  NextGenThreeSixtyElementProps
+> = ({ images, onlyPreload: _onlyPreload }) => {
   const { demoSpin, reverse360 } = useGlobalContext();
   const { isShowingDetails, isZooming } = useControlsContext();
 
@@ -38,6 +40,30 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   // - element refs
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
+
+  // - Refs for direct DOM manipulation (avoids React re-renders on iOS)
+  const imageIndexRef = useRef(0);
+  const mainImageRef = useRef<HTMLImageElement | null>(null);
+
+  // - Throttling refs for iOS performance (avoid processing every touch event)
+  const pendingUpdateRef = useRef<number | null>(null);
+  const lastTouchXRef = useRef<number | null>(null);
+  const touchStartXRef = useRef<number | null>(null);
+  const lastProcessTimeRef = useRef(0);
+  const MIN_PROCESS_INTERVAL = 16; // ~60fps max, helps older iOS devices
+
+  // - Velocity tracking with pre-allocated ring buffer (avoids array allocations)
+  const velocityBufferRef = useRef<{
+    timestamps: Float64Array;
+    values: Float64Array;
+    index: number;
+    count: number;
+  }>({
+    timestamps: new Float64Array(10),
+    values: new Float64Array(10),
+    index: 0,
+    count: 0,
+  });
 
   // - Value refs
   const playDemoSpinRef = useRef(demoSpin);
@@ -64,14 +90,44 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   // - Flip book image index & details
   const [imageIndex, setImageIndex] = useState(0);
 
+  // Keep ref in sync with state (for when state is updated externally, e.g., demo spin)
+  useEffect(() => {
+    imageIndexRef.current = imageIndex;
+  }, [imageIndex]);
+
   const length = images.length;
 
-  const displayPreviousImage = useCallback(() => {
-    setImageIndex(currentIndex => (currentIndex - 1 + length) % length);
-  }, [length]);
-  const displayNextImage = useCallback(() => {
-    setImageIndex(currentIndex => (currentIndex + 1) % length);
-  }, [length]);
+  // - Direct DOM manipulation: change src of single image element (most memory efficient for iOS)
+  const updateVisibleImage = useCallback(
+    (newIndex: number) => {
+      const prevIndex = imageIndexRef.current;
+      if (prevIndex === newIndex) return;
+
+      // Change src directly - images are preloaded so this should be instant from cache
+      const img = mainImageRef.current;
+      if (img) {
+        img.src = images[newIndex].src;
+      }
+
+      imageIndexRef.current = newIndex;
+    },
+    [images]
+  );
+
+  const displayNextImageDirect = useCallback(() => {
+    const newIndex = (imageIndexRef.current + 1) % length;
+    updateVisibleImage(newIndex);
+  }, [length, updateVisibleImage]);
+
+  const displayPreviousImageDirect = useCallback(() => {
+    const newIndex = (imageIndexRef.current - 1 + length) % length;
+    updateVisibleImage(newIndex);
+  }, [length, updateVisibleImage]);
+
+  // Sync React state with ref (call when interaction ends)
+  const syncImageIndexState = useCallback(() => {
+    setImageIndex(imageIndexRef.current);
+  }, []);
 
   // - Event listeners to handle spinning
   useEffect(() => {
@@ -127,44 +183,56 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
     const dragStepPx = DRAG_SPIN_PX / length;
 
-    type PosX = { timestamp: number; value: number };
-
+    // Use refs for mutable state to avoid allocations
     let spinStartX: number | null = null;
-    let lastPosXs: PosX[] = [];
 
-    const addPosX = (posX: PosX) => {
-      lastPosXs.push(posX);
-      if (lastPosXs.length > 20) {
-        lastPosXs.shift();
-      }
+    // Ring buffer helpers (no allocations)
+    const velocityBuffer = velocityBufferRef.current;
+    const resetVelocityBuffer = () => {
+      velocityBuffer.index = 0;
+      velocityBuffer.count = 0;
+    };
+    const addVelocityPoint = (timestamp: number, value: number) => {
+      const idx = velocityBuffer.index;
+      velocityBuffer.timestamps[idx] = timestamp;
+      velocityBuffer.values[idx] = value;
+      velocityBuffer.index = (idx + 1) % 10;
+      if (velocityBuffer.count < 10) velocityBuffer.count++;
     };
 
     const startInertiaAnimation = () => {
       const startVelocity = (() => {
-        // Filter out points that are too old (to avoid inertia even after the user stopped)
+        // Calculate velocity from ring buffer (no allocations)
         const now = Date.now();
-        const filteredMouseXs = lastPosXs.filter(
-          point => now - point.timestamp < 50
-        );
+        const { timestamps, values, index, count } = velocityBuffer;
 
-        if (filteredMouseXs.length < 2) {
-          return 0; // Not enough points to calculate velocity
+        if (count < 2) return 0;
+
+        // Find valid points within last 50ms
+        let firstIdx = -1;
+        let lastIdx = -1;
+
+        for (let i = 0; i < count; i++) {
+          const bufIdx = (index - 1 - i + 10) % 10;
+          if (now - timestamps[bufIdx] < 50) {
+            if (lastIdx === -1) lastIdx = bufIdx;
+            firstIdx = bufIdx;
+          }
         }
 
-        const firstMouse = filteredMouseXs[0];
-        const lastMouse = filteredMouseXs[filteredMouseXs.length - 1];
+        if (firstIdx === -1 || lastIdx === -1 || firstIdx === lastIdx) return 0;
 
-        // Compute mean velocity in px/s
-        return (
-          (lastMouse.value - firstMouse.value) /
-          (1e-3 * Math.max(lastMouse.timestamp - firstMouse.timestamp, 1))
-        );
+        const timeDiff = timestamps[lastIdx] - timestamps[firstIdx];
+        if (timeDiff <= 0) return 0;
+
+        return (values[lastIdx] - values[firstIdx]) / (timeDiff / 1000);
       })();
 
       const startTime = Date.now();
 
       let walkX = 0;
       let lastFrameTime = startTime;
+      let lastImageSwitchTime = startTime;
 
       const applyInertia = () => {
         const applyInertiaStep = () => {
@@ -185,17 +253,25 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
             Math.abs(walkX) < dragStepPx
           ) {
             spinAnimationFrame.current = null;
+            // Sync React state when inertia animation completes
+            syncImageIndexState();
             return;
           }
 
-          if (Math.abs(walkX) >= dragStepPx) {
+          // Time-based throttle for image switches during inertia (helps older iOS devices)
+          const timeSinceLastSwitch = now - lastImageSwitchTime;
+          if (
+            Math.abs(walkX) >= dragStepPx &&
+            timeSinceLastSwitch >= MIN_PROCESS_INTERVAL
+          ) {
             if (walkX > 0 !== reverse360) {
-              displayNextImage();
+              displayNextImageDirect();
             } else {
-              displayPreviousImage();
+              displayPreviousImageDirect();
             }
 
             walkX = 0;
+            lastImageSwitchTime = now;
           }
 
           lastFrameTime = now;
@@ -233,7 +309,8 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       // Take snapshot of the starting state
       const x = e.clientX;
       spinStartX = x;
-      lastPosXs = [{ timestamp: Date.now(), value: x }];
+      resetVelocityBuffer();
+      addVelocityPoint(Date.now(), x);
     };
 
     const onMouseMove = (e: MouseEvent) => {
@@ -246,8 +323,8 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
       const { clientX: x } = e;
 
-      // Take a snapshot of the current state
-      addPosX({ timestamp: Date.now(), value: x });
+      // Track velocity (no object allocation)
+      addVelocityPoint(Date.now(), x);
 
       const walkX = x - spinStartX;
 
@@ -256,11 +333,11 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
         return;
       }
 
-      // XOR operation to reverse the logic
+      // XOR operation to reverse the logic - use direct DOM manipulation
       if (walkX > 0 !== reverse360) {
-        displayNextImage();
+        displayNextImageDirect();
       } else {
-        displayPreviousImage();
+        displayPreviousImageDirect();
       }
 
       // Reset the starting point to the current position
@@ -310,11 +387,11 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
         return;
       }
 
-      // XOR operation to reverse the logic
+      // XOR operation to reverse the logic - use direct DOM manipulation
       if (walk < 0 !== reverse360) {
-        displayNextImage();
+        displayNextImageDirect();
       } else {
-        displayPreviousImage();
+        displayPreviousImageDirect();
       }
 
       // We just changed the image, we want to re-center the scroller
@@ -329,6 +406,43 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
     let mainTouchId: Touch["identifier"] | null = null;
 
+    // Throttled touch processing (processes at most once per animation frame AND respects min interval)
+    const processTouchUpdate = () => {
+      pendingUpdateRef.current = null;
+
+      // Time-based throttle for older iOS devices (iPhone 12, etc.)
+      const now = performance.now();
+      if (now - lastProcessTimeRef.current < MIN_PROCESS_INTERVAL) {
+        // Schedule another check on next frame if we skipped this one
+        pendingUpdateRef.current = requestAnimationFrame(processTouchUpdate);
+        return;
+      }
+      lastProcessTimeRef.current = now;
+
+      const x = lastTouchXRef.current;
+      const startX = touchStartXRef.current;
+
+      if (x === null || startX === null) return;
+
+      const walkX = x - startX;
+
+      // If the user did not move enough, we do not want to rotate
+      if (Math.abs(walkX) < dragStepPx) {
+        return;
+      }
+
+      // XOR operation to reverse the logic - use direct DOM manipulation
+      if (walkX > 0 !== reverse360) {
+        displayNextImageDirect();
+      } else {
+        displayPreviousImageDirect();
+      }
+
+      // Reset the starting point to the current position
+      touchStartXRef.current = x;
+      spinStartX = x;
+    };
+
     const onTouchStart = (e: TouchEvent) => {
       // Ignore other touches
       if (mainTouchId !== null) {
@@ -339,26 +453,39 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
         return;
       }
 
-      // Cancel any ongoing inertia animation
+      // Cancel any ongoing inertia animation and pending updates
       cancelAnimation();
+      if (pendingUpdateRef.current !== null) {
+        cancelAnimationFrame(pendingUpdateRef.current);
+        pendingUpdateRef.current = null;
+      }
 
       // Take snapshot of the starting state
-      const { identifier: id, clientX: x } = e.changedTouches[0];
-      mainTouchId = id;
+      const touch = e.changedTouches[0];
+      mainTouchId = touch.identifier;
+      const x = touch.clientX;
 
       spinStartX = x;
-      lastPosXs = [{ timestamp: Date.now(), value: x }];
+      touchStartXRef.current = x;
+      lastTouchXRef.current = x;
+      resetVelocityBuffer();
+      addVelocityPoint(Date.now(), x);
     };
 
     const onTouchMove = (e: TouchEvent) => {
       // Check if the user was actually spinning
-      if (!spinStartX) {
+      if (spinStartX === null) {
         return;
       }
 
-      const mainTouch = Array.from(e.changedTouches).find(
-        ({ identifier }) => identifier === mainTouchId
-      );
+      // Find main touch without Array.from (avoid allocation)
+      let mainTouch: Touch | null = null;
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        if (e.changedTouches[i].identifier === mainTouchId) {
+          mainTouch = e.changedTouches[i];
+          break;
+        }
+      }
 
       // Ignore other touches
       if (!mainTouch) {
@@ -367,57 +494,66 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
       e.preventDefault(); // Prevent scroll
 
-      const { clientX: x } = mainTouch;
+      const x = mainTouch.clientX;
 
-      // Take a snapshot of the current state
-      addPosX({ timestamp: Date.now(), value: x });
+      // Track velocity (no object allocation)
+      addVelocityPoint(Date.now(), x);
+      lastTouchXRef.current = x;
 
-      const walkX = x - spinStartX;
-
-      // If the user did not move enough, we do not want to rotate
-      if (Math.abs(walkX) < dragStepPx) {
-        return;
+      // Throttle DOM updates to animation frames (critical for iOS performance)
+      if (pendingUpdateRef.current === null) {
+        pendingUpdateRef.current = requestAnimationFrame(processTouchUpdate);
       }
-
-      // XOR operation to reverse the logic
-      if (walkX > 0 !== reverse360) {
-        displayNextImage();
-      } else {
-        displayPreviousImage();
-      }
-
-      // Reset the starting point to the current position
-      spinStartX = x;
     };
 
     const onTouchEnd = (e: TouchEvent) => {
       // Check if the user was actually spinning
-      if (!spinStartX) {
+      if (spinStartX === null) {
         return;
       }
 
-      const isMainTouch = Array.from(e.changedTouches).some(
-        ({ identifier }) => identifier === mainTouchId
-      );
+      // Find main touch without Array.from (avoid allocation)
+      let isMainTouch = false;
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        if (e.changedTouches[i].identifier === mainTouchId) {
+          isMainTouch = true;
+          break;
+        }
+      }
 
       // Ignore other touches
       if (!isMainTouch) {
         return;
       }
 
+      // Cancel any pending throttled update
+      if (pendingUpdateRef.current !== null) {
+        cancelAnimationFrame(pendingUpdateRef.current);
+        pendingUpdateRef.current = null;
+      }
+
       // Clear the starting point
       mainTouchId = null;
       spinStartX = null;
+      touchStartXRef.current = null;
+      lastTouchXRef.current = null;
 
       startInertiaAnimation();
     };
 
-    scroller.addEventListener("touchstart", onTouchStart);
-    scroller.addEventListener("touchmove", onTouchMove);
+    // Use { passive: false } to allow preventDefault() on iOS Safari
+    scroller.addEventListener("touchstart", onTouchStart, { passive: false });
+    scroller.addEventListener("touchmove", onTouchMove, { passive: false });
     scroller.addEventListener("touchend", onTouchEnd);
     scroller.addEventListener("touchcancel", onTouchEnd);
 
     return () => {
+      cancelSpinAnimation();
+      // Cancel any pending throttled updates
+      if (pendingUpdateRef.current !== null) {
+        cancelAnimationFrame(pendingUpdateRef.current);
+        pendingUpdateRef.current = null;
+      }
       container.removeEventListener("mousedown", onMouseDown);
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseleave", onStopDragging);
@@ -433,8 +569,9 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     };
   }, [
     clearAutoSpinTimeout,
-    displayNextImage,
-    displayPreviousImage,
+    displayNextImageDirect,
+    displayPreviousImageDirect,
+    syncImageIndexState,
     disableSpin,
     reverse360,
     length,
@@ -444,20 +581,15 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     <div ref={containerRef} className="cursor-ew-resize">
       {/* Scroller is element larger than the image to capture scroll event and then, make the 360 spin */}
       {/* NOTE: ImageElement is within so that it can capture events first */}
-      <div ref={scrollerRef} className="overflow-x-scroll">
+      <div ref={scrollerRef} className=" overflow-x-scroll">
         <div className="sticky left-0 top-0">
-          {/* Flip book (Ensures image are already in the DOM) */}
-          {images.map(image => (
-            <CdnImage
-              key={image.src}
-              src={image.src}
-              className="pointer-events-none !absolute left-0 top-0 -z-10"
-            />
-          ))}
-          <ImageElement
-            {...images[imageIndex]}
-            onlyPreload={onlyPreload}
-            itemIndex={-1}
+          {/* Single image element - src changed via direct DOM manipulation */}
+          {/* Images are preloaded by placeholder, so src changes are instant from cache */}
+          <img
+            ref={mainImageRef}
+            src={images[imageIndex].src}
+            className="pointer-events-none size-full object-cover"
+            alt=""
           />
         </div>
         {/* Add space on both sides to allow scrolling */}
@@ -469,7 +601,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   );
 };
 
-type ThreeSixtyElementPlaceholderProps = {
+type NextGenThreeSixtyElementPlaceholderProps = {
   itemIndex: number;
   images: ImageWithHotspots[];
   onPlaceholderImageLoaded: () => void;
@@ -477,8 +609,8 @@ type ThreeSixtyElementPlaceholderProps = {
   onError: () => void;
 };
 
-const ThreeSixtyElementPlaceholder: React.FC<
-  ThreeSixtyElementPlaceholderProps
+const NextGenThreeSixtyElementPlaceholder: React.FC<
+  NextGenThreeSixtyElementPlaceholderProps
 > = ({
   itemIndex,
   images,
@@ -513,11 +645,11 @@ const ThreeSixtyElementPlaceholder: React.FC<
         type: "track",
         category_id: displayedCategoryId,
         category_name: displayedCategoryName,
-        item_type: "exterior-360",
+        item_type: "next360",
         item_position: itemIndex,
         action_properties: {
-          action_name: "Exterior 360 Play",
-          action_field: "exterior_360_play",
+          action_name: "Next 360 Play",
+          action_field: "next360_play",
           action_value: type,
         },
       });
@@ -605,19 +737,21 @@ const ThreeSixtyElementPlaceholder: React.FC<
 };
 
 /**
- * ThreeSixtyElement component renders a carrousel's 360
+ * NextGenThreeSixtyElement component renders a carrousel's 360
  *
  * @prop `onlyPreload`: If true, zoom will not affect the 360. It is useful to pre-fetch images.
  * @prop `index`: The index of the item in the carrousel. Used to share state.
  */
-const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = props => {
+const NextGenThreeSixtyElement: React.FC<
+  NextGenThreeSixtyElementProps
+> = props => {
   const { itemIndex } = props;
 
   const { setItemInteraction } = useControlsContext();
 
-  const [status, setStatus] = useState<
-    null | "placeholder" | "spin" | "error"
-  >();
+  const [status, setStatus] = useState<null | "placeholder" | "spin" | "error">(
+    null
+  );
 
   // Update the item interaction state according to the readiness of the 360
   useEffect(() => {
@@ -637,7 +771,7 @@ const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = props => {
     );
   } else if (status !== "spin") {
     return (
-      <ThreeSixtyElementPlaceholder
+      <NextGenThreeSixtyElementPlaceholder
         {...props}
         onPlaceholderImageLoaded={() =>
           setStatus(s => (s === null ? "placeholder" : s))
@@ -647,8 +781,8 @@ const ThreeSixtyElement: React.FC<ThreeSixtyElementProps> = props => {
       />
     );
   } else {
-    return <ThreeSixtyElementInteractive {...props} />;
+    return <NextGenThreeSixtyElementInteractive {...props} />;
   }
 };
 
-export default ThreeSixtyElement;
+export default NextGenThreeSixtyElement;

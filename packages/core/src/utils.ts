@@ -3,6 +3,41 @@ import { AnalyticsEvent, AnalyticsEventType } from "./types/analytics";
 import type { MediaWidth } from "./types/misc";
 
 /**
+ * Generates a UUID v4 string.
+ * Uses crypto.randomUUID() if available, otherwise falls back to a polyfill
+ * for older browsers (Safari < 15.4, iOS < 15.4).
+ */
+function generateUUID(): string {
+  if (
+    typeof crypto !== "undefined" &&
+    typeof crypto.randomUUID === "function"
+  ) {
+    return crypto.randomUUID();
+  }
+  // Fallback for browsers that don't support crypto.randomUUID
+  if (
+    typeof crypto !== "undefined" &&
+    typeof crypto.getRandomValues === "function"
+  ) {
+    const bytes = new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+    // Set version (4) and variant (RFC4122)
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    const hex = Array.from(bytes, b => b.toString(16).padStart(2, "0")).join(
+      ""
+    );
+    return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+  }
+  // Last resort fallback using Math.random (less secure but works everywhere)
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
+/**
  * Generates a URL for fetching the composition JSON for a given customer and vehicle.
  *
  * @param {string} customerToken - The CarCutter Customer Token (computed by hashing the Customer ID with SHA-256).
@@ -44,7 +79,7 @@ export function getOrGenerateBrowserId(): string {
       ? window.localStorage.getItem(STORAGE_KEY)
       : null;
   if (currentId) return currentId;
-  const newId = crypto.randomUUID();
+  const newId = generateUUID();
   if (typeof window !== "undefined") {
     window.localStorage.setItem(STORAGE_KEY, newId);
   }
@@ -64,7 +99,7 @@ export function getOrGenerateSessionId(): string {
       ? window.sessionStorage.getItem(STORAGE_KEY)
       : null;
   if (currentId) return currentId;
-  const newId = crypto.randomUUID();
+  const newId = generateUUID();
   if (typeof window !== "undefined") {
     window.sessionStorage.setItem(STORAGE_KEY, newId);
   }
@@ -78,7 +113,7 @@ export function getOrGenerateSessionId(): string {
  * @returns {string} The instance ID.
  */
 export function getOrGenerateInstanceId(): string {
-  return crypto.randomUUID();
+  return generateUUID();
 }
 
 /**

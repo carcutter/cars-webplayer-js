@@ -4,6 +4,7 @@ import { isColor } from "./const/color";
 import {
   DEFAULT_COLOR,
   DEFAULT_CUSTOMER,
+  DEFAULT_DEMO_SPIN,
   DEFAULT_HIDE_CATEGORIES_NAV,
   DEFAULT_ID,
   DEFAULT_PERMANENT_GALLERY,
@@ -36,6 +37,8 @@ type ContextType = {
   setWithCustomMedias: (withCustomMedias: boolean) => void;
   withCustomIcons: boolean;
   setWithCustomIcons: (withCustomIcons: boolean) => void;
+  demoSpin: boolean;
+  setDemoSpin: (demoSpin: boolean) => void;
 
   color: string;
   setColor: (color: string) => void;
@@ -85,6 +88,7 @@ const AppContextProvider: React.FC<React.PropsWithChildren> = ({
     "withCustomIcons",
     DEFAULT_WITH_CUSTOM_ICONS
   );
+  const [demoSpin, setDemoSpin] = useSearchParam("demoSpin", DEFAULT_DEMO_SPIN);
 
   const [color, setColor] = useSearchParam<string>("color", DEFAULT_COLOR);
   const customColorStyle = useMemo(() => {
@@ -126,6 +130,8 @@ const AppContextProvider: React.FC<React.PropsWithChildren> = ({
         setWithCustomMedias,
         withCustomIcons,
         setWithCustomIcons,
+        demoSpin,
+        setDemoSpin,
 
         color,
         setColor,

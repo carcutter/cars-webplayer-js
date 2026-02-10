@@ -92,8 +92,8 @@ The `categoriesFilter` property allows you to filter which categories should be 
 // Show all categories ending with "rior" (e.g., "exterior", "interior")
 <WebPlayer categoriesFilter="*rior" />
 
-// Show categories starting with "360" and categories named "detail"
-<WebPlayer categoriesFilter="360*|detail" />
+// Show categories starting with "360", NextGen 360 (next360), and "detail"
+<WebPlayer categoriesFilter="360*|next360|detail" />
 ```
 
   </TabItem>
@@ -102,6 +102,19 @@ The `categoriesFilter` property allows you to filter which categories should be 
 :::info
 When `categoriesFilter` is not specified, it defaults to `"*"` which shows all categories.
 :::
+
+## Composition categories
+
+The composition JSON groups media into categories. Each category has an `id` (used for filtering and in APIs) and a `title` (the label shown in the WebPlayer navigation).
+
+| Category id     | Recommended title  | Description                    |
+| --------------- | ------------------ | ------------------------------ |
+| `360`           | 360                | Exterior 360° spin            |
+| `next360`       | **NextGen 360**    | Next-generation exterior 360° |
+| `interior-360`  | Interior 360       | Interior 360° view            |
+| (custom)        | (any)              | Images, videos, etc.          |
+
+When adding a NextGen 360 category to your composition, use `id: "next360"` and `title: "NextGen 360"` (or your preferred label). You can include it in `categoriesFilter` like: `categoriesFilter="360|next360|interior"`.
 
 ## Extend Behavior
 

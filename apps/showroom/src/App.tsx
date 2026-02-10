@@ -41,6 +41,7 @@ const AppContent: React.FC = () => {
     hideCategoriesNav,
     withCustomMedias,
     withCustomIcons,
+    demoSpin,
 
     color,
     customColorStyle,
@@ -92,6 +93,7 @@ const AppContent: React.FC = () => {
           infiniteCarrousel
           permanentGallery={permanentGallery}
           hideCategoriesNav={hideCategoriesNav}
+          demoSpin={demoSpin}
         >
           {withCustomMedias && (
             <>
