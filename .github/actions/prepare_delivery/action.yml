@@ -1,4 +1,5 @@
 name: Prepare Delivery
+description: Prepare delivery for the project
 runs:
   using: composite
   steps:
