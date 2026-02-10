@@ -578,7 +578,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
   ]);
 
   return (
-    <div ref={containerRef} className="cursor-[url('cursor.svg'),grab]">
+    <div ref={containerRef} className="cursor-ew-resize">
       {/* Scroller is element larger than the image to capture scroll event and then, make the 360 spin */}
       {/* NOTE: ImageElement is within so that it can capture events first */}
       <div ref={scrollerRef} className=" overflow-x-scroll">
@@ -749,9 +749,9 @@ const NextGenThreeSixtyElement: React.FC<
 
   const { setItemInteraction } = useControlsContext();
 
-  const [status, setStatus] = useState<
-    null | "placeholder" | "spin" | "error"
-  >(null);
+  const [status, setStatus] = useState<null | "placeholder" | "spin" | "error">(
+    null
+  );
 
   // Update the item interaction state according to the readiness of the 360
   useEffect(() => {
