@@ -8,6 +8,10 @@
   },
   "description": "Use CarCutter WebPlayer in your React app",
   "homepage": "https://carcutter.github.io/cars-webplayer-js/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/carcutter/cars-webplayer-js"
+  },
   "keywords": [
     "car-cutter",
     "webplayer",

@@ -7,6 +7,10 @@
     "url": "https://www.car-cutter.com/"
   },
   "homepage": "https://carcutter.github.io/cars-webplayer-js/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/carcutter/cars-webplayer-js"
+  },
   "description": "Use CarCutter WebPlayer as a WebComponent",
   "keywords": [
     "car-cutter",
