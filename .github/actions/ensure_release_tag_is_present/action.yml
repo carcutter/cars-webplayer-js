@@ -1,4 +1,4 @@
-name: Get Package Version,
+name: Get Package Version
 description: Get the version of the package from package.json
 runs:
   using: composite
