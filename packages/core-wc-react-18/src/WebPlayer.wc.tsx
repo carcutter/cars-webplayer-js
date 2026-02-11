@@ -36,6 +36,9 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedStyles, {
     analyticsSimpleRequestsOnly: "boolean",
     analyticsDryRun: "boolean",
     analyticsDebug: "boolean",
+
+    // Monitoring
+    monitoring: "boolean",
   },
 });
 

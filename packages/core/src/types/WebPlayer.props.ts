@@ -34,4 +34,7 @@ export type WebPlayerProps = {
   analyticsSimpleRequestsOnly?: boolean;
   analyticsDryRun?: boolean;
   analyticsDebug?: boolean;
+
+  // Monitoring
+  monitoring?: boolean;
 };

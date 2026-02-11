@@ -47,6 +47,7 @@ export {
   DEFAULT_PERMANENT_GALLERY,
   DEFAULT_PRELOAD_RANGE,
   DEFAULT_REVERSE_360,
+  DEFAULT_MONITORING,
 } from "./src/const/default_props";
 
 // - Utils

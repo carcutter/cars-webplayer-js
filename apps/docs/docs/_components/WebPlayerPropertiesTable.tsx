@@ -163,6 +163,14 @@ const properties: Array<Property> = [
     description:
       "A flag if the tracking / analytic events should output debug information to the console",
   },
+  {
+    propName: "monitoring",
+    attribute: "monitoring",
+    type: "boolean",
+    defaultValue: "true",
+    description:
+      "A flag to send analytics events to the monitoring service instead of `analyticsUrl`",
+  },
 ];
 
 const WebPlayerPropertiesTable: React.FC = () => {

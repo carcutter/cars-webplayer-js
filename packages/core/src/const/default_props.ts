@@ -30,3 +30,5 @@ export const DEFAULT_ANALYTICS_BEARER = "" satisfies string;
 export const DEFAULT_ANALYTICS_SIMPLE_REQUESTS_ONLY = false satisfies boolean;
 export const DEFAULT_ANALYTICS_DRY_RUN = false satisfies boolean;
 export const DEFAULT_ANALYTICS_DEBUG = false satisfies boolean;
+
+export const DEFAULT_MONITORING = true satisfies boolean;

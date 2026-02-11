@@ -136,6 +136,7 @@ Run `yarn publish:docs`
 | `analyticsSimpleRequestsOnly` | `boolean`                          | `false`           | A flag if only Simple-Requests should be sent. Will disable `analyticsBearer`. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS |
 | `analyticsDryRun`             | `boolean`                          | `false`           | A flag if the tracking / analytic events should be just output to the console instead of actually send to the `analyticsUrl`                     |
 | `analyticsDebug`              | `boolean`                          | `false`           | A flag if the tracking / analytic events should output debug information to the console                                                          |
+| `monitoring`                  | `boolean`                          | `true`            | Enable monitoring mode to send activity events to the monitoring service instead of the analytics URL                                             |
 
 _NOTE: If you are using the WebComponent directly, you need to transform the props to HTML attributes
 (which are in dashed-case and take `string` as value type)_
