@@ -48,6 +48,7 @@ export {
   DEFAULT_PRELOAD_RANGE,
   DEFAULT_REVERSE_360,
   DEFAULT_SPIN_CURSOR,
+  DEFAULT_MONITORING,
 } from "./src/const/default_props";
 
 // - Utils

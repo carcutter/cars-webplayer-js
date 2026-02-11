@@ -62,6 +62,7 @@ export default defineComponent({
     analyticsSimpleRequestsOnly: Boolean,
     analyticsDryRun: Boolean,
     analyticsDebug: Boolean,
+    monitoring: Boolean,
   },
   data() {
     return {
