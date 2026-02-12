@@ -120,6 +120,21 @@ const properties: Array<Property> = [
     description: "Reverse the 360-degree rotation",
   },
   {
+    propName: "integration",
+    attribute: "integration",
+    type: "boolean",
+    defaultValue: "false",
+    description:
+      "Enables integration mode: use maxItemsShown, disables permanentGallery with infiniteCarrousel, enables hideCategoriesNav",
+  },
+  {
+    propName: "maxItemsShown",
+    attribute: "max-items-shown",
+    type: "number",
+    defaultValue: "1",
+    description: "Maximum number of items to display in the carousel (1, 1.5, 2, or 2.5)",
+  },
+  {
     propName: "analyticsEventPrefix",
     attribute: "analytics-event-prefix",
     type: "string",

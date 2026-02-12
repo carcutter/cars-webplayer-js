@@ -16,7 +16,7 @@ import {
   EVENT_HOTSPOTS_OFF,
   EVENT_HOTSPOTS_ON,
   type Item as CompositionItem,
-  AnalyticsPageEventProps,
+  type AnalyticsDisplayEventProps,
 } from "@car-cutter/core";
 
 import { RESIZE_TRANSITION_DURATION } from "../const/browser";
@@ -289,15 +289,17 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       setItemIndexCommand(lastValidIndex);
     }
     emitAnalyticsEvent({
-      type: "track",
-      category_id: displayedCategoryId,
-      category_name: displayedCategoryName,
-      item_type: currentItem.type,
-      item_position: carrouselItemIndex,
-      action_properties: {
-        action_name: "Item Navigation",
-        action_field: "item_navigation",
-        action_value: "prev",
+      type: "interaction",
+      current: {
+        category_id: displayedCategoryId,
+        category_name: displayedCategoryName,
+        item_type: currentItem.type,
+        item_position: carrouselItemIndex,
+      },
+      action: {
+        name: "Item Navigation",
+        field: "item_navigation",
+        value: "prev",
       },
     });
   }, [
@@ -340,15 +342,17 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       setItemIndexCommand(0);
     }
     emitAnalyticsEvent({
-      type: "track",
-      category_id: displayedCategoryId,
-      category_name: displayedCategoryName,
-      item_type: currentItem.type,
-      item_position: carrouselItemIndex,
-      action_properties: {
-        action_name: "Item Navigation",
-        action_field: "item_navigation",
-        action_value: "next",
+      type: "interaction",
+      current: {
+        category_id: displayedCategoryId,
+        category_name: displayedCategoryName,
+        item_type: currentItem.type,
+        item_position: carrouselItemIndex,
+      },
+      action: {
+        name: "Item Navigation",
+        field: "item_navigation",
+        value: "next",
       },
     });
   }, [
@@ -378,14 +382,14 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       return;
     }
 
-    const pageEvent: AnalyticsPageEventProps = {
-      type: "page",
-      category_id: displayedCategoryId,
-      category_name: displayedCategoryName,
-      items_count: categorySize,
-      page_properties: {
+    const pageEvent: AnalyticsDisplayEventProps = {
+      type: "display",
+      item: {
+        category_id: displayedCategoryId,
+        category_name: displayedCategoryName,
         item_type: currentItem.type,
         item_position: carrouselItemIndex,
+        items_count: categorySize,
       },
     };
     const timeout = setTimeout(() => emitAnalyticsEvent(pageEvent), 0);
@@ -466,15 +470,17 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       }));
       emitEvent(newValue ? EVENT_HOTSPOTS_ON : EVENT_HOTSPOTS_OFF);
       emitAnalyticsEvent({
-        type: "track",
-        category_id: displayedCategoryId,
-        category_name: displayedCategoryName,
-        item_type: currentItem.type,
-        item_position: carrouselItemIndex,
-        action_properties: {
-          action_name: "Hotspots Toggled",
-          action_field: "hotspots_toggle_state",
-          action_value: newValue,
+        type: "interaction",
+        current: {
+          category_id: displayedCategoryId,
+          category_name: displayedCategoryName,
+          item_type: currentItem.type,
+          item_position: carrouselItemIndex,
+        },
+        action: {
+          name: "Hotspots Toggled",
+          field: "hotspots_toggle_state",
+          value: newValue,
         },
       });
     } else {
@@ -483,15 +489,17 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       setShowHotspots(newValue);
       emitEvent(newValue ? EVENT_HOTSPOTS_ON : EVENT_HOTSPOTS_OFF);
       emitAnalyticsEvent({
-        type: "track",
-        category_id: displayedCategoryId,
-        category_name: displayedCategoryName,
-        item_type: currentItem.type,
-        item_position: carrouselItemIndex,
-        action_properties: {
-          action_name: "Hotspots Toggled",
-          action_field: "hotspots_toggle_state",
-          action_value: newValue,
+        type: "interaction",
+        current: {
+          category_id: displayedCategoryId,
+          category_name: displayedCategoryName,
+          item_type: currentItem.type,
+          item_position: carrouselItemIndex,
+        },
+        action: {
+          name: "Hotspots Toggled",
+          field: "hotspots_toggle_state",
+          value: newValue,
         },
       });
     }
@@ -526,15 +534,17 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     setShowGallery(newValue);
     emitEvent(newValue ? EVENT_GALLERY_OPEN : EVENT_GALLERY_CLOSE);
     emitAnalyticsEvent({
-      type: "track",
-      category_id: displayedCategoryId,
-      category_name: displayedCategoryName,
-      item_type: currentItem.type,
-      item_position: carrouselItemIndex,
-      action_properties: {
-        action_name: "Gallery Toggled",
-        action_field: "gallery_toggle_state",
-        action_value: newValue,
+      type: "interaction",
+      current: {
+        category_id: displayedCategoryId,
+        category_name: displayedCategoryName,
+        item_type: currentItem.type,
+        item_position: carrouselItemIndex,
+      },
+      action: {
+        name: "Gallery Toggled",
+        field: "gallery_toggle_state",
+        value: newValue,
       },
     });
   }, [
@@ -572,15 +582,17 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       }
       _setZoom(zoomLevel);
       emitAnalyticsEvent({
-        type: "track",
-        category_id: displayedCategoryId,
-        category_name: displayedCategoryName,
-        item_type: currentItem.type,
-        item_position: carrouselItemIndex,
-        action_properties: {
-          action_name: "Zoom Changed",
-          action_field: "zoom_level",
-          action_value: zoomLevel,
+        type: "interaction",
+        current: {
+          category_id: displayedCategoryId,
+          category_name: displayedCategoryName,
+          item_type: currentItem.type,
+          item_position: carrouselItemIndex,
+        },
+        action: {
+          name: "Zoom Changed",
+          field: "zoom_level",
+          value: zoomLevel,
         },
       });
     },
@@ -626,15 +638,17 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       setExtendMode(newValue);
       emitEvent(newValue ? EVENT_EXTEND_MODE_ON : EVENT_EXTEND_MODE_OFF);
       emitAnalyticsEvent({
-        type: "track",
-        category_id: displayedCategoryId,
-        category_name: displayedCategoryName,
-        item_type: currentItem.type,
-        item_position: carrouselItemIndex,
-        action_properties: {
-          action_name: "Fake Fullscreen Toggled",
-          action_field: "fake_fullscreen_toggle_state",
-          action_value: newValue,
+        type: "interaction",
+        current: {
+          category_id: displayedCategoryId,
+          category_name: displayedCategoryName,
+          item_type: currentItem.type,
+          item_position: carrouselItemIndex,
+        },
+        action: {
+          name: "Fake Fullscreen Toggled",
+          field: "fake_fullscreen_toggle_state",
+          value: newValue,
         },
       });
     },
@@ -663,15 +677,17 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     const success = await _requestFullscreen();
     if (success) {
       emitAnalyticsEvent({
-        type: "track",
-        category_id: displayedCategoryId,
-        category_name: displayedCategoryName,
-        item_type: currentItem.type,
-        item_position: carrouselItemIndex,
-        action_properties: {
-          action_name: "Fullscreen Toggled",
-          action_field: "fullscreen_toggle_state",
-          action_value: true,
+        type: "interaction",
+        current: {
+          category_id: displayedCategoryId,
+          category_name: displayedCategoryName,
+          item_type: currentItem.type,
+          item_position: carrouselItemIndex,
+        },
+        action: {
+          name: "Fullscreen Toggled",
+          field: "fullscreen_toggle_state",
+          value: true,
         },
       });
     }
@@ -689,15 +705,17 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     const success = await _exitFullscreen();
     if (success) {
       emitAnalyticsEvent({
-        type: "track",
-        category_id: displayedCategoryId,
-        category_name: displayedCategoryName,
-        item_type: currentItem.type,
-        item_position: carrouselItemIndex,
-        action_properties: {
-          action_name: "Fullscreen Toggled",
-          action_field: "fullscreen_toggle_state",
-          action_value: false,
+        type: "interaction",
+        current: {
+          category_id: displayedCategoryId,
+          category_name: displayedCategoryName,
+          item_type: currentItem.type,
+          item_position: carrouselItemIndex,
+        },
+        action: {
+          name: "Fullscreen Toggled",
+          field: "fullscreen_toggle_state",
+          value: false,
         },
       });
     }

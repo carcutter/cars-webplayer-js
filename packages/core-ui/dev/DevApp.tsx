@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo } from "react";
 
 import {
-  AnalyticsIdentifyEvent,
-  AnalyticsPageEvent,
-  AnalyticsTrackEvent,
+  AnalyticsLoadEvent,
+  AnalyticsDisplayEvent,
+  AnalyticsInteractionEvent,
+  AnalyticsErrorEvent,
   subscribeToAnalyticsEvents,
 } from "@car-cutter/core";
 
@@ -19,46 +20,62 @@ const useAnalytics = () => {
     () => (useCustomAnalyticsEventPrefix ? "cc-analytics-yolo:" : undefined),
     [useCustomAnalyticsEventPrefix]
   );
-  const onAnalyticsIdentifyEvent = useCallback(
-    (event: AnalyticsIdentifyEvent) => {
+  const onAnalyticsLoadEvent = useCallback((event: AnalyticsLoadEvent) => {
+    // eslint-disable-next-line no-console
+    console.log("AnalyticsLoadEvent", event);
+  }, []);
+  useEffect(() => {
+    subscribeToAnalyticsEvents(
+      "load",
+      onAnalyticsLoadEvent,
+      analyticsEventPrefix
+    );
+  }, [analyticsEventPrefix, onAnalyticsLoadEvent]);
+
+  const onAnalyticsDisplayEvent = useCallback(
+    (event: AnalyticsDisplayEvent) => {
       // eslint-disable-next-line no-console
-      console.log("AnalyticsIdentifyEvent", event);
+      console.log("AnalyticsDisplayEvent", event);
     },
     []
   );
+
   useEffect(() => {
     subscribeToAnalyticsEvents(
-      "identify",
-      onAnalyticsIdentifyEvent,
+      "display",
+      onAnalyticsDisplayEvent,
       analyticsEventPrefix
     );
-  }, [analyticsEventPrefix, onAnalyticsIdentifyEvent]);
+  }, [analyticsEventPrefix, onAnalyticsDisplayEvent]);
 
-  const onAnalyticsPageEvent = useCallback((event: AnalyticsPageEvent) => {
+  const onAnalyticsInteractionEvent = useCallback(
+    (event: AnalyticsInteractionEvent) => {
+      // eslint-disable-next-line no-console
+      console.log("AnalyticsInteractionEvent", event);
+    },
+    []
+  );
+
+  useEffect(() => {
+    subscribeToAnalyticsEvents(
+      "interaction",
+      onAnalyticsInteractionEvent,
+      analyticsEventPrefix
+    );
+  }, [analyticsEventPrefix, onAnalyticsInteractionEvent]);
+
+  const onAnalyticsErrorEvent = useCallback((event: AnalyticsErrorEvent) => {
     // eslint-disable-next-line no-console
-    console.log("AnalyticsPageEvent", event);
+    console.log("AnalyticsErrorEvent", event);
   }, []);
 
   useEffect(() => {
     subscribeToAnalyticsEvents(
-      "page",
-      onAnalyticsPageEvent,
+      "error",
+      onAnalyticsErrorEvent,
       analyticsEventPrefix
     );
-  }, [analyticsEventPrefix, onAnalyticsPageEvent]);
-
-  const onAnalyticsTrackEvent = useCallback((event: AnalyticsTrackEvent) => {
-    // eslint-disable-next-line no-console
-    console.log("AnalyticsTrackEvent", event);
-  }, []);
-
-  useEffect(() => {
-    subscribeToAnalyticsEvents(
-      "track",
-      onAnalyticsTrackEvent,
-      analyticsEventPrefix
-    );
-  }, [analyticsEventPrefix, onAnalyticsTrackEvent]);
+  }, [analyticsEventPrefix, onAnalyticsErrorEvent]);
 
   return {
     analyticsEventPrefix,
@@ -97,9 +114,10 @@ const DevApp: React.FC = () => {
       >
         <WebPlayer
           // compositionUrl="/composition_mock_1.json"
-          compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/nextgen-360.json" // compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/interior-360.json"
+          compositionUrl="https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/composition_v3.json"
+          // compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/interior-360.json"
           // compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
-          // compositionUrl="https://cdn.car-cutter.com/gallery/7de693a6dd8379eb743f6093499bdd13fe76876f135ae9a08b7d9ecbfb7f8664/WAUZZZF34N1097219/composition_v3.json"
+          //compositionUrl="https://cdn.car-cutter.com/gallery/7de693a6dd8379eb743f6093499bdd13fe76876f135ae9a08b7d9ecbfb7f8664/WAUZZZF34N1097219/composition_v3.json"
           // hideCategoriesNav
           infiniteCarrousel
           // permanentGallery

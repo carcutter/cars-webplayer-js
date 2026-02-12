@@ -18,14 +18,16 @@ import {
   EVENT_GALLERY_OPEN,
   EVENT_GALLERY_CLOSE,
   DEFAULT_ANALYTICS_EVENT_PREFIX,
-  ANALYTICS_EVENT_IDENTIFY,
-  ANALYTICS_EVENT_PAGE,
-  ANALYTICS_EVENT_TRACK,
+  ANALYTICS_EVENT_LOAD,
+  ANALYTICS_EVENT_DISPLAY,
+  ANALYTICS_EVENT_INTERACTION,
+  ANALYTICS_EVENT_ERROR,
   type Item,
   type Composition,
-  AnalyticsTrackEvent,
-  AnalyticsIdentifyEvent,
-  AnalyticsPageEvent,
+  AnalyticsLoadEvent,
+  AnalyticsDisplayEvent,
+  AnalyticsInteractionEvent,
+  AnalyticsErrorEvent,
 } from "@car-cutter/core";
 import { type WebPlayerProps as WebPlayerCoreProps } from "@car-cutter/core";
 import { webPlayerPropsToAttributes } from "@car-cutter/core-wc";
@@ -41,9 +43,10 @@ type WebPlayerProps = ReactPropsWithChildren<WebPlayerCoreProps> & {
   onHotspotsOff?: () => void;
   onGalleryOpen?: () => void;
   onGalleryClose?: () => void;
-  onAnalyticsIdentify?: (event: AnalyticsIdentifyEvent) => void;
-  onAnalyticsPage?: (event: AnalyticsPageEvent) => void;
-  onAnalyticsTrack?: (event: AnalyticsTrackEvent) => void;
+  onAnalyticsLoad?: (event: AnalyticsLoadEvent) => void;
+  onAnalyticsDisplay?: (event: AnalyticsDisplayEvent) => void;
+  onAnalyticsInteraction?: (event: AnalyticsInteractionEvent) => void;
+  onAnalyticsError?: (event: AnalyticsErrorEvent) => void;
 } & Pick<React.HTMLAttributes<HTMLElement>, "className" | "style">;
 
 const WebPlayer: ReactFC<WebPlayerProps> = ({
@@ -57,9 +60,10 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
   onHotspotsOff,
   onGalleryOpen,
   onGalleryClose,
-  onAnalyticsIdentify,
-  onAnalyticsPage,
-  onAnalyticsTrack,
+  onAnalyticsLoad,
+  onAnalyticsDisplay,
+  onAnalyticsInteraction,
+  onAnalyticsError,
   className,
   style = {},
   children,
@@ -98,9 +102,10 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
       [EVENT_GALLERY_CLOSE]: onGalleryClose,
     };
     const analyticsEventListenerMap = {
-      [ANALYTICS_EVENT_IDENTIFY]: onAnalyticsIdentify,
-      [ANALYTICS_EVENT_PAGE]: onAnalyticsPage,
-      [ANALYTICS_EVENT_TRACK]: onAnalyticsTrack,
+      [ANALYTICS_EVENT_LOAD]: onAnalyticsLoad,
+      [ANALYTICS_EVENT_DISPLAY]: onAnalyticsDisplay,
+      [ANALYTICS_EVENT_INTERACTION]: onAnalyticsInteraction,
+      [ANALYTICS_EVENT_ERROR]: onAnalyticsError,
     };
 
     const eventCbMap = new Map<string, EventListener>();
@@ -155,9 +160,10 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
     onGalleryOpen,
     onGalleryClose,
     props.analyticsEventPrefix,
-    onAnalyticsIdentify,
-    onAnalyticsPage,
-    onAnalyticsTrack,
+    onAnalyticsLoad,
+    onAnalyticsDisplay,
+    onAnalyticsInteraction,
+    onAnalyticsError,
   ]);
 
   // NOTE: Custom element are "display: inline" by default + Style is there so that React can do its thing

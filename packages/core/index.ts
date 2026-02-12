@@ -19,9 +19,10 @@ export {
 } from "./src/const/event";
 
 export {
-  ANALYTICS_EVENT_IDENTIFY,
-  ANALYTICS_EVENT_PAGE,
-  ANALYTICS_EVENT_TRACK,
+  ANALYTICS_EVENT_LOAD,
+  ANALYTICS_EVENT_DISPLAY,
+  ANALYTICS_EVENT_INTERACTION,
+  ANALYTICS_EVENT_ERROR,
 } from "./src/const/event";
 
 export {
@@ -78,25 +79,27 @@ export type {
 
 // - Analytics
 export type {
-  // Types
-  AnalyticsEventTypeIdentify,
-  AnalyticsEventTypePage,
-  AnalyticsEventTypeTrack,
+  // Shared sub-types
+  WebplayerInstance,
+  WebplayerDisplayedItem,
+  WebplayerAction,
+  WebplayerError,
+
+  // Event type
   AnalyticsEventType,
 
-  // Base
-  AnalyticsEventBase,
-
-  // Props
-  AnalyticsIdentifyEventProps,
-  AnalyticsPageEventProps,
-  AnalyticsTrackEventProps,
+  // Props (caller-facing)
+  AnalyticsLoadEventProps,
+  AnalyticsDisplayEventProps,
+  AnalyticsInteractionEventProps,
+  AnalyticsErrorEventProps,
   AnalyticsEventProps,
 
-  // Events
-  AnalyticsIdentifyEvent,
-  AnalyticsPageEvent,
-  AnalyticsTrackEvent,
+  // Full events (after enrichment)
+  AnalyticsLoadEvent,
+  AnalyticsDisplayEvent,
+  AnalyticsInteractionEvent,
+  AnalyticsErrorEvent,
   AnalyticsEvent,
 } from "./src/types/analytics";
 
