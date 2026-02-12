@@ -42,15 +42,17 @@ const InteriorThreeSixtyElementLoadControls: React.FC<
   const emitAnalyticsEventInterior360Play = useCallback(
     (type: "click" | "auto") => {
       emitAnalyticsEvent({
-        type: "track",
-        category_id: displayedCategoryId,
-        category_name: displayedCategoryName,
-        item_type: "interior-360",
-        item_position: itemIndex,
-        action_properties: {
-          action_name: "Interior 360 Play",
-          action_field: "interior_360_play",
-          action_value: type,
+        type: "interaction",
+        current: {
+          category_id: displayedCategoryId,
+          category_name: displayedCategoryName,
+          item_type: "interior-360",
+          item_position: itemIndex,
+        },
+        action: {
+          name: "Interior 360 Play",
+          field: "interior_360_play",
+          value: type,
         },
       });
     },
@@ -113,7 +115,7 @@ const InteriorThreeSixtyElementInteractive: React.FC<
   InteriorThreeSixtyElementProps
 > = props => {
   const { itemIndex, src, poster, onLoaded, onError } = props;
-  const { autoLoadInterior360 } = useGlobalContext();
+  const { autoLoadInterior360, reverse360 } = useGlobalContext();
   const { isShowingDetails, setItemInteraction, zoom, isZooming, setZoom } =
     useControlsContext();
   const [progress, isLoading] = useLoadingProgress(src);
@@ -230,7 +232,11 @@ const InteriorThreeSixtyElementInteractive: React.FC<
             isShowingDetails ? "scale-105" : "scale-100"
           )}
         >
-          <div ref={setContainerRef} className="size-full">
+          <div
+            ref={setContainerRef}
+            style={reverse360 ? { transform: "scaleX(-1)" } : undefined}
+            className="size-full"
+          >
             <style>
               {`
                 .pnlm-load-button {

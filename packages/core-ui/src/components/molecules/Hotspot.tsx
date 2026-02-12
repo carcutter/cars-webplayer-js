@@ -41,15 +41,17 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       const actionField =
         type === "click" ? "hotspot_clicked" : "hotspot_hovered";
       emitAnalyticsEvent({
-        type: "track",
-        category_id: displayedCategoryId,
-        category_name: displayedCategoryName,
-        item_type: item.item_type,
-        item_position: item.item_position,
-        action_properties: {
-          action_name: actionName,
-          action_field: actionField,
-          action_value: analyticsValue,
+        type: "interaction",
+        current: {
+          category_id: displayedCategoryId,
+          category_name: displayedCategoryName,
+          item_type: item.item_type,
+          item_position: item.item_position,
+        },
+        action: {
+          name: actionName,
+          field: actionField,
+          value: analyticsValue,
         },
       });
     },

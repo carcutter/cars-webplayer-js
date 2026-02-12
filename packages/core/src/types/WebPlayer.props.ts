@@ -29,9 +29,15 @@ export type WebPlayerProps = {
 
   // Analytics
   analyticsEventPrefix?: string;
+  /** @deprecated Monitoring now handles API calls via compositionUrl. */
   analyticsUrl?: string;
+  /** @deprecated Monitoring uses compositionUrl as bearer token. */
   analyticsBearer?: string;
+  /** @deprecated Monitoring handles its own request headers. */
   analyticsSimpleRequestsOnly?: boolean;
   analyticsDryRun?: boolean;
   analyticsDebug?: boolean;
+
+  // Monitoring
+  monitoring?: boolean;
 };

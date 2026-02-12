@@ -2,9 +2,10 @@
 import { onMounted, onUnmounted } from "vue";
 
 import {
-  ANALYTICS_EVENT_IDENTIFY,
-  ANALYTICS_EVENT_PAGE,
-  ANALYTICS_EVENT_TRACK,
+  ANALYTICS_EVENT_LOAD,
+  ANALYTICS_EVENT_DISPLAY,
+  ANALYTICS_EVENT_INTERACTION,
+  ANALYTICS_EVENT_ERROR,
   DEFAULT_EVENT_PREFIX,
   DEFAULT_ANALYTICS_EVENT_PREFIX,
   EVENT_COMPOSITION_LOADING,
@@ -17,9 +18,10 @@ import {
   EVENT_HOTSPOTS_OFF,
   EVENT_GALLERY_OPEN,
   EVENT_GALLERY_CLOSE,
-  type AnalyticsIdentifyEvent,
-  type AnalyticsPageEvent,
-  type AnalyticsTrackEvent,
+  type AnalyticsLoadEvent,
+  type AnalyticsDisplayEvent,
+  type AnalyticsInteractionEvent,
+  type AnalyticsErrorEvent,
   type Item,
   type Composition,
   type WebPlayerProps as WebPlayerCoreProps,
@@ -54,9 +56,10 @@ export type WebPlayerEvents = {
   hotspotsOff: [];
   galleryOpen: [];
   galleryClose: [];
-  analyticsIdentify: [event: AnalyticsIdentifyEvent];
-  analyticsPage: [event: AnalyticsPageEvent];
-  analyticsTrack: [event: AnalyticsTrackEvent];
+  analyticsLoad: [event: AnalyticsLoadEvent];
+  analyticsDisplay: [event: AnalyticsDisplayEvent];
+  analyticsInteraction: [event: AnalyticsInteractionEvent];
+  analyticsError: [event: AnalyticsErrorEvent];
 };
 
 const emit = defineEmits<WebPlayerEvents>();
@@ -86,12 +89,14 @@ const eventListenerMap = {
 };
 
 const analyticsEventListenerMap = {
-  [ANALYTICS_EVENT_IDENTIFY]: (event: AnalyticsIdentifyEvent) =>
-    emit("analyticsIdentify", event),
-  [ANALYTICS_EVENT_PAGE]: (event: AnalyticsPageEvent) =>
-    emit("analyticsPage", event),
-  [ANALYTICS_EVENT_TRACK]: (event: AnalyticsTrackEvent) =>
-    emit("analyticsTrack", event),
+  [ANALYTICS_EVENT_LOAD]: (event: AnalyticsLoadEvent) =>
+    emit("analyticsLoad", event),
+  [ANALYTICS_EVENT_DISPLAY]: (event: AnalyticsDisplayEvent) =>
+    emit("analyticsDisplay", event),
+  [ANALYTICS_EVENT_INTERACTION]: (event: AnalyticsInteractionEvent) =>
+    emit("analyticsInteraction", event),
+  [ANALYTICS_EVENT_ERROR]: (event: AnalyticsErrorEvent) =>
+    emit("analyticsError", event),
 };
 
 const eventCbMap = new Map<string, EventListener>();

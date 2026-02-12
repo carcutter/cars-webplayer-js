@@ -130,12 +130,13 @@ Run `yarn publish:docs`
 | `reverse360`                  | `boolean`                          | `false`           | Reverse the 360-degree rotation                                                                                                                  |
 | `integration`                 | `boolean`                          | `false`           | Allows to use maxItemsShown and disables permanentGallery with infiniteCarrousel, enables hideCategoriesNav                                      |
 | `maxItemsShown`               | `number`                           | `1`               | Maximum number of items to display in the gallery                                                                                                |
-| `analyticsEventPrefix`        | `string`                           | `cc-analytics`    | Prefix of cc-analytics events                                                                                                                    |
+| `analyticsEventPrefix`        | `string`                           | `"cc-analytics:"` | Prefix of cc-analytics events                                                                                                                    |
 | `analyticsUrl`                | `string`                           | ``                | A URL to send simple tracking / analytic events                                                                                                  |
-| `analyticsBearer`             | `string`                           | ``                | A Bearer token to authenticate when sending requests to `analyticUrl`                                                                            |
+| `analyticsBearer`             | `string`                           | ``                | A Bearer token to authenticate when sending requests to `analyticsUrl`                                                                            |
 | `analyticsSimpleRequestsOnly` | `boolean`                          | `false`           | A flag if only Simple-Requests should be sent. Will disable `analyticsBearer`. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS |
 | `analyticsDryRun`             | `boolean`                          | `false`           | A flag if the tracking / analytic events should be just output to the console instead of actually send to the `analyticsUrl`                     |
 | `analyticsDebug`              | `boolean`                          | `false`           | A flag if the tracking / analytic events should output debug information to the console                                                          |
+| `monitoring`                  | `boolean`                          | `true`            | Enable monitoring mode to send activity events to the monitoring service instead of the analytics URL                                             |
 
 _NOTE: If you are using the WebComponent directly, you need to transform the props to HTML attributes
 (which are in dashed-case and take `string` as value type)_

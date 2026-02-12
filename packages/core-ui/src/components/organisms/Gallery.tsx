@@ -237,15 +237,17 @@ const Gallery: React.FC<Props> = ({
   const emitAnalyticsEventGalleryItemClicked = useCallback(
     (targetItemIndex: number) => {
       emitAnalyticsEvent({
-        type: "track",
-        category_id: displayedCategoryId,
-        category_name: displayedCategoryName,
-        item_type: currentItemType,
-        item_position: masterItemIndex,
-        action_properties: {
-          action_name: "Gallery Item Clicked",
-          action_field: "gallery_item_clicked",
-          action_value: targetItemIndex,
+        type: "interaction",
+        current: {
+          category_id: displayedCategoryId,
+          category_name: displayedCategoryName,
+          item_type: currentItemType,
+          item_position: masterItemIndex,
+        },
+        action: {
+          name: "Gallery Item Clicked",
+          field: "gallery_item_clicked",
+          value: targetItemIndex,
         },
       });
     },
