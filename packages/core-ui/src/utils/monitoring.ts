@@ -38,7 +38,6 @@ export const emitMonitoringActivityEvent = async (
 ): Promise<void> => {
   const { payload, compositionUrl } = options;
 
-  try {
     const headers = getRequestHeaders(compositionUrl);
     const body = getRequestBody(payload);
     const url = getRequestUrl(payload.type);
@@ -50,7 +49,4 @@ export const emitMonitoringActivityEvent = async (
     };
 
     await fetch(url, request);
-  } catch (e) {
-    console.error(e);
-  }
 };
