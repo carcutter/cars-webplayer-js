@@ -1,7 +1,7 @@
 import Pannellum, {
   Pannellum as PannellumType,
 } from "pannellum-react/es/elements/Pannellum";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 
 import { HFOV, MAX_HFOV, MIN_HFOV, PITCH, YAW } from "../../../const/pannellum";
 import { MAX_ZOOM, ZOOM_STEP } from "../../../const/zoom";
@@ -118,8 +118,14 @@ const InteriorThreeSixtyElementInteractive: React.FC<
     useControlsContext();
   const [progress, isLoading] = useLoadingProgress(src);
   const pannellumRef = useRef<PannellumType>(null);
+  const pannellumId = useId();
 
   const pannellumContainerRef = useRef<HTMLDivElement | null>(null);
+  const [containerReady, setContainerReady] = useState(false);
+  const setContainerRef = useCallback((node: HTMLDivElement | null) => {
+    pannellumContainerRef.current = node;
+    setContainerReady(!!node);
+  }, []);
 
   const [isPannellumLoaded, setIsPannellumLoaded] = useState(false);
 
@@ -224,7 +230,7 @@ const InteriorThreeSixtyElementInteractive: React.FC<
             isShowingDetails ? "scale-105" : "scale-100"
           )}
         >
-          <div ref={pannellumContainerRef}>
+          <div ref={setContainerRef} className="size-full">
             <style>
               {`
                 .pnlm-load-button {
@@ -249,14 +255,14 @@ const InteriorThreeSixtyElementInteractive: React.FC<
                 }
               `}
             </style>
-            {pannellumContainerRef.current && (
+            {containerReady && (
               <Pannellum
                 ref={pannellumRef}
-                id={pannellumContainerRef.current}
+                id={pannellumId}
                 panorama={src}
                 preview={poster}
-                width="0"
-                height="0"
+                width="100%"
+                height="100%"
                 image={src}
                 pitch={PITCH}
                 yaw={YAW}
