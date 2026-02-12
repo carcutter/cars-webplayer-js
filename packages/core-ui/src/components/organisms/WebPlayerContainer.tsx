@@ -4,6 +4,7 @@ import {
   EVENT_COMPOSITION_LOAD_ERROR,
   EVENT_COMPOSITION_LOADED,
   EVENT_COMPOSITION_LOADING,
+  type AnalyticsErrorEventProps,
 } from "@car-cutter/core";
 
 import { useComposition } from "../../hooks/useComposition";
@@ -168,7 +169,7 @@ type WebPlayerContainerProps = {
 };
 
 const WebPlayerContainer: React.FC<WebPlayerContainerProps> = () => {
-  const { emitEvent, compositionUrl } = useGlobalContext();
+  const { emitEvent, emitAnalyticsEvent, compositionUrl } = useGlobalContext();
 
   const {
     data: composition,
@@ -180,12 +181,29 @@ const WebPlayerContainer: React.FC<WebPlayerContainerProps> = () => {
   useEffect(() => {
     if (error) {
       emitEvent(EVENT_COMPOSITION_LOAD_ERROR, error);
+
+      const errorEvent: AnalyticsErrorEventProps = {
+        type: "error",
+        error: {
+          name: "CompositionLoadError",
+          message: String(error),
+        },
+      };
+      emitAnalyticsEvent(errorEvent);
     } else if (status === "fetching") {
       emitEvent(EVENT_COMPOSITION_LOADING, compositionUrl);
     } else if (isSuccess) {
       emitEvent(EVENT_COMPOSITION_LOADED, composition);
     }
-  }, [composition, compositionUrl, emitEvent, error, isSuccess, status]);
+  }, [
+    composition,
+    compositionUrl,
+    emitEvent,
+    emitAnalyticsEvent,
+    error,
+    isSuccess,
+    status,
+  ]);
 
   if (error) {
     return (

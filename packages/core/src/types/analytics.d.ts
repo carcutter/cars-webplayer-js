@@ -1,49 +1,61 @@
-// - Types
-export declare type AnalyticsEventTypeIdentify = "identify";
-export declare type AnalyticsEventTypePage = "page";
-export declare type AnalyticsEventTypeTrack = "track";
-export declare type AnalyticsEventType =
-  | AnalyticsEventTypeIdentify
-  | AnalyticsEventTypePage
-  | AnalyticsEventTypeTrack;
+// ========================
+// Shared Sub-Types (API Components)
+// ========================
 
-// - Base
-export declare type AnalyticsEventBase = {
-  type: AnalyticsEventType;
-  timestamp: string;
+export declare type WebplayerInstance = {
   instance_id: string;
+  browser_id?: string;
+  session_id?: string;
+  from_url?: string;
 };
 
-// - Props
-export declare type AnalyticsIdentifyEventProps = {
-  type: AnalyticsEventTypeIdentify;
-  browser_id: string;
-  session_id: string;
-  referrer: string;
-  origin: string;
-  page_url: string;
-  user_agent: string;
-  wp_properties: {
-    composition_url: string;
+export declare type WebplayerDisplayedItem = {
+  category_id: string;
+  category_name: string;
+  item_type: string;
+  item_position: number;
+  items_count?: number;
+};
 
-    // Integration mode
+export declare type WebplayerAction = {
+  name: string;
+  field: string;
+  value: unknown;
+};
+
+export declare type WebplayerError = {
+  name: string;
+  message: string;
+};
+
+// ========================
+// Event Type Discriminator
+// ========================
+
+export declare type AnalyticsEventType =
+  | "load"
+  | "display"
+  | "interaction"
+  | "error";
+
+// ========================
+// Event Props (caller-facing, enriched by emitter with timestamp + instance)
+// ========================
+
+export declare type AnalyticsLoadEventProps = {
+  type: "load";
+  config: {
+    composition_url: string;
     integration: boolean;
     max_items_shown: number;
-
-    // Layout
     hide_categories_nav: boolean;
     infinite_carrousel: boolean;
     permanent_gallery: boolean;
-
-    // Medias loading
     media_load_strategy: string;
     min_media_width: number;
-    max_media_width: number;
     preload_range: number;
     auto_load_360: boolean;
     auto_load_interior_360: boolean;
-
-    // Miscellaneous
     categories_filter: string;
     extend_behavior: string;
     event_prefix: string;
@@ -52,54 +64,67 @@ export declare type AnalyticsIdentifyEventProps = {
   };
 };
 
-export declare type AnalyticsPageEventProps = {
-  type: AnalyticsEventTypePage;
-  category_id: string;
-  category_name: string;
-  items_count: number;
-  page_properties: {
-    item_type: string;
-    item_position: number;
-  };
+export declare type AnalyticsDisplayEventProps = {
+  type: "display";
+  item: WebplayerDisplayedItem;
 };
 
-export declare type AnalyticsTrackEventProps = {
-  type: AnalyticsEventTypeTrack;
-  category_id: string;
-  category_name: string;
-  item_type: string;
-  item_position: number;
-  action_properties: {
-    action_name: string;
-    action_field: string;
-    action_value:
-      | bigint
-      | boolean
-      | null
-      | number
-      | string
-      | symbol
-      | undefined
-      | object;
-  };
+export declare type AnalyticsInteractionEventProps = {
+  type: "interaction";
+  current: WebplayerDisplayedItem;
+  action: WebplayerAction;
+};
+
+export declare type AnalyticsErrorEventProps = {
+  type: "error";
+  current?: WebplayerDisplayedItem;
+  action?: WebplayerAction;
+  error: WebplayerError;
 };
 
 export declare type AnalyticsEventProps =
-  | AnalyticsIdentifyEventProps
-  | AnalyticsPageEventProps
-  | AnalyticsTrackEventProps;
+  | AnalyticsLoadEventProps
+  | AnalyticsDisplayEventProps
+  | AnalyticsInteractionEventProps
+  | AnalyticsErrorEventProps;
 
-// - Events
-export declare type AnalyticsIdentifyEvent = Omit<AnalyticsEventBase, "type"> &
-  AnalyticsIdentifyEventProps;
+// ========================
+// Full Event Types (complete payload after enrichment)
+// ========================
 
-export declare type AnalyticsPageEvent = Omit<AnalyticsEventBase, "type"> &
-  AnalyticsPageEventProps;
+export declare type AnalyticsLoadEvent = {
+  type: "load";
+  timestamp: string;
+  instance: WebplayerInstance;
+  config: AnalyticsLoadEventProps["config"];
+};
 
-export declare type AnalyticsTrackEvent = Omit<AnalyticsEventBase, "type"> &
-  AnalyticsTrackEventProps;
+export declare type AnalyticsDisplayEvent = {
+  type: "display";
+  timestamp: string;
+  instance: WebplayerInstance;
+  item: WebplayerDisplayedItem;
+};
+
+export declare type AnalyticsInteractionEvent = {
+  type: "interaction";
+  timestamp: string;
+  instance: WebplayerInstance;
+  current: WebplayerDisplayedItem;
+  action: WebplayerAction;
+};
+
+export declare type AnalyticsErrorEvent = {
+  type: "error";
+  timestamp: string;
+  instance: WebplayerInstance;
+  current?: WebplayerDisplayedItem;
+  action?: WebplayerAction;
+  error: WebplayerError;
+};
 
 export declare type AnalyticsEvent =
-  | AnalyticsIdentifyEvent
-  | AnalyticsPageEvent
-  | AnalyticsTrackEvent;
+  | AnalyticsLoadEvent
+  | AnalyticsDisplayEvent
+  | AnalyticsInteractionEvent
+  | AnalyticsErrorEvent;
