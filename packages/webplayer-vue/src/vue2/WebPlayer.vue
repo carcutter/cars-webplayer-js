@@ -15,9 +15,10 @@ import {
   type Item,
   type Composition,
   type WebPlayerProps,
-  AnalyticsIdentifyEvent,
-  AnalyticsPageEvent,
-  AnalyticsTrackEvent,
+  AnalyticsLoadEvent,
+  AnalyticsDisplayEvent,
+  AnalyticsInteractionEvent,
+  AnalyticsErrorEvent,
   DEFAULT_ANALYTICS_EVENT_PREFIX,
 } from "@car-cutter/core";
 import {
@@ -25,9 +26,10 @@ import {
   webPlayerPropsToAttributes,
 } from "@car-cutter/wc-webplayer";
 import {
-  ANALYTICS_EVENT_IDENTIFY,
-  ANALYTICS_EVENT_PAGE,
-  ANALYTICS_EVENT_TRACK,
+  ANALYTICS_EVENT_LOAD,
+  ANALYTICS_EVENT_DISPLAY,
+  ANALYTICS_EVENT_INTERACTION,
+  ANALYTICS_EVENT_ERROR,
 } from "@car-cutter/core/src/const/event";
 
 ensureCustomElementsDefinition();
@@ -61,6 +63,7 @@ export default defineComponent({
     analyticsSimpleRequestsOnly: Boolean,
     analyticsDryRun: Boolean,
     analyticsDebug: Boolean,
+    monitoring: Boolean,
   },
   data() {
     return {
@@ -116,12 +119,14 @@ export default defineComponent({
     },
     setupAnalyticsEventListeners(): void {
       const eventListenerMap = {
-        [ANALYTICS_EVENT_IDENTIFY]: (event: AnalyticsIdentifyEvent) =>
-          this.$emit("analyticsIdentify", event),
-        [ANALYTICS_EVENT_PAGE]: (event: AnalyticsPageEvent) =>
-          this.$emit("analyticsPage", event),
-        [ANALYTICS_EVENT_TRACK]: (event: AnalyticsTrackEvent) =>
-          this.$emit("analyticsTrack", event),
+        [ANALYTICS_EVENT_LOAD]: (event: AnalyticsLoadEvent) =>
+          this.$emit("analyticsLoad", event),
+        [ANALYTICS_EVENT_DISPLAY]: (event: AnalyticsDisplayEvent) =>
+          this.$emit("analyticsDisplay", event),
+        [ANALYTICS_EVENT_INTERACTION]: (event: AnalyticsInteractionEvent) =>
+          this.$emit("analyticsInteraction", event),
+        [ANALYTICS_EVENT_ERROR]: (event: AnalyticsErrorEvent) =>
+          this.$emit("analyticsError", event),
       };
       Object.entries(eventListenerMap).forEach(([event, listener]) => {
         if (!listener) return;

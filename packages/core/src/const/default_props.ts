@@ -25,8 +25,13 @@ export const DEFAULT_INTEGRATION = false satisfies boolean;
 export const DEFAULT_MAX_ITEMS_SHOWN = 1 satisfies number;
 
 export const DEFAULT_ANALYTICS_EVENT_PREFIX = "cc-analytics:" satisfies string;
+/** @deprecated Monitoring now handles API calls via compositionUrl-based routing. */
 export const DEFAULT_ANALYTICS_URL = "" satisfies string;
+/** @deprecated Monitoring now uses compositionUrl as the bearer token. */
 export const DEFAULT_ANALYTICS_BEARER = "" satisfies string;
+/** @deprecated Monitoring handles its own request headers. */
 export const DEFAULT_ANALYTICS_SIMPLE_REQUESTS_ONLY = false satisfies boolean;
 export const DEFAULT_ANALYTICS_DRY_RUN = false satisfies boolean;
 export const DEFAULT_ANALYTICS_DEBUG = false satisfies boolean;
+
+export const DEFAULT_MONITORING = true satisfies boolean;

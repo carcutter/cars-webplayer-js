@@ -70,16 +70,16 @@ const CompositionContextProvider: React.FC<
     const sortedWidths = allWidths.sort((a, b) => a - b);
 
     // Filter out composition' widths that are not within the attribute constraints
-    const fiteredWidths = sortedWidths.filter(
+    const filteredWidths = sortedWidths.filter(
       width => width >= minMediaWidth && width <= maxMediaWidth
     );
 
-    if (fiteredWidths.length === 0) {
+    if (filteredWidths.length === 0) {
       // Return the closer width from the constraints. Use mediaHdWidth to initialize the closestWidth in order to handle "Infinity"
-      const contraintMean = (minMediaWidth + maxMediaWidth) / 2;
+      const constraintMean = (minMediaWidth + maxMediaWidth) / 2;
       const closestWidth = allWidths.reduce(
         (best, width) =>
-          Math.abs(width - contraintMean) < Math.abs(best - contraintMean)
+          Math.abs(width - constraintMean) < Math.abs(best - constraintMean)
             ? width
             : best,
         mediaHdWidth
@@ -93,7 +93,7 @@ const CompositionContextProvider: React.FC<
       return [closestWidth];
     }
 
-    return fiteredWidths;
+    return filteredWidths;
   }, [mediaSubWidths, mediaHdWidth, minMediaWidth, maxMediaWidth]);
 
   return (

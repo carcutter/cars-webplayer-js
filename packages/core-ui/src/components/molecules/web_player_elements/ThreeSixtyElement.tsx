@@ -510,15 +510,17 @@ const ThreeSixtyElementPlaceholder: React.FC<
 
       setLoadingStatusMap(new Map(imagesSrc.map(src => [src, false])));
       emitAnalyticsEvent({
-        type: "track",
-        category_id: displayedCategoryId,
-        category_name: displayedCategoryName,
-        item_type: "exterior-360",
-        item_position: itemIndex,
-        action_properties: {
-          action_name: "Exterior 360 Play",
-          action_field: "exterior_360_play",
-          action_value: type,
+        type: "interaction",
+        current: {
+          category_id: displayedCategoryId,
+          category_name: displayedCategoryName,
+          item_type: "exterior-360",
+          item_position: itemIndex,
+        },
+        action: {
+          name: "Exterior 360 Play",
+          field: "exterior_360_play",
+          value: type,
         },
       });
     },

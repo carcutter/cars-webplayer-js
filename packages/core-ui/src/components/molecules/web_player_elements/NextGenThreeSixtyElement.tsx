@@ -642,15 +642,17 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
 
       setLoadingStatusMap(new Map(imagesSrc.map(src => [src, false])));
       emitAnalyticsEvent({
-        type: "track",
-        category_id: displayedCategoryId,
-        category_name: displayedCategoryName,
-        item_type: "next360",
-        item_position: itemIndex,
-        action_properties: {
-          action_name: "Next 360 Play",
-          action_field: "next360_play",
-          action_value: type,
+        type: "interaction",
+        current: {
+          category_id: displayedCategoryId,
+          category_name: displayedCategoryName,
+          item_type: "next360",
+          item_position: itemIndex,
+        },
+        action: {
+          name: "Next 360 Play",
+          field: "next360_play",
+          value: type,
         },
       });
     },
