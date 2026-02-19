@@ -1,5 +1,4 @@
 {
   "root": true,
-
   "extends": "@car-cutter/eslint-config/base.json"
 }
