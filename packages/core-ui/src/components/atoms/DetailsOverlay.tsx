@@ -145,14 +145,14 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
       <div
         className={cn(
           className,
-          "absolute inset-0 z-overlay flex justify-end overflow-hidden bg-foreground/60 transition-opacity duration-details",
+          "absolute inset-0 z-overlay flex justify-end overflow-hidden bg-foreground/10 transition-opacity duration-details",
           isVisible ? "opacity-100" : "pointer-events-none opacity-0"
         )}
         onClick={clickHandler}
       >
         <div
           className={cn(
-            "flex h-full flex-col bg-background transition-transform duration-details",
+            "flex h-full flex-col bg-navy text-white transition-transform duration-details",
             isVisible ? "translate-x-0" : "translate-x-full",
             hasDescriptions() ? "max-w-[60%]" : "w-full"
           )}
@@ -172,24 +172,24 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
               {hasDescriptions() && (
                 <div
                   className={cn(
-                    "flex-1 space-y-1 overflow-y-auto px-2 py-1 small:p-3",
+                    "flex flex-1 flex-col gap-4 overflow-y-auto p-4 small:p-3",
                     extendMode && "large:p-4"
                   )}
                 >
                   {title && (
-                    <span
+                    <h3
                       className={cn(
-                        "text-sm font-semibold small:text-base small:font-bold",
+                        "text-lg font-semibold text-white small:text-base small:font-bold",
                         extendMode && "large:text-lg"
                       )}
                     >
                       {title}
-                    </span>
+                    </h3>
                   )}
                   {description && (
                     <p
                       className={cn(
-                        "text-xs text-foreground/65 small:text-sm",
+                        "mall:text-lg text-sm text-white",
                         extendMode && "large:text-base"
                       )}
                     >

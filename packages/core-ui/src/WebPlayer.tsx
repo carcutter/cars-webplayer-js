@@ -321,6 +321,9 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
           style={
             {
               "--background": "var(--cc-webplayer-background, 0 0% 100%)",
+              "--details-background":
+                "var(--cc-webplayer-details-background, 216 47% 11%)",
+              "--details-text": "var(--cc-webplayer-details-text, 0 0% 100%)",
               "--foreground": "var(--cc-webplayer-foreground, 240 10% 3.9%)",
               "--primary": "var(--cc-webplayer-primary, 216 100% 52%)",
               "--primary-foreground":
