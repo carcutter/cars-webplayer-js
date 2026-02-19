@@ -89,7 +89,8 @@ const config: Config = {
     },
     colors: {
       transparent: "transparent",
-
+      navy: "hsl(var(--details-background))",
+      white: "hsl(var(--details-text))",
       background: "hsl(var(--background))",
       foreground: "hsl(var(--foreground))",
       primary: {
