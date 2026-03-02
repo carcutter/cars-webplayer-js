@@ -26,6 +26,7 @@ export type WebPlayerProps = {
   eventPrefix?: string;
   demoSpin?: boolean;
   reverse360?: boolean;
+  spinCursor?: string;
 
   // Analytics
   analyticsEventPrefix?: string;

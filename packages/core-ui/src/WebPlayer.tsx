@@ -25,6 +25,7 @@ import {
   DEFAULT_EVENT_PREFIX,
   DEFAULT_DEMO_SPIN,
   DEFAULT_REVERSE_360,
+  DEFAULT_SPIN_CURSOR,
   DEFAULT_ANALYTICS_EVENT_PREFIX,
   DEFAULT_ANALYTICS_URL,
   DEFAULT_ANALYTICS_BEARER,
@@ -76,6 +77,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   analyticsSimpleRequestsOnly = DEFAULT_ANALYTICS_SIMPLE_REQUESTS_ONLY,
   analyticsDryRun = DEFAULT_ANALYTICS_DRY_RUN,
   analyticsDebug = DEFAULT_ANALYTICS_DEBUG,
+  spinCursor = DEFAULT_SPIN_CURSOR,
   children: customizationChildren, // NOTE: use to customize the player, not to display the content
 }) => {
   //maxItemsShown validation and substitution if not valid
@@ -300,6 +302,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
         extendBehavior,
         demoSpin,
         reverse360,
+        spinCursor,
 
         emitEvent,
         emitAnalyticsEvent,

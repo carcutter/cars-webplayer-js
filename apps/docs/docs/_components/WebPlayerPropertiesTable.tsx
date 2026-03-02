@@ -120,6 +120,13 @@ const properties: Array<Property> = [
     description: "Reverse the 360-degree rotation",
   },
   {
+    propName: "spinCursor",
+    attribute: "spin-cursor",
+    type: "string",
+    defaultValue: '"ew-resize"',
+    description: "CSS cursor value used while interacting with 360 media",
+  },
+  {
     propName: "analyticsEventPrefix",
     attribute: "analytics-event-prefix",
     type: "string",

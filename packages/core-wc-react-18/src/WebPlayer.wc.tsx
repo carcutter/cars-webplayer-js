@@ -28,6 +28,7 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedStyles, {
     eventPrefix: "string",
     demoSpin: "boolean",
     reverse360: "boolean",
+    spinCursor: "string",
 
     // Analytics
     analyticsEventPrefix: "string",

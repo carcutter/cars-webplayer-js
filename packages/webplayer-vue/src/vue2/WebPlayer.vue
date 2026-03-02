@@ -54,6 +54,7 @@ export default defineComponent({
     eventPrefix: String,
     demoSpin: Boolean,
     reverse360: Boolean,
+    spinCursor: String,
 
     analyticsEventPrefix: String,
     analyticsUrl: String,

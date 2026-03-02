@@ -30,7 +30,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   images,
   onlyPreload,
 }) => {
-  const { demoSpin, reverse360 } = useGlobalContext();
+  const { demoSpin, reverse360, spinCursor } = useGlobalContext();
   const { isShowingDetails, isZooming } = useControlsContext();
 
   const disableSpin = isZooming || isShowingDetails; // We do not want to do anything while zooming or showing a detail image
@@ -441,7 +441,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   ]);
 
   return (
-    <div ref={containerRef} className="cursor-ew-resize">
+    <div ref={containerRef} style={{ cursor: spinCursor }}>
       {/* Scroller is element larger than the image to capture scroll event and then, make the 360 spin */}
       {/* NOTE: ImageElement is within so that it can capture events first */}
       <div ref={scrollerRef} className="overflow-x-scroll">

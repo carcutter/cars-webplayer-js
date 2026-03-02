@@ -19,6 +19,7 @@ type ProviderProps = Required<
     | "extendBehavior"
     | "demoSpin"
     | "reverse360"
+    | "spinCursor"
     | "integration"
   >
 > & {

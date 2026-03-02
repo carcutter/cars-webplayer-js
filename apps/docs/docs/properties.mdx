@@ -18,6 +18,33 @@ import WebPlayerPropertiesTable from "./_components/WebPlayerPropertiesTable";
 
 <WebPlayerPropertiesTable />
 
+## Spin Cursor
+
+Use `spinCursor` to customize the cursor while interacting with exterior 360 media (`360` and `next360`).
+
+Default value is `"ew-resize"`.
+
+<Tabs>
+  <TabItem value="framework" label="Frameworks">
+
+```tsx
+<WebPlayer compositionUrl={compositionUrl} spinCursor="grab" />
+```
+
+  </TabItem>
+
+  <TabItem value="native" label="Native / WebComponent">
+
+```html
+<cc-webplayer
+  composition-url="https://example.com/composition_v3.json"
+  spin-cursor="grab"
+></cc-webplayer>
+```
+
+  </TabItem>
+</Tabs>
+
 ## Generate composition URL
 
 :::info
@@ -107,12 +134,12 @@ When `categoriesFilter` is not specified, it defaults to `"*"` which shows all c
 
 The composition JSON groups media into categories. Each category has an `id` (used for filtering and in APIs) and a `title` (the label shown in the WebPlayer navigation).
 
-| Category id     | Recommended title  | Description                    |
-| --------------- | ------------------ | ------------------------------ |
-| `360`           | 360                | Exterior 360° spin            |
-| `next360`       | **NextGen 360**    | Next-generation exterior 360° |
-| `interior-360`  | Interior 360       | Interior 360° view            |
-| (custom)        | (any)              | Images, videos, etc.          |
+| Category id    | Recommended title | Description                   |
+| -------------- | ----------------- | ----------------------------- |
+| `360`          | 360               | Exterior 360° spin            |
+| `next360`      | **NextGen 360**   | Next-generation exterior 360° |
+| `interior-360` | Interior 360      | Interior 360° view            |
+| (custom)       | (any)             | Images, videos, etc.          |
 
 When adding a NextGen 360 category to your composition, use `id: "next360"` and `title: "NextGen 360"` (or your preferred label). You can include it in `categoriesFilter` like: `categoriesFilter="360|next360|interior"`.
 
