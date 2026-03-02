@@ -16,7 +16,6 @@ import GalleryIcon from "../icons/GalleryIcon";
 import HotspotsIcon from "../icons/HotspotsIcon";
 import MinusIcon from "../icons/MinusIcon";
 import PlusIcon from "../icons/PlusIcon";
-import ReduceIcon from "../icons/ReduceIcon";
 import Gallery from "../organisms/Gallery";
 import Button from "../ui/Button";
 import Separator from "../ui/Separator";
@@ -279,11 +278,7 @@ const WebPlayerOverlay: React.FC = () => {
               shape="icon"
               onClick={toggleExtendMode}
             >
-              {!extendMode ? (
-                <ExtendIcon className="size-full" />
-              ) : (
-                <ReduceIcon className="size-full" />
-              )}
+              <ExtendIcon className="size-full" />
             </Button>
           )}
         </div>
