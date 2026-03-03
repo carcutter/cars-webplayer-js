@@ -1,16 +1,17 @@
-import Pannellum, {
-  Pannellum as PannellumType,
-} from "pannellum-react/es/elements/Pannellum";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-import { HFOV, MAX_HFOV, MIN_HFOV, PITCH, YAW } from "../../../const/pannellum";
+import { MAX_HFOV, MIN_HFOV } from "../../../const/pannellum";
 import { MAX_ZOOM, ZOOM_STEP } from "../../../const/zoom";
 import { useLoadingProgress } from "../../../hooks/useLoadingProgress";
+import { usePannellumViewer } from "../../../hooks/usePannellumViewer";
 import { useControlsContext } from "../../../providers/ControlsContext";
 import { useGlobalContext } from "../../../providers/GlobalContext";
 import { CustomizableItem } from "../../../types/customizable_item";
 import { createThrottleDebounce } from "../../../utils/debounce";
-import { convertPannellumHfovToBidirectionalSteppedScale } from "../../../utils/math";
+import {
+  clamp,
+  convertPannellumHfovToBidirectionalSteppedScale,
+} from "../../../utils/math";
 import { cn } from "../../../utils/style";
 import Interior360PlayIcon from "../../icons/Interior360PlayIcon";
 import InteriorThreeSixtyIcon from "../../icons/InteriorThreeSixtyIcon";
@@ -112,187 +113,144 @@ type InteriorThreeSixtyElementProps = Extract<
 const InteriorThreeSixtyElementInteractive: React.FC<
   InteriorThreeSixtyElementProps
 > = props => {
-  const { itemIndex, src, poster, onLoaded, onError } = props;
+  const { itemIndex, src, poster, onLoaded, onError, onlyPreload } = props;
   const { autoLoadInterior360 } = useGlobalContext();
-  const { isShowingDetails, setItemInteraction, zoom, isZooming, setZoom } =
-    useControlsContext();
+  const { isShowingDetails, zoom, setZoom } = useControlsContext();
   const [progress, isLoading] = useLoadingProgress(src);
-  const pannellumRef = useRef<PannellumType>(null);
-  const pannellumId = useId();
 
-  const pannellumContainerRef = useRef<HTMLDivElement | null>(null);
-  const [containerReady, setContainerReady] = useState(false);
-  const setContainerRef = useCallback((node: HTMLDivElement | null) => {
-    pannellumContainerRef.current = node;
-    setContainerReady(!!node);
-  }, []);
-
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isPannellumLoaded, setIsPannellumLoaded] = useState(false);
+  const [shouldAutoLoad, setShouldAutoLoad] = useState(autoLoadInterior360);
+
+  useEffect(() => {
+    if (autoLoadInterior360) {
+      setShouldAutoLoad(true);
+    }
+  }, [autoLoadInterior360]);
 
   const onLoad = useCallback(() => {
-    if (itemIndex !== undefined) {
-      setItemInteraction(itemIndex, "ready");
-    }
-
     onLoaded?.();
     setIsPannellumLoaded(true);
-  }, [itemIndex, setItemInteraction, onLoaded]);
+  }, [onLoaded]);
 
   const onMouse = useCallback((e: Event) => {
-    if (e instanceof MouseEvent && e.button !== 0) {
-      return;
-    }
-
+    if (e instanceof MouseEvent && e.button !== 0) return;
     e.preventDefault();
     e.stopPropagation();
     e.stopImmediatePropagation();
   }, []);
 
   const loadScene = useCallback(() => {
-    const viewer = pannellumRef.current?.getViewer();
-    if (viewer) {
-      viewer.loadScene();
-    }
+    setShouldAutoLoad(true);
   }, []);
 
-  useEffect(() => {
-    if (
-      pannellumRef.current &&
-      isPannellumLoaded &&
-      pannellumContainerRef.current
-    ) {
-      const viewer = pannellumRef.current.getViewer();
-      const container = pannellumContainerRef.current;
-
-      if (viewer) {
-        const handleWheel = (event: WheelEvent) => {
-          event.preventDefault();
-          const zoom = convertPannellumHfovToBidirectionalSteppedScale(
-            viewer.getHfov(),
-            MIN_HFOV,
-            MAX_HFOV,
-            MAX_ZOOM,
-            ZOOM_STEP
-          );
-          const direction = event.deltaY < 0 ? "zoom-in" : "zoom-out";
-          const newZoom =
-            direction === "zoom-in"
-              ? Math.min(zoom + ZOOM_STEP, MAX_ZOOM)
-              : Math.max(zoom - ZOOM_STEP, 1);
-          setZoom(newZoom);
-        };
-
-        const handleWheelDebounced = createThrottleDebounce(
-          handleWheel,
-          100,
-          150
-        );
-
-        const handleDblClick = (event: MouseEvent) => {
-          event.preventDefault();
-          const zoom = convertPannellumHfovToBidirectionalSteppedScale(
-            viewer.getHfov(),
-            MIN_HFOV,
-            MAX_HFOV,
-            MAX_ZOOM,
-            ZOOM_STEP,
-            true
-          );
-          setZoom(zoom);
-        };
-
-        container.addEventListener("wheel", handleWheelDebounced);
-        container.addEventListener("dblclick", handleDblClick);
-
-        const zoomFactor = Math.abs(1 - Math.abs(zoom));
-        const maxHfovReduction = MAX_HFOV - MIN_HFOV;
-        const newHfov = HFOV - zoomFactor * maxHfovReduction;
-        viewer.setHfov(newHfov);
-
-        return () => {
-          container.removeEventListener("wheel", handleWheel);
-          container.removeEventListener("dblclick", handleDblClick);
-        };
-      }
+  const viewerRef = usePannellumViewer(
+    containerRef,
+    { image: src, preview: poster, autoLoad: shouldAutoLoad },
+    {
+      onLoad,
+      onError,
+      onMousedown: onMouse,
+      onMouseup: onMouse,
+      onTouchstart: onMouse,
+      onTouchend: onMouse,
     }
-  }, [zoom, isPannellumLoaded, isZooming, setZoom]);
+  );
+
+  // Sync zoom level to pannellum hfov
+  useEffect(() => {
+    if (onlyPreload) return;
+
+    const viewer = viewerRef.current;
+    if (!viewer || !isPannellumLoaded) return;
+
+    const minZoom = 1;
+    const normalizedZoom = clamp((zoom - minZoom) / (MAX_ZOOM - minZoom), 0, 1);
+    const newHfov = clamp(
+      MAX_HFOV - normalizedZoom * (MAX_HFOV - MIN_HFOV),
+      MIN_HFOV,
+      MAX_HFOV
+    );
+    viewer.setHfov(newHfov);
+  }, [zoom, isPannellumLoaded, viewerRef, onlyPreload]);
+
+  // Set up wheel and double-click zoom handlers (once when panorama loads)
+  useEffect(() => {
+    if (onlyPreload) return;
+
+    const container = containerRef.current;
+    if (!container || !isPannellumLoaded) return;
+
+    const handleWheel = (event: WheelEvent) => {
+      event.preventDefault();
+      const viewer = viewerRef.current;
+      if (!viewer) return;
+
+      const currentZoom = convertPannellumHfovToBidirectionalSteppedScale(
+        viewer.getHfov(),
+        MIN_HFOV,
+        MAX_HFOV,
+        MAX_ZOOM,
+        ZOOM_STEP
+      );
+      const direction = event.deltaY < 0 ? "zoom-in" : "zoom-out";
+      const newZoom =
+        direction === "zoom-in"
+          ? Math.min(currentZoom + ZOOM_STEP, MAX_ZOOM)
+          : Math.max(currentZoom - ZOOM_STEP, 1);
+      setZoom(newZoom);
+    };
+
+    const handleWheelThrottled = createThrottleDebounce(handleWheel, 100, 150);
+
+    const handleDblClick = (event: MouseEvent) => {
+      event.preventDefault();
+      const viewer = viewerRef.current;
+      if (!viewer) return;
+
+      const toggleZoom = convertPannellumHfovToBidirectionalSteppedScale(
+        viewer.getHfov(),
+        MIN_HFOV,
+        MAX_HFOV,
+        MAX_ZOOM,
+        ZOOM_STEP,
+        true
+      );
+      setZoom(toggleZoom);
+    };
+
+    container.addEventListener("wheel", handleWheelThrottled);
+    container.addEventListener("dblclick", handleDblClick);
+
+    return () => {
+      container.removeEventListener("wheel", handleWheelThrottled);
+      container.removeEventListener("dblclick", handleDblClick);
+    };
+  }, [isPannellumLoaded, setZoom, viewerRef, onlyPreload]);
 
   return (
-    <>
+    <div
+      className={cn(
+        "relative aspect-[4/3] w-full overflow-hidden bg-transparent"
+      )}
+    >
       <div
         className={cn(
-          "relative aspect-[4/3] w-full overflow-hidden bg-transparent"
+          "size-full",
+          isShowingDetails ? "scale-105" : "scale-100"
         )}
       >
-        <div
-          className={cn(
-            "size-full",
-            isShowingDetails ? "scale-105" : "scale-100"
-          )}
-        >
-          <div ref={setContainerRef} className="size-full">
-            <style>
-              {`
-                .pnlm-load-button {
-                  display: none !important;
-                }
-                .pnlm-load-box {
-                  display: none !important;
-                }
-                .pnlm-container {
-                  background-image: none !important;
-                }
-                .pnlm-about-msg {
-                  width: 0;
-                  height: 0;
-                  padding: 0;
-                  visibility: hidden;
-                }
-
-                .pnlm-about-msg a {
-                  display: none;
-                  visibility: hidden;
-                }
-              `}
-            </style>
-            {containerReady && (
-              <Pannellum
-                ref={pannellumRef}
-                id={pannellumId}
-                panorama={src}
-                preview={poster}
-                width="100%"
-                height="100%"
-                image={src}
-                pitch={PITCH}
-                yaw={YAW}
-                hfov={HFOV}
-                maxHfov={MAX_HFOV}
-                minHfov={MIN_HFOV}
-                compass={false}
-                showControls={false}
-                keyboardZoom={false}
-                onLoad={onLoad}
-                onError={onError}
-                onMousedown={onMouse}
-                onTouchstart={onMouse}
-                onTouchend={onMouse}
-                onMouseup={onMouse}
-                autoLoad={false}
-              />
-            )}
-          </div>
-          <InteriorThreeSixtyElementLoadControls
-            isPannellumLoaded={isPannellumLoaded}
-            isLoading={isLoading}
-            progress={progress}
-            autoloadInterior360={autoLoadInterior360}
-            loadScene={loadScene}
-            itemIndex={itemIndex}
-          />
-        </div>
+        <div ref={containerRef} className="size-full" />
+        <InteriorThreeSixtyElementLoadControls
+          isPannellumLoaded={isPannellumLoaded}
+          isLoading={isLoading}
+          progress={progress}
+          autoloadInterior360={autoLoadInterior360}
+          loadScene={loadScene}
+          itemIndex={itemIndex}
+        />
       </div>
-    </>
+    </div>
   );
 };
 
@@ -312,6 +270,12 @@ const InteriorThreeSixtyElement: React.FC<
   const [status, setStatus] = useState<
     null | "placeholder" | "spin" | "error"
   >();
+  const handleLoaded = useCallback(() => {
+    setStatus("spin");
+  }, []);
+  const handleError = useCallback(() => {
+    setStatus("error");
+  }, []);
 
   // Update the item interaction state according to the readiness of the 360
   useEffect(() => {
@@ -333,8 +297,8 @@ const InteriorThreeSixtyElement: React.FC<
     return (
       <InteriorThreeSixtyElementInteractive
         {...props}
-        onLoaded={() => setStatus("spin")}
-        onError={() => setStatus("error")}
+        onLoaded={handleLoaded}
+        onError={handleError}
       />
     );
   }
