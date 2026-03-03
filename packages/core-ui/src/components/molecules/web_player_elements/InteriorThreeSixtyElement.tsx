@@ -113,7 +113,7 @@ type InteriorThreeSixtyElementProps = Extract<
 const InteriorThreeSixtyElementInteractive: React.FC<
   InteriorThreeSixtyElementProps
 > = props => {
-  const { itemIndex, src, poster, onLoaded, onError } = props;
+  const { itemIndex, src, poster, onLoaded, onError, onlyPreload } = props;
   const { autoLoadInterior360 } = useGlobalContext();
   const { isShowingDetails, zoom, setZoom } = useControlsContext();
   const [progress, isLoading] = useLoadingProgress(src);
@@ -159,6 +159,8 @@ const InteriorThreeSixtyElementInteractive: React.FC<
 
   // Sync zoom level to pannellum hfov
   useEffect(() => {
+    if (onlyPreload) return;
+
     const viewer = viewerRef.current;
     if (!viewer || !isPannellumLoaded) return;
 
@@ -170,10 +172,12 @@ const InteriorThreeSixtyElementInteractive: React.FC<
       MAX_HFOV
     );
     viewer.setHfov(newHfov);
-  }, [zoom, isPannellumLoaded, viewerRef]);
+  }, [zoom, isPannellumLoaded, viewerRef, onlyPreload]);
 
   // Set up wheel and double-click zoom handlers (once when panorama loads)
   useEffect(() => {
+    if (onlyPreload) return;
+
     const container = containerRef.current;
     if (!container || !isPannellumLoaded) return;
 
@@ -222,7 +226,7 @@ const InteriorThreeSixtyElementInteractive: React.FC<
       container.removeEventListener("wheel", handleWheelThrottled);
       container.removeEventListener("dblclick", handleDblClick);
     };
-  }, [isPannellumLoaded, setZoom, viewerRef]);
+  }, [isPannellumLoaded, setZoom, viewerRef, onlyPreload]);
 
   return (
     <div
