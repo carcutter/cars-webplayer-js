@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { HFOV, MAX_HFOV, MIN_HFOV } from "../../../const/pannellum";
+import { MAX_HFOV, MIN_HFOV } from "../../../const/pannellum";
 import { MAX_ZOOM, ZOOM_STEP } from "../../../const/zoom";
 import { useLoadingProgress } from "../../../hooks/useLoadingProgress";
 import { usePannellumViewer } from "../../../hooks/usePannellumViewer";
@@ -8,7 +8,10 @@ import { useControlsContext } from "../../../providers/ControlsContext";
 import { useGlobalContext } from "../../../providers/GlobalContext";
 import { CustomizableItem } from "../../../types/customizable_item";
 import { createThrottleDebounce } from "../../../utils/debounce";
-import { convertPannellumHfovToBidirectionalSteppedScale } from "../../../utils/math";
+import {
+  clamp,
+  convertPannellumHfovToBidirectionalSteppedScale,
+} from "../../../utils/math";
 import { cn } from "../../../utils/style";
 import Interior360PlayIcon from "../../icons/Interior360PlayIcon";
 import InteriorThreeSixtyIcon from "../../icons/InteriorThreeSixtyIcon";
@@ -159,9 +162,13 @@ const InteriorThreeSixtyElementInteractive: React.FC<
     const viewer = viewerRef.current;
     if (!viewer || !isPannellumLoaded) return;
 
-    const zoomFactor = Math.abs(1 - Math.abs(zoom));
-    const maxHfovReduction = MAX_HFOV - MIN_HFOV;
-    const newHfov = HFOV - zoomFactor * maxHfovReduction;
+    const minZoom = 1;
+    const normalizedZoom = clamp((zoom - minZoom) / (MAX_ZOOM - minZoom), 0, 1);
+    const newHfov = clamp(
+      MAX_HFOV - normalizedZoom * (MAX_HFOV - MIN_HFOV),
+      MIN_HFOV,
+      MAX_HFOV
+    );
     viewer.setHfov(newHfov);
   }, [zoom, isPannellumLoaded, viewerRef]);
 
