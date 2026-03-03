@@ -26,11 +26,6 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    },
-    "./vue2": {
-      "types": "./dist/vue2.d.ts",
-      "import": "./dist/vue2.js",
-      "require": "./dist/vue2.cjs"
     }
   },
   "files": [
@@ -48,17 +43,17 @@
     "@car-cutter/wc-webplayer": "3.1.1"
   },
   "peerDependencies": {
-    "vue": ">=2"
+    "vue": "^3"
   },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
-    "@vitejs/plugin-vue": "^5.1.3",
+    "@vitejs/plugin-vue": "^6.0.0",
     "browserslist": "^4.23.3",
     "browserslist-to-esbuild": "^2.1.1",
     "eslint": "^8.57.0",
     "typescript": "^5.5.4",
-    "vite": "^5.4.21",
+    "vite": "^6.2.0",
     "vite-bundle-visualizer": "^1.2.1",
     "vite-plugin-dts": "^4.2.1",
     "vue": "^3.5.6",

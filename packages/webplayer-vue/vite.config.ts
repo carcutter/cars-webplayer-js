@@ -36,7 +36,6 @@ export default defineConfig({
       name: "CarCutterWebplayerVue",
       entry: {
         index: resolve(__dirname, "src/index.ts"),
-        vue2: resolve(__dirname, "src/vue2/index.ts"),
       },
     },
     target: browserslistToEsbuild(),

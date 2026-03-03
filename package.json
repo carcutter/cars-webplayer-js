@@ -42,6 +42,9 @@
     "postinstall-postinstall": "^2.1.0",
     "turbo": "^2.1.2"
   },
+  "resolutions": {
+    "serialize-javascript": ">=6.0.3"
+  },
   "packageManager": "yarn@1.22.22",
   "workspaces": {
     "packages": [
