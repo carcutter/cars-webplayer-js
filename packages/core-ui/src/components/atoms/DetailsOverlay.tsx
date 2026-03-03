@@ -97,6 +97,7 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
   };
 
   const hasDescriptions = () => Boolean(title || description);
+  const hasImage = () => Boolean(url);
 
   const currentVariant = determineVariant();
 
@@ -113,6 +114,7 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
         // Only apply aspect ratio if it doesn't conflict with height constraints
         return {
           ...aspectRatioStyle,
+          aspectRatio: "4 / 3",
           // Preserve max-height constraint from CSS classes
           maxHeight: hasDescriptions() ? "50%" : "100%",
         };
@@ -154,21 +156,24 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
           className={cn(
             "flex h-full flex-col bg-navy text-white transition-transform duration-details",
             isVisible ? "translate-x-0" : "translate-x-full",
-            hasDescriptions() ? "max-w-[60%]" : "w-full"
+            "w-3/5"
           )}
+          style={{ containerType: "inline-size" }}
         >
           {children}
           {isVisible && (
             <>
-              <CdnImage
-                className={cn(
-                  hasDescriptions() ? "max-h-[50%]" : "h-full",
-                  "w-full bg-foreground/65 object-contain"
-                )}
-                src={url || ""}
-                style={getImageStyle("centered")}
-                imgInPlayerWidthRatio={0.6}
-              />
+              {hasImage() && (
+                <CdnImage
+                  className={cn(
+                    hasDescriptions() ? "max-h-[50%]" : "h-full",
+                    "w-full bg-foreground/65 object-cover"
+                  )}
+                  src={url || ""}
+                  style={getImageStyle("centered")}
+                  imgInPlayerWidthRatio={0.6}
+                />
+              )}
               {hasDescriptions() && (
                 <div
                   className={cn(
@@ -179,7 +184,7 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
                   {title && (
                     <h3
                       className={cn(
-                        "text-lg font-semibold text-white small:text-base small:font-bold",
+                        "text-[clamp(0.875rem,0.6rem+1.6cqw,1.125rem)] font-semibold text-white small:font-bold",
                         extendMode && "large:text-lg"
                       )}
                     >
@@ -189,8 +194,8 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
                   {description && (
                     <p
                       className={cn(
-                        "mall:text-lg text-sm text-white",
-                        extendMode && "large:text-base"
+                        "text-[clamp(0.75rem,0.55rem+1.3cqw,0.875rem)] text-white",
+                        extendMode && "large:text-sm"
                       )}
                     >
                       {description}
@@ -221,6 +226,7 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
             isVisible ? "translate-y-0" : "translate-y-full"
           )}
           style={{
+            containerType: "inline-size",
             width: integration
               ? `${100 / (isFullScreen ? 1 : maxItemsShown)}%`
               : `${100 / maxItemsShown}%`,
@@ -229,17 +235,24 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
           {children}
           {isVisible && (
             <>
-              <CdnImage
-                className="min-h-0 w-full flex-1 bg-foreground/65 object-contain"
-                src={url || ""}
-                style={getImageStyle("aside")}
-                imgInPlayerWidthRatio={0.6}
-              />
-              <div className="min-h-[15%] shrink-0 space-y-1 p-2 small:p-3">
+              {hasImage() && (
+                <CdnImage
+                  className="min-h-0 w-full flex-1 bg-foreground/65 object-contain"
+                  src={url || ""}
+                  style={getImageStyle("aside")}
+                  imgInPlayerWidthRatio={0.6}
+                />
+              )}
+              <div
+                className={cn(
+                  "space-y-1 p-2 small:p-3",
+                  hasImage() ? "min-h-[15%] shrink-0" : "flex-1 overflow-y-auto"
+                )}
+              >
                 {title && (
                   <span
                     className={cn(
-                      "block text-xs font-semibold leading-tight small:text-base small:font-bold",
+                      "block text-[clamp(0.75rem,0.45rem+1.8cqw,1.125rem)] font-semibold leading-tight small:font-bold",
                       extendMode && "large:text-lg"
                     )}
                   >
@@ -249,8 +262,8 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
                 {description && (
                   <p
                     className={cn(
-                      "text-[10px] leading-tight text-foreground/65 small:text-sm",
-                      extendMode && "large:text-base"
+                      "text-[clamp(0.625rem,0.4rem+1.5cqw,0.875rem)] leading-tight text-foreground/65",
+                      extendMode && "large:text-sm"
                     )}
                   >
                     {description}
@@ -279,6 +292,7 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
           isVisible ? "translate-y-0" : "translate-y-full"
         )}
         style={{
+          containerType: "inline-size",
           width: integration
             ? `${100 / (isFullScreen ? 1 : maxItemsShown)}%`
             : `${100 / maxItemsShown}%`,
@@ -297,7 +311,7 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
               {title && (
                 <span
                   className={cn(
-                    "text-sm font-semibold small:text-base small:font-bold",
+                    "text-[clamp(0.75rem,0.45rem+1.8cqw,1.125rem)] font-semibold small:font-bold",
                     extendMode && "large:text-lg"
                   )}
                 >
@@ -307,8 +321,8 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
               {description && (
                 <p
                   className={cn(
-                    "text-xs text-foreground/65 small:text-sm",
-                    extendMode && "large:text-base"
+                    "text-[clamp(0.625rem,0.4rem+1.5cqw,0.875rem)] text-foreground/65",
+                    extendMode && "large:text-sm"
                   )}
                 >
                   {description}
