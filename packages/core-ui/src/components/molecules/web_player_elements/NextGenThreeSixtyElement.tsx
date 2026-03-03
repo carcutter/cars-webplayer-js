@@ -41,6 +41,10 @@ const NextGenThreeSixtyElementInteractive: React.FC<
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
 
+  const [isGrabbing, setIsGrabbing] = useState(false);
+  const activeCursor =
+    spinCursor === "grab" && isGrabbing ? "grabbing" : spinCursor;
+
   // - Refs for direct DOM manipulation (avoids React re-renders on iOS)
   const imageIndexRef = useRef(0);
   const mainImageRef = useRef<HTMLImageElement | null>(null);
@@ -291,6 +295,8 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       cancelSpinAnimation();
     };
 
+    setIsGrabbing(false);
+
     // NOTE: As the useEffect should not re-render, we can use mutable variables. If it changes in the future, we should use useRef
 
     // Handle when the user just clicked on the 360 to start spinning
@@ -305,6 +311,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
       // Cancel any ongoing inertia animation
       cancelAnimation();
+      setIsGrabbing(true);
 
       // Take snapshot of the starting state
       const x = e.clientX;
@@ -353,6 +360,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
       // Clear the starting point
       spinStartX = null;
+      setIsGrabbing(false);
 
       startInertiaAnimation();
     };
@@ -455,6 +463,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
       // Cancel any ongoing inertia animation and pending updates
       cancelAnimation();
+      setIsGrabbing(true);
       if (pendingUpdateRef.current !== null) {
         cancelAnimationFrame(pendingUpdateRef.current);
         pendingUpdateRef.current = null;
@@ -537,6 +546,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       spinStartX = null;
       touchStartXRef.current = null;
       lastTouchXRef.current = null;
+      setIsGrabbing(false);
 
       startInertiaAnimation();
     };
@@ -549,6 +559,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
     return () => {
       cancelSpinAnimation();
+      setIsGrabbing(false);
       // Cancel any pending throttled updates
       if (pendingUpdateRef.current !== null) {
         cancelAnimationFrame(pendingUpdateRef.current);
@@ -578,7 +589,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
   ]);
 
   return (
-    <div ref={containerRef} style={{ cursor: spinCursor }}>
+    <div ref={containerRef} style={{ cursor: activeCursor }}>
       {/* Scroller is element larger than the image to capture scroll event and then, make the 360 spin */}
       {/* NOTE: ImageElement is within so that it can capture events first */}
       <div ref={scrollerRef} className=" overflow-x-scroll">
