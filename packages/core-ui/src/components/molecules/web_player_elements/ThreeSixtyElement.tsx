@@ -39,6 +39,10 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
 
+  const [isGrabbing, setIsGrabbing] = useState(false);
+  const activeCursor =
+    spinCursor === "grab" && isGrabbing ? "grabbing" : spinCursor;
+
   // - Value refs
   const playDemoSpinRef = useRef(demoSpin);
   const demoSpinTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -215,6 +219,8 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       cancelSpinAnimation();
     };
 
+    setIsGrabbing(false);
+
     // NOTE: As the useEffect should not re-render, we can use mutable variables. If it changes in the future, we should use useRef
 
     // Handle when the user just clicked on the 360 to start spinning
@@ -229,6 +235,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
       // Cancel any ongoing inertia animation
       cancelAnimation();
+      setIsGrabbing(true);
 
       // Take snapshot of the starting state
       const x = e.clientX;
@@ -276,6 +283,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
       // Clear the starting point
       spinStartX = null;
+      setIsGrabbing(false);
 
       startInertiaAnimation();
     };
@@ -341,6 +349,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
       // Cancel any ongoing inertia animation
       cancelAnimation();
+      setIsGrabbing(true);
 
       // Take snapshot of the starting state
       const { identifier: id, clientX: x } = e.changedTouches[0];
@@ -408,6 +417,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       // Clear the starting point
       mainTouchId = null;
       spinStartX = null;
+      setIsGrabbing(false);
 
       startInertiaAnimation();
     };
@@ -418,6 +428,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     scroller.addEventListener("touchcancel", onTouchEnd);
 
     return () => {
+      setIsGrabbing(false);
       container.removeEventListener("mousedown", onMouseDown);
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseleave", onStopDragging);
@@ -441,7 +452,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   ]);
 
   return (
-    <div ref={containerRef} style={{ cursor: spinCursor }}>
+    <div ref={containerRef} style={{ cursor: activeCursor }}>
       {/* Scroller is element larger than the image to capture scroll event and then, make the 360 spin */}
       {/* NOTE: ImageElement is within so that it can capture events first */}
       <div ref={scrollerRef} className="overflow-x-scroll">
