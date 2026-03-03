@@ -1,7 +1,16 @@
-import Pannellum, {
-  Pannellum as PannellumType,
-} from "pannellum-react/es/elements/Pannellum";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
+import "pannellum-react/es/pannellum/css/pannellum.css";
+import "pannellum-react/es/pannellum/css/style-textInfo.css";
+import "pannellum-react/es/pannellum/js/libpannellum.js";
+import "pannellum-react/es/pannellum/js/pannellum.js";
+import "pannellum-react/es/pannellum/js/RequestAnimationFrame";
 
 import { HFOV, MAX_HFOV, MIN_HFOV, PITCH, YAW } from "../../../const/pannellum";
 import { MAX_ZOOM, ZOOM_STEP } from "../../../const/zoom";
@@ -109,6 +118,166 @@ type InteriorThreeSixtyElementProps = Extract<
   onError?: () => void;
 };
 
+type PannellumViewer = {
+  loadScene: () => void;
+  getHfov: () => number;
+  setHfov: (hfov: number) => void;
+  on: (event: string, callback: (...args: unknown[]) => void) => void;
+  destroy: () => void;
+};
+
+type PannellumElementHandle = {
+  getViewer: () => PannellumViewer | null;
+};
+
+type PannellumElementProps = {
+  width: string;
+  height: string;
+  image: string;
+  preview?: string;
+  pitch: number;
+  yaw: number;
+  hfov: number;
+  maxHfov: number;
+  minHfov: number;
+  compass: boolean;
+  showControls: boolean;
+  keyboardZoom: boolean;
+  autoLoad: boolean;
+  onLoad?: () => void;
+  onError?: () => void;
+  onMousedown?: (event: Event) => void;
+  onTouchstart?: (event: Event) => void;
+  onTouchend?: (event: Event) => void;
+  onMouseup?: (event: Event) => void;
+};
+
+const PannellumElement = forwardRef<
+  PannellumElementHandle,
+  PannellumElementProps
+>((props, ref) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const viewerRef = useRef<PannellumViewer | null>(null);
+  const callbacksRef = useRef<{
+    onLoad?: () => void;
+    onError?: () => void;
+    onMousedown?: (event: Event) => void;
+    onTouchstart?: (event: Event) => void;
+    onTouchend?: (event: Event) => void;
+    onMouseup?: (event: Event) => void;
+  }>({});
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      getViewer: () => viewerRef.current,
+    }),
+    []
+  );
+
+  useEffect(() => {
+    callbacksRef.current = {
+      onLoad: props.onLoad,
+      onError: props.onError,
+      onMousedown: props.onMousedown,
+      onTouchstart: props.onTouchstart,
+      onTouchend: props.onTouchend,
+      onMouseup: props.onMouseup,
+    };
+  }, [
+    props.onLoad,
+    props.onError,
+    props.onMousedown,
+    props.onTouchstart,
+    props.onTouchend,
+    props.onMouseup,
+  ]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) {
+      return;
+    }
+
+    const pannellumGlobal = (
+      window as Window & {
+        pannellum?: {
+          viewer: (
+            node: HTMLElement,
+            config: Record<string, unknown>
+          ) => PannellumViewer;
+        };
+      }
+    ).pannellum;
+
+    if (!pannellumGlobal) {
+      return;
+    }
+
+    const viewer = pannellumGlobal.viewer(container, {
+      type: "equirectangular",
+      panorama: props.image,
+      preview: props.preview,
+      image: props.image,
+      pitch: props.pitch,
+      yaw: props.yaw,
+      hfov: props.hfov,
+      maxHfov: props.maxHfov,
+      minHfov: props.minHfov,
+      compass: props.compass,
+      showControls: props.showControls,
+      keyboardZoom: props.keyboardZoom,
+      autoLoad: props.autoLoad,
+    });
+
+    viewerRef.current = viewer;
+
+    viewer.on("load", () => callbacksRef.current.onLoad?.());
+    viewer.on("error", () => callbacksRef.current.onError?.());
+    viewer.on("mousedown", (...args: unknown[]) =>
+      callbacksRef.current.onMousedown?.(args[0] as Event)
+    );
+    viewer.on("mouseup", (...args: unknown[]) =>
+      callbacksRef.current.onMouseup?.(args[0] as Event)
+    );
+    viewer.on("touchstart", (...args: unknown[]) =>
+      callbacksRef.current.onTouchstart?.(args[0] as Event)
+    );
+    viewer.on("touchend", (...args: unknown[]) =>
+      callbacksRef.current.onTouchend?.(args[0] as Event)
+    );
+
+    return () => {
+      viewerRef.current = null;
+      viewer.destroy();
+    };
+  }, [
+    props.image,
+    props.preview,
+    props.pitch,
+    props.yaw,
+    props.hfov,
+    props.maxHfov,
+    props.minHfov,
+    props.compass,
+    props.showControls,
+    props.keyboardZoom,
+    props.autoLoad,
+  ]);
+
+  return (
+    <div
+      ref={containerRef}
+      style={{
+        width: props.width,
+        height: props.height,
+      }}
+    />
+  );
+});
+
+PannellumElement.displayName = "PannellumElement";
+
 const InteriorThreeSixtyElementInteractive: React.FC<
   InteriorThreeSixtyElementProps
 > = props => {
@@ -117,8 +286,7 @@ const InteriorThreeSixtyElementInteractive: React.FC<
   const { isShowingDetails, setItemInteraction, zoom, isZooming, setZoom } =
     useControlsContext();
   const [progress, isLoading] = useLoadingProgress(src);
-  const pannellumRef = useRef<PannellumType>(null);
-  const pannellumId = useId();
+  const pannellumRef = useRef<PannellumElementHandle>(null);
 
   const pannellumContainerRef = useRef<HTMLDivElement | null>(null);
   const [containerReady, setContainerReady] = useState(false);
@@ -128,6 +296,13 @@ const InteriorThreeSixtyElementInteractive: React.FC<
   }, []);
 
   const [isPannellumLoaded, setIsPannellumLoaded] = useState(false);
+  const [shouldAutoLoad, setShouldAutoLoad] = useState(autoLoadInterior360);
+
+  useEffect(() => {
+    if (autoLoadInterior360) {
+      setShouldAutoLoad(true);
+    }
+  }, [autoLoadInterior360]);
 
   const onLoad = useCallback(() => {
     if (itemIndex !== undefined) {
@@ -149,10 +324,7 @@ const InteriorThreeSixtyElementInteractive: React.FC<
   }, []);
 
   const loadScene = useCallback(() => {
-    const viewer = pannellumRef.current?.getViewer();
-    if (viewer) {
-      viewer.loadScene();
-    }
+    setShouldAutoLoad(true);
   }, []);
 
   useEffect(() => {
@@ -256,10 +428,8 @@ const InteriorThreeSixtyElementInteractive: React.FC<
               `}
             </style>
             {containerReady && (
-              <Pannellum
+              <PannellumElement
                 ref={pannellumRef}
-                id={pannellumId}
-                panorama={src}
                 preview={poster}
                 width="100%"
                 height="100%"
@@ -278,7 +448,7 @@ const InteriorThreeSixtyElementInteractive: React.FC<
                 onTouchstart={onMouse}
                 onTouchend={onMouse}
                 onMouseup={onMouse}
-                autoLoad={false}
+                autoLoad={shouldAutoLoad}
               />
             )}
           </div>
@@ -312,6 +482,12 @@ const InteriorThreeSixtyElement: React.FC<
   const [status, setStatus] = useState<
     null | "placeholder" | "spin" | "error"
   >();
+  const handleLoaded = useCallback(() => {
+    setStatus("spin");
+  }, []);
+  const handleError = useCallback(() => {
+    setStatus("error");
+  }, []);
 
   // Update the item interaction state according to the readiness of the 360
   useEffect(() => {
@@ -333,8 +509,8 @@ const InteriorThreeSixtyElement: React.FC<
     return (
       <InteriorThreeSixtyElementInteractive
         {...props}
-        onLoaded={() => setStatus("spin")}
-        onError={() => setStatus("error")}
+        onLoaded={handleLoaded}
+        onError={handleError}
       />
     );
   }
