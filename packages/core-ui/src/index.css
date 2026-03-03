@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Hide pannellum controls and about message */
+
+.pnlm-load-button {
+  display: none !important;
+}
+
+.pnlm-load-box {
+  display: none !important;
+}
+
+.pnlm-container {
+  background-image: none !important;
+}
+
+.pnlm-about-msg {
+  width: 0;
+  height: 0;
+  padding: 0;
+  visibility: hidden;
+}
+
+.pnlm-about-msg a {
+  display: none;
+  visibility: hidden;
+}
