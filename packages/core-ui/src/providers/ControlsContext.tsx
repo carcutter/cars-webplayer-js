@@ -33,7 +33,7 @@ type ItemInteraction = null | "ready" | "running";
 
 type SpecialCommand = "instant" | "first_to_last" | "last_to_first";
 
-type Details = { src: string; title?: string; text?: string };
+type Details = { src?: string; title?: string; text?: string };
 
 type ContextType = {
   items: CustomizableItem[];
