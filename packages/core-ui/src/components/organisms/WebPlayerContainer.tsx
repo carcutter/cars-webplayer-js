@@ -184,10 +184,23 @@ const WebPlayerContainer: React.FC<WebPlayerContainerProps> = () => {
 
       const errorEvent: AnalyticsErrorEventProps = {
         type: "error",
-        error: {
-          name: "CompositionLoadError",
-          message: String(error),
-        },
+        error:
+          error instanceof Error
+            ? {
+                name: error.name || "CompositionLoadError",
+                message: error.message,
+                stack: error.stack,
+              }
+            : {
+                name: "NonError",
+                message: (() => {
+                  try {
+                    return JSON.stringify(error);
+                  } catch {
+                    return String(error);
+                  }
+                })(),
+              },
       };
       emitAnalyticsEvent(errorEvent);
     } else if (status === "fetching") {

@@ -33,20 +33,35 @@ const getRequestBody = (event: AnalyticsEvent): string => {
   return JSON.stringify(rest);
 };
 
+const DEFAULT_TIMEOUT_MS = 10_000;
+
 export const emitMonitoringActivityEvent = async (
-  options: MonitoringActivityOptions
+  options: MonitoringActivityOptions,
+  timeoutMs: number = DEFAULT_TIMEOUT_MS
 ): Promise<void> => {
   const { payload, compositionUrl } = options;
 
-    const headers = getRequestHeaders(compositionUrl);
-    const body = getRequestBody(payload);
-    const url = getRequestUrl(payload.type);
+  const headers = getRequestHeaders(compositionUrl);
+  const body = getRequestBody(payload);
+  const url = getRequestUrl(payload.type);
 
-    const request = {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const response = await fetch(url, {
       method: "POST" as const,
       headers,
       body,
-    };
+      signal: controller.signal,
+    });
 
-    await fetch(url, request);
+    if (!response.ok) {
+      throw new Error(
+        `Monitoring request failed: ${response.status} ${response.statusText} (${url})`
+      );
+    }
+  } finally {
+    clearTimeout(timeoutId);
+  }
 };

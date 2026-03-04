@@ -30,11 +30,11 @@ export type WebPlayerProps = {
 
   // Analytics
   analyticsEventPrefix?: string;
-  /** @deprecated Monitoring now handles API calls via compositionUrl. */
+  /** @deprecated Prefer monitoring (enabled by default). When set, disables monitoring and sends analytics to this URL instead. */
   analyticsUrl?: string;
-  /** @deprecated Monitoring uses compositionUrl as bearer token. */
+  /** @deprecated Only used with analyticsUrl. Sets the Authorization bearer token for analytics requests. Ignored when analyticsSimpleRequestsOnly is true. */
   analyticsBearer?: string;
-  /** @deprecated Monitoring handles its own request headers. */
+  /** @deprecated Only used with analyticsUrl. When true, sends CORS simple requests only (disables custom headers including analyticsBearer). */
   analyticsSimpleRequestsOnly?: boolean;
   analyticsDryRun?: boolean;
   analyticsDebug?: boolean;

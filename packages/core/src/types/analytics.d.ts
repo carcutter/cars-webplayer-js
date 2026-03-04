@@ -26,6 +26,7 @@ export declare type WebplayerAction = {
 export declare type WebplayerError = {
   name: string;
   message: string;
+  stack?: string;
 };
 
 // ========================

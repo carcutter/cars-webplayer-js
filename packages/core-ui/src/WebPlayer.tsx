@@ -32,7 +32,6 @@ import {
   DEFAULT_ANALYTICS_SIMPLE_REQUESTS_ONLY,
   DEFAULT_ANALYTICS_DRY_RUN,
   DEFAULT_ANALYTICS_DEBUG,
-  DEFAULT_MONITORING,
   type WebPlayerProps,
   type AnalyticsEvent,
   type AnalyticsEventProps,
@@ -79,9 +78,14 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   analyticsDryRun = DEFAULT_ANALYTICS_DRY_RUN,
   analyticsDebug = DEFAULT_ANALYTICS_DEBUG,
   spinCursor = DEFAULT_SPIN_CURSOR,
-  monitoring = DEFAULT_MONITORING,
+  monitoring: monitoringProp,
   children: customizationChildren, // NOTE: use to customize the player, not to display the content
 }) => {
+  // If monitoring was explicitly passed, honour it; otherwise default to true
+  // unless analyticsUrl is provided (to avoid bypassing an explicit analytics endpoint).
+  const monitoring =
+    monitoringProp !== undefined ? monitoringProp : !analyticsUrl;
+
   //maxItemsShown validation and substitution if not valid
   maxItemsShown = findClosestValidNumberInRange(
     maxItemsShown,
@@ -137,7 +141,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
         });
         document.dispatchEvent(dispatchEvent);
 
-        // Send event to `analyticsUrl or to monitoring service`
+        // Send event to analyticsUrl and/or monitoring service
         if (analyticsUrl || monitoring) {
           // Prepare request
           const method = "POST" as const;
@@ -151,9 +155,10 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
           }
           const body = JSON.stringify(payload);
           // Send event
-          if (!monitoring) {
+          if (analyticsUrl) {
             await fetch(analyticsUrl, { method, headers, body });
-          } else {
+          }
+          if (monitoring) {
             await emitMonitoringActivityEvent({ payload, compositionUrl });
           }
         }
