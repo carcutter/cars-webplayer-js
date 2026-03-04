@@ -21,10 +21,10 @@ index 2dd89f3..697b1c7 100644
  function s(t, e = {}) {
    return m(t, e, { mount: f, update: i, unmount: a });
 diff --git a/node_modules/@r2wc/react-to-web-component/src/react-to-web-component.ts b/node_modules/@r2wc/react-to-web-component/src/react-to-web-component.ts
-index fbdb5dc..bb1d72c 100644
+index 88c5968..c0f20b1 100644
 --- a/node_modules/@r2wc/react-to-web-component/src/react-to-web-component.ts
 +++ b/node_modules/@r2wc/react-to-web-component/src/react-to-web-component.ts
-@@ -36,7 +36,11 @@ function update<Props extends object>(
+@@ -33,7 +33,11 @@ function update<Props extends object>(
  }
  
  function unmount<Props extends object>({ root }: Context<Props>): void {

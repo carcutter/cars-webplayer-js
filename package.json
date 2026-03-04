@@ -37,13 +37,15 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.8",
-    "@commitlint/cli": "^19.8.1",
-    "@commitlint/config-conventional": "^19.8.1",
+    "@types/node": "^25.3.3",
+    "@types/react": "^19.2.14",
+    "next": "^16.1.6",
     "postinstall-postinstall": "^2.1.0",
-    "turbo": "^2.1.2"
-  },
-  "resolutions": {
-    "serialize-javascript": ">=6.0.3"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "typescript": "^5.5.4",
+    "turbo": "^2.1.2",
+    "vue": "^3.5.29"
   },
   "packageManager": "yarn@1.22.22",
   "workspaces": {

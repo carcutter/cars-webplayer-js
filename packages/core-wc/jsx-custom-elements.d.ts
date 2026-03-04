@@ -6,7 +6,7 @@ import type {
   WebPlayerIconAttributes,
 } from "@car-cutter/core-wc";
 
-declare global {
+declare module "react" {
   namespace JSX {
     interface IntrinsicElements {
       "cc-webplayer": ReactPropsWithChildren<WebPlayerAttributes> &

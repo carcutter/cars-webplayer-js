@@ -1,6 +1,6 @@
 import Pannellum, {
-  Pannellum as PannellumType,
-} from "pannellum-react/es/elements/Pannellum";
+  PannellumHandle as PannellumType,
+} from "../../../vendors/Pannellum";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 
 import { HFOV, MAX_HFOV, MIN_HFOV, PITCH, YAW } from "../../../const/pannellum";

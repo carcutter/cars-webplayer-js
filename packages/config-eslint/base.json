@@ -9,33 +9,11 @@
 
   "extends": ["eslint:recommended", "prettier"],
 
-  "plugins": ["import", "unused-imports"],
-
-  "settings": {
-    "import/internal-regex": "^(@/|@car-cutter/)"
-  },
+  "plugins": ["unused-imports"],
 
   "rules": {
     "no-console": "error",
 
-    "import/order": [
-      "error",
-      {
-        "newlines-between": "always",
-        "alphabetize": {
-          "order": "asc",
-          "caseInsensitive": true
-        },
-        "groups": [
-          "builtin",
-          "external",
-          "internal",
-          "parent",
-          "sibling",
-          "index"
-        ]
-      }
-    ],
     "unused-imports/no-unused-imports": "error"
   },
 

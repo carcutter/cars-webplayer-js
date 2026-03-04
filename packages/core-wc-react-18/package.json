@@ -21,7 +21,7 @@
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
-    "eslint": "^8.57.0",
+    "eslint": "^9.39.3",
     "patch-package": "^8.0.0",
     "typescript": "^5.5.4"
   }

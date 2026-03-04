@@ -11,16 +11,16 @@
     "@car-cutter/core": "3.1.1",
     "@car-cutter/core-ui": "3.1.1",
     "@car-cutter/core-wc": "3.1.1",
-    "@r2wc/react-to-web-component": "^1.0.0"
+    "@r2wc/react-to-web-component": "^2.1.1"
   },
   "peerDependencies": {
-    "react": ">=16.8 <18",
-    "react-dom": ">=16.8 <18"
+    "react": ">=16.8",
+    "react-dom": ">=16.8"
   },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
-    "eslint": "^8.57.0",
+    "eslint": "^9.39.3",
     "typescript": "^5.5.4"
   }
 }
