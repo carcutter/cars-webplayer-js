@@ -634,6 +634,7 @@ const ThreeSixtyElementPlaceholder: React.FC<
         <ThreeSixtyIcon className="size-20" />
 
         <Button
+          aria-label="Play 360 view"
           className={
             theme?.playButton
               ? "size-[78px] border-0 bg-transparent p-0 shadow-none hover:bg-transparent"
