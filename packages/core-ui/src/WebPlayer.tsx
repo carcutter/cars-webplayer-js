@@ -205,7 +205,6 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
       event_prefix: eventPrefix,
       demo_spin: demoSpin,
       reverse_360: reverse360,
-      theme_config: themeConfig,
     },
   });
   useEffect(() => {
