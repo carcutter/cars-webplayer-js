@@ -4,6 +4,7 @@ import type { ImageWithHotspots } from "@car-cutter/core";
 
 import { useControlsContext } from "../../../providers/ControlsContext";
 import { useGlobalContext } from "../../../providers/GlobalContext";
+import { getThemeConfig } from "../../../theme-config";
 import { CustomizableItem } from "../../../types/customizable_item";
 import { clamp } from "../../../utils/math";
 import { cn } from "../../../utils/style";
@@ -29,11 +30,21 @@ type NextGenThreeSixtyElementProps = Extract<
   onlyPreload: boolean;
 };
 
+type SpinCursorState = "default" | "left" | "right";
+
+const getCursorStyle = (
+  cursorUrl: string,
+  fallback: string
+): React.CSSProperties => {
+  return { cursor: `url(${cursorUrl}), ${fallback}` };
+};
+
 const NextGenThreeSixtyElementInteractive: React.FC<
   NextGenThreeSixtyElementProps
 > = ({ images, onlyPreload: _onlyPreload }) => {
-  const { demoSpin, reverse360, spinCursor } = useGlobalContext();
+  const { demoSpin, reverse360, spinCursor, themeConfig } = useGlobalContext();
   const { isShowingDetails, isZooming } = useControlsContext();
+  const theme = useMemo(() => getThemeConfig(themeConfig), [themeConfig]);
 
   const disableSpin = isZooming || isShowingDetails; // We do not want to do anything while zooming or showing a detail image
 
@@ -42,8 +53,22 @@ const NextGenThreeSixtyElementInteractive: React.FC<
   const scrollerRef = useRef<HTMLDivElement>(null);
 
   const [isGrabbing, setIsGrabbing] = useState(false);
+  const [spinCursorState, setSpinCursorState] =
+    useState<SpinCursorState>("default");
   const activeCursor =
     spinCursor === "grab" && isGrabbing ? "grabbing" : spinCursor;
+  const cursorStyle = theme?.cursor
+    ? getCursorStyle(
+        theme.cursor[
+          spinCursorState === "left"
+            ? "leftSpin"
+            : spinCursorState === "right"
+              ? "rightSpin"
+              : "default"
+        ],
+        activeCursor
+      )
+    : { cursor: activeCursor };
 
   // - Refs for direct DOM manipulation (avoids React re-renders on iOS)
   const imageIndexRef = useRef(0);
@@ -312,6 +337,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       // Cancel any ongoing inertia animation
       cancelAnimation();
       setIsGrabbing(true);
+      setSpinCursorState("default");
 
       // Take snapshot of the starting state
       const x = e.clientX;
@@ -334,6 +360,9 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       addVelocityPoint(Date.now(), x);
 
       const walkX = x - spinStartX;
+      if (walkX !== 0 && theme?.cursor) {
+        setSpinCursorState(walkX < 0 ? "left" : "right");
+      }
 
       // If the user did not move enough, we do not want to rotate
       if (Math.abs(walkX) < dragStepPx) {
@@ -361,6 +390,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       // Clear the starting point
       spinStartX = null;
       setIsGrabbing(false);
+      setSpinCursorState("default");
 
       startInertiaAnimation();
     };
@@ -433,6 +463,9 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       if (x === null || startX === null) return;
 
       const walkX = x - startX;
+      if (walkX !== 0 && theme?.cursor) {
+        setSpinCursorState(walkX < 0 ? "left" : "right");
+      }
 
       // If the user did not move enough, we do not want to rotate
       if (Math.abs(walkX) < dragStepPx) {
@@ -464,6 +497,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       // Cancel any ongoing inertia animation and pending updates
       cancelAnimation();
       setIsGrabbing(true);
+      setSpinCursorState("default");
       if (pendingUpdateRef.current !== null) {
         cancelAnimationFrame(pendingUpdateRef.current);
         pendingUpdateRef.current = null;
@@ -547,6 +581,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       touchStartXRef.current = null;
       lastTouchXRef.current = null;
       setIsGrabbing(false);
+      setSpinCursorState("default");
 
       startInertiaAnimation();
     };
@@ -585,11 +620,12 @@ const NextGenThreeSixtyElementInteractive: React.FC<
     syncImageIndexState,
     disableSpin,
     reverse360,
+    theme,
     length,
   ]);
 
   return (
-    <div ref={containerRef} style={{ cursor: activeCursor }}>
+    <div ref={containerRef} style={cursorStyle}>
       {/* Scroller is element larger than the image to capture scroll event and then, make the 360 spin */}
       {/* NOTE: ImageElement is within so that it can capture events first */}
       <div ref={scrollerRef} className=" overflow-x-scroll">
@@ -629,8 +665,9 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
   onSpinImagesLoaded,
   onError,
 }) => {
-  const { autoLoad360, emitAnalyticsEvent } = useGlobalContext();
+  const { autoLoad360, emitAnalyticsEvent, themeConfig } = useGlobalContext();
   const { displayedCategoryId, displayedCategoryName } = useControlsContext();
+  const theme = useMemo(() => getThemeConfig(themeConfig), [themeConfig]);
 
   const imagesSrc = useMemo(() => images.map(({ src }) => src), [images]);
 
@@ -728,8 +765,25 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
         <ThreeSixtyIcon className="size-20" />
 
-        <Button color="neutral" shape="icon" onClick={onClickPLayButton}>
-          <Exterior360PlayIcon className="size-full" />
+        <Button
+          className={
+            theme?.playButton
+              ? "size-[78px] border-0 bg-transparent p-0 shadow-none hover:bg-transparent"
+              : undefined
+          }
+          color="neutral"
+          shape="icon"
+          onClick={onClickPLayButton}
+        >
+          {theme?.playButton ? (
+            <img
+              className="size-full"
+              src={theme.playButton.default}
+              alt=""
+            />
+          ) : (
+            <Exterior360PlayIcon className="size-full" />
+          )}
         </Button>
 
         <div

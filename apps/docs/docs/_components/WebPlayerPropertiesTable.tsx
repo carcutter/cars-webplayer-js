@@ -143,6 +143,12 @@ const properties: Array<Property> = [
       "Maximum number of items to display in the carousel (1, 1.5, 2, or 2.5)",
   },
   {
+    propName: "themeConfig",
+    attribute: "theme-config",
+    type: '"autonation"',
+    description: "Apply a built-in theme configuration",
+  },
+  {
     propName: "analyticsEventPrefix",
     attribute: "analytics-event-prefix",
     type: "string",
