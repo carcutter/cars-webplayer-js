@@ -34,9 +34,9 @@ import {
   DEFAULT_ANALYTICS_DEBUG,
   type WebPlayerProps,
   type AnalyticsEvent,
-  type AnalyticsEventBase,
   type AnalyticsEventProps,
-  type AnalyticsIdentifyEventProps,
+  type AnalyticsLoadEventProps,
+  type WebplayerInstance,
 } from "@car-cutter/core";
 
 import WebPlayerContainer from "./components/organisms/WebPlayerContainer";
@@ -52,7 +52,7 @@ import {
 import CustomizationContextProvider from "./providers/CustomizationContext";
 import GlobalContextProvider from "./providers/GlobalContext";
 import { findClosestValidNumberInRange } from "./utils/math";
-
+import { emitMonitoringActivityEvent } from "./utils/monitoring";
 const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   compositionUrl,
   integration = DEFAULT_INTEGRATION,
@@ -78,8 +78,14 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   analyticsDryRun = DEFAULT_ANALYTICS_DRY_RUN,
   analyticsDebug = DEFAULT_ANALYTICS_DEBUG,
   spinCursor = DEFAULT_SPIN_CURSOR,
+  monitoring: monitoringProp,
   children: customizationChildren, // NOTE: use to customize the player, not to display the content
 }) => {
+  // If monitoring was explicitly passed, honour it; otherwise default to true
+  // unless analyticsUrl is provided (to avoid bypassing an explicit analytics endpoint).
+  const monitoring =
+    monitoringProp !== undefined ? monitoringProp : !analyticsUrl;
+
   //maxItemsShown validation and substitution if not valid
   maxItemsShown = findClosestValidNumberInRange(
     maxItemsShown,
@@ -108,16 +114,18 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   const emitAnalyticsEvent = useCallback(
     async (event: AnalyticsEventProps) => {
       try {
-        // Build event
-        const baseEvent: AnalyticsEventBase = {
-          type: event.type,
-          timestamp: new Date().toISOString(),
+        // Build enriched event with instance + timestamp
+        const instance: WebplayerInstance = {
           instance_id: analyticsInstanceId,
+          browser_id: analyticsBrowserId,
+          session_id: analyticsSessionId,
+          from_url: window.location.href,
         };
         const payload: AnalyticsEvent = {
-          ...baseEvent,
           ...event,
-        };
+          timestamp: new Date().toISOString(),
+          instance,
+        } as AnalyticsEvent;
 
         // Dry run
         if (analyticsDryRun) {
@@ -133,8 +141,8 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
         });
         document.dispatchEvent(dispatchEvent);
 
-        // Send event to `analyticsUrl`
-        if (analyticsUrl) {
+        // Send event to analyticsUrl and/or monitoring service
+        if (analyticsUrl || monitoring) {
           // Prepare request
           const method = "POST" as const;
           const headers: HeadersInit = new Headers();
@@ -147,7 +155,12 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
           }
           const body = JSON.stringify(payload);
           // Send event
-          await fetch(analyticsUrl, { method, headers, body });
+          if (analyticsUrl) {
+            await fetch(analyticsUrl, { method, headers, body });
+          }
+          if (monitoring) {
+            await emitMonitoringActivityEvent({ payload, compositionUrl });
+          }
         }
       } catch (error) {
         // Debug mode
@@ -164,19 +177,17 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
       analyticsDryRun,
       analyticsDebug,
       analyticsInstanceId,
+      analyticsBrowserId,
+      analyticsSessionId,
+      compositionUrl,
+      monitoring,
     ]
   );
 
-  // Analytics - Identify
-  const [identifyEvent] = useState<AnalyticsIdentifyEventProps>({
-    type: "identify" as const,
-    browser_id: analyticsBrowserId,
-    session_id: analyticsSessionId,
-    referrer: document.referrer,
-    origin: window.location.origin,
-    page_url: window.location.href,
-    user_agent: navigator.userAgent,
-    wp_properties: {
+  // Analytics - Load
+  const [loadEvent] = useState<AnalyticsLoadEventProps>({
+    type: "load" as const,
+    config: {
       composition_url: compositionUrl,
       integration,
       max_items_shown: maxItemsShown,
@@ -185,7 +196,6 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
       permanent_gallery: permanentGallery,
       media_load_strategy: mediaLoadStrategy,
       min_media_width: minMediaWidth,
-      max_media_width: maxMediaWidth,
       preload_range: preloadRange,
       auto_load_360: autoLoad360,
       auto_load_interior_360: autoLoadInterior360,
@@ -197,9 +207,9 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
     },
   });
   useEffect(() => {
-    const timeout = setTimeout(() => emitAnalyticsEvent(identifyEvent), 0);
+    const timeout = setTimeout(() => emitAnalyticsEvent(loadEvent), 0);
     return () => clearTimeout(timeout);
-  }, [emitAnalyticsEvent, identifyEvent]);
+  }, [emitAnalyticsEvent, loadEvent]);
 
   // Compute player width ratio in viewport (to handle imgs' srcSet)
   useEffect(() => {

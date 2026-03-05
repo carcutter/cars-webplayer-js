@@ -17,6 +17,7 @@ export const EVENT_GALLERY_CLOSE = "gallery-close";
 
 // Analytics events
 
-export const ANALYTICS_EVENT_IDENTIFY = "analytics-identify";
-export const ANALYTICS_EVENT_PAGE = "analytics-page";
-export const ANALYTICS_EVENT_TRACK = "analytics-track";
+export const ANALYTICS_EVENT_LOAD = "analytics-load";
+export const ANALYTICS_EVENT_DISPLAY = "analytics-display";
+export const ANALYTICS_EVENT_INTERACTION = "analytics-interaction";
+export const ANALYTICS_EVENT_ERROR = "analytics-error";

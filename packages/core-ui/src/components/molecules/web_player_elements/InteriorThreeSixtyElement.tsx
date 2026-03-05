@@ -43,15 +43,17 @@ const InteriorThreeSixtyElementLoadControls: React.FC<
   const emitAnalyticsEventInterior360Play = useCallback(
     (type: "click" | "auto") => {
       emitAnalyticsEvent({
-        type: "track",
-        category_id: displayedCategoryId,
-        category_name: displayedCategoryName,
-        item_type: "interior-360",
-        item_position: itemIndex,
-        action_properties: {
-          action_name: "Interior 360 Play",
-          action_field: "interior_360_play",
-          action_value: type,
+        type: "interaction",
+        current: {
+          category_id: displayedCategoryId,
+          category_name: displayedCategoryName,
+          item_type: "interior-360",
+          item_position: itemIndex,
+        },
+        action: {
+          name: "Interior 360 Play",
+          field: "interior_360_play",
+          value: type,
         },
       });
     },
