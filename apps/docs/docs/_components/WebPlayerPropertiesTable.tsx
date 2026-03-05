@@ -146,6 +146,7 @@ const properties: Array<Property> = [
     propName: "themeConfig",
     attribute: "theme-config",
     type: '"autonation"',
+    defaultValue: "undefined",
     description: "Apply a built-in theme configuration",
   },
   {
