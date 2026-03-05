@@ -33,7 +33,7 @@ const getCursorStyle = (
   cursorUrl: string,
   fallback: string
 ): React.CSSProperties => {
-  return { cursor: `url(${cursorUrl}), ${fallback}` };
+  return { cursor: `url("${cursorUrl}"), ${fallback}` };
 };
 
 const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
