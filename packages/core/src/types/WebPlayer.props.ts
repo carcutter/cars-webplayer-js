@@ -27,6 +27,7 @@ export type WebPlayerProps = {
   demoSpin?: boolean;
   reverse360?: boolean;
   spinCursor?: string;
+  themeConfig?: "autonation";
 
   // Analytics
   analyticsEventPrefix?: string;

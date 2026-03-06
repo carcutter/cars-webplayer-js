@@ -23,6 +23,7 @@ type ProviderProps = Required<
     | "integration"
   >
 > & {
+  themeConfig?: WebPlayerProps["themeConfig"];
   maxItemsShown: number;
   emitEvent: (name: string, detail?: unknown) => void;
   emitAnalyticsEvent: (event: AnalyticsEventProps) => Promise<void>;

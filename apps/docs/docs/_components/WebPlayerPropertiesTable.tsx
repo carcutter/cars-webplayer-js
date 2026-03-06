@@ -3,8 +3,8 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import React from "react";
 
+import type { WebPlayerProps } from "@car-cutter/core";
 import type { WebPlayerAttributes } from "@car-cutter/core-wc";
-import type { WebPlayerProps } from "@car-cutter/react-webplayer";
 
 type Property = {
   propName: keyof WebPlayerProps;
@@ -141,6 +141,13 @@ const properties: Array<Property> = [
     defaultValue: "1",
     description:
       "Maximum number of items to display in the carousel (1, 1.5, 2, or 2.5)",
+  },
+  {
+    propName: "themeConfig",
+    attribute: "theme-config",
+    type: '"autonation"',
+    defaultValue: "undefined",
+    description: "Apply a built-in theme configuration",
   },
   {
     propName: "analyticsEventPrefix",

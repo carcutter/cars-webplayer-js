@@ -45,6 +45,7 @@ _\* Required [Properties](../properties.mdx)_
 | `composition-url`\*   | `https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json` |
 | `hide-categories-nav` | `true`                                                                 |
 | `categories-filter`   | `360\|interior`                                                        |
+| `theme-config`        | `theme`                                                           |
 
 #### Encoded
 
@@ -53,18 +54,19 @@ _\* Required [Properties](../properties.mdx)_
 | `composition-url`\*   | `https%3A%2F%2Fcdn.car-cutter.com%2Flibs%2Fweb-player%2Fv3%2Fdemos%2Fcomposition.json` |
 | `hide-categories-nav` | `true`                                                                                 |
 | `categories-filter`   | `360%7Cinterior`                                                                       |
+| `theme-config`        | `theme`                                                                           |
 
 #### Result
 
 ```HTML
-src="https://cdn.car-cutter.com/libs/web-player/v3/integrations/iframe/index.html?composition-url=https%3A%2F%2Fcdn.car-cutter.com%2Flibs%2Fweb-player%2Fv3%2Fdemos%2Fcomposition.json&hide-categories-nav=true&categories-filter=360%7Cinterior"
+src="https://cdn.car-cutter.com/libs/web-player/v3/integrations/iframe/index.html?composition-url=https%3A%2F%2Fcdn.car-cutter.com%2Flibs%2Fweb-player%2Fv3%2Fdemos%2Fcomposition.json&hide-categories-nav=true&categories-filter=360%7Cinterior&theme-config=autonation"
 ```
 
 #### HTML
 
 ```html
 <iframe
-  src="https://cdn.car-cutter.com/libs/web-player/v3/integrations/iframe/index.html?composition-url=https%3A%2F%2Fcdn.car-cutter.com%2Flibs%2Fweb-player%2Fv3%2Fdemos%2Fcomposition.json&hide-categories-nav=true&categories-filter=360%7Cinterior"
+  src="https://cdn.car-cutter.com/libs/web-player/v3/integrations/iframe/index.html?composition-url=https%3A%2F%2Fcdn.car-cutter.com%2Flibs%2Fweb-player%2Fv3%2Fdemos%2Fcomposition.json&hide-categories-nav=true&categories-filter=360%7Cinterior&theme-config=autonation"
 ></iframe>
 ```
 

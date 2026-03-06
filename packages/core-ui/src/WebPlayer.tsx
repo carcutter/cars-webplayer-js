@@ -79,6 +79,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   analyticsDebug = DEFAULT_ANALYTICS_DEBUG,
   spinCursor = DEFAULT_SPIN_CURSOR,
   monitoring: monitoringProp,
+  themeConfig,
   children: customizationChildren, // NOTE: use to customize the player, not to display the content
 }) => {
   // If monitoring was explicitly passed, honour it; otherwise default to true
@@ -313,6 +314,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
         demoSpin,
         reverse360,
         spinCursor,
+        themeConfig,
 
         emitEvent,
         emitAnalyticsEvent,

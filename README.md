@@ -129,6 +129,7 @@ Run `yarn publish:docs`
 | `demoSpin`                    | `boolean`                          | `false`           | Run a spin once the 360 images has been loaded                                                                                                   |
 | `reverse360`                  | `boolean`                          | `false`           | Reverse the 360-degree rotation                                                                                                                  |
 | `spinCursor`                  | `string`                           | `"ew-resize"`     | CSS cursor value used while interacting with 360 and NextGen 360 media                                                                           |
+| `themeConfig`                 | `"theme"`                          | ``               | Apply a built-in theme configuration                                                                                                             |
 | `integration`                 | `boolean`                          | `false`           | Allows to use maxItemsShown and disables permanentGallery with infiniteCarrousel, enables hideCategoriesNav                                      |
 | `maxItemsShown`               | `number`                           | `1`               | Maximum number of items to display in the gallery                                                                                                |
 | `analyticsEventPrefix`        | `string`                           | `"cc-analytics:"` | Prefix of cc-analytics events                                                                                                                    |
@@ -140,7 +141,7 @@ Run `yarn publish:docs`
 | `monitoring`                  | `boolean`                          | `true`            | Enable monitoring mode to send activity events to the monitoring service instead of the analytics URL                                             |
 
 _NOTE: If you are using the WebComponent directly, you need to transform the props to HTML attributes
-(which are in dashed-case and take `string` as value type)_
+(which are in dashed-case and take `string` as value type). Example: `themeConfig` becomes `theme-config`._
 
 ### Customization
 
