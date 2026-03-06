@@ -3,8 +3,8 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import React from "react";
 
+import type { WebPlayerProps } from "@car-cutter/core";
 import type { WebPlayerAttributes } from "@car-cutter/core-wc";
-import type { WebPlayerProps } from "@car-cutter/react-webplayer";
 
 type Property = {
   propName: keyof WebPlayerProps;
