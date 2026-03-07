@@ -5,17 +5,13 @@ type Props = { className?: string };
 const CloseIcon: React.FC<Props> = ({ className }) => {
   return (
     <CustomizableIcon className={className} customizationKey="UI_CLOSE">
-      <svg
-        className={className}
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+      <svg className={className} viewBox="0 0 12 12" fill="none">
         <path
-          d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"
-          fill="currentColor"
+          d="M10.5209 0.520752L0.520874 10.5208M0.520874 0.520752L10.5209 10.5208"
+          stroke="currentColor"
+          strokeWidth="1.04167"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
     </CustomizableIcon>

@@ -5,17 +5,13 @@ type Props = { className?: string };
 const MinusIcon: React.FC<Props> = ({ className }) => {
   return (
     <CustomizableIcon className={className} customizationKey="UI_MINUS">
-      <svg
-        className={className}
-        width="16"
-        height="16"
-        viewBox="0 0 16 16"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+      <svg className={className} viewBox="0 0 13 2" fill="none">
         <path
-          d="M12.6666 8.66634H3.33325V7.33301H12.6666V8.66634Z"
-          fill="currentColor"
+          d="M0.520874 0.520752H12.1875"
+          stroke="currentColor"
+          strokeWidth="1.04167"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
     </CustomizableIcon>
