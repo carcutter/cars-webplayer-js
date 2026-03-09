@@ -13,6 +13,7 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedStyles, {
     permanentGallery: "boolean",
     integration: "boolean",
     maxItemsShown: "number",
+    themeConfig: "string",
 
     // Medias loading
     minMediaWidth: "number",

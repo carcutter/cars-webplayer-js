@@ -11,6 +11,7 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedStyles, {
     hideCategoriesNav: "boolean",
     infiniteCarrousel: "boolean",
     permanentGallery: "boolean",
+    themeConfig: "string",
 
     // Medias loading
     minMediaWidth: "number",
