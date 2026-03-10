@@ -145,8 +145,8 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       <div
         // Hoverable icon
         className={cn(
-          "relative flex shrink-0 items-center justify-center rounded-full border-2 border-background bg-primary text-primary-foreground",
-          withImage ? "size-7" : "size-4"
+          "relative top-px flex shrink-0 items-center justify-center rounded-full border-2 border-background bg-primary text-primary-foreground",
+          withImage ? "left-[-5px] size-7" : "-left-px size-4"
         )}
         style={{ backgroundColor: hotspotColorVariable }}
       >
