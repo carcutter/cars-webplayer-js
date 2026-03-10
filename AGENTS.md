@@ -90,11 +90,11 @@ Use `turbo` filters to run tasks for specific packages:
 - Log errors using a dedicated logger or console (if permitted, though `no-console` is an error rule - check if a logger utility exists).
 
 ### Commit Messages
-- **Format:** Conventional Commits (`<type>[scope]: <description>`).
+- **Format:** Conventional Commits (`<type>[scope]: <emoji> <description>`).
 - **Types:** `feat`, `fix`, `test`, `style`, `perf`, `ci`, `build`, `docs`, `refactor`.
 - **Scope:** Optional (e.g., `Core`, `UI`, `React`).
-- **Description:** Start with a capital letter, end with a period.
-- **Example:** `fix(Core): Resolved null pointer exception in loader.`
+- **Description:** Start with a capital letter, end without a period.
+- **Example:** `fix(Core): 🐛 Resolved null pointer exception in loader.`
 
 ## 5. Workflow for Agents
 1.  **Analyze:** detailed understanding of the task and codebase.
