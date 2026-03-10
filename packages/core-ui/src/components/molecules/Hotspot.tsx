@@ -164,8 +164,8 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       {withTitle && (
         <div
           className={cn(
-            "absolute bottom-0 left-0 -z-10 flex w-max max-w-40 items-center gap-1.5 rounded-t-full rounded-br-full bg-foreground py-1.5 text-background transition-[opacity,transform] duration-200 group-hover:translate-x-1 small:max-w-48",
-            extendMode && "large:max-w-56",
+            "absolute bottom-0 left-0 -z-10 flex w-max max-w-60 items-center gap-1.5 rounded-t-full rounded-br-full bg-foreground py-1.5 text-background transition-[opacity,transform] duration-200 group-hover:translate-x-1 small:max-w-64",
+            extendMode && "large:max-w-72",
             withImage
               ? "rounded-bl-[10px] pl-6 small:pl-7"
               : "rounded-bl-[8px] pl-5 small:pl-6",
@@ -173,7 +173,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
             "pointer-events-none opacity-0 group-hover:pointer-events-auto group-hover:opacity-100"
           )}
         >
-          <div className="truncate text-sm font-semibold small:text-base small:font-bold">
+          <div className="truncate text-xs font-normal">
             {title}
           </div>
           {clickable && <ArrowRightIcon className="size-5 shrink-0" />}
