@@ -94,7 +94,7 @@ Use `turbo` filters to run tasks for specific packages:
 - **Types:** `feat`, `fix`, `test`, `style`, `perf`, `ci`, `build`, `docs`, `refactor`.
 - **Scope:** Optional (e.g., `Core`, `UI`, `React`).
 - **Description:** Start with a capital letter, end without a period.
-- **Example:** `fix(Core): 🐛 Resolved null pointer exception in loader.`
+- **Example:** `fix(Core): 🐛 Resolved null pointer exception in loader`
 
 ## 5. Workflow for Agents
 1.  **Analyze:** detailed understanding of the task and codebase.
