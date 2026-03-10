@@ -26,7 +26,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   item,
   analyticsValue,
 }) => {
-  const { title, icon, description, position, detail, type } = hotspot;
+  const { title, icon, description, detail, type } = hotspot;
   const { emitAnalyticsEvent } = useGlobalContext();
   const {
     extendMode,
@@ -144,13 +144,12 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     >
       <div
         // Hoverable icon
-        className="relative flex size-7 shrink-0 items-center justify-center rounded-full border-0 bg-primary text-primary-foreground"
+        className={cn(
+          "relative flex shrink-0 items-center justify-center rounded-full border-2 border-background bg-primary text-primary-foreground",
+          withImage ? "size-7" : "size-4"
+        )}
         style={{ backgroundColor: hotspotColorVariable }}
       >
-        {!withImage && (
-          <div className="pointer-events-none absolute inset-px rounded-full border-2 border-background" />
-        )}
-
         <div
           // Ping animation
           className="pointer-events-none absolute -z-20 size-8 animate-hotspot-ping rounded-full border-0 bg-primary"
@@ -158,17 +157,19 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
         />
 
         {/* Use the icon from the config if available. Else, replace it if needed */}
-        <div className="size-4 [&_*]:size-4">
+        <div className={cn(withImage ? "size-4 [&_*]:size-4" : "size-1")}>
           {hotspotConfig?.Icon ? hotspotConfig.Icon : DefaultIcon}
         </div>
       </div>
       {withTitle && (
         <div
           className={cn(
-            "absolute -z-10 flex w-max max-w-40 translate-x-0 items-center gap-1.5 rounded-full bg-foreground py-1.5 text-background transition-[opacity,transform] duration-200 group-hover:translate-x-1 small:max-w-48",
+            "absolute bottom-0 left-0 -z-10 flex w-max max-w-40 items-center gap-1.5 rounded-t-full rounded-br-full bg-foreground py-1.5 text-background transition-[opacity,transform] duration-200 group-hover:translate-x-1 small:max-w-48",
             extendMode && "large:max-w-56",
-            position.y < 0.55 ? "-top-1" : "-bottom-1",
-            "-left-1 pl-8 pr-2.5 small:pl-9 small:pr-3",
+            withImage
+              ? "rounded-bl-[10px] pl-6 small:pl-7"
+              : "rounded-bl-[8px] pl-5 small:pl-6",
+            "pr-2.5 small:pr-3",
             "pointer-events-none opacity-0 group-hover:pointer-events-auto group-hover:opacity-100"
           )}
         >
