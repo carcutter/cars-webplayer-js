@@ -109,7 +109,7 @@ const properties: Array<Property> = [
     propName: "demoSpin",
     attribute: "demo-spin",
     type: "boolean",
-    defaultValue: "false",
+    defaultValue: "true",
     description: "Run a spin once the 360 images has been loaded",
   },
   {

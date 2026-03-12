@@ -13,4 +13,4 @@ export const DEFAULT_WITH_CUSTOM_ICONS: boolean = false;
 export const DEFAULT_COLOR: Color = "blue";
 export const DEFAULT_RADIUS: Radius = "xl";
 
-export const DEFAULT_DEMO_SPIN: boolean = false;
+export const DEFAULT_DEMO_SPIN: boolean = true;
