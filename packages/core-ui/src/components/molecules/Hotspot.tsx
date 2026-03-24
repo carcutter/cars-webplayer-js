@@ -74,9 +74,10 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   const { getIconConfig } = useCustomizationContext();
   const hotspotConfig = icon ? getIconConfig(icon) : undefined;
 
-  const withImage = detail?.type === "image";
-  const withLink = detail?.type === "link";
-  const withPdf = detail?.type === "pdf";
+  const hasDetailSrc = !!detail?.src?.trim();
+  const withImage = detail?.type === "image" && hasDetailSrc;
+  const withLink = detail?.type === "link" && hasDetailSrc;
+  const withPdf = detail?.type === "pdf" && hasDetailSrc;
   const withDetail = withImage || withLink || withPdf;
   const clickable = !!description || withDetail;
   const withTitle = !!title;
@@ -99,7 +100,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     emitAnalyticsEventHotspotClicked();
 
     if (withLink || withPdf) {
-      window.open(detail.src, "_blank");
+      // Navigation is handled by the semantic <a> element
       return;
     }
 
@@ -136,20 +137,18 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
 
   const hotspotColorVariable = getHotspotColorVariable();
 
-  return (
-    <div
-      className={cn(
-        "group absolute z-hotspot -translate-x-1/2 -translate-y-1/2 hover:z-hotspot-hover",
-        clickable ? "cursor-pointer" : "cursor-default"
-      )}
-      style={{
-        top: `${100 * hotspot.position.y}%`,
-        left: `${100 * hotspot.position.x}%`,
-      }}
-      onClick={onClick}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-    >
+  const sharedClassName = cn(
+    "group absolute z-hotspot -translate-x-1/2 -translate-y-1/2 hover:z-hotspot-hover",
+    clickable ? "cursor-pointer" : "cursor-default"
+  );
+
+  const sharedStyle = {
+    top: `${100 * hotspot.position.y}%`,
+    left: `${100 * hotspot.position.x}%`,
+  };
+
+  const hotspotContent = (
+    <>
       <div
         // Hoverable icon
         className={cn(
@@ -185,6 +184,39 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
           {clickable && <ArrowRightIcon className="size-5 shrink-0" />}
         </div>
       )}
+    </>
+  );
+
+  if (withLink || withPdf) {
+    return (
+      <a
+        className={sharedClassName}
+        style={sharedStyle}
+        href={detail.src}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={title || "Open link"}
+        onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      >
+        {hotspotContent}
+      </a>
+    );
+  }
+
+  return (
+    <div
+      className={sharedClassName}
+      style={sharedStyle}
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      role={clickable ? "button" : undefined}
+      tabIndex={clickable ? 0 : undefined}
+      aria-label={clickable ? title || "View details" : undefined}
+    >
+      {hotspotContent}
     </div>
   );
 };
