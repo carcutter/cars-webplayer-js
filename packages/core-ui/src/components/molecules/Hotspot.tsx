@@ -13,7 +13,7 @@ import WarningIcon from "../icons/WarningIcon";
 type HotspotProps = {
   hotspot: HotspotType;
   item: {
-    item_type: "image";
+    item_type: "image" | "360" | "next360";
     item_position: number;
   };
 };
@@ -173,9 +173,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
             "pointer-events-none opacity-0 group-hover:pointer-events-auto group-hover:opacity-100"
           )}
         >
-          <div className="truncate text-xs font-normal">
-            {title}
-          </div>
+          <div className="truncate text-xs font-normal">{title}</div>
           {clickable && <ArrowRightIcon className="size-5 shrink-0" />}
         </div>
       )}

@@ -415,6 +415,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
             return !!item.hotspots?.length;
           case "360":
             return item.images.some(img => !!img.hotspots?.length);
+          case "next360":
+            return item.images.some(img => !!img.hotspots?.length);
           default:
             return false;
         }
@@ -426,6 +428,11 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       case "image":
         return !!currentItem.hotspots?.length;
       case "360":
+        return (
+          currentItemInteraction === "running" &&
+          currentItem.images.some(img => !!img.hotspots?.length)
+        );
+      case "next360":
         return (
           currentItemInteraction === "running" &&
           currentItem.images.some(img => !!img.hotspots?.length)
@@ -568,6 +575,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       case "interior-360":
         return currentItemInteraction === "running";
       case "360":
+      case "next360":
         return currentItemInteraction === "running";
       default:
         return false;
