@@ -6,13 +6,14 @@ import { useControlsContext } from "../../providers/ControlsContext";
 import { useCustomizationContext } from "../../providers/CustomizationContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
 import { cn } from "../../utils/style";
+import ArrowRightIcon from "../icons/ArrowRightIcon";
 import ImageIcon from "../icons/ImageIcon";
 import WarningIcon from "../icons/WarningIcon";
 
 type HotspotProps = {
   hotspot: HotspotType;
   item: {
-    item_type: "image";
+    item_type: "image" | "360" | "next360";
     item_position: number;
   };
 };
@@ -25,7 +26,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   item,
   analyticsValue,
 }) => {
-  const { title, icon, description, position, detail, type } = hotspot;
+  const { title, icon, description, detail, type } = hotspot;
   const { emitAnalyticsEvent } = useGlobalContext();
   const {
     extendMode,
@@ -73,11 +74,15 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   const { getIconConfig } = useCustomizationContext();
   const hotspotConfig = icon ? getIconConfig(icon) : undefined;
 
-  const clickable = !!detail;
-  const withImage = detail?.type === "image";
-  const withText = !!title || !!description;
+  const hasDetailSrc = !!detail?.src?.trim();
+  const withImage = detail?.type === "image" && hasDetailSrc;
+  const withLink = detail?.type === "link" && hasDetailSrc;
+  const withPdf = detail?.type === "pdf" && hasDetailSrc;
+  const withDetail = withImage || withLink || withPdf;
+  const clickable = !!description || withDetail;
+  const withTitle = !!title;
 
-  const DefaultIcon = withImage ? (
+  const DefaultIcon = withDetail ? (
     type === "damage" ? (
       <WarningIcon className="size-4" />
     ) : (
@@ -88,15 +93,19 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   );
 
   const onClick = () => {
+    if (!clickable) {
+      return;
+    }
+
     emitAnalyticsEventHotspotClicked();
 
-    if (!withImage) {
-      // Do nothing as the <a> tag will handle the click
+    if (withLink || withPdf) {
+      // Navigation is handled by the semantic <a> element
       return;
     }
 
     setShownDetails({
-      src: detail.src,
+      src: withImage ? detail.src : undefined,
       title: title,
       text: description,
     });
@@ -128,66 +137,86 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
 
   const hotspotColorVariable = getHotspotColorVariable();
 
-  return (
-    <div
-      className={cn(
-        "group absolute z-hotspot -translate-x-1/2 -translate-y-1/2 hover:z-hotspot-hover",
-        clickable ? "cursor-pointer" : "cursor-help"
-      )}
-      style={{
-        top: `${100 * hotspot.position.y}%`,
-        left: `${100 * hotspot.position.x}%`,
-      }}
-      onClick={onClick}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-    >
+  const sharedClassName = cn(
+    "group absolute z-hotspot -translate-x-1/2 -translate-y-1/2 hover:z-hotspot-hover",
+    clickable ? "cursor-pointer" : "cursor-default"
+  );
+
+  const sharedStyle = {
+    top: `${100 * hotspot.position.y}%`,
+    left: `${100 * hotspot.position.x}%`,
+  };
+
+  const hotspotContent = (
+    <>
       <div
         // Hoverable icon
-        className="relative flex items-center justify-center rounded-full border-2 border-background bg-primary text-primary-foreground"
+        className={cn(
+          "relative top-px flex shrink-0 items-center justify-center rounded-full border-2 border-background bg-primary text-primary-foreground",
+          withDetail ? "left-[-5px] size-7" : "-left-px size-4"
+        )}
         style={{ backgroundColor: hotspotColorVariable }}
       >
         <div
           // Ping animation
-          className="pointer-events-none absolute -z-20 size-8 animate-hotspot-ping rounded-full border-2 border-background bg-primary"
+          className="pointer-events-none absolute -z-20 size-8 animate-hotspot-ping rounded-full border-0 bg-primary"
           style={{ backgroundColor: hotspotColorVariable }}
         />
 
         {/* Use the icon from the config if available. Else, replace it if needed */}
-        <div className="p-1">
-          {hotspotConfig?.Icon ? (
-            <div className="size-4">{hotspotConfig.Icon}</div>
-          ) : (
-            DefaultIcon
-          )}
+        <div className={cn(withDetail ? "size-4 [&_*]:size-4" : "size-1")}>
+          {hotspotConfig?.Icon ? hotspotConfig.Icon : DefaultIcon}
         </div>
       </div>
-      {!withImage && withText && (
+      {withTitle && (
         <div
           className={cn(
-            "absolute -z-10 w-max max-w-40 text-pretty rounded-ui bg-background p-2 small:max-w-48",
-            extendMode && "large:max-w-56",
-            position.y < 0.55 ? "-top-1" : "-bottom-1",
-            position.x < 0.55
-              ? "-left-1 pl-6 small:pl-8"
-              : "-right-1 pr-4 small:pr-6",
-            "pointer-events-none opacity-0 transition-opacity duration-200 group-hover:pointer-events-auto group-hover:opacity-100"
+            "absolute bottom-0 left-0 -z-10 flex w-max max-w-60 items-center gap-1.5 rounded-t-full rounded-br-full bg-foreground py-1.5 text-background transition-[opacity,transform] duration-200 group-hover:translate-x-1 small:max-w-64",
+            extendMode && "large:max-w-72",
+            withDetail
+              ? "rounded-bl-[10px] pl-6 small:pl-7"
+              : "rounded-bl-[8px] pl-5 small:pl-6",
+            "pr-2.5 small:pr-3",
+            "pointer-events-none opacity-0 group-hover:pointer-events-auto group-hover:opacity-100"
           )}
         >
-          <div className="space-y-1 text-pretty">
-            {title && (
-              <div className="text-sm font-semibold small:text-base small:font-bold">
-                {title}
-              </div>
-            )}
-            {description && (
-              <div className="text-xs text-foreground/65 small:text-sm">
-                {description}
-              </div>
-            )}
-          </div>
+          <div className="truncate text-xs font-normal">{title}</div>
+          {clickable && <ArrowRightIcon className="size-5 shrink-0" />}
         </div>
       )}
+    </>
+  );
+
+  if (withLink || withPdf) {
+    return (
+      <a
+        className={sharedClassName}
+        style={sharedStyle}
+        href={detail.src}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={title || "Open link"}
+        onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      >
+        {hotspotContent}
+      </a>
+    );
+  }
+
+  return (
+    <div
+      className={sharedClassName}
+      style={sharedStyle}
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      role={clickable ? "button" : undefined}
+      tabIndex={clickable ? 0 : undefined}
+      aria-label={clickable ? title || "View details" : undefined}
+    >
+      {hotspotContent}
     </div>
   );
 };
@@ -233,17 +262,7 @@ const Hotspot: React.FC<HotspotProps> = ({ hotspot, item }) => {
     />
   );
 
-  switch (detail?.type) {
-    case "link":
-    case "pdf":
-      return (
-        <a href={detail.src} target="_blank" rel="noreferrer">
-          {IconComp}
-        </a>
-      );
-    default:
-      return IconComp;
-  }
+  return IconComp;
 };
 
 export default Hotspot;

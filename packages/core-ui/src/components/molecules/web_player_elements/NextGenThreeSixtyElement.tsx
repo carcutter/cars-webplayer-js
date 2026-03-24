@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import type { ImageWithHotspots } from "@car-cutter/core";
+import { DEFAULT_SPIN_CURSOR, type ImageWithHotspots } from "@car-cutter/core";
 
+import spinCursorDefault from "../../../assets/cursors/spin-360-default.svg";
 import { useControlsContext } from "../../../providers/ControlsContext";
 import { useGlobalContext } from "../../../providers/GlobalContext";
 import { getThemeConfig } from "../../../theme-config";
@@ -11,6 +12,7 @@ import { cn } from "../../../utils/style";
 import CdnImage from "../../atoms/CdnImage";
 import Exterior360PlayIcon from "../../icons/Exterior360PlayIcon";
 import ThreeSixtyIcon from "../../icons/ThreeSixtyIcon";
+import Hotspot from "../../molecules/Hotspot";
 import ErrorTemplate from "../../template/ErrorTemplate";
 import Button from "../../ui/Button";
 
@@ -41,9 +43,10 @@ const getCursorStyle = (
 
 const NextGenThreeSixtyElementInteractive: React.FC<
   NextGenThreeSixtyElementProps
-> = ({ images, onlyPreload: _onlyPreload }) => {
+> = ({ images, itemIndex, onlyPreload: _onlyPreload }) => {
   const { demoSpin, reverse360, spinCursor, themeConfig } = useGlobalContext();
-  const { isShowingDetails, isZooming } = useControlsContext();
+  const { currentItemHotspotsVisible, isShowingDetails, isZooming } =
+    useControlsContext();
   const theme = useMemo(() => getThemeConfig(themeConfig), [themeConfig]);
 
   const disableSpin = isZooming || isShowingDetails; // We do not want to do anything while zooming or showing a detail image
@@ -68,11 +71,14 @@ const NextGenThreeSixtyElementInteractive: React.FC<
         ],
         activeCursor
       )
-    : { cursor: activeCursor };
+    : activeCursor === DEFAULT_SPIN_CURSOR
+      ? { cursor: `url("${spinCursorDefault}") 45 28, ew-resize` }
+      : { cursor: activeCursor };
 
   // - Refs for direct DOM manipulation (avoids React re-renders on iOS)
   const imageIndexRef = useRef(0);
   const mainImageRef = useRef<HTMLImageElement | null>(null);
+  const [hotspotFrameIndex, setHotspotFrameIndex] = useState(0);
 
   // - Throttling refs for iOS performance (avoid processing every touch event)
   const pendingUpdateRef = useRef<number | null>(null);
@@ -116,14 +122,6 @@ const NextGenThreeSixtyElementInteractive: React.FC<
     spinAnimationFrame.current = null;
   };
 
-  // - Flip book image index & details
-  const [imageIndex, setImageIndex] = useState(0);
-
-  // Keep ref in sync with state (for when state is updated externally, e.g., demo spin)
-  useEffect(() => {
-    imageIndexRef.current = imageIndex;
-  }, [imageIndex]);
-
   const length = images.length;
 
   // - Direct DOM manipulation: change src of single image element (most memory efficient for iOS)
@@ -139,6 +137,13 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       }
 
       imageIndexRef.current = newIndex;
+
+      const prevHasHotspots = !!images[prevIndex]?.hotspots?.length;
+      const nextHasHotspots = !!images[newIndex]?.hotspots?.length;
+
+      if (prevHasHotspots || nextHasHotspots) {
+        setHotspotFrameIndex(newIndex);
+      }
     },
     [images]
   );
@@ -152,11 +157,6 @@ const NextGenThreeSixtyElementInteractive: React.FC<
     const newIndex = (imageIndexRef.current - 1 + length) % length;
     updateVisibleImage(newIndex);
   }, [length, updateVisibleImage]);
-
-  // Sync React state with ref (call when interaction ends)
-  const syncImageIndexState = useCallback(() => {
-    setImageIndex(imageIndexRef.current);
-  }, []);
 
   // - Event listeners to handle spinning
   useEffect(() => {
@@ -192,7 +192,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
             const imageIndex = clamp(stepIndex % length, 0, length - 1);
 
-            setImageIndex(imageIndex);
+            updateVisibleImage(imageIndex);
 
             if (stepIndex >= length) {
               return;
@@ -282,8 +282,6 @@ const NextGenThreeSixtyElementInteractive: React.FC<
             Math.abs(walkX) < dragStepPx
           ) {
             spinAnimationFrame.current = null;
-            // Sync React state when inertia animation completes
-            syncImageIndexState();
             return;
           }
 
@@ -617,11 +615,11 @@ const NextGenThreeSixtyElementInteractive: React.FC<
     clearAutoSpinTimeout,
     displayNextImageDirect,
     displayPreviousImageDirect,
-    syncImageIndexState,
     disableSpin,
     reverse360,
     theme,
     length,
+    updateVisibleImage,
   ]);
 
   return (
@@ -630,14 +628,27 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       {/* NOTE: ImageElement is within so that it can capture events first */}
       <div ref={scrollerRef} className=" overflow-x-scroll">
         <div className="sticky left-0 top-0">
-          {/* Single image element - src changed via direct DOM manipulation */}
-          {/* Images are preloaded by placeholder, so src changes are instant from cache */}
-          <img
-            ref={mainImageRef}
-            src={images[imageIndex].src}
-            className="pointer-events-none size-full object-cover"
-            alt=""
-          />
+          <div className="relative">
+            {/* Single image element - src changed via direct DOM manipulation */}
+            {/* Images are preloaded by placeholder, so src changes are instant from cache */}
+            <img
+              ref={mainImageRef}
+              src={images[0].src}
+              className="pointer-events-none size-full object-cover"
+              alt=""
+            />
+            {currentItemHotspotsVisible &&
+              images[hotspotFrameIndex]?.hotspots?.map((hotspot, index) => (
+                <Hotspot
+                  key={`${hotspotFrameIndex}-${index}`}
+                  hotspot={hotspot}
+                  item={{
+                    item_type: "next360",
+                    item_position: itemIndex,
+                  }}
+                />
+              ))}
+          </div>
         </div>
         {/* Add space on both sides to allow scrolling */}
         {/* NOTE: We need the element to have an height, otherwise, Safari will ignore it */}
@@ -777,11 +788,7 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
           onClick={onClickPLayButton}
         >
           {theme?.playButton ? (
-            <img
-              className="size-full"
-              src={theme.playButton.default}
-              alt=""
-            />
+            <img className="size-full" src={theme.playButton.default} alt="" />
           ) : (
             <Exterior360PlayIcon className="size-full" />
           )}

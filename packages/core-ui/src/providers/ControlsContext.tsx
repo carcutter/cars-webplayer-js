@@ -33,7 +33,17 @@ type ItemInteraction = null | "ready" | "running";
 
 type SpecialCommand = "instant" | "first_to_last" | "last_to_first";
 
-type Details = { src: string; title?: string; text?: string };
+type DetailsFields = { src?: string; title?: string; text?: string };
+
+type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<
+  T,
+  Exclude<keyof T, Keys>
+> &
+  {
+    [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>;
+  }[Keys];
+
+type Details = RequireAtLeastOne<DetailsFields, "src" | "title" | "text">;
 
 type ContextType = {
   items: CustomizableItem[];
@@ -415,6 +425,8 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
             return !!item.hotspots?.length;
           case "360":
             return item.images.some(img => !!img.hotspots?.length);
+          case "next360":
+            return item.images.some(img => !!img.hotspots?.length);
           default:
             return false;
         }
@@ -426,6 +438,11 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       case "image":
         return !!currentItem.hotspots?.length;
       case "360":
+        return (
+          currentItemInteraction === "running" &&
+          currentItem.images.some(img => !!img.hotspots?.length)
+        );
+      case "next360":
         return (
           currentItemInteraction === "running" &&
           currentItem.images.some(img => !!img.hotspots?.length)
@@ -568,6 +585,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
       case "interior-360":
         return currentItemInteraction === "running";
       case "360":
+      case "next360":
         return currentItemInteraction === "running";
       default:
         return false;

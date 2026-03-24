@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import type { ImageWithHotspots } from "@car-cutter/core";
+import { DEFAULT_SPIN_CURSOR, type ImageWithHotspots } from "@car-cutter/core";
 
+import spinCursorDefault from "../../../assets/cursors/spin-360-default.svg";
 import { useControlsContext } from "../../../providers/ControlsContext";
 import { useGlobalContext } from "../../../providers/GlobalContext";
 import { getThemeConfig } from "../../../theme-config";
@@ -66,7 +67,9 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
         ],
         activeCursor
       )
-    : { cursor: activeCursor };
+    : activeCursor === DEFAULT_SPIN_CURSOR
+      ? { cursor: `url("${spinCursorDefault}") 45 28, ew-resize` }
+      : { cursor: activeCursor };
 
   // - Value refs
   const playDemoSpinRef = useRef(demoSpin);
