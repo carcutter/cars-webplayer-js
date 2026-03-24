@@ -75,10 +75,13 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   const hotspotConfig = icon ? getIconConfig(icon) : undefined;
 
   const withImage = detail?.type === "image";
-  const clickable = !!description || withImage;
+  const withLink = detail?.type === "link";
+  const withPdf = detail?.type === "pdf";
+  const withDetail = withImage || withLink || withPdf;
+  const clickable = !!description || withDetail;
   const withTitle = !!title;
 
-  const DefaultIcon = withImage ? (
+  const DefaultIcon = withDetail ? (
     type === "damage" ? (
       <WarningIcon className="size-4" />
     ) : (
@@ -94,6 +97,11 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     }
 
     emitAnalyticsEventHotspotClicked();
+
+    if (withLink || withPdf) {
+      window.open(detail.src, "_blank");
+      return;
+    }
 
     setShownDetails({
       src: withImage ? detail.src : undefined,
@@ -146,7 +154,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
         // Hoverable icon
         className={cn(
           "relative top-px flex shrink-0 items-center justify-center rounded-full border-2 border-background bg-primary text-primary-foreground",
-          withImage ? "left-[-5px] size-7" : "-left-px size-4"
+          withDetail ? "left-[-5px] size-7" : "-left-px size-4"
         )}
         style={{ backgroundColor: hotspotColorVariable }}
       >
@@ -157,7 +165,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
         />
 
         {/* Use the icon from the config if available. Else, replace it if needed */}
-        <div className={cn(withImage ? "size-4 [&_*]:size-4" : "size-1")}>
+        <div className={cn(withDetail ? "size-4 [&_*]:size-4" : "size-1")}>
           {hotspotConfig?.Icon ? hotspotConfig.Icon : DefaultIcon}
         </div>
       </div>
@@ -166,7 +174,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
           className={cn(
             "absolute bottom-0 left-0 -z-10 flex w-max max-w-60 items-center gap-1.5 rounded-t-full rounded-br-full bg-foreground py-1.5 text-background transition-[opacity,transform] duration-200 group-hover:translate-x-1 small:max-w-64",
             extendMode && "large:max-w-72",
-            withImage
+            withDetail
               ? "rounded-bl-[10px] pl-6 small:pl-7"
               : "rounded-bl-[8px] pl-5 small:pl-6",
             "pr-2.5 small:pr-3",
