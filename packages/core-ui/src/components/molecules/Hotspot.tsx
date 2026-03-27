@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type { Hotspot as HotspotType } from "@car-cutter/core";
 
@@ -81,6 +81,10 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   const withDetail = withImage || withLink || withPdf;
   const clickable = !!description || withDetail;
   const withTitle = !!title;
+  const hotspotLinkRef = useRef<HTMLAnchorElement | null>(null);
+  const hotspotDivRef = useRef<HTMLDivElement | null>(null);
+  const titleRef = useRef<HTMLDivElement | null>(null);
+  const [shouldFlipTitle, setShouldFlipTitle] = useState(false);
 
   const DefaultIcon = withDetail ? (
     type === "damage" ? (
@@ -137,6 +141,83 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
 
   const hotspotColorVariable = getHotspotColorVariable();
 
+  useEffect(() => {
+    if (!withTitle) {
+      return;
+    }
+
+    const hotspotElement = hotspotLinkRef.current || hotspotDivRef.current;
+    const titleElement = titleRef.current;
+
+    if (!hotspotElement || !titleElement) {
+      return;
+    }
+
+    const containerElement =
+      (hotspotElement.offsetParent as HTMLElement | null) ||
+      hotspotElement.parentElement;
+
+    if (!containerElement) {
+      return;
+    }
+
+    let frameId: number | null = null;
+
+    const updatePlacement = () => {
+      if (frameId !== null) {
+        cancelAnimationFrame(frameId);
+      }
+
+      frameId = requestAnimationFrame(() => {
+        frameId = null;
+
+        const containerRect = containerElement.getBoundingClientRect();
+        const hotspotRect = hotspotElement.getBoundingClientRect();
+        const titleRect = titleElement.getBoundingClientRect();
+
+        const availableRight = containerRect.right - hotspotRect.left;
+        const availableLeft = hotspotRect.right - containerRect.left;
+        const titleWidth = titleRect.width;
+
+        let nextShouldFlip = false;
+
+        if (availableRight >= titleWidth) {
+          nextShouldFlip = false;
+        } else if (availableLeft >= titleWidth) {
+          nextShouldFlip = true;
+        } else {
+          nextShouldFlip = availableLeft >= availableRight;
+        }
+
+        setShouldFlipTitle(current =>
+          current === nextShouldFlip ? current : nextShouldFlip
+        );
+      });
+    };
+
+    updatePlacement();
+
+    if (typeof ResizeObserver === "undefined") {
+      window.addEventListener("resize", updatePlacement);
+      return () => {
+        if (frameId !== null) {
+          cancelAnimationFrame(frameId);
+        }
+        window.removeEventListener("resize", updatePlacement);
+      };
+    }
+
+    const resizeObserver = new ResizeObserver(updatePlacement);
+    resizeObserver.observe(containerElement);
+
+    return () => {
+      if (frameId !== null) {
+        cancelAnimationFrame(frameId);
+      }
+      resizeObserver.disconnect();
+    };
+  }, [withTitle, title, clickable, extendMode, withDetail]);
+
   const sharedClassName = cn(
     "group absolute z-hotspot -translate-x-1/2 -translate-y-1/2 hover:z-hotspot-hover",
     clickable ? "cursor-pointer" : "cursor-default"
@@ -153,7 +234,13 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
         // Hoverable icon
         className={cn(
           "relative top-px flex shrink-0 items-center justify-center rounded-full border-2 border-background bg-primary text-primary-foreground",
-          withDetail ? "left-[-5px] size-7" : "-left-px size-4"
+          withDetail
+            ? shouldFlipTitle
+              ? "right-[-5px] size-7"
+              : "left-[-5px] size-7"
+            : shouldFlipTitle
+              ? "-right-px size-4"
+              : "-left-px size-4"
         )}
         style={{ backgroundColor: hotspotColorVariable }}
       >
@@ -171,14 +258,21 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       {withTitle && (
         <div
           className={cn(
-            "absolute bottom-0 left-0 -z-10 flex w-max max-w-60 items-center gap-1.5 rounded-t-full rounded-br-full bg-foreground py-1.5 text-background transition-[opacity,transform] duration-200 group-hover:translate-x-1 small:max-w-64",
+            "absolute bottom-0 -z-10 flex w-max max-w-60 items-center gap-1.5 rounded-t-full bg-foreground py-1.5 text-background transition-[opacity,transform] duration-200 small:max-w-64",
             extendMode && "large:max-w-72",
+            shouldFlipTitle
+              ? "right-0 rounded-bl-full group-hover:-translate-x-1"
+              : "left-0 rounded-br-full group-hover:translate-x-1",
             withDetail
-              ? "rounded-bl-[10px] pl-6 small:pl-7"
-              : "rounded-bl-[8px] pl-5 small:pl-6",
-            "pr-2.5 small:pr-3",
+              ? shouldFlipTitle
+                ? "rounded-br-[10px] pl-2.5 pr-6 small:pl-3 small:pr-7"
+                : "rounded-bl-[10px] pl-6 pr-2.5 small:pl-7 small:pr-3"
+              : shouldFlipTitle
+                ? "rounded-br-[8px] pl-2.5 pr-5 small:pl-3 small:pr-6"
+                : "rounded-bl-[8px] pl-5 pr-2.5 small:pl-6 small:pr-3",
             "pointer-events-none opacity-0 group-hover:pointer-events-auto group-hover:opacity-100"
           )}
+          ref={titleRef}
         >
           <div className="truncate text-xs font-normal">{title}</div>
           {clickable && <ArrowRightIcon className="size-5 shrink-0" />}
@@ -192,6 +286,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       <a
         className={sharedClassName}
         style={sharedStyle}
+        ref={hotspotLinkRef}
         href={detail.src}
         target="_blank"
         rel="noopener noreferrer"
@@ -209,6 +304,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     <div
       className={sharedClassName}
       style={sharedStyle}
+      ref={hotspotDivRef}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
