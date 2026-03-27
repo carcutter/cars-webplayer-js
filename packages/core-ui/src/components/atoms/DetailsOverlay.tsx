@@ -98,6 +98,7 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
 
   const hasDescriptions = () => Boolean(title || description);
   const hasImage = () => Boolean(url);
+  const isImageOnly = () => hasImage() && !hasDescriptions();
 
   const currentVariant = determineVariant();
 
@@ -141,6 +142,29 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
         return aspectRatioStyle;
     }
   };
+
+  if (isImageOnly()) {
+    return (
+      <div
+        className={cn(
+          className,
+          "absolute inset-0 z-overlay flex items-center justify-center overflow-hidden bg-foreground/60 transition-opacity duration-details",
+          isVisible ? "opacity-100" : "pointer-events-none opacity-0"
+        )}
+        onClick={clickHandler}
+      >
+        {children}
+        {isVisible && (
+          <CdnImage
+            className="size-full bg-foreground/65 object-contain"
+            src={url || ""}
+            style={aspectRatioStyle}
+            imgInPlayerWidthRatio={1}
+          />
+        )}
+      </div>
+    );
+  }
 
   if (currentVariant === "centered") {
     return (
