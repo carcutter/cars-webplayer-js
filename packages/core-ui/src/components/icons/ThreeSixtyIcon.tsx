@@ -2,7 +2,7 @@ import CustomizableIcon from "../atoms/CustomizableIcon";
 
 type Props = { className?: string; isVisible?: boolean };
 
-const ThreeSixtyIcon: React.FC<Props> = ({ className, isVisible }) => {
+const ThreeSixtyIcon: React.FC<Props> = ({ className, isVisible = true }) => {
   if (!isVisible) return null;
   return (
     <CustomizableIcon className={className} customizationKey="UI_360">

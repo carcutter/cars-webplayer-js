@@ -18,7 +18,7 @@ const ImagePlaceholder: React.FC = () => {
     className: theme?.errorImage ? undefined : "h-20 small:h-28",
     style: theme?.errorImage ? { height: "12rem", width: "auto" } : undefined,
   };
-  return <img {...props} src={url} />;
+  return <img {...props} alt="" src={url} />;
 };
 
 const ErrorTemplate: React.FC<Props> = ({ text, className }) => {
