@@ -32,9 +32,10 @@ type SpinCursorState = "default" | "left" | "right";
 
 const getCursorStyle = (
   cursorUrl: string,
+  hotspot: { x: number; y: number },
   fallback: string
 ): React.CSSProperties => {
-  return { cursor: `url("${cursorUrl}"), ${fallback}` };
+  return { cursor: `url("${cursorUrl}") ${hotspot.x} ${hotspot.y}, ${fallback}` };
 };
 
 const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
@@ -57,16 +58,16 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
   const activeCursor =
     spinCursor === "grab" && isGrabbing ? "grabbing" : spinCursor;
   const cursorStyle = theme?.cursor
-    ? getCursorStyle(
-        theme.cursor[
+    ? (() => {
+        const cursorKey =
           spinCursorState === "left"
             ? "leftSpin"
             : spinCursorState === "right"
               ? "rightSpin"
-              : "default"
-        ],
-        activeCursor
-      )
+              : "default";
+        const entry = theme.cursor[cursorKey];
+        return getCursorStyle(entry.url, entry.hotspot, activeCursor);
+      })()
     : activeCursor === DEFAULT_SPIN_CURSOR
       ? { cursor: `url("${spinCursorDefault}") 45 28, ew-resize` }
       : { cursor: activeCursor };
@@ -640,7 +641,12 @@ const ThreeSixtyElementPlaceholder: React.FC<
           aria-label="Play 360 view"
           className={
             theme?.playButton
-              ? "size-[78px] border-0 bg-transparent p-0 shadow-none hover:bg-transparent"
+              ? "border-0 bg-transparent p-0 shadow-none hover:bg-transparent"
+              : undefined
+          }
+          style={
+            theme?.playButton
+              ? { width: 74, height: 74, padding: 0 }
               : undefined
           }
           color="neutral"
@@ -648,11 +654,7 @@ const ThreeSixtyElementPlaceholder: React.FC<
           onClick={onClickPLayButton}
         >
           {theme?.playButton ? (
-            <img
-              className="size-full"
-              src={theme.playButton.default}
-              alt=""
-            />
+            <img className="size-full" src={theme.playButton.default} alt="" />
           ) : (
             <Exterior360PlayIcon className="size-full" />
           )}
