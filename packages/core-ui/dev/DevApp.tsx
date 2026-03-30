@@ -114,13 +114,12 @@ const DevApp: React.FC = () => {
       >
         <WebPlayer
           // compositionUrl="/composition_mock_1.json"
-          compositionUrl="https://cdn.car-cutter.com/gallery/8b2d9013911e67670adc654194258c310950ddfceb4ddbc7d1332c73bd8c79a2/ZACCJABB1JPH85977/composition_v3.json"
+          compositionUrl="https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/composition_v3.json"
           // compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/interior-360.json"
           // compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
           //compositionUrl="https://cdn.car-cutter.com/gallery/7de693a6dd8379eb743f6093499bdd13fe76876f135ae9a08b7d9ecbfb7f8664/WAUZZZF34N1097219/composition_v3.json"
           // hideCategoriesNav
           infiniteCarrousel
-          themeConfig="autonation"
           // permanentGallery
           // mediaLoadStrategy="speed"
           // minMediaWidth={300}
