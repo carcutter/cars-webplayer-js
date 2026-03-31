@@ -45,6 +45,195 @@ Default value is `"ew-resize"`.
   </TabItem>
 </Tabs>
 
+## Permanent Gallery
+
+Use `permanentGallery` to permanently display the gallery thumbnail strip below the main carousel, instead of showing it as a toggleable overlay.
+
+Default value is `false`.
+
+<Tabs>
+  <TabItem value="framework" label="Frameworks">
+
+```tsx
+<WebPlayer compositionUrl={compositionUrl} permanentGallery={true} />
+```
+
+  </TabItem>
+
+  <TabItem value="native" label="Native / WebComponent">
+
+```html
+<cc-webplayer
+  composition-url="https://example.com/composition_v3.json"
+  permanent-gallery="true"
+></cc-webplayer>
+```
+
+  </TabItem>
+</Tabs>
+
+## Hide Categories Nav
+
+Use `hideCategoriesNav` to hide the category navigation tabs that allow users to switch between media groups (e.g., "Exterior", "Interior"). When hidden, all items from all categories are displayed as a flat list.
+
+Default value is `false`.
+
+<Tabs>
+  <TabItem value="framework" label="Frameworks">
+
+```tsx
+<WebPlayer compositionUrl={compositionUrl} hideCategoriesNav={true} />
+```
+
+  </TabItem>
+
+  <TabItem value="native" label="Native / WebComponent">
+
+```html
+<cc-webplayer
+  composition-url="https://example.com/composition_v3.json"
+  hide-categories-nav="true"
+></cc-webplayer>
+```
+
+  </TabItem>
+</Tabs>
+
+## Integration
+
+Use `integration` to enable a compact embedded layout designed for integration into external pages (e.g., car listing cards). When enabled, it automatically overrides several properties: `hideCategoriesNav` is forced to `true`, `infiniteCarrousel` to `false`, and `permanentGallery` to `false`.
+
+Default value is `false`.
+
+<Tabs>
+  <TabItem value="framework" label="Frameworks">
+
+```tsx
+<WebPlayer compositionUrl={compositionUrl} integration={true} />
+```
+
+  </TabItem>
+
+  <TabItem value="native" label="Native / WebComponent">
+
+```html
+<cc-webplayer
+  composition-url="https://example.com/composition_v3.json"
+  integration="true"
+></cc-webplayer>
+```
+
+  </TabItem>
+</Tabs>
+
+## Infinite Carousel
+
+Use `infiniteCarrousel` to enable infinite looping in the carousel. When enabled, navigating past the last item loops back to the first, and navigating before the first loops to the last.
+
+Default value is `false`.
+
+<Tabs>
+  <TabItem value="framework" label="Frameworks">
+
+```tsx
+<WebPlayer compositionUrl={compositionUrl} infiniteCarrousel={true} />
+```
+
+  </TabItem>
+
+  <TabItem value="native" label="Native / WebComponent">
+
+```html
+<cc-webplayer
+  composition-url="https://example.com/composition_v3.json"
+  infinite-carrousel="true"
+></cc-webplayer>
+```
+
+  </TabItem>
+</Tabs>
+
+## Autoload 360
+
+Use `autoLoad360` to automatically load exterior 360-degree spin images without requiring the user to click the play button.
+
+Default value is `false`.
+
+<Tabs>
+  <TabItem value="framework" label="Frameworks">
+
+```tsx
+<WebPlayer compositionUrl={compositionUrl} autoLoad360={true} />
+```
+
+  </TabItem>
+
+  <TabItem value="native" label="Native / WebComponent">
+
+```html
+<cc-webplayer
+  composition-url="https://example.com/composition_v3.json"
+  auto-load360="true"
+></cc-webplayer>
+```
+
+  </TabItem>
+</Tabs>
+
+## Autoload Interior 360
+
+Use `autoLoadInterior360` to automatically load the interior 360-degree panorama without requiring the user to click the play button.
+
+Default value is `false`.
+
+<Tabs>
+  <TabItem value="framework" label="Frameworks">
+
+```tsx
+<WebPlayer compositionUrl={compositionUrl} autoLoadInterior360={true} />
+```
+
+  </TabItem>
+
+  <TabItem value="native" label="Native / WebComponent">
+
+```html
+<cc-webplayer
+  composition-url="https://example.com/composition_v3.json"
+  auto-load-interior360="true"
+></cc-webplayer>
+```
+
+  </TabItem>
+</Tabs>
+
+## Demo Spin
+
+Use `demoSpin` to control whether an automatic demo spin animation plays when an exterior 360-degree element first becomes interactive. The animation plays a full revolution once to showcase the spin functionality.
+
+Default value is `true`.
+
+<Tabs>
+  <TabItem value="framework" label="Frameworks">
+
+```tsx
+<WebPlayer compositionUrl={compositionUrl} demoSpin={false} />
+```
+
+  </TabItem>
+
+  <TabItem value="native" label="Native / WebComponent">
+
+```html
+<cc-webplayer
+  composition-url="https://example.com/composition_v3.json"
+  demo-spin="false"
+></cc-webplayer>
+```
+
+  </TabItem>
+</Tabs>
+
 ## Generate composition URL
 
 :::info

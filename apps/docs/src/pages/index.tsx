@@ -25,6 +25,12 @@ export default function Home(): JSX.Element {
           <Heading as="h1" className="hero__title">
             {siteConfig.title}
           </Heading>
+          <span className={styles.featureEyebrow}>Overview</span>
+          <p className={styles.featureIntro}>
+            The WebPlayer combines rich vehicle media, lightweight delivery, and
+            flexible embeds so product teams can publish interactive car
+            experiences without a custom integration.
+          </p>
         </div>
       </header>
       <main className={clsx("container", styles.main)}>
@@ -59,9 +65,70 @@ export default function Home(): JSX.Element {
                 <div className={`${styles.container} ${styles.playerWrapper}`}>
                   <WebPlayer compositionUrl={DEFAULT_COMPOSITION_URL} />
                 </div>
-                <CodeBlock className="container" language="tsx">
-                  {`<WebPlayer compositionUrl="${DEFAULT_COMPOSITION_URL}" />`}
-                </CodeBlock>
+                <section className={styles.featurePanel}>
+                  <div className={styles.featureContent}>
+                    <CodeBlock
+                      className={styles.featureCodeBlock}
+                      language="tsx"
+                    >
+                      {`<WebPlayer compositionUrl="${DEFAULT_COMPOSITION_URL}" />`}
+                    </CodeBlock>
+                    <div className={styles.featureGrid}>
+                      <article className={styles.featureCard}>
+                        <span className={styles.featureIcon} aria-hidden="true">
+                          🚗
+                        </span>
+                        <p className={styles.featureLabel}>
+                          What the WebPlayer is
+                        </p>
+                        <p className={styles.featureDescription}>
+                          A JavaScript library for embedding a car media viewer
+                          that supports 360° exterior views, interior 360°
+                          panoramas, images, and videos.
+                        </p>
+                      </article>
+
+                      <article className={styles.featureCard}>
+                        <span className={styles.featureIcon} aria-hidden="true">
+                          ⚡️
+                        </span>
+                        <p className={styles.featureLabel}>Its superpowers</p>
+                        <p className={styles.featureDescription}>
+                          Zero-dependency embed, multi-framework support, media
+                          composition, customizable theming, analytics hooks,
+                          and performance-tunable loading.
+                        </p>
+                      </article>
+
+                      <article className={styles.featureCard}>
+                        <span className={styles.featureIcon} aria-hidden="true">
+                          🐣
+                        </span>
+                        <p className={styles.featureLabel}>
+                          Ease of integration
+                        </p>
+                        <p className={styles.featureDescription}>
+                          One line of code and a composition URL are enough to
+                          render a working player for any CarCutter client.
+                        </p>
+                      </article>
+
+                      <article className={styles.featureCard}>
+                        <span className={styles.featureIcon} aria-hidden="true">
+                          💾
+                        </span>
+                        <p className={styles.featureLabel}>
+                          Preferred installation path
+                        </p>
+                        <p className={styles.featureDescription}>
+                          The script-based Web Component is framework-agnostic,
+                          auto-updating, and easy to scale through simple HTML
+                          attributes.
+                        </p>
+                      </article>
+                    </div>
+                  </div>
+                </section>
               </div>
             );
           }}

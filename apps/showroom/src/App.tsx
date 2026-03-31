@@ -1,7 +1,9 @@
 import { sha256 } from "js-sha256";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   WebPlayer,
+  type Composition,
   WebPlayerCustomMedia,
   WebPlayerIcon,
   generateCompositionUrl as generateCompositionUrlWithCustomerToken,
@@ -9,10 +11,14 @@ import {
 
 import AppContextProvider, { useAppContext } from "./AppContext";
 import CompositionUpdatePopover from "./components/molecules/CompositionUpdatePopover";
-import CustomizationPopover from "./components/molecules/CustomizationPopover";
+import CustomizationDrawer from "./components/molecules/CustomizationDrawer";
 import { Button } from "./components/ui/Button";
 import { colorToClassName, isColor } from "./const/color";
 import { radiusToClassName } from "./const/radius";
+import {
+  DEFAULT_CATEGORIES_FILTER,
+  type CategoryFilterOption,
+} from "./const/webplayer";
 import { cn } from "./utils/style";
 
 const generateCompositionUrl = (customer: string, id: string) => {
@@ -26,9 +32,8 @@ const generateCompositionUrl = (customer: string, id: string) => {
   return generateCompositionUrlWithCustomerToken(customerToken, id);
 };
 
-const isNotHashed = (customerId: string) => {
-  return /^[a-f0-9]{64}$/i.test(customerId);
-};
+const isValidCustomerToken = (customerId: string) =>
+  /^[a-f0-9]{64}$/i.test(customerId);
 
 const AppContent: React.FC = () => {
   const {
@@ -37,8 +42,15 @@ const AppContent: React.FC = () => {
     dealer,
     product,
 
+    autoLoad360,
+    autoLoadInterior360,
+    categoriesFilter,
+    extendBehavior,
     permanentGallery,
     hideCategoriesNav,
+    infiniteCarrousel,
+    integration,
+    mediaLoadStrategy,
     withCustomMedias,
     withCustomIcons,
     demoSpin,
@@ -49,13 +61,63 @@ const AppContent: React.FC = () => {
     radius,
   } = useAppContext();
 
-  if (!customer || !isNotHashed(customer)) {
+  const hasValidCustomer = !!customer && isValidCustomerToken(customer);
+
+  if (!hasValidCustomer) {
     const url = new URL(window.location.href);
     url.search = "";
     window.history.replaceState({}, document.title, url.toString());
   }
 
   const compositionUrl = generateCompositionUrl(customer, id);
+  const [categoryFilterOptions, setCategoryFilterOptions] = useState<
+    CategoryFilterOption[]
+  >([]);
+
+  useEffect(() => {
+    if (!hasValidCustomer) {
+      setCategoryFilterOptions([]);
+      return;
+    }
+
+    let isCancelled = false;
+
+    const loadCompositionCategories = async () => {
+      try {
+        const response = await fetch(compositionUrl);
+        const composition = (await response.json()) as Composition;
+
+        if (isCancelled) {
+          return;
+        }
+
+        setCategoryFilterOptions(
+          composition.categories.map(({ id: categoryId, title }) => ({
+            value: categoryId,
+            label: title || categoryId,
+          }))
+        );
+      } catch (error) {
+        if (!isCancelled) {
+          setCategoryFilterOptions([]);
+        }
+      }
+    };
+
+    void loadCompositionCategories();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [compositionUrl, hasValidCustomer]);
+
+  const resolvedCategoriesFilter = useMemo(
+    () =>
+      categoriesFilter === DEFAULT_CATEGORIES_FILTER
+        ? undefined
+        : categoriesFilter,
+    [categoriesFilter]
+  );
 
   return (
     <div
@@ -82,15 +144,21 @@ const AppContent: React.FC = () => {
             <Button>Change vehicle</Button>
           </CompositionUpdatePopover>
 
-          <CustomizationPopover>
+          <CustomizationDrawer categoryFilterOptions={categoryFilterOptions}>
             <Button variant="outline">Customize</Button>
-          </CustomizationPopover>
+          </CustomizationDrawer>
         </div>
       </header>
       <main className="w-full">
         <WebPlayer
           compositionUrl={compositionUrl}
-          infiniteCarrousel
+          autoLoad360={autoLoad360}
+          autoLoadInterior360={autoLoadInterior360}
+          categoriesFilter={resolvedCategoriesFilter}
+          extendBehavior={extendBehavior}
+          infiniteCarrousel={infiniteCarrousel}
+          integration={integration}
+          mediaLoadStrategy={mediaLoadStrategy}
           permanentGallery={permanentGallery}
           hideCategoriesNav={hideCategoriesNav}
           demoSpin={demoSpin}
