@@ -22,9 +22,7 @@ export default function Home(): JSX.Element {
     >
       <header className={styles.header}>
         <div className="container">
-          <Heading as="h1" className="hero__title">
-            {siteConfig.title}
-          </Heading>
+          <Heading as="h1">{siteConfig.title}</Heading>
           <span className={styles.featureEyebrow}>Overview</span>
           <p className={styles.featureIntro}>
             The WebPlayer combines rich vehicle media, lightweight delivery, and
