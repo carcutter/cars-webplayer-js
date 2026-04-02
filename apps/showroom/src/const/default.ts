@@ -2,8 +2,8 @@ import type { Color } from "./color";
 import type { Radius } from "./radius";
 
 export const DEFAULT_CUSTOMER: string =
-  "7de693a6dd8379eb743f6093499bdd13fe76876f135ae9a08b7d9ecbfb7f8664";
-export const DEFAULT_ID: string = "WAUZZZF34N1097219";
+  "435f524046fad7a473eaaec598d27c0a833299531af9598a3809a468d17ce145";
+export const DEFAULT_ID: string = "DEMOVINNG360V3";
 
 export const DEFAULT_WITH_CUSTOM_MEDIAS: boolean = false;
 export const DEFAULT_WITH_CUSTOM_ICONS: boolean = false;
