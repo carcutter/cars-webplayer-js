@@ -24,8 +24,11 @@ const colorsInfos: Record<
   gray: { pretty: "Gray", className: "ui-gray", hex: "#6b7280" },
 };
 
-export const colorToPretty = (color: Color) => colorsInfos[color].pretty;
+export const colorToPretty = (color: Color): string =>
+  colorsInfos[color].pretty;
 
-export const colorToClassName = (color: Color) => colorsInfos[color].className;
+export const colorToClassName = (color: Color): `ui-${string}` =>
+  colorsInfos[color].className;
 
-export const colorToHex = (color: Color) => colorsInfos[color].hex;
+export const colorToHex = (color: Color): `#${string}` =>
+  colorsInfos[color].hex;

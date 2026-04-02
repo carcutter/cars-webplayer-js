@@ -7,8 +7,6 @@ export function useSearchParam<T extends string | boolean = string>(
   const queryParameters = new URLSearchParams(window.location.search);
   const queryParam = queryParameters.get(key);
 
-  const [isDefault, setIsDefault] = useState(!queryParam);
-
   const [value, setValue] = useState<T>(() => {
     if (!queryParam) {
       return defaultValue;
@@ -20,6 +18,8 @@ export function useSearchParam<T extends string | boolean = string>(
 
     return queryParam as T;
   });
+
+  const [isDefault, setIsDefault] = useState(value === defaultValue);
 
   const set = useCallback(
     (v: T) => {

@@ -63,11 +63,13 @@ const AppContent: React.FC = () => {
 
   const hasValidCustomer = !!customer && isValidCustomerToken(customer);
 
-  if (!hasValidCustomer) {
-    const url = new URL(window.location.href);
-    url.search = "";
-    window.history.replaceState({}, document.title, url.toString());
-  }
+  useEffect(() => {
+    if (!hasValidCustomer) {
+      const url = new URL(window.location.href);
+      url.search = "";
+      window.history.replaceState({}, document.title, url.toString());
+    }
+  }, [hasValidCustomer]);
 
   const compositionUrl = generateCompositionUrl(customer, id);
   const [categoryFilterOptions, setCategoryFilterOptions] = useState<

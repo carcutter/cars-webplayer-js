@@ -93,6 +93,6 @@ const PROPERTY_HREF_OVERRIDES: Partial<
 
 export const getWebPlayerPropertyHref = (
   attribute: WebPlayerPropertyAttribute
-) =>
+): string =>
   PROPERTY_HREF_OVERRIDES[attribute] ??
   `${WEBPLAYER_PROPERTIES_DOCS_URL}#${attribute}`;
