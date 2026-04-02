@@ -15,7 +15,7 @@ const sidebars: SidebarsConfig = {
     {
       type: "link",
       label: "Demo playground",
-      href: "https://cloud.car-cutter.com/web-player/v3/index.html?customer=931d8bdd3a2f959f962dac56393784c0c529fad8490dcbd4462e7213150d8ef0&id=FJJDKDKDKDKDDKKDK",
+      href: "https://cloud.car-cutter.com/web-player/v3/index.html?customer=435f524046fad7a473eaaec598d27c0a833299531af9598a3809a468d17ce145&id=DEMOVINNG360V3",
     },
     {
       type: "category",

@@ -11,7 +11,7 @@ import Spinner from "../components/ui/Spinner";
 import styles from "./index.module.css";
 
 const DEFAULT_COMPOSITION_URL =
-  "https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json";
+  "https://cdn.car-cutter.com/libs/web-player/v3/demos/composition_v3.json";
 
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
@@ -69,10 +69,7 @@ export default function Home(): JSX.Element {
         </BrowserOnly>
         <section className={styles.featurePanel}>
           <div className={styles.featureContent}>
-            <CodeBlock
-              className={styles.featureCodeBlock}
-              language="tsx"
-            >
+            <CodeBlock className={styles.featureCodeBlock} language="tsx">
               {`<WebPlayer compositionUrl="${DEFAULT_COMPOSITION_URL}" />`}
             </CodeBlock>
             <div className={styles.featureGrid}>
@@ -80,13 +77,11 @@ export default function Home(): JSX.Element {
                 <span className={styles.featureIcon} aria-hidden="true">
                   🚗
                 </span>
-                <p className={styles.featureLabel}>
-                  What the WebPlayer is
-                </p>
+                <p className={styles.featureLabel}>What the WebPlayer is</p>
                 <p className={styles.featureDescription}>
-                  A JavaScript library for embedding a car media viewer
-                  that supports 360° exterior views, interior 360°
-                  panoramas, images, and videos.
+                  A JavaScript library for embedding a car media viewer that
+                  supports 360° exterior views, interior 360° panoramas, images,
+                  and videos.
                 </p>
               </article>
 
@@ -97,8 +92,8 @@ export default function Home(): JSX.Element {
                 <p className={styles.featureLabel}>Its superpowers</p>
                 <p className={styles.featureDescription}>
                   Zero-dependency embed, multi-framework support, media
-                  composition, customizable theming, analytics hooks,
-                  and performance-tunable loading.
+                  composition, customizable theming, analytics hooks, and
+                  performance-tunable loading.
                 </p>
               </article>
 
@@ -106,12 +101,10 @@ export default function Home(): JSX.Element {
                 <span className={styles.featureIcon} aria-hidden="true">
                   🐣
                 </span>
-                <p className={styles.featureLabel}>
-                  Ease of integration
-                </p>
+                <p className={styles.featureLabel}>Ease of integration</p>
                 <p className={styles.featureDescription}>
-                  One line of code and a composition URL are enough to
-                  render a working player for any CarCutter client.
+                  One line of code and a composition URL are enough to render a
+                  working player for any CarCutter client.
                 </p>
               </article>
 
