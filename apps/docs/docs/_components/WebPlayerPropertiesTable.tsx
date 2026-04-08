@@ -221,7 +221,11 @@ const WebPlayerPropertiesTable: React.FC = () => {
           <tbody>
             {properties.map(
               ({ propName, attribute, type, defaultValue, description }) => (
-                <tr key={propName}>
+                <tr
+                  key={propName}
+                  id={`${useProperties ? "prop" : "attr"}-${attribute}`}
+                  className="scroll-mt-24"
+                >
                   <td>{useProperties ? propName : attribute}</td>
                   <td>
                     {type.split("|").map((typeItem, index) => (

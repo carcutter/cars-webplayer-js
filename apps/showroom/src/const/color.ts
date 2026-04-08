@@ -14,16 +14,21 @@ export const isColor = (color: string): color is Color =>
 
 const colorsInfos: Record<
   Color,
-  { pretty: string; className: `ui-${string}` }
+  { pretty: string; className: `ui-${string}`; hex: `#${string}` }
 > = {
-  blue: { pretty: "Blue", className: "ui-blue" },
-  green: { pretty: "Green", className: "ui-green" },
-  yellow: { pretty: "Yellow", className: "ui-yellow" },
-  black: { pretty: "Black", className: "ui-black" },
+  blue: { pretty: "Blue", className: "ui-blue", hex: "#0a84ff" },
+  green: { pretty: "Green", className: "ui-green", hex: "#30b05a" },
+  yellow: { pretty: "Yellow", className: "ui-yellow", hex: "#f3b200" },
+  black: { pretty: "Black", className: "ui-black", hex: "#111827" },
   // orange: { pretty: "Orange", className: "ui-orange" },
-  gray: { pretty: "Gray", className: "ui-gray" },
+  gray: { pretty: "Gray", className: "ui-gray", hex: "#6b7280" },
 };
 
-export const colorToPretty = (color: Color) => colorsInfos[color].pretty;
+export const colorToPretty = (color: Color): string =>
+  colorsInfos[color].pretty;
 
-export const colorToClassName = (color: Color) => colorsInfos[color].className;
+export const colorToClassName = (color: Color): `ui-${string}` =>
+  colorsInfos[color].className;
+
+export const colorToHex = (color: Color): `#${string}` =>
+  colorsInfos[color].hex;

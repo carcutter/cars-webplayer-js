@@ -7,8 +7,6 @@ export function useSearchParam<T extends string | boolean = string>(
   const queryParameters = new URLSearchParams(window.location.search);
   const queryParam = queryParameters.get(key);
 
-  const [isDefault, setIsDefault] = useState(!queryParam);
-
   const [value, setValue] = useState<T>(() => {
     if (!queryParam) {
       return defaultValue;
@@ -21,16 +19,20 @@ export function useSearchParam<T extends string | boolean = string>(
     return queryParam as T;
   });
 
+  const [isDefault, setIsDefault] = useState(value === defaultValue);
+
   const set = useCallback(
     (v: T) => {
+      const isNextDefault = v === defaultValue;
+
       setValue(v);
-      setIsDefault(false);
+      setIsDefault(isNextDefault);
 
       const newParams = new URLSearchParams(window.location.search);
 
       const vString = v.toString();
 
-      if (!vString) {
+      if (isNextDefault || !vString) {
         newParams.delete(key);
       } else {
         newParams.set(key, v.toString());
@@ -47,7 +49,7 @@ export function useSearchParam<T extends string | boolean = string>(
       // FUTURE: use pushState & subscribe to update params (especially for back/forward)
       window.history.replaceState({}, "", urlSegments.join("?"));
     },
-    [key]
+    [defaultValue, key]
   );
 
   return [value, set, isDefault];
