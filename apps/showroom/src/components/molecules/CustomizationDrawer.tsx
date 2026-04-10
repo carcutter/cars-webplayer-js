@@ -1,6 +1,8 @@
 import {
   cloneElement,
   isValidElement,
+  type MouseEventHandler,
+  type ReactElement,
   useCallback,
   useEffect,
   useMemo,
@@ -152,12 +154,13 @@ const CustomizationDrawer: React.FC<Props> = ({
       );
     }
 
-    const childProps = children.props as {
-      onClick?: React.MouseEventHandler;
-    };
+    const child = children as ReactElement<{
+      onClick?: MouseEventHandler;
+    }>;
+    const childProps = child.props;
 
-    return cloneElement(children, {
-      onClick: (event: React.MouseEvent) => {
+    return cloneElement(child, {
+      onClick: (event) => {
         childProps.onClick?.(event);
 
         if (!event.defaultPrevented) {
