@@ -21,7 +21,7 @@
     "@car-cutter/typescript-config": "*",
     "@preact/preset-vite": "^2.9.1",
     "@types/node": "^20.16.5",
-    "@types/react": "^18.3.3",
+    "@types/react": "^18.3.28",
     "@vitejs/plugin-react": "^5.0.0",
     "autoprefixer": "^10.4.20",
     "browserslist": "^4.23.3",
