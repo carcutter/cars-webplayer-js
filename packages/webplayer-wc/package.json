@@ -49,7 +49,7 @@
     "typescript": "^5.5.4",
     "vite": "^6.4.2",
     "vite-bundle-visualizer": "^1.2.1",
-    "vite-plugin-dts": "^4.5.4"
+    "vite-plugin-dts": "^4.2.1"
   },
   "browserslist": [
     "defaults"
