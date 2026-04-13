@@ -3,12 +3,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DEFAULT_SPIN_CURSOR, type ImageWithHotspots } from "@car-cutter/core";
 
 import spinCursorDefault from "../../../assets/cursors/spin-360-default.svg";
+import { MAX_ZOOM } from "../../../const/zoom";
 import { useControlsContext } from "../../../providers/ControlsContext";
 import { useGlobalContext } from "../../../providers/GlobalContext";
 import { getThemeConfig } from "../../../theme-config";
 import { CustomizableItem } from "../../../types/customizable_item";
-import { clamp } from "../../../utils/math";
+import { easeOut } from "../../../utils/animation";
+import { clamp, lerp } from "../../../utils/math";
 import { cn } from "../../../utils/style";
+import { computeTouchesDistance } from "../../../utils/touch";
 import CdnImage from "../../atoms/CdnImage";
 import Exterior360PlayIcon from "../../icons/Exterior360PlayIcon";
 import ThreeSixtyIcon from "../../icons/ThreeSixtyIcon";
@@ -42,11 +45,17 @@ const getCursorStyle = (
   return { cursor: `url("${cursorUrl}") ${hotspot.x} ${hotspot.y}, ${fallback}` };
 };
 
+type ZoomTransformStyle = {
+  x: number;
+  y: number;
+  scale: number;
+};
+
 const NextGenThreeSixtyElementInteractive: React.FC<
   NextGenThreeSixtyElementProps
-> = ({ images, itemIndex, onlyPreload: _onlyPreload }) => {
+> = ({ images, itemIndex, onlyPreload }) => {
   const { demoSpin, reverse360, spinCursor, themeConfig } = useGlobalContext();
-  const { currentItemHotspotsVisible, isShowingDetails, isZooming } =
+  const { currentItemHotspotsVisible, isShowingDetails, isZooming, zoom, setZoom } =
     useControlsContext();
   const theme = useMemo(() => getThemeConfig(themeConfig), [themeConfig]);
 
@@ -80,6 +89,296 @@ const NextGenThreeSixtyElementInteractive: React.FC<
   const imageIndexRef = useRef(0);
   const mainImageRef = useRef<HTMLImageElement | null>(null);
   const [hotspotFrameIndex, setHotspotFrameIndex] = useState(0);
+
+  // -- Zoom & Pan state -- //
+  const zoomContainerRef = useRef<HTMLDivElement>(null);
+  const zoomTransformRef = useRef<HTMLDivElement>(null);
+  const zoomIsMouseDown = useRef(false);
+  const zoomMouseStartXY = useRef<{ x: number; y: number } | null>(null);
+  const zoomTouchStartXYmap = useRef(new Map<Touch["identifier"], Touch>());
+  const zoomTransformStyleRef = useRef<ZoomTransformStyle>({ x: 0, y: 0, scale: 1 });
+  const zoomAnimationFrame = useRef<number | null>(null);
+
+  const setZoomTransformStyle = useCallback(
+    (target: Partial<ZoomTransformStyle>) => {
+      const transformElement = zoomTransformRef.current;
+      if (!transformElement) return;
+
+      const {
+        x: targetX,
+        y: targetY,
+        scale: targetScale,
+      } = { ...zoomTransformStyleRef.current, ...target };
+
+      const scale = clamp(targetScale, 1, MAX_ZOOM);
+      const containerW = transformElement.clientWidth;
+      const containerH = transformElement.clientHeight;
+      const scaledW = containerW * scale;
+      const scaledH = containerH * scale;
+      const x = clamp(targetX, -(scaledW - containerW), 0);
+      const y = clamp(targetY, -(scaledH - containerH), 0);
+
+      zoomTransformStyleRef.current = { x, y, scale };
+      transformElement.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+    },
+    []
+  );
+
+  const animateZoomTransformStyle = useCallback(
+    (target: Partial<ZoomTransformStyle>, animationDuration?: number) => {
+      const { x: startX, y: startY, scale: startScale } = zoomTransformStyleRef.current;
+      const { x: targetX, y: targetY, scale: targetScale } = {
+        ...zoomTransformStyleRef.current,
+        ...target,
+      };
+
+      if (zoomAnimationFrame.current) {
+        cancelAnimationFrame(zoomAnimationFrame.current);
+        zoomAnimationFrame.current = null;
+      }
+
+      const setTargetState = () => {
+        setZoomTransformStyle({ x: targetX, y: targetY, scale: targetScale });
+        setZoom(targetScale);
+      };
+
+      const targetAlreadyReached =
+        Math.abs(targetX - startX) < 1 &&
+        Math.abs(targetY - startY) < 1 &&
+        Math.abs(targetScale - startScale) < 0.005;
+
+      if (!animationDuration || targetAlreadyReached) {
+        setTargetState();
+        return;
+      }
+
+      const startTime = new Date().getTime();
+
+      const animate = () => {
+        const animateStep = () => {
+          const currentTime = new Date().getTime();
+          const timeElapsed = currentTime - startTime;
+
+          if (timeElapsed >= animationDuration) {
+            setTargetState();
+            zoomAnimationFrame.current = null;
+            return;
+          }
+
+          const progress = Math.min(timeElapsed / animationDuration, 1);
+          const easedProgress = easeOut(progress);
+          setZoomTransformStyle({
+            x: lerp(startX, targetX, easedProgress),
+            y: lerp(startY, targetY, easedProgress),
+            scale: lerp(startScale, targetScale, easedProgress),
+          });
+          animate();
+        };
+        zoomAnimationFrame.current = requestAnimationFrame(animateStep);
+      };
+
+      animate();
+    },
+    [setZoomTransformStyle, setZoom]
+  );
+
+  const offsetZoomXY = useCallback(
+    (offset: Partial<Omit<ZoomTransformStyle, "scale">>, animationDuration?: number) => {
+      let { x, y } = zoomTransformStyleRef.current;
+      if (offset.x) x += offset.x;
+      if (offset.y) y += offset.y;
+      animateZoomTransformStyle({ x, y }, animationDuration);
+    },
+    [animateZoomTransformStyle]
+  );
+
+  const setZoomTransformZoom = useCallback(
+    (targetZoom: number, targetContainerPos: { x: number; y: number }, animationDuration?: number) => {
+      const currentScale = zoomTransformStyleRef.current.scale;
+      const newZoomValue = clamp(targetZoom, 1, MAX_ZOOM);
+      const zoomRatio = newZoomValue / currentScale;
+      const { x: currentX, y: currentY } = zoomTransformStyleRef.current;
+
+      const currentTargetX = -currentX + targetContainerPos.x;
+      const currentTargetY = -currentY + targetContainerPos.y;
+      const newTargetX = currentTargetX * zoomRatio;
+      const newTargetY = currentTargetY * zoomRatio;
+
+      animateZoomTransformStyle(
+        {
+          x: -(newTargetX - targetContainerPos.x),
+          y: -(newTargetY - targetContainerPos.y),
+          scale: newZoomValue,
+        },
+        animationDuration
+      );
+    },
+    [animateZoomTransformStyle]
+  );
+
+  const setZoomFromCenter = useCallback(
+    (targetZoom: number) => {
+      const transformElement = zoomTransformRef.current;
+      if (!transformElement) return;
+      setZoomTransformZoom(
+        targetZoom,
+        { x: transformElement.clientWidth / 2, y: transformElement.clientHeight / 2 },
+        200
+      );
+    },
+    [setZoomTransformZoom]
+  );
+
+  const offsetZoomLevel = useCallback(
+    (offset: number, targetContainerPos: { x: number; y: number }, animationDuration?: number) => {
+      setZoomTransformZoom(
+        zoomTransformStyleRef.current.scale + offset,
+        targetContainerPos,
+        animationDuration
+      );
+    },
+    [setZoomTransformZoom]
+  );
+
+  // - Respond to zoom state changes (zoom buttons, Escape reset, etc.)
+  useEffect(() => {
+    if (onlyPreload || !zoomTransformRef.current) return;
+    setZoomFromCenter(zoom);
+  }, [onlyPreload, setZoomFromCenter, zoom]);
+
+  // - Mouse drag panning while zoomed
+  useEffect(() => {
+    if (onlyPreload || !isZooming) return;
+    const transformElement = zoomTransformRef.current;
+    if (!transformElement) return;
+
+    const onMouseDown = (e: MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      zoomIsMouseDown.current = true;
+      zoomMouseStartXY.current = { x: e.clientX, y: e.clientY };
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+      if (!zoomIsMouseDown.current || !zoomMouseStartXY.current) return;
+      e.stopPropagation();
+      offsetZoomXY({
+        x: e.clientX - zoomMouseStartXY.current.x,
+        y: e.clientY - zoomMouseStartXY.current.y,
+      });
+      zoomMouseStartXY.current = { x: e.clientX, y: e.clientY };
+    };
+
+    const onStopDragging = () => {
+      zoomIsMouseDown.current = false;
+    };
+
+    transformElement.addEventListener("mousedown", onMouseDown);
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseleave", onStopDragging);
+    document.addEventListener("mouseup", onStopDragging);
+    document.addEventListener("contextmenu", onStopDragging);
+
+    return () => {
+      transformElement.removeEventListener("mousedown", onMouseDown);
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseleave", onStopDragging);
+      document.removeEventListener("mouseup", onStopDragging);
+      document.removeEventListener("contextmenu", onStopDragging);
+    };
+  }, [isZooming, offsetZoomXY, onlyPreload]);
+
+  // - Wheel zoom & pan
+  useEffect(() => {
+    if (onlyPreload) return;
+    const container = zoomContainerRef.current;
+    if (!container) return;
+
+    const onWheel = (e: WheelEvent) => {
+      const { ctrlKey: zoomEvent, clientX, clientY, deltaX, deltaY } = e;
+
+      if (zoomEvent) {
+        if (!isZooming && deltaY >= 0) return;
+        const { left, top } = container.getBoundingClientRect();
+        offsetZoomLevel(-0.01 * deltaY, { x: clientX - left, y: clientY - top });
+      } else {
+        if (!isZooming) return;
+        offsetZoomXY({ x: -2 * deltaX, y: -2 * deltaY });
+      }
+      e.preventDefault();
+    };
+
+    container.addEventListener("wheel", onWheel);
+    return () => {
+      container.removeEventListener("wheel", onWheel);
+    };
+  }, [isZooming, offsetZoomXY, offsetZoomLevel, onlyPreload]);
+
+  // - Touch zoom (pinch) & pan while zoomed
+  useEffect(() => {
+    const container = zoomContainerRef.current;
+    const transformElement = zoomTransformRef.current;
+    if (!container || !transformElement) return;
+
+    const touchMap = zoomTouchStartXYmap.current;
+
+    const onTouchStart = (e: TouchEvent) => {
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        const touch = e.changedTouches[i];
+        touchMap.set(touch.identifier, touch);
+      }
+    };
+
+    const onTouchEnd = (e: TouchEvent) => {
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        touchMap.delete(e.changedTouches[i].identifier);
+      }
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      const nbrTouches = e.touches.length;
+
+      if (nbrTouches === 1) {
+        if (!isZooming) return;
+        e.preventDefault();
+        const touch = e.touches[0];
+        const touchStart = touchMap.get(touch.identifier);
+        if (!touchStart) return;
+        offsetZoomXY({
+          x: touch.clientX - touchStart.clientX,
+          y: touch.clientY - touchStart.clientY,
+        });
+        touchMap.set(touch.identifier, touch);
+      } else if (nbrTouches === 2) {
+        e.preventDefault();
+        const [touch1, touch2] = e.touches;
+        const initial1 = touchMap.get(touch1.identifier);
+        const initial2 = touchMap.get(touch2.identifier);
+        if (!initial1 || !initial2) return;
+        const initialDistance = computeTouchesDistance(initial1, initial2);
+        const currentDistance = computeTouchesDistance(touch1, touch2);
+        const { left, top } = container.getBoundingClientRect();
+        offsetZoomLevel(currentDistance / initialDistance - 1, {
+          x: (touch1.clientX + touch2.clientX) / 2 - left,
+          y: (touch1.clientY + touch2.clientY) / 2 - top,
+        });
+        touchMap.set(touch1.identifier, touch1);
+        touchMap.set(touch2.identifier, touch2);
+      }
+    };
+
+    transformElement.addEventListener("touchstart", onTouchStart);
+    transformElement.addEventListener("touchmove", onTouchMove);
+    transformElement.addEventListener("touchend", onTouchEnd);
+    transformElement.addEventListener("touchcancel", onTouchEnd);
+
+    return () => {
+      transformElement.removeEventListener("touchstart", onTouchStart);
+      transformElement.removeEventListener("touchmove", onTouchMove);
+      transformElement.removeEventListener("touchend", onTouchEnd);
+      transformElement.removeEventListener("touchcancel", onTouchEnd);
+    };
+  }, [isZooming, offsetZoomXY, offsetZoomLevel]);
 
   // - Throttling refs for iOS performance (avoid processing every touch event)
   const pendingUpdateRef = useRef<number | null>(null);
@@ -629,26 +928,31 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       {/* NOTE: ImageElement is within so that it can capture events first */}
       <div ref={scrollerRef} className=" overflow-x-scroll">
         <div className="sticky left-0 top-0">
-          <div className="relative">
-            {/* Single image element - src changed via direct DOM manipulation */}
-            {/* Images are preloaded by placeholder, so src changes are instant from cache */}
-            <img
-              ref={mainImageRef}
-              src={images[0].src}
-              className="pointer-events-none size-full object-cover"
-              alt=""
-            />
-            {currentItemHotspotsVisible &&
-              images[hotspotFrameIndex]?.hotspots?.map((hotspot, index) => (
-                <Hotspot
-                  key={`${hotspotFrameIndex}-${index}`}
-                  hotspot={hotspot}
-                  item={{
-                    item_type: "next360",
-                    item_position: itemIndex,
-                  }}
-                />
-              ))}
+          <div
+            ref={zoomContainerRef}
+            className={`relative size-full overflow-hidden ${isZooming ? "z-zoomed-image cursor-move" : ""}`}
+          >
+            <div ref={zoomTransformRef} className="origin-top-left">
+              {/* Single image element - src changed via direct DOM manipulation */}
+              {/* Images are preloaded by placeholder, so src changes are instant from cache */}
+              <img
+                ref={mainImageRef}
+                src={images[0].src}
+                className="pointer-events-none size-full object-cover"
+                alt=""
+              />
+              {currentItemHotspotsVisible &&
+                images[hotspotFrameIndex]?.hotspots?.map((hotspot, index) => (
+                  <Hotspot
+                    key={`${hotspotFrameIndex}-${index}`}
+                    hotspot={hotspot}
+                    item={{
+                      item_type: "next360",
+                      item_position: itemIndex,
+                    }}
+                  />
+                ))}
+            </div>
           </div>
         </div>
         {/* Add space on both sides to allow scrolling */}
