@@ -144,7 +144,6 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   // with a min/max to stay usable on small screens and not grow too large.
   const hotspotSize = "clamp(28px, 3.5cqw, 48px)";
   const hotspotPingSize = "clamp(32px, 4cqw, 56px)";
-  const hotspotOffset = "clamp(5px, 0.6cqw, 9px)";
 
   useEffect(() => {
     if (!withTitle) {
@@ -244,9 +243,6 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
           backgroundColor: hotspotColorVariable,
           width: hotspotSize,
           height: hotspotSize,
-          ...(shouldFlipTitle
-            ? { right: `-${hotspotOffset}` }
-            : { left: `-${hotspotOffset}` }),
         }}
       >
         <div
