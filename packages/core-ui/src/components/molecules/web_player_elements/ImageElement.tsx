@@ -26,7 +26,10 @@ const ImageElement: React.FC<Props> = ({
     useControlsContext();
 
   return (
-    <div className={cn("relative size-full overflow-hidden", className)}>
+    <div
+      className={cn("relative size-full overflow-hidden", className)}
+      style={{ containerType: "inline-size" }}
+    >
       <div
         // Scale effect on show details
         className={cn(

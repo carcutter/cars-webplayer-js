@@ -629,7 +629,10 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       {/* NOTE: ImageElement is within so that it can capture events first */}
       <div ref={scrollerRef} className=" overflow-x-scroll">
         <div className="sticky left-0 top-0">
-          <div className="relative">
+          <div
+            className="relative"
+            style={{ containerType: "inline-size" }}
+          >
             {/* Single image element - src changed via direct DOM manipulation */}
             {/* Images are preloaded by placeholder, so src changes are instant from cache */}
             <img
