@@ -159,18 +159,27 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
           // Fire requests independently so one failure doesn't block the other
           const requests: Promise<unknown>[] = [];
           if (analyticsUrl) {
-            requests.push(
-              fetch(analyticsUrl, { method, headers, body }).catch(() => {
-                /* ignore */
-              })
-            );
+            requests.push(fetch(analyticsUrl, { method, headers, body }));
           }
           if (monitoring) {
             requests.push(
               emitMonitoringActivityEvent({ payload, compositionUrl })
             );
           }
-          await Promise.allSettled(requests);
+          const results = await Promise.allSettled(requests);
+
+          // Surface failures when debug mode is enabled
+          if (analyticsDebug) {
+            for (const result of results) {
+              if (result.status === "rejected") {
+                // eslint-disable-next-line no-console
+                console.error(
+                  "Analytics request failed:",
+                  result.reason
+                );
+              }
+            }
+          }
         }
       } catch (error) {
         // Debug mode

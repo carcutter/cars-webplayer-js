@@ -49,18 +49,18 @@ export const emitMonitoringActivityEvent = async (
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    await fetch(url, {
+    const response = await fetch(url, {
       method: "POST" as const,
       headers,
       body,
       signal: controller.signal,
     });
 
-    // NOTE: We intentionally ignore non-ok responses.
-    // Monitoring is best-effort and must never break the player.
-  } catch {
-    // Silently ignore network errors, timeouts, and aborts.
-    // Analytics/monitoring failures must never propagate to the caller.
+    if (!response.ok) {
+      throw new Error(
+        `Monitoring request failed: ${response.status} ${response.statusText} (${url})`
+      );
+    }
   } finally {
     clearTimeout(timeoutId);
   }
