@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/webplayer-docs",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
@@ -16,7 +16,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@car-cutter/react-webplayer": "3.2.2",
+    "@car-cutter/react-webplayer": "3.2.3",
     "@docusaurus/core": "^3.10.0",
     "@docusaurus/preset-classic": "^3.10.0",
     "@docusaurus/remark-plugin-npm2yarn": "^3.10.0",
