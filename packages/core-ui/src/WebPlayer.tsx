@@ -142,7 +142,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
         });
         document.dispatchEvent(dispatchEvent);
 
-        // Send event to analyticsUrl and/or monitoring service
+        // Send event to analyticsUrl and/or monitoring service (best-effort, never throws)
         if (analyticsUrl || monitoring) {
           // Prepare request
           const method = "POST" as const;
@@ -155,13 +155,22 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
             }
           }
           const body = JSON.stringify(payload);
-          // Send event
+
+          // Fire requests independently so one failure doesn't block the other
+          const requests: Promise<unknown>[] = [];
           if (analyticsUrl) {
-            await fetch(analyticsUrl, { method, headers, body });
+            requests.push(
+              fetch(analyticsUrl, { method, headers, body }).catch(() => {
+                /* ignore */
+              })
+            );
           }
           if (monitoring) {
-            await emitMonitoringActivityEvent({ payload, compositionUrl });
+            requests.push(
+              emitMonitoringActivityEvent({ payload, compositionUrl })
+            );
           }
+          await Promise.allSettled(requests);
         }
       } catch (error) {
         // Debug mode
