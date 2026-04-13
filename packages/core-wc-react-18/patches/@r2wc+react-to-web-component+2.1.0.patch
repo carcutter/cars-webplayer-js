@@ -1,0 +1,135 @@
+diff --git a/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.cjs b/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.cjs
+index 80193c5..762dcbb 100644
+--- a/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.cjs
++++ b/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.cjs
+@@ -1 +1 @@
+-"use strict";const c=require("react"),u=require("react-dom/client"),i=require("@r2wc/core");function s(e,t,r){const n=u.createRoot(e),o=c.createElement(t,r);return n.render(o),{root:n,ReactComponent:t}}function m({root:e,ReactComponent:t},r){const n=c.createElement(t,r);e.render(n)}function l({root:e}){e.unmount()}function a(e,t={}){return i(e,t,{mount:s,update:m,unmount:l})}module.exports=a;
++"use strict";const c=require("react"),u=require("react-dom/client"),i=require("@r2wc/core");const containerRoots=new Map();function s(e,t,r){const pending=containerRoots.get(e);if(pending){if(pending.tid!==null)clearTimeout(pending.tid);pending.tid=null;const o=c.createElement(t,r);pending.root.render(o);return{root:pending.root,ReactComponent:t}}const n=u.createRoot(e);containerRoots.set(e,{root:n,tid:null});const o=c.createElement(t,r);n.render(o);return{root:n,ReactComponent:t}}function m({root:e,ReactComponent:t},r){const n=c.createElement(t,r);e.render(n)}function l({root:e}){for(const[container,entry]of containerRoots){if(entry.root===e){entry.tid=setTimeout(()=>{containerRoots.delete(container);e.unmount()},0);return}}setTimeout(()=>{e.unmount()},0)}function a(e,t={}){return i(e,t,{mount:s,update:m,unmount:l})}module.exports=a;
+diff --git a/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.js b/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.js
+index 2dd89f3..b404606 100644
+--- a/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.js
++++ b/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.js
+@@ -1,19 +1,50 @@
+ import o from "react";
+ import { createRoot as c } from "react-dom/client";
+ import m from "@r2wc/core";
++// Track container -> { root, tid } so we can cancel pending unmounts on reconnect.
++// Uses a Map (not WeakMap) because unmount() needs to iterate to find the entry by root.
++// Entries are deleted when the root is actually unmounted, preventing leaks.
++const containerRoots = new Map();
+ function f(t, e, r) {
+-  const n = c(t), u = o.createElement(e, r);
+-  return n.render(u), {
+-    root: n,
+-    ReactComponent: e
+-  };
++  // Check if there is a pending unmount for this container (rapid disconnect+reconnect)
++  const pending = containerRoots.get(t);
++  if (pending) {
++    // Cancel the deferred unmount and reuse the existing root
++    if (pending.tid !== null) clearTimeout(pending.tid);
++    pending.tid = null;
++    const u = o.createElement(e, r);
++    pending.root.render(u);
++    return { root: pending.root, ReactComponent: e };
++  }
++  // First mount: create a new root
++  const n = c(t);
++  containerRoots.set(t, { root: n, tid: null });
++  const u = o.createElement(e, r);
++  n.render(u);
++  return { root: n, ReactComponent: e };
+ }
+ function i({ root: t, ReactComponent: e }, r) {
+   const n = o.createElement(e, r);
+   t.render(n);
+ }
+-function a({ root: t }) {
+-  t.unmount();
++function a({ root: rootToUnmount }) {
++  // The warning "Attempted to synchronously unmount a root while React" is a false positive
++  // with nested roots: https://github.com/facebook/react/issues/25675
++  // Issue tracker: https://github.com/bitovi/react-to-web-component/issues/142
++  //
++  // We defer unmount AND track it so that a rapid reconnect (disconnect+connect in the same tick)
++  // can cancel the pending unmount and reuse the existing root instead of creating a duplicate.
++  for (const [container, entry] of containerRoots) {
++    if (entry.root === rootToUnmount) {
++      entry.tid = setTimeout(() => {
++        containerRoots.delete(container);
++        rootToUnmount.unmount();
++      }, 0);
++      return;
++    }
++  }
++  // Fallback: no entry found (should not happen), unmount with defer anyway
++  setTimeout(() => { rootToUnmount.unmount(); }, 0);
+ }
+ function s(t, e = {}) {
+   return m(t, e, { mount: f, update: i, unmount: a });
+diff --git a/node_modules/@r2wc/react-to-web-component/src/react-to-web-component.ts b/node_modules/@r2wc/react-to-web-component/src/react-to-web-component.ts
+index 88c5968..4de0e32 100644
+--- a/node_modules/@r2wc/react-to-web-component/src/react-to-web-component.ts
++++ b/node_modules/@r2wc/react-to-web-component/src/react-to-web-component.ts
+@@ -8,12 +8,34 @@ interface Context<Props extends object> {
+   ReactComponent: React.ComponentType<Props>
+ }
+ 
++interface ContainerEntry {
++  root: Root
++  tid: ReturnType<typeof setTimeout> | null
++}
++
++// Track container -> { root, tid } so we can cancel pending unmounts on reconnect.
++// Uses a Map (not WeakMap) because unmount() needs to iterate to find the entry by root.
++// Entries are deleted when the root is actually unmounted, preventing leaks.
++const containerRoots = new Map<HTMLElement, ContainerEntry>()
++
+ function mount<Props extends object>(
+   container: HTMLElement,
+   ReactComponent: React.ComponentType<Props>,
+   props: Props,
+ ): Context<Props> {
++  // Check if there is a pending unmount for this container (rapid disconnect+reconnect)
++  const pending = containerRoots.get(container)
++  if (pending) {
++    // Cancel the deferred unmount and reuse the existing root
++    if (pending.tid !== null) clearTimeout(pending.tid)
++    pending.tid = null
++    const element = React.createElement(ReactComponent, props)
++    pending.root.render(element)
++    return { root: pending.root, ReactComponent }
++  }
++
+   const root = createRoot(container)
++  containerRoots.set(container, { root, tid: null })
+ 
+   const element = React.createElement(ReactComponent, props)
+   root.render(element)
+@@ -33,7 +55,25 @@ function update<Props extends object>(
+ }
+ 
+ function unmount<Props extends object>({ root }: Context<Props>): void {
+-  root.unmount()
++  // The warning "Attempted to synchronously unmount a root while React" is a false positive
++  // with nested roots: https://github.com/facebook/react/issues/25675
++  // Issue tracker: https://github.com/bitovi/react-to-web-component/issues/142
++  //
++  // We defer unmount AND track it so that a rapid reconnect (disconnect+connect in the same tick)
++  // can cancel the pending unmount and reuse the existing root instead of creating a duplicate.
++  for (const [container, entry] of containerRoots) {
++    if (entry.root === root) {
++      entry.tid = setTimeout(() => {
++        containerRoots.delete(container)
++        root.unmount()
++      }, 0)
++      return
++    }
++  }
++  // Fallback: unmount with defer
++  setTimeout(() => {
++    root.unmount()
++  }, 0)
+ }
+ 
+ export default function r2wc<Props extends object>(
