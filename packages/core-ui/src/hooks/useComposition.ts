@@ -14,6 +14,13 @@ async function getComposition(url: string): Promise<Composition> {
     throw new Error(`Failed to fetch composition: ${res.statusText}`);
   }
 
+  const contentType = res.headers.get("content-type") ?? "";
+  if (!contentType.includes("json")) {
+    throw new Error(
+      `Unexpected response content-type "${contentType}" for composition URL: ${url}`
+    );
+  }
+
   const data = (await res.json()) as Composition;
 
   return data;
@@ -48,6 +55,15 @@ export const useComposition = (url: string) => {
   });
 
   useEffect(() => {
+    if (!url) {
+      setState({
+        status: "error",
+        isSuccess: false,
+        error: new Error("No composition URL provided"),
+      });
+      return;
+    }
+
     const setSuccess = (data: Composition) =>
       setState({ status: "success", data, isSuccess: true });
 
