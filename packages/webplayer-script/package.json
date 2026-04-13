@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/script-webplayer",
-  "version": "3.2.3",
+  "version": "3.2.4",
   "private": true,
   "license": "Apache-2.0",
   "type": "module",
@@ -10,7 +10,7 @@
     "analyze": "vite-bundle-visualizer"
   },
   "dependencies": {
-    "@car-cutter/wc-webplayer": "3.2.3"
+    "@car-cutter/wc-webplayer": "3.2.4"
   },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
