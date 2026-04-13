@@ -469,6 +469,8 @@ const NextGenThreeSixtyElementInteractive: React.FC<
     scroller.addEventListener("touchcancel", onTouchEnd);
 
     return () => {
+      clearAutoSpinTimeout();
+      cancelSpinAnimation();
       setIsGrabbing(false);
       container.removeEventListener("mousedown", onMouseDown);
       document.removeEventListener("mousemove", onMouseMove);
