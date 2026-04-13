@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_car_cutter_webplayer_docs=self.webpackChunk_car_cutter_webplayer_docs||[]).push([[739],{5786:function(e){e.exports=JSON.parse('{"metadata":{"permalink":"/cars-webplayer-js/blog","page":1,"postsPerPage":10,"totalPages":1,"totalCount":0,"blogDescription":"Blog","blogTitle":"Blog"}}')}}]);
