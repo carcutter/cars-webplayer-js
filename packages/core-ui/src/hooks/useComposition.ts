@@ -71,12 +71,24 @@ export const useComposition = (url: string) => {
 
         // using cached promise
         if (cachedValue) {
-          data = await cachedValue;
+          try {
+            data = await cachedValue;
+          } catch (fetchErr) {
+            cache.delete(url);
+            throw fetchErr;
+          }
         } else {
           const promise = getComposition(url);
           cache.set(url, promise);
 
-          data = await promise;
+          try {
+            data = await promise;
+          } catch (fetchErr) {
+            // Remove the rejected promise from cache so future
+            // renders/navigations can retry instead of permanently failing.
+            cache.delete(url);
+            throw fetchErr;
+          }
           cache.set(url, data);
         }
 
