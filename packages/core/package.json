@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/core",
-  "version": "3.2.5",
+  "version": "3.2.6",
   "private": true,
   "type": "module",
   "main": "index.ts",
