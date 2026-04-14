@@ -398,7 +398,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
     const onTouchMove = (e: TouchEvent) => {
       // Check if the user was actually spinning
-      if (!spinStartX) {
+      if (spinStartX === null) {
         return;
       }
 
@@ -441,7 +441,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
     const onTouchEnd = (e: TouchEvent) => {
       // Check if the user was actually spinning
-      if (!spinStartX) {
+      if (spinStartX === null) {
         return;
       }
 
