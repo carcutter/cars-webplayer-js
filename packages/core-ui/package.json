@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/core-ui",
-  "version": "3.2.5",
+  "version": "3.2.6",
   "private": true,
   "type": "module",
   "main": "./index.ts",
@@ -10,7 +10,7 @@
     "lint": "eslint . --ext ts,tsx --max-warnings 0"
   },
   "dependencies": {
-    "@car-cutter/core": "3.2.5",
+    "@car-cutter/core": "3.2.6",
     "pannellum-react": "^1.2.4"
   },
   "peerDependencies": {
