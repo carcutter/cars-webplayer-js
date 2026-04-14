@@ -398,7 +398,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
     const onTouchMove = (e: TouchEvent) => {
       // Check if the user was actually spinning
-      if (!spinStartX) {
+      if (spinStartX === null) {
         return;
       }
 
@@ -441,7 +441,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
     const onTouchEnd = (e: TouchEvent) => {
       // Check if the user was actually spinning
-      if (!spinStartX) {
+      if (spinStartX === null) {
         return;
       }
 
@@ -463,8 +463,8 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       startInertiaAnimation();
     };
 
-    scroller.addEventListener("touchstart", onTouchStart);
-    scroller.addEventListener("touchmove", onTouchMove);
+    scroller.addEventListener("touchstart", onTouchStart, { passive: false });
+    scroller.addEventListener("touchmove", onTouchMove, { passive: false });
     scroller.addEventListener("touchend", onTouchEnd);
     scroller.addEventListener("touchcancel", onTouchEnd);
 
