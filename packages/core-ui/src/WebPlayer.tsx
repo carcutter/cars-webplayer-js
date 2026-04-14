@@ -173,10 +173,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
             for (const result of results) {
               if (result.status === "rejected") {
                 // eslint-disable-next-line no-console
-                console.error(
-                  "Analytics request failed:",
-                  result.reason
-                );
+                console.error("Analytics request failed:", result.reason);
               }
             }
           }
@@ -347,7 +344,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
       <CustomizationContextProvider>
         <div
           ref={wrapperRef}
-          className="select-none text-foreground"
+          className="size-full select-none text-foreground"
           style={
             {
               "--background": "var(--cc-webplayer-background, 0 0% 100%)",
