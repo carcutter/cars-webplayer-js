@@ -221,7 +221,7 @@ const WebPlayerContainer: React.FC<WebPlayerContainerProps> = () => {
   if (error) {
     return (
       <ErrorTemplate
-        className="aspect-video text-foreground/70"
+        className="aspect-[4/3] text-foreground/70"
         text="Player could not be loaded"
       />
     );
@@ -229,7 +229,7 @@ const WebPlayerContainer: React.FC<WebPlayerContainerProps> = () => {
 
   if (!isSuccess) {
     return (
-      <div className="flex aspect-video size-full flex-col items-center justify-center gap-y-4">
+      <div className="flex aspect-[4/3] size-full flex-col items-center justify-center gap-y-4">
         <div className="animate-pulse text-xl">Loading Player</div>
         <Spinner color="foreground" />
       </div>
