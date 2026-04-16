@@ -40,24 +40,46 @@ const getCursorString = (
 };
 
 const NextGenThreeSixtyElementInteractive: React.FC<
-  NextGenThreeSixtyElementProps
-> = ({ images, onlyPreload }) => {
+  NextGenThreeSixtyElementProps & {
+    hidden?: boolean;
+    onAllFramesLoaded?: () => void;
+    onFrameLoaded?: () => void;
+  }
+> = ({ images, onlyPreload, hidden, onAllFramesLoaded, onFrameLoaded }) => {
   const { demoSpin, reverse360, spinCursor, themeConfig } = useGlobalContext();
   const { isShowingDetails, isZooming } = useControlsContext();
   const theme = useMemo(() => getThemeConfig(themeConfig), [themeConfig]);
 
-  const disableSpin = isZooming || isShowingDetails; // We do not want to do anything while zooming or showing a detail image
+  const disableSpin = isZooming || isShowingDetails || !!hidden; // We do not want to do anything while zooming, showing a detail image, or while hidden
+
+  // - Track frame loading for pre-mount preloading
+  const loadedCountRef = useRef(0);
+  const allFramesLoadedRef = useRef(false);
+  const onFrameLoad = useCallback(() => {
+    loadedCountRef.current += 1;
+    onFrameLoaded?.();
+    if (
+      !allFramesLoadedRef.current &&
+      loadedCountRef.current >= images.length &&
+      onAllFramesLoaded
+    ) {
+      allFramesLoadedRef.current = true;
+      onAllFramesLoaded();
+    }
+  }, [images.length, onAllFramesLoaded, onFrameLoaded]);
 
   // - Element refs
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
-  const flipbookRef = useRef<HTMLDivElement>(null);
 
-  // - Frame index: ref for imperative DOM updates during spin, state only for resting frame
+  // - Frame index: ref for imperative updates during spin, state for resting ImageElement
   const imageIndexRef = useRef(0);
   const [restingImageIndex, setRestingImageIndex] = useState(0);
 
   const length = images.length;
+
+  // - Refs to CdnImage wrapper elements for direct DOM z-index manipulation
+  const frameRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // - Cursor refs (to avoid re-renders during drag)
   const themeRef = useRef(theme);
@@ -129,20 +151,13 @@ const NextGenThreeSixtyElementInteractive: React.FC<
     }
   }, []);
 
-  // - Imperative frame switching via z-index on CdnImage children (no React re-render)
-  // The flipbook container has N CdnImage children; we toggle z-index to bring the active
-  // frame above the others. All frames stay visible (cached/painted), only stacking changes.
+  // - Imperative frame switching via direct DOM z-index manipulation (no React re-render)
   const showFrame = useCallback((newIndex: number) => {
     const prev = imageIndexRef.current;
     if (prev === newIndex) return;
 
-    const flipbook = flipbookRef.current;
-    if (!flipbook) return;
-
-    const children = flipbook.children;
-    const prevEl = children[prev] as HTMLElement | undefined;
-    const nextEl = children[newIndex] as HTMLElement | undefined;
-
+    const prevEl = frameRefs.current[prev];
+    const nextEl = frameRefs.current[newIndex];
     if (prevEl) prevEl.style.zIndex = "-10";
     if (nextEl) nextEl.style.zIndex = "1";
 
@@ -157,9 +172,13 @@ const NextGenThreeSixtyElementInteractive: React.FC<
     showFrame((imageIndexRef.current - 1 + length) % length);
   }, [length, showFrame]);
 
-  // - Sync resting frame when spin ends (triggers one React render for ImageElement with hotspots)
+  // Track whether the user is actively spinning (drag/touch/inertia/demo) to hide ImageElement overlay
+  const [isSpinActive, setIsSpinActive] = useState(false);
+
+  // - Sync resting frame when spin ends (single React render for ImageElement hotspots)
   const syncRestingFrame = useCallback(() => {
     setRestingImageIndex(imageIndexRef.current);
+    setIsSpinActive(false);
   }, []);
 
   // - Value refs
@@ -207,6 +226,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
     // -- Auto-spin
     if (playDemoSpinRef.current) {
       playDemoSpinRef.current = false;
+      setIsSpinActive(true);
 
       demoSpinTimeout.current = setTimeout(() => {
         const startTime = Date.now();
@@ -356,6 +376,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       // Cancel any ongoing inertia animation
       cancelAnimation();
       isGrabbing = true;
+      setIsSpinActive(true);
       applyGrabbingCursor();
 
       // Take snapshot of the starting state
@@ -475,6 +496,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       // Cancel any ongoing inertia animation
       cancelAnimation();
       isGrabbing = true;
+      setIsSpinActive(true);
       applyGrabbingCursor();
 
       // Take snapshot of the starting state
@@ -589,27 +611,35 @@ const NextGenThreeSixtyElementInteractive: React.FC<
   ]);
 
   return (
-    <div ref={containerRef}>
+    <div ref={containerRef} style={hidden ? { position: 'absolute', width: '100%', height: '100%', opacity: 0, pointerEvents: 'none' } : undefined}>
       {/* Scroller is element larger than the image to capture scroll event and then, make the 360 spin */}
       {/* NOTE: ImageElement is within so that it can capture events first */}
       <div ref={scrollerRef} className="overflow-x-scroll">
         <div className="sticky left-0 top-0">
-          {/* Flipbook frames: CdnImage elements with z-index toggled imperatively for zero-rerender frame switching */}
-          <div ref={flipbookRef}>
-            {images.map((image, i) => (
+          {/* Flip book: CdnImage elements with z-index toggled imperatively (no React re-render).
+              Frame 0 starts at z-index 1 (visible), all others at -10.
+              showFrame() swaps z-index between previous and next frame. */}
+          {images.map((image, i) => (
+            <div
+              key={image.src}
+              ref={el => {
+                frameRefs.current[i] = el;
+              }}
+              className="pointer-events-none !absolute left-0 top-0 size-full"
+              style={{ zIndex: i === 0 ? 1 : -10 }}
+            >
               <CdnImage
-                key={image.src}
                 src={image.src}
-                className="pointer-events-none !absolute left-0 top-0 size-full object-cover"
-                style={{ zIndex: i === 0 ? 1 : -10 }}
+                className="size-full object-cover"
+                onLoad={onFrameLoad}
               />
-            ))}
-          </div>
-          {/* Resting frame: ImageElement with hotspots & zoom, layered on top when idle */}
+            </div>
+          ))}
           <ImageElement
             {...images[restingImageIndex]}
             onlyPreload={onlyPreload}
             itemIndex={-1}
+            className={isSpinActive ? "invisible" : undefined}
           />
         </div>
         {/* Add space on both sides to allow scrolling */}
@@ -624,9 +654,9 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 type NextGenThreeSixtyElementPlaceholderProps = {
   itemIndex: number;
   images: ImageWithHotspots[];
+  loadingProgress: number | null;
   onPlaceholderImageLoaded: () => void;
-  onSpinImagesLoaded: () => void;
-  onError: () => void;
+  onStartLoading: (type: "click" | "auto") => void;
 };
 
 const NextGenThreeSixtyElementPlaceholder: React.FC<
@@ -634,26 +664,13 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
 > = ({
   itemIndex,
   images,
+  loadingProgress,
   onPlaceholderImageLoaded,
-  onSpinImagesLoaded,
-  onError,
+  onStartLoading,
 }) => {
   const { autoLoad360, emitAnalyticsEvent, themeConfig } = useGlobalContext();
   const { displayedCategoryId, displayedCategoryName } = useControlsContext();
   const theme = useMemo(() => getThemeConfig(themeConfig), [themeConfig]);
-
-  const imagesSrc = useMemo(() => images.map(({ src }) => src), [images]);
-
-  const [loadingStatusMap, setLoadingStatusMap] = useState<Map<
-    string,
-    boolean
-  > | null>(null);
-
-  const loadingProgress = loadingStatusMap
-    ? ([...loadingStatusMap.values()].filter(loaded => loaded).length /
-        images.length) *
-      100
-    : null;
 
   const fetchSpinImages = useCallback(
     (type: "click" | "auto") => {
@@ -661,7 +678,7 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
         return;
       }
 
-      setLoadingStatusMap(new Map(imagesSrc.map(src => [src, false])));
+      onStartLoading(type);
       emitAnalyticsEvent({
         type: "interaction",
         current: {
@@ -679,7 +696,7 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
     },
     [
       loadingProgress,
-      imagesSrc,
+      onStartLoading,
       emitAnalyticsEvent,
       displayedCategoryId,
       displayedCategoryName,
@@ -692,14 +709,6 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
     fetchSpinImages("click");
   }, [fetchSpinImages]);
 
-  const onImageLoaded = useCallback((image: string) => {
-    setLoadingStatusMap(prev => {
-      const newStatusMap = new Map(prev);
-      newStatusMap.set(image, true);
-      return newStatusMap;
-    });
-  }, []);
-
   // Autoplay
   useEffect(() => {
     if (autoLoad360) {
@@ -707,32 +716,11 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
     }
   }, [autoLoad360, fetchSpinImages]);
 
-  // Preload images using plain Image() objects instead of React components
-  useEffect(() => {
-    if (!loadingStatusMap || loadingProgress === 100) {
-      return;
-    }
-
-    imagesSrc.forEach(src => {
-      const img = new Image();
-      img.onload = () => onImageLoaded(src);
-      img.onerror = () => onError();
-      img.src = src;
-    });
-  }, [loadingStatusMap, loadingProgress, imagesSrc, onImageLoaded, onError]);
-
-  // When all images are loaded, we emit the event
-  useEffect(() => {
-    if (loadingProgress === 100) {
-      onSpinImagesLoaded();
-    }
-  }, [loadingProgress, onSpinImagesLoaded]);
-
   return (
     <div className="relative aspect-[4/3] w-full">
       <CdnImage
         className="size-full"
-        src={imagesSrc[0]}
+        src={images[0].src}
         onLoad={onPlaceholderImageLoaded}
       />
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
@@ -781,19 +769,42 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
 /**
  * NextGenThreeSixtyElement component renders a carrousel's 360
  *
+ * The interactive component is pre-mounted (hidden) during loading so that
+ * all 180 CdnImage frames are rendered and cached by the browser before
+ * the user starts spinning. This eliminates the first-spin mount lag and
+ * ensures the browser cache matches the exact srcSet URLs that CdnImage uses.
+ *
  * @prop `onlyPreload`: If true, zoom will not affect the 360. It is useful to pre-fetch images.
  * @prop `index`: The index of the item in the carrousel. Used to share state.
  */
 const NextGenThreeSixtyElement: React.FC<
   NextGenThreeSixtyElementProps
 > = props => {
-  const { itemIndex } = props;
+  const { itemIndex, images } = props;
 
   const { setItemInteraction } = useControlsContext();
 
-  const [status, setStatus] = useState<null | "placeholder" | "spin" | "error">(
+  const [status, setStatus] = useState<null | "placeholder" | "loading" | "spin" | "error">(
     null
   );
+
+  // Track loading progress from the pre-mounted interactive component's CdnImage onLoad events
+  const [loadedFrameCount, setLoadedFrameCount] = useState(0);
+  const loadingProgress = status === "loading" || status === "spin"
+    ? (loadedFrameCount / images.length) * 100
+    : null;
+
+  const onAllFramesLoaded = useCallback(() => {
+    setStatus("spin");
+  }, []);
+
+  const onStartLoading = useCallback((_type: "click" | "auto") => {
+    setStatus("loading");
+  }, []);
+
+  const onFrameLoadedForProgress = useCallback(() => {
+    setLoadedFrameCount(c => c + 1);
+  }, []);
 
   // Update the item interaction state according to the readiness of the 360
   useEffect(() => {
@@ -811,20 +822,42 @@ const NextGenThreeSixtyElement: React.FC<
         text="Spin could not be loaded"
       />
     );
-  } else if (status !== "spin") {
-    return (
-      <NextGenThreeSixtyElementPlaceholder
-        {...props}
-        onPlaceholderImageLoaded={() =>
-          setStatus(s => (s === null ? "placeholder" : s))
-        }
-        onSpinImagesLoaded={() => setStatus("spin")}
-        onError={() => setStatus("error")}
-      />
-    );
-  } else {
-    return <NextGenThreeSixtyElementInteractive {...props} />;
   }
+
+  const isSpinning = status === "spin";
+
+  const showInteractive = status === "loading" || isSpinning;
+
+  return (
+    <div className="relative">
+      {/* Placeholder overlay: visible until spin is ready.
+          We keep the slot in the tree (null when spinning) so the Interactive
+          component below stays at a stable position and React does not
+          unmount/remount it when the placeholder disappears. */}
+      {!isSpinning ? (
+        <NextGenThreeSixtyElementPlaceholder
+          itemIndex={itemIndex}
+          images={images}
+          loadingProgress={loadingProgress}
+          onPlaceholderImageLoaded={() =>
+            setStatus(s => (s === null ? "placeholder" : s))
+          }
+          onStartLoading={onStartLoading}
+        />
+      ) : null}
+      {/* Interactive component: pre-mounted hidden during loading, revealed when spin starts.
+          The CdnImage frames inside serve as the preloader — their onLoad events drive the
+          progress bar, and the browser caches the exact srcSet URLs. */}
+      {showInteractive && (
+        <NextGenThreeSixtyElementInteractive
+          {...props}
+          hidden={!isSpinning}
+          onAllFramesLoaded={onAllFramesLoaded}
+          onFrameLoaded={onFrameLoadedForProgress}
+        />
+      )}
+    </div>
+  );
 };
 
 export default NextGenThreeSixtyElement;
