@@ -31,14 +31,12 @@ type NextGenThreeSixtyElementProps = Extract<
   onlyPreload: boolean;
 };
 
-type SpinCursorState = "default" | "left" | "right";
-
-const getCursorStyle = (
+const getCursorString = (
   cursorUrl: string,
   hotspot: { x: number; y: number },
   fallback: string
-): React.CSSProperties => {
-  return { cursor: `url("${cursorUrl}") ${hotspot.x} ${hotspot.y}, ${fallback}` };
+): string => {
+  return `url("${cursorUrl}") ${hotspot.x} ${hotspot.y}, ${fallback}`;
 };
 
 const NextGenThreeSixtyElementInteractive: React.FC<
@@ -50,29 +48,119 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
   const disableSpin = isZooming || isShowingDetails; // We do not want to do anything while zooming or showing a detail image
 
-  // - element refs
+  // - Element refs
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const flipbookRef = useRef<HTMLDivElement>(null);
 
-  const [isGrabbing, setIsGrabbing] = useState(false);
-  const [spinCursorState, setSpinCursorState] =
-    useState<SpinCursorState>("default");
-  const activeCursor =
-    spinCursor === "grab" && isGrabbing ? "grabbing" : spinCursor;
-  const cursorStyle = theme?.cursor
-    ? (() => {
-        const cursorKey =
-          spinCursorState === "left"
-            ? "leftSpin"
-            : spinCursorState === "right"
-              ? "rightSpin"
-              : "default";
-        const entry = theme.cursor[cursorKey];
-        return getCursorStyle(entry.url, entry.hotspot, activeCursor);
-      })()
-    : activeCursor === DEFAULT_SPIN_CURSOR
-      ? { cursor: `url("${spinCursorDefault}") 45 28, ew-resize` }
-      : { cursor: activeCursor };
+  // - Frame index: ref for imperative DOM updates during spin, state only for resting frame
+  const imageIndexRef = useRef(0);
+  const [restingImageIndex, setRestingImageIndex] = useState(0);
+
+  const length = images.length;
+
+  // - Cursor refs (to avoid re-renders during drag)
+  const themeRef = useRef(theme);
+  themeRef.current = theme;
+  const spinCursorRef = useRef(spinCursor);
+  spinCursorRef.current = spinCursor;
+
+  const applyDefaultCursor = useCallback(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const currentTheme = themeRef.current;
+    const cursor = spinCursorRef.current;
+
+    if (currentTheme?.cursor) {
+      const entry = currentTheme.cursor.default;
+      container.style.cursor = getCursorString(entry.url, entry.hotspot, cursor);
+    } else if (cursor === DEFAULT_SPIN_CURSOR) {
+      container.style.cursor = `url("${spinCursorDefault}") 45 28, ew-resize`;
+    } else {
+      container.style.cursor = cursor;
+    }
+  }, []);
+
+  const applyCursorForDirection = useCallback(
+    (direction: "left" | "right", isGrabbing: boolean) => {
+      const container = containerRef.current;
+      if (!container) return;
+
+      const currentTheme = themeRef.current;
+      const cursor = spinCursorRef.current;
+      const activeCursor =
+        cursor === "grab" && isGrabbing ? "grabbing" : cursor;
+
+      if (currentTheme?.cursor) {
+        const cursorKey = direction === "left" ? "leftSpin" : "rightSpin";
+        const entry = currentTheme.cursor[cursorKey];
+        container.style.cursor = getCursorString(
+          entry.url,
+          entry.hotspot,
+          activeCursor
+        );
+      } else if (activeCursor === DEFAULT_SPIN_CURSOR) {
+        container.style.cursor = `url("${spinCursorDefault}") 45 28, ew-resize`;
+      } else {
+        container.style.cursor = activeCursor;
+      }
+    },
+    []
+  );
+
+  const applyGrabbingCursor = useCallback(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const currentTheme = themeRef.current;
+    const cursor = spinCursorRef.current;
+
+    if (currentTheme?.cursor) {
+      const entry = currentTheme.cursor.default;
+      const activeCursor = cursor === "grab" ? "grabbing" : cursor;
+      container.style.cursor = getCursorString(
+        entry.url,
+        entry.hotspot,
+        activeCursor
+      );
+    } else if (cursor === "grab") {
+      container.style.cursor = "grabbing";
+    }
+  }, []);
+
+  // - Imperative frame switching via z-index on CdnImage children (no React re-render)
+  // The flipbook container has N CdnImage children; we toggle z-index to bring the active
+  // frame above the others. All frames stay visible (cached/painted), only stacking changes.
+  const showFrame = useCallback((newIndex: number) => {
+    const prev = imageIndexRef.current;
+    if (prev === newIndex) return;
+
+    const flipbook = flipbookRef.current;
+    if (!flipbook) return;
+
+    const children = flipbook.children;
+    const prevEl = children[prev] as HTMLElement | undefined;
+    const nextEl = children[newIndex] as HTMLElement | undefined;
+
+    if (prevEl) prevEl.style.zIndex = "-10";
+    if (nextEl) nextEl.style.zIndex = "1";
+
+    imageIndexRef.current = newIndex;
+  }, []);
+
+  const displayNextImage = useCallback(() => {
+    showFrame((imageIndexRef.current + 1) % length);
+  }, [length, showFrame]);
+
+  const displayPreviousImage = useCallback(() => {
+    showFrame((imageIndexRef.current - 1 + length) % length);
+  }, [length, showFrame]);
+
+  // - Sync resting frame when spin ends (triggers one React render for ImageElement with hotspots)
+  const syncRestingFrame = useCallback(() => {
+    setRestingImageIndex(imageIndexRef.current);
+  }, []);
 
   // - Value refs
   const playDemoSpinRef = useRef(demoSpin);
@@ -96,17 +184,10 @@ const NextGenThreeSixtyElementInteractive: React.FC<
     spinAnimationFrame.current = null;
   };
 
-  // - Flip book image index & details
-  const [imageIndex, setImageIndex] = useState(0);
-
-  const length = images.length;
-
-  const displayPreviousImage = useCallback(() => {
-    setImageIndex(currentIndex => (currentIndex - 1 + length) % length);
-  }, [length]);
-  const displayNextImage = useCallback(() => {
-    setImageIndex(currentIndex => (currentIndex + 1) % length);
-  }, [length]);
+  // - Set initial cursor on mount and when theme/spinCursor change
+  useEffect(() => {
+    applyDefaultCursor();
+  }, [applyDefaultCursor, theme, spinCursor]);
 
   // - Event listeners to handle spinning
   useEffect(() => {
@@ -140,11 +221,12 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
             const stepIndex = Math.round(easeOutQuad(progress) * length);
 
-            const imageIndex = clamp(stepIndex % length, 0, length - 1);
+            const frameIndex = clamp(stepIndex % length, 0, length - 1);
 
-            setImageIndex(imageIndex);
+            showFrame(frameIndex);
 
             if (stepIndex >= length) {
+              syncRestingFrame();
               return;
             }
 
@@ -166,6 +248,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
     let spinStartX: number | null = null;
     let lastPosXs: PosX[] = [];
+    let isGrabbing = false;
 
     const addPosX = (posX: PosX) => {
       lastPosXs.push(posX);
@@ -196,6 +279,12 @@ const NextGenThreeSixtyElementInteractive: React.FC<
         );
       })();
 
+      // If velocity is negligible, sync immediately
+      if (Math.abs(startVelocity) < 5 * dragStepPx) {
+        syncRestingFrame();
+        return;
+      }
+
       const startTime = Date.now();
 
       let walkX = 0;
@@ -220,6 +309,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
             Math.abs(walkX) < dragStepPx
           ) {
             spinAnimationFrame.current = null;
+            syncRestingFrame();
             return;
           }
 
@@ -244,15 +334,14 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       applyInertia();
     };
 
-    // -- Mouse events (click &
+    // -- Mouse events
     const cancelAnimation = () => {
       clearAutoSpinTimeout();
       cancelSpinAnimation();
     };
 
-    setIsGrabbing(false);
-
-    // NOTE: As the useEffect should not re-render, we can use mutable variables. If it changes in the future, we should use useRef
+    isGrabbing = false;
+    applyDefaultCursor();
 
     // Handle when the user just clicked on the 360 to start spinning
     const onMouseDown = (e: MouseEvent) => {
@@ -266,8 +355,8 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
       // Cancel any ongoing inertia animation
       cancelAnimation();
-      setIsGrabbing(true);
-      setSpinCursorState("default");
+      isGrabbing = true;
+      applyGrabbingCursor();
 
       // Take snapshot of the starting state
       const x = e.clientX;
@@ -289,8 +378,8 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       addPosX({ timestamp: Date.now(), value: x });
 
       const walkX = x - spinStartX;
-      if (walkX !== 0 && theme?.cursor) {
-        setSpinCursorState(walkX < 0 ? "left" : "right");
+      if (walkX !== 0 && themeRef.current?.cursor) {
+        applyCursorForDirection(walkX < 0 ? "left" : "right", isGrabbing);
       }
 
       // If the user did not move enough, we do not want to rotate
@@ -318,8 +407,8 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
       // Clear the starting point
       spinStartX = null;
-      setIsGrabbing(false);
-      setSpinCursorState("default");
+      isGrabbing = false;
+      applyDefaultCursor();
 
       startInertiaAnimation();
     };
@@ -385,8 +474,8 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
       // Cancel any ongoing inertia animation
       cancelAnimation();
-      setIsGrabbing(true);
-      setSpinCursorState("default");
+      isGrabbing = true;
+      applyGrabbingCursor();
 
       // Take snapshot of the starting state
       const { identifier: id, clientX: x } = e.changedTouches[0];
@@ -419,8 +508,8 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       addPosX({ timestamp: Date.now(), value: x });
 
       const walkX = x - spinStartX;
-      if (walkX !== 0 && theme?.cursor) {
-        setSpinCursorState(walkX < 0 ? "left" : "right");
+      if (walkX !== 0 && themeRef.current?.cursor) {
+        applyCursorForDirection(walkX < 0 ? "left" : "right", isGrabbing);
       }
 
       // If the user did not move enough, we do not want to rotate
@@ -457,8 +546,8 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       // Clear the starting point
       mainTouchId = null;
       spinStartX = null;
-      setIsGrabbing(false);
-      setSpinCursorState("default");
+      isGrabbing = false;
+      applyDefaultCursor();
 
       startInertiaAnimation();
     };
@@ -471,7 +560,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
     return () => {
       clearAutoSpinTimeout();
       cancelSpinAnimation();
-      setIsGrabbing(false);
+      applyDefaultCursor();
       container.removeEventListener("mousedown", onMouseDown);
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseleave", onStopDragging);
@@ -486,31 +575,39 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       scroller.removeEventListener("touchcancel", onTouchEnd);
     };
   }, [
+    applyDefaultCursor,
+    applyGrabbingCursor,
+    applyCursorForDirection,
     clearAutoSpinTimeout,
     displayNextImage,
     displayPreviousImage,
     disableSpin,
     reverse360,
-    theme,
     length,
+    showFrame,
+    syncRestingFrame,
   ]);
 
   return (
-    <div ref={containerRef} style={cursorStyle}>
+    <div ref={containerRef}>
       {/* Scroller is element larger than the image to capture scroll event and then, make the 360 spin */}
       {/* NOTE: ImageElement is within so that it can capture events first */}
       <div ref={scrollerRef} className="overflow-x-scroll">
         <div className="sticky left-0 top-0">
-          {/* Flip book (Ensures image are already in the DOM) */}
-          {images.map(image => (
-            <CdnImage
-              key={image.src}
-              src={image.src}
-              className="pointer-events-none !absolute left-0 top-0 -z-10"
-            />
-          ))}
+          {/* Flipbook frames: CdnImage elements with z-index toggled imperatively for zero-rerender frame switching */}
+          <div ref={flipbookRef}>
+            {images.map((image, i) => (
+              <CdnImage
+                key={image.src}
+                src={image.src}
+                className="pointer-events-none !absolute left-0 top-0 size-full object-cover"
+                style={{ zIndex: i === 0 ? 1 : -10 }}
+              />
+            ))}
+          </div>
+          {/* Resting frame: ImageElement with hotspots & zoom, layered on top when idle */}
           <ImageElement
-            {...images[imageIndex]}
+            {...images[restingImageIndex]}
             onlyPreload={onlyPreload}
             itemIndex={-1}
           />
@@ -610,6 +707,20 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
     }
   }, [autoLoad360, fetchSpinImages]);
 
+  // Preload images using plain Image() objects instead of React components
+  useEffect(() => {
+    if (!loadingStatusMap || loadingProgress === 100) {
+      return;
+    }
+
+    imagesSrc.forEach(src => {
+      const img = new Image();
+      img.onload = () => onImageLoaded(src);
+      img.onerror = () => onError();
+      img.src = src;
+    });
+  }, [loadingStatusMap, loadingProgress, imagesSrc, onImageLoaded, onError]);
+
   // When all images are loaded, we emit the event
   useEffect(() => {
     if (loadingProgress === 100) {
@@ -619,20 +730,6 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
 
   return (
     <div className="relative aspect-[4/3] w-full">
-      {loadingProgress !== null && loadingProgress !== 100 && (
-        // Add images to DOM to preload them
-        <div className="hidden">
-          {imagesSrc.map(src => (
-            <CdnImage
-              key={src}
-              src={src}
-              onLoad={() => onImageLoaded(src)}
-              onError={onError}
-            />
-          ))}
-        </div>
-      )}
-
       <CdnImage
         className="size-full"
         src={imagesSrc[0]}
