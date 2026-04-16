@@ -44,8 +44,10 @@ const NextGenThreeSixtyElementInteractive: React.FC<
     hidden?: boolean;
     onAllFramesLoaded?: () => void;
     onFrameLoaded?: () => void;
+    /** Pre-resolved URLs (currentSrc) for each frame, populated during loading phase */
+    resolvedFrameUrls: React.MutableRefObject<string[]>;
   }
-> = ({ images, onlyPreload, hidden, onAllFramesLoaded, onFrameLoaded }) => {
+> = ({ images, onlyPreload, hidden, onAllFramesLoaded, onFrameLoaded, resolvedFrameUrls }) => {
   const { demoSpin, reverse360, spinCursor, themeConfig } = useGlobalContext();
   const { isShowingDetails, isZooming } = useControlsContext();
   const theme = useMemo(() => getThemeConfig(themeConfig), [themeConfig]);
@@ -55,31 +57,37 @@ const NextGenThreeSixtyElementInteractive: React.FC<
   // - Track frame loading for pre-mount preloading
   const loadedCountRef = useRef(0);
   const allFramesLoadedRef = useRef(false);
-  const onFrameLoad = useCallback(() => {
-    loadedCountRef.current += 1;
-    onFrameLoaded?.();
-    if (
-      !allFramesLoadedRef.current &&
-      loadedCountRef.current >= images.length &&
-      onAllFramesLoaded
-    ) {
-      allFramesLoadedRef.current = true;
-      onAllFramesLoaded();
-    }
-  }, [images.length, onAllFramesLoaded, onFrameLoaded]);
+  const onFrameLoad = useCallback(
+    (index: number, imgEl: HTMLImageElement) => {
+      // Capture the actual URL the browser selected from srcSet
+      resolvedFrameUrls.current[index] = imgEl.currentSrc || imgEl.src;
+
+      loadedCountRef.current += 1;
+      onFrameLoaded?.();
+      if (
+        !allFramesLoadedRef.current &&
+        loadedCountRef.current >= images.length &&
+        onAllFramesLoaded
+      ) {
+        allFramesLoadedRef.current = true;
+        onAllFramesLoaded();
+      }
+    },
+    [images.length, onAllFramesLoaded, onFrameLoaded, resolvedFrameUrls]
+  );
 
   // - Element refs
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
+
+  // - Single flipbook <img> element ref for imperative src swapping
+  const flipbookImgRef = useRef<HTMLImageElement>(null);
 
   // - Frame index: ref for imperative updates during spin, state for resting ImageElement
   const imageIndexRef = useRef(0);
   const [restingImageIndex, setRestingImageIndex] = useState(0);
 
   const length = images.length;
-
-  // - Refs to CdnImage wrapper elements for direct DOM z-index manipulation
-  const frameRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // - Cursor refs (to avoid re-renders during drag)
   const themeRef = useRef(theme);
@@ -151,18 +159,19 @@ const NextGenThreeSixtyElementInteractive: React.FC<
     }
   }, []);
 
-  // - Imperative frame switching via direct DOM z-index manipulation (no React re-render)
+  // - Imperative frame switching: swap src on the single flipbook <img> (no React re-render)
   const showFrame = useCallback((newIndex: number) => {
     const prev = imageIndexRef.current;
     if (prev === newIndex) return;
 
-    const prevEl = frameRefs.current[prev];
-    const nextEl = frameRefs.current[newIndex];
-    if (prevEl) prevEl.style.zIndex = "-10";
-    if (nextEl) nextEl.style.zIndex = "1";
+    const img = flipbookImgRef.current;
+    const url = resolvedFrameUrls.current[newIndex];
+    if (img && url) {
+      img.src = url;
+    }
 
     imageIndexRef.current = newIndex;
-  }, []);
+  }, [resolvedFrameUrls]);
 
   const displayNextImage = useCallback(() => {
     showFrame((imageIndexRef.current + 1) % length);
@@ -612,34 +621,39 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
   return (
     <div ref={containerRef} style={hidden ? { position: 'absolute', width: '100%', height: '100%', opacity: 0, pointerEvents: 'none' } : undefined}>
+      {/* Hidden CdnImage elements for preloading via srcSet (only during loading phase).
+          Their onLoad captures currentSrc into resolvedFrameUrls. */}
+      {!allFramesLoadedRef.current && (
+        <div style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden', opacity: 0 }}>
+          {images.map((image, i) => (
+            <CdnImage
+              key={image.src}
+              src={image.src}
+              className="size-full object-cover"
+              onLoad={(e) => onFrameLoad(i, e.currentTarget)}
+            />
+          ))}
+        </div>
+      )}
       {/* Scroller is element larger than the image to capture scroll event and then, make the 360 spin */}
       {/* NOTE: ImageElement is within so that it can capture events first */}
       <div ref={scrollerRef} className="overflow-x-scroll">
         <div className="sticky left-0 top-0">
-          {/* Flip book: CdnImage elements with z-index toggled imperatively (no React re-render).
-              Frame 0 starts at z-index 1 (visible), all others at -10.
-              showFrame() swaps z-index between previous and next frame. */}
-          {images.map((image, i) => (
-            <div
-              key={image.src}
-              ref={el => {
-                frameRefs.current[i] = el;
-              }}
-              className="pointer-events-none !absolute left-0 top-0 size-full"
-              style={{ zIndex: i === 0 ? 1 : -10 }}
-            >
-              <CdnImage
-                src={image.src}
-                className="size-full object-cover"
-                onLoad={onFrameLoad}
-              />
-            </div>
-          ))}
+          {/* Single flipbook image: src is swapped imperatively during spin (no React re-render).
+              Uses the resolved currentSrc URLs that match the browser's srcSet cache. */}
+          <img
+            ref={flipbookImgRef}
+            src={resolvedFrameUrls.current[0] || images[0].src}
+            className={cn(
+              "pointer-events-none !absolute left-0 top-0 size-full object-cover",
+              isSpinActive ? "z-[2]" : "-z-10"
+            )}
+            alt=""
+          />
           <ImageElement
             {...images[restingImageIndex]}
             onlyPreload={onlyPreload}
             itemIndex={-1}
-            className={isSpinActive ? "invisible" : undefined}
           />
         </div>
         {/* Add space on both sides to allow scrolling */}
@@ -794,6 +808,9 @@ const NextGenThreeSixtyElement: React.FC<
     ? (loadedFrameCount / images.length) * 100
     : null;
 
+  // Ref to store resolved currentSrc URLs from CdnImage srcSet selection
+  const resolvedFrameUrls = useRef<string[]>([]);
+
   const onAllFramesLoaded = useCallback(() => {
     setStatus("spin");
   }, []);
@@ -854,6 +871,7 @@ const NextGenThreeSixtyElement: React.FC<
           hidden={!isSpinning}
           onAllFramesLoaded={onAllFramesLoaded}
           onFrameLoaded={onFrameLoadedForProgress}
+          resolvedFrameUrls={resolvedFrameUrls}
         />
       )}
     </div>
