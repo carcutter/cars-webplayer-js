@@ -208,7 +208,7 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
                   {title && (
                     <h3
                       className={cn(
-                        "text-[clamp(0.875rem,0.6rem+1.6cqw,1.125rem)] font-semibold text-white small:font-bold",
+                        "break-words pr-10 text-[clamp(0.875rem,0.6rem+1.6cqw,1.125rem)] font-semibold text-white small:font-bold",
                         extendMode && "large:text-lg"
                       )}
                     >
