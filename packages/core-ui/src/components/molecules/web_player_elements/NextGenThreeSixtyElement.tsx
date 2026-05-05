@@ -14,6 +14,7 @@ import Exterior360PlayIcon from "../../icons/Exterior360PlayIcon";
 import ThreeSixtyIcon from "../../icons/ThreeSixtyIcon";
 import ErrorTemplate from "../../template/ErrorTemplate";
 import Button from "../../ui/Button";
+import Hotspot from "../Hotspot";
 
 import ImageElement from "./ImageElement";
 
@@ -47,9 +48,10 @@ const NextGenThreeSixtyElementInteractive: React.FC<
     /** Pre-resolved URLs (currentSrc) for each frame, populated during loading phase */
     resolvedFrameUrls: React.MutableRefObject<string[]>;
   }
-> = ({ images, onlyPreload, hidden, onAllFramesLoaded, onFrameLoaded, resolvedFrameUrls }) => {
+> = ({ images, itemIndex, onlyPreload, hidden, onAllFramesLoaded, onFrameLoaded, resolvedFrameUrls }) => {
   const { demoSpin, reverse360, spinCursor, themeConfig } = useGlobalContext();
-  const { isShowingDetails, isZooming } = useControlsContext();
+  const { isShowingDetails, isZooming, currentItemHotspotsVisible } =
+    useControlsContext();
   const theme = useMemo(() => getThemeConfig(themeConfig), [themeConfig]);
 
   const disableSpin = isZooming || isShowingDetails || !!hidden; // We do not want to do anything while zooming, showing a detail image, or while hidden
@@ -82,6 +84,12 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
   // - Single flipbook <img> element ref for imperative src swapping
   const flipbookImgRef = useRef<HTMLImageElement>(null);
+
+  // - Per-frame hotspot group refs for imperative visibility toggling.
+  //   This mirrors the flipbook pattern: hotspots for all frames are mounted
+  //   once, and only display:none/block is flipped per frame swap to avoid
+  //   any React re-renders during spin.
+  const hotspotGroupRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // - Frame index: ref for imperative updates during spin, state for resting ImageElement
   const imageIndexRef = useRef(0);
@@ -169,6 +177,12 @@ const NextGenThreeSixtyElementInteractive: React.FC<
     if (img && url) {
       img.src = url;
     }
+
+    // Toggle hotspot group visibility imperatively (no React re-render).
+    const prevGroup = hotspotGroupRefs.current[prev];
+    const nextGroup = hotspotGroupRefs.current[newIndex];
+    if (prevGroup) prevGroup.style.display = "none";
+    if (nextGroup) nextGroup.style.display = "block";
 
     imageIndexRef.current = newIndex;
   }, [resolvedFrameUrls]);
@@ -654,7 +668,44 @@ const NextGenThreeSixtyElementInteractive: React.FC<
             {...images[restingImageIndex]}
             onlyPreload={onlyPreload}
             itemIndex={-1}
+            suppressHotspots
           />
+          {/* Per-frame hotspot overlay.
+              All frames' hotspots are mounted once; only display:none/block is
+              flipped imperatively in showFrame() to track the visible frame
+              without triggering React re-renders during spin.
+              The wrapper is non-interactive while spinning to avoid hijacking
+              drag/touch gestures. */}
+          {currentItemHotspotsVisible && (
+            <div
+              className={cn(
+                "absolute inset-0 z-[3]",
+                isSpinActive ? "pointer-events-none" : "pointer-events-auto"
+              )}
+            >
+              {images.map((image, i) => (
+                <div
+                  key={i}
+                  ref={el => {
+                    hotspotGroupRefs.current[i] = el;
+                  }}
+                  className="absolute inset-0"
+                  style={{ display: i === restingImageIndex ? "block" : "none" }}
+                >
+                  {image.hotspots?.map((hotspot, hi) => (
+                    <Hotspot
+                      key={hi}
+                      hotspot={hotspot}
+                      item={{
+                        item_type: "next360",
+                        item_position: itemIndex,
+                      }}
+                    />
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         {/* Add space on both sides to allow scrolling */}
         {/* NOTE: We need the element to have an height, otherwise, Safari will ignore it */}
