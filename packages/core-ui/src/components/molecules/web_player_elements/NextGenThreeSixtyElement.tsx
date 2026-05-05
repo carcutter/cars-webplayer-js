@@ -45,10 +45,11 @@ const NextGenThreeSixtyElementInteractive: React.FC<
     hidden?: boolean;
     onAllFramesLoaded?: () => void;
     onFrameLoaded?: () => void;
+    onFrameError?: () => void;
     /** Pre-resolved URLs (currentSrc) for each frame, populated during loading phase */
     resolvedFrameUrls: React.MutableRefObject<string[]>;
   }
-> = ({ images, itemIndex, onlyPreload, hidden, onAllFramesLoaded, onFrameLoaded, resolvedFrameUrls }) => {
+> = ({ images, itemIndex, onlyPreload, hidden, onAllFramesLoaded, onFrameLoaded, onFrameError, resolvedFrameUrls }) => {
   const { demoSpin, reverse360, spinCursor, themeConfig } = useGlobalContext();
   const { isShowingDetails, isZooming, currentItemHotspotsVisible } =
     useControlsContext();
@@ -61,8 +62,24 @@ const NextGenThreeSixtyElementInteractive: React.FC<
   const allFramesLoadedRef = useRef(false);
   const onFrameLoad = useCallback(
     (index: number, imgEl: HTMLImageElement) => {
-      // Capture the actual URL the browser selected from srcSet
-      resolvedFrameUrls.current[index] = imgEl.currentSrc || imgEl.src;
+      // Capture the actual URL the browser selected from srcSet.
+      // onLoad can fire multiple times for the same <img> when the browser
+      // switches srcSet candidates (e.g. on viewport/DPR changes), so only
+      // count this frame the first time we see a resolved URL for its slot.
+      const resolvedUrl = imgEl.currentSrc || imgEl.src;
+      const previousUrl = resolvedFrameUrls.current[index];
+      if (previousUrl === resolvedUrl) {
+        return;
+      }
+
+      const isNewSlot = !previousUrl;
+      resolvedFrameUrls.current[index] = resolvedUrl;
+
+      if (!isNewSlot) {
+        // srcSet swap on an already-counted frame: update the resolved URL
+        // but do not double-count it.
+        return;
+      }
 
       loadedCountRef.current += 1;
       onFrameLoaded?.();
@@ -645,6 +662,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
               src={image.src}
               className="size-full object-cover"
               onLoad={(e) => onFrameLoad(i, e.currentTarget)}
+              onError={() => onFrameError?.()}
             />
           ))}
         </div>
@@ -721,6 +739,7 @@ type NextGenThreeSixtyElementPlaceholderProps = {
   images: ImageWithHotspots[];
   loadingProgress: number | null;
   onPlaceholderImageLoaded: () => void;
+  onPlaceholderImageError?: () => void;
   onStartLoading: (type: "click" | "auto") => void;
 };
 
@@ -731,6 +750,7 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
   images,
   loadingProgress,
   onPlaceholderImageLoaded,
+  onPlaceholderImageError,
   onStartLoading,
 }) => {
   const { autoLoad360, emitAnalyticsEvent, themeConfig } = useGlobalContext();
@@ -787,6 +807,7 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
         className="size-full"
         src={images[0].src}
         onLoad={onPlaceholderImageLoaded}
+        onError={() => onPlaceholderImageError?.()}
       />
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
         <ThreeSixtyIcon className="size-20" isVisible={theme?.threeSixtyIcon} />
@@ -874,6 +895,10 @@ const NextGenThreeSixtyElement: React.FC<
     setLoadedFrameCount(c => c + 1);
   }, []);
 
+  const onFrameError = useCallback(() => {
+    setStatus("error");
+  }, []);
+
   // Update the item interaction state according to the readiness of the 360
   useEffect(() => {
     if (status === null || status === "error") {
@@ -910,6 +935,7 @@ const NextGenThreeSixtyElement: React.FC<
           onPlaceholderImageLoaded={() =>
             setStatus(s => (s === null ? "placeholder" : s))
           }
+          onPlaceholderImageError={onFrameError}
           onStartLoading={onStartLoading}
         />
       ) : null}
@@ -922,6 +948,7 @@ const NextGenThreeSixtyElement: React.FC<
           hidden={!isSpinning}
           onAllFramesLoaded={onAllFramesLoaded}
           onFrameLoaded={onFrameLoadedForProgress}
+          onFrameError={onFrameError}
           resolvedFrameUrls={resolvedFrameUrls}
         />
       )}
