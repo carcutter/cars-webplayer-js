@@ -800,7 +800,7 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
           }
           style={
             theme?.playButton
-              ? { width: 74, height: 74, padding: 0 }
+              ? { width: 140, height: 140, padding: 0 }
               : undefined
           }
           color="neutral"

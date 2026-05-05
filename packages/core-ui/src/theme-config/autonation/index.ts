@@ -10,10 +10,10 @@ export const config: ThemeConfig = {
     default: playButtonSvg,
   },
   cursor: {
-    // All cursor SVGs are 84x44 → center (42, 22)
-    default: { url: defaultSpinSvg, hotspot: { x: 42, y: 22 } },
-    leftSpin: { url: leftSpinSvg, hotspot: { x: 42, y: 22 } },
-    rightSpin: { url: rightSpinSvg, hotspot: { x: 42, y: 22 } },
+    // All cursor SVGs are 80x40 → center (40, 20)
+    default: { url: defaultSpinSvg, hotspot: { x: 40, y: 20 } },
+    leftSpin: { url: leftSpinSvg, hotspot: { x: 40, y: 20 } },
+    rightSpin: { url: rightSpinSvg, hotspot: { x: 40, y: 20 } },
   },
   threeSixtyIcon: false,
   errorImage:
