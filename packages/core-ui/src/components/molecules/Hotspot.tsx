@@ -88,13 +88,11 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
 
   const DefaultIcon = withDetail ? (
     type === "damage" ? (
-      <WarningIcon className="size-4" />
+      <WarningIcon className="size-full" />
     ) : (
-      <ImageIcon className="size-4" />
+      <ImageIcon className="size-full" />
     )
-  ) : (
-    <div className="size-1" />
-  );
+  ) : null;
 
   const onClick = () => {
     if (!clickable) {
@@ -140,6 +138,12 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   }, [type]);
 
   const hotspotColorVariable = getHotspotColorVariable();
+
+  // Responsive hotspot size using container query width units.
+  // The hotspot circle scales proportionally to the container width
+  // with a min/max to stay usable on small screens and not grow too large.
+  const hotspotSize = "clamp(28px, 3.5cqw, 48px)";
+  const hotspotPingSize = "clamp(32px, 4cqw, 56px)";
 
   useEffect(() => {
     if (!withTitle) {
@@ -233,43 +237,45 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       <div
         // Hoverable icon
         className={cn(
-          "relative top-px flex shrink-0 items-center justify-center rounded-full border-2 border-background bg-primary text-primary-foreground",
-          withDetail
-            ? shouldFlipTitle
-              ? "right-[-5px] size-7"
-              : "left-[-5px] size-7"
-            : shouldFlipTitle
-              ? "-right-px size-4"
-              : "-left-px size-4"
+          "relative top-px flex shrink-0 items-center justify-center rounded-full border-2 border-background bg-primary text-primary-foreground"
         )}
-        style={{ backgroundColor: hotspotColorVariable }}
+        style={{
+          backgroundColor: hotspotColorVariable,
+          width: hotspotSize,
+          height: hotspotSize,
+        }}
       >
         <div
           // Ping animation
-          className="pointer-events-none absolute -z-20 size-8 animate-hotspot-ping rounded-full border-0 bg-primary"
-          style={{ backgroundColor: hotspotColorVariable }}
+          className="pointer-events-none absolute -z-20 animate-hotspot-ping rounded-full border-0 bg-primary"
+          style={{
+            backgroundColor: hotspotColorVariable,
+            width: hotspotPingSize,
+            height: hotspotPingSize,
+          }}
         />
 
         {/* Use the icon from the config if available. Else, replace it if needed */}
-        <div className={cn(withDetail ? "size-4 [&_*]:size-4" : "size-1")}>
-          {hotspotConfig?.Icon ? hotspotConfig.Icon : DefaultIcon}
-        </div>
+        {(hotspotConfig?.Icon || DefaultIcon) && (
+          <div
+            className="[&_*]:size-full"
+            style={{
+              width: `calc(${hotspotSize} * 0.57)`,
+              height: `calc(${hotspotSize} * 0.57)`,
+            }}
+          >
+            {hotspotConfig?.Icon ? hotspotConfig.Icon : DefaultIcon}
+          </div>
+        )}
       </div>
       {withTitle && (
         <div
           className={cn(
-            "absolute bottom-0 -z-10 flex w-max max-w-60 items-center gap-1.5 rounded-t-full bg-foreground py-1.5 text-background transition-[opacity,transform] duration-200 small:max-w-64",
+            "absolute -bottom-1 -z-10 flex w-max max-w-60 items-center gap-1.5 rounded-t-full bg-foreground py-1.5 text-background transition-[opacity,transform] duration-200 small:max-w-64",
             extendMode && "large:max-w-72",
             shouldFlipTitle
-              ? "right-0 rounded-bl-full group-hover:-translate-x-1"
-              : "left-0 rounded-br-full group-hover:translate-x-1",
-            withDetail
-              ? shouldFlipTitle
-                ? "rounded-br-[10px] pl-2.5 pr-6 small:pl-3 small:pr-7"
-                : "rounded-bl-[10px] pl-6 pr-2.5 small:pl-7 small:pr-3"
-              : shouldFlipTitle
-                ? "rounded-br-[8px] pl-2.5 pr-5 small:pl-3 small:pr-6"
-                : "rounded-bl-[8px] pl-5 pr-2.5 small:pl-6 small:pr-3",
+              ? "right-0 rounded-bl-full rounded-br-[10px] pl-2.5 pr-8 group-hover:-translate-x-1 small:pl-3 small:pr-9"
+              : "left-0 rounded-bl-[10px] rounded-br-full pl-8 pr-2.5 group-hover:translate-x-1 small:pl-9 small:pr-3",
             "pointer-events-none opacity-0 group-hover:pointer-events-auto group-hover:opacity-100"
           )}
           ref={titleRef}
