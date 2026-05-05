@@ -899,6 +899,17 @@ const NextGenThreeSixtyElement: React.FC<
     setStatus("error");
   }, []);
 
+  // Reset preload state whenever the image set changes, so a new spin starts
+  // from "placeholder" with a fresh progress count and no stale resolved URLs.
+  // We key by first frame src + length to avoid resets on referentially-new
+  // arrays that contain the same frames.
+  const imagesKey = `${images[0]?.src ?? ""}|${images.length}`;
+  useEffect(() => {
+    setStatus(null);
+    setLoadedFrameCount(0);
+    resolvedFrameUrls.current = [];
+  }, [imagesKey]);
+
   // Update the item interaction state according to the readiness of the 360
   useEffect(() => {
     if (status === null || status === "error") {
