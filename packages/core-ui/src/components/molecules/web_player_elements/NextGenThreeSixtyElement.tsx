@@ -14,6 +14,7 @@ import Exterior360PlayIcon from "../../icons/Exterior360PlayIcon";
 import ThreeSixtyIcon from "../../icons/ThreeSixtyIcon";
 import ErrorTemplate from "../../template/ErrorTemplate";
 import Button from "../../ui/Button";
+import Hotspot from "../Hotspot";
 
 import ImageElement from "./ImageElement";
 
@@ -31,48 +32,194 @@ type NextGenThreeSixtyElementProps = Extract<
   onlyPreload: boolean;
 };
 
-type SpinCursorState = "default" | "left" | "right";
-
-const getCursorStyle = (
+const getCursorString = (
   cursorUrl: string,
   hotspot: { x: number; y: number },
   fallback: string
-): React.CSSProperties => {
-  return { cursor: `url("${cursorUrl}") ${hotspot.x} ${hotspot.y}, ${fallback}` };
+): string => {
+  return `url("${cursorUrl}") ${hotspot.x} ${hotspot.y}, ${fallback}`;
 };
 
 const NextGenThreeSixtyElementInteractive: React.FC<
-  NextGenThreeSixtyElementProps
-> = ({ images, onlyPreload }) => {
+  NextGenThreeSixtyElementProps & {
+    hidden?: boolean;
+    onAllFramesLoaded?: () => void;
+    onFrameLoaded?: () => void;
+    onFrameError?: () => void;
+    /** Pre-resolved URLs (currentSrc) for each frame, populated during loading phase */
+    resolvedFrameUrls: React.MutableRefObject<string[]>;
+  }
+> = ({ images, itemIndex, onlyPreload, hidden, onAllFramesLoaded, onFrameLoaded, onFrameError, resolvedFrameUrls }) => {
   const { demoSpin, reverse360, spinCursor, themeConfig } = useGlobalContext();
-  const { isShowingDetails, isZooming } = useControlsContext();
+  const { isShowingDetails, isZooming, currentItemHotspotsVisible } =
+    useControlsContext();
   const theme = useMemo(() => getThemeConfig(themeConfig), [themeConfig]);
 
-  const disableSpin = isZooming || isShowingDetails; // We do not want to do anything while zooming or showing a detail image
+  const disableSpin = isZooming || isShowingDetails || !!hidden; // We do not want to do anything while zooming, showing a detail image, or while hidden
 
-  // - element refs
+  // - Track frame loading for pre-mount preloading
+  const loadedCountRef = useRef(0);
+  const allFramesLoadedRef = useRef(false);
+  const onFrameLoad = useCallback(
+    (index: number, imgEl: HTMLImageElement) => {
+      // Capture the actual URL the browser selected from srcSet.
+      // onLoad can fire multiple times for the same <img> when the browser
+      // switches srcSet candidates (e.g. on viewport/DPR changes), so only
+      // count this frame the first time we see a resolved URL for its slot.
+      const resolvedUrl = imgEl.currentSrc || imgEl.src;
+      const previousUrl = resolvedFrameUrls.current[index];
+      if (previousUrl === resolvedUrl) {
+        return;
+      }
+
+      const isNewSlot = !previousUrl;
+      resolvedFrameUrls.current[index] = resolvedUrl;
+
+      if (!isNewSlot) {
+        // srcSet swap on an already-counted frame: update the resolved URL
+        // but do not double-count it.
+        return;
+      }
+
+      loadedCountRef.current += 1;
+      onFrameLoaded?.();
+      if (
+        !allFramesLoadedRef.current &&
+        loadedCountRef.current >= images.length &&
+        onAllFramesLoaded
+      ) {
+        allFramesLoadedRef.current = true;
+        onAllFramesLoaded();
+      }
+    },
+    [images.length, onAllFramesLoaded, onFrameLoaded, resolvedFrameUrls]
+  );
+
+  // - Element refs
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
 
-  const [isGrabbing, setIsGrabbing] = useState(false);
-  const [spinCursorState, setSpinCursorState] =
-    useState<SpinCursorState>("default");
-  const activeCursor =
-    spinCursor === "grab" && isGrabbing ? "grabbing" : spinCursor;
-  const cursorStyle = theme?.cursor
-    ? (() => {
-        const cursorKey =
-          spinCursorState === "left"
-            ? "leftSpin"
-            : spinCursorState === "right"
-              ? "rightSpin"
-              : "default";
-        const entry = theme.cursor[cursorKey];
-        return getCursorStyle(entry.url, entry.hotspot, activeCursor);
-      })()
-    : activeCursor === DEFAULT_SPIN_CURSOR
-      ? { cursor: `url("${spinCursorDefault}") 45 28, ew-resize` }
-      : { cursor: activeCursor };
+  // - Single flipbook <img> element ref for imperative src swapping
+  const flipbookImgRef = useRef<HTMLImageElement>(null);
+
+  // - Per-frame hotspot group refs for imperative visibility toggling.
+  //   This mirrors the flipbook pattern: hotspots for all frames are mounted
+  //   once, and only display:none/block is flipped per frame swap to avoid
+  //   any React re-renders during spin.
+  const hotspotGroupRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // - Frame index: ref for imperative updates during spin, state for resting ImageElement
+  const imageIndexRef = useRef(0);
+  const [restingImageIndex, setRestingImageIndex] = useState(0);
+
+  const length = images.length;
+
+  // - Cursor refs (to avoid re-renders during drag)
+  const themeRef = useRef(theme);
+  themeRef.current = theme;
+  const spinCursorRef = useRef(spinCursor);
+  spinCursorRef.current = spinCursor;
+
+  const applyDefaultCursor = useCallback(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const currentTheme = themeRef.current;
+    const cursor = spinCursorRef.current;
+
+    if (currentTheme?.cursor) {
+      const entry = currentTheme.cursor.default;
+      container.style.cursor = getCursorString(entry.url, entry.hotspot, cursor);
+    } else if (cursor === DEFAULT_SPIN_CURSOR) {
+      container.style.cursor = `url("${spinCursorDefault}") 45 28, ew-resize`;
+    } else {
+      container.style.cursor = cursor;
+    }
+  }, []);
+
+  const applyCursorForDirection = useCallback(
+    (direction: "left" | "right", isGrabbing: boolean) => {
+      const container = containerRef.current;
+      if (!container) return;
+
+      const currentTheme = themeRef.current;
+      const cursor = spinCursorRef.current;
+      const activeCursor =
+        cursor === "grab" && isGrabbing ? "grabbing" : cursor;
+
+      if (currentTheme?.cursor) {
+        const cursorKey = direction === "left" ? "leftSpin" : "rightSpin";
+        const entry = currentTheme.cursor[cursorKey];
+        container.style.cursor = getCursorString(
+          entry.url,
+          entry.hotspot,
+          activeCursor
+        );
+      } else if (activeCursor === DEFAULT_SPIN_CURSOR) {
+        container.style.cursor = `url("${spinCursorDefault}") 45 28, ew-resize`;
+      } else {
+        container.style.cursor = activeCursor;
+      }
+    },
+    []
+  );
+
+  const applyGrabbingCursor = useCallback(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const currentTheme = themeRef.current;
+    const cursor = spinCursorRef.current;
+
+    if (currentTheme?.cursor) {
+      const entry = currentTheme.cursor.default;
+      const activeCursor = cursor === "grab" ? "grabbing" : cursor;
+      container.style.cursor = getCursorString(
+        entry.url,
+        entry.hotspot,
+        activeCursor
+      );
+    } else if (cursor === "grab") {
+      container.style.cursor = "grabbing";
+    }
+  }, []);
+
+  // - Imperative frame switching: swap src on the single flipbook <img> (no React re-render)
+  const showFrame = useCallback((newIndex: number) => {
+    const prev = imageIndexRef.current;
+    if (prev === newIndex) return;
+
+    const img = flipbookImgRef.current;
+    const url = resolvedFrameUrls.current[newIndex];
+    if (img && url) {
+      img.src = url;
+    }
+
+    // Toggle hotspot group visibility imperatively (no React re-render).
+    const prevGroup = hotspotGroupRefs.current[prev];
+    const nextGroup = hotspotGroupRefs.current[newIndex];
+    if (prevGroup) prevGroup.style.display = "none";
+    if (nextGroup) nextGroup.style.display = "block";
+
+    imageIndexRef.current = newIndex;
+  }, [resolvedFrameUrls]);
+
+  const displayNextImage = useCallback(() => {
+    showFrame((imageIndexRef.current + 1) % length);
+  }, [length, showFrame]);
+
+  const displayPreviousImage = useCallback(() => {
+    showFrame((imageIndexRef.current - 1 + length) % length);
+  }, [length, showFrame]);
+
+  // Track whether the user is actively spinning (drag/touch/inertia/demo) to hide ImageElement overlay
+  const [isSpinActive, setIsSpinActive] = useState(false);
+
+  // - Sync resting frame when spin ends (single React render for ImageElement hotspots)
+  const syncRestingFrame = useCallback(() => {
+    setRestingImageIndex(imageIndexRef.current);
+    setIsSpinActive(false);
+  }, []);
 
   // - Value refs
   const playDemoSpinRef = useRef(demoSpin);
@@ -96,17 +243,10 @@ const NextGenThreeSixtyElementInteractive: React.FC<
     spinAnimationFrame.current = null;
   };
 
-  // - Flip book image index & details
-  const [imageIndex, setImageIndex] = useState(0);
-
-  const length = images.length;
-
-  const displayPreviousImage = useCallback(() => {
-    setImageIndex(currentIndex => (currentIndex - 1 + length) % length);
-  }, [length]);
-  const displayNextImage = useCallback(() => {
-    setImageIndex(currentIndex => (currentIndex + 1) % length);
-  }, [length]);
+  // - Set initial cursor on mount and when theme/spinCursor change
+  useEffect(() => {
+    applyDefaultCursor();
+  }, [applyDefaultCursor, theme, spinCursor]);
 
   // - Event listeners to handle spinning
   useEffect(() => {
@@ -126,6 +266,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
     // -- Auto-spin
     if (playDemoSpinRef.current) {
       playDemoSpinRef.current = false;
+      setIsSpinActive(true);
 
       demoSpinTimeout.current = setTimeout(() => {
         const startTime = Date.now();
@@ -140,11 +281,12 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
             const stepIndex = Math.round(easeOutQuad(progress) * length);
 
-            const imageIndex = clamp(stepIndex % length, 0, length - 1);
+            const frameIndex = clamp(stepIndex % length, 0, length - 1);
 
-            setImageIndex(imageIndex);
+            showFrame(frameIndex);
 
             if (stepIndex >= length) {
+              syncRestingFrame();
               return;
             }
 
@@ -166,6 +308,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
     let spinStartX: number | null = null;
     let lastPosXs: PosX[] = [];
+    let isGrabbing = false;
 
     const addPosX = (posX: PosX) => {
       lastPosXs.push(posX);
@@ -196,6 +339,12 @@ const NextGenThreeSixtyElementInteractive: React.FC<
         );
       })();
 
+      // If velocity is negligible, sync immediately
+      if (Math.abs(startVelocity) < 5 * dragStepPx) {
+        syncRestingFrame();
+        return;
+      }
+
       const startTime = Date.now();
 
       let walkX = 0;
@@ -220,6 +369,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
             Math.abs(walkX) < dragStepPx
           ) {
             spinAnimationFrame.current = null;
+            syncRestingFrame();
             return;
           }
 
@@ -244,15 +394,14 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       applyInertia();
     };
 
-    // -- Mouse events (click &
+    // -- Mouse events
     const cancelAnimation = () => {
       clearAutoSpinTimeout();
       cancelSpinAnimation();
     };
 
-    setIsGrabbing(false);
-
-    // NOTE: As the useEffect should not re-render, we can use mutable variables. If it changes in the future, we should use useRef
+    isGrabbing = false;
+    applyDefaultCursor();
 
     // Handle when the user just clicked on the 360 to start spinning
     const onMouseDown = (e: MouseEvent) => {
@@ -266,8 +415,9 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
       // Cancel any ongoing inertia animation
       cancelAnimation();
-      setIsGrabbing(true);
-      setSpinCursorState("default");
+      isGrabbing = true;
+      setIsSpinActive(true);
+      applyGrabbingCursor();
 
       // Take snapshot of the starting state
       const x = e.clientX;
@@ -289,8 +439,8 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       addPosX({ timestamp: Date.now(), value: x });
 
       const walkX = x - spinStartX;
-      if (walkX !== 0 && theme?.cursor) {
-        setSpinCursorState(walkX < 0 ? "left" : "right");
+      if (walkX !== 0 && themeRef.current?.cursor) {
+        applyCursorForDirection(walkX < 0 ? "left" : "right", isGrabbing);
       }
 
       // If the user did not move enough, we do not want to rotate
@@ -318,8 +468,8 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
       // Clear the starting point
       spinStartX = null;
-      setIsGrabbing(false);
-      setSpinCursorState("default");
+      isGrabbing = false;
+      applyDefaultCursor();
 
       startInertiaAnimation();
     };
@@ -385,8 +535,9 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
       // Cancel any ongoing inertia animation
       cancelAnimation();
-      setIsGrabbing(true);
-      setSpinCursorState("default");
+      isGrabbing = true;
+      setIsSpinActive(true);
+      applyGrabbingCursor();
 
       // Take snapshot of the starting state
       const { identifier: id, clientX: x } = e.changedTouches[0];
@@ -419,8 +570,8 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       addPosX({ timestamp: Date.now(), value: x });
 
       const walkX = x - spinStartX;
-      if (walkX !== 0 && theme?.cursor) {
-        setSpinCursorState(walkX < 0 ? "left" : "right");
+      if (walkX !== 0 && themeRef.current?.cursor) {
+        applyCursorForDirection(walkX < 0 ? "left" : "right", isGrabbing);
       }
 
       // If the user did not move enough, we do not want to rotate
@@ -457,8 +608,8 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       // Clear the starting point
       mainTouchId = null;
       spinStartX = null;
-      setIsGrabbing(false);
-      setSpinCursorState("default");
+      isGrabbing = false;
+      applyDefaultCursor();
 
       startInertiaAnimation();
     };
@@ -471,7 +622,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
     return () => {
       clearAutoSpinTimeout();
       cancelSpinAnimation();
-      setIsGrabbing(false);
+      applyDefaultCursor();
       container.removeEventListener("mousedown", onMouseDown);
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseleave", onStopDragging);
@@ -486,34 +637,93 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       scroller.removeEventListener("touchcancel", onTouchEnd);
     };
   }, [
+    applyDefaultCursor,
+    applyGrabbingCursor,
+    applyCursorForDirection,
     clearAutoSpinTimeout,
     displayNextImage,
     displayPreviousImage,
     disableSpin,
     reverse360,
-    theme,
     length,
+    showFrame,
+    syncRestingFrame,
   ]);
 
   return (
-    <div ref={containerRef} style={cursorStyle}>
+    <div ref={containerRef} style={hidden ? { position: 'absolute', width: '100%', height: '100%', opacity: 0, pointerEvents: 'none' } : undefined}>
+      {/* Hidden CdnImage elements for preloading via srcSet (only during loading phase).
+          Their onLoad captures currentSrc into resolvedFrameUrls. */}
+      {!allFramesLoadedRef.current && (
+        <div style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden', opacity: 0 }}>
+          {images.map((image, i) => (
+            <CdnImage
+              key={image.src}
+              src={image.src}
+              className="size-full object-cover"
+              onLoad={(e) => onFrameLoad(i, e.currentTarget)}
+              onError={() => onFrameError?.()}
+            />
+          ))}
+        </div>
+      )}
       {/* Scroller is element larger than the image to capture scroll event and then, make the 360 spin */}
       {/* NOTE: ImageElement is within so that it can capture events first */}
       <div ref={scrollerRef} className="overflow-x-scroll">
         <div className="sticky left-0 top-0">
-          {/* Flip book (Ensures image are already in the DOM) */}
-          {images.map(image => (
-            <CdnImage
-              key={image.src}
-              src={image.src}
-              className="pointer-events-none !absolute left-0 top-0 -z-10"
-            />
-          ))}
+          {/* Single flipbook image: src is swapped imperatively during spin (no React re-render).
+              Uses the resolved currentSrc URLs that match the browser's srcSet cache. */}
+          <img
+            ref={flipbookImgRef}
+            src={resolvedFrameUrls.current[0] || images[0].src}
+            className={cn(
+              "pointer-events-none !absolute left-0 top-0 size-full object-cover",
+              isSpinActive ? "z-[2]" : "-z-10"
+            )}
+            alt=""
+          />
           <ImageElement
-            {...images[imageIndex]}
+            {...images[restingImageIndex]}
             onlyPreload={onlyPreload}
             itemIndex={-1}
+            suppressHotspots
           />
+          {/* Per-frame hotspot overlay.
+              All frames' hotspots are mounted once; only display:none/block is
+              flipped imperatively in showFrame() to track the visible frame
+              without triggering React re-renders during spin.
+              The wrapper is non-interactive while spinning to avoid hijacking
+              drag/touch gestures. */}
+          {currentItemHotspotsVisible && (
+            <div
+              className={cn(
+                "absolute inset-0 z-[3]",
+                isSpinActive ? "pointer-events-none" : "pointer-events-auto"
+              )}
+            >
+              {images.map((image, i) => (
+                <div
+                  key={i}
+                  ref={el => {
+                    hotspotGroupRefs.current[i] = el;
+                  }}
+                  className="absolute inset-0"
+                  style={{ display: i === restingImageIndex ? "block" : "none" }}
+                >
+                  {image.hotspots?.map((hotspot, hi) => (
+                    <Hotspot
+                      key={hi}
+                      hotspot={hotspot}
+                      item={{
+                        item_type: "next360",
+                        item_position: itemIndex,
+                      }}
+                    />
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         {/* Add space on both sides to allow scrolling */}
         {/* NOTE: We need the element to have an height, otherwise, Safari will ignore it */}
@@ -527,9 +737,10 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 type NextGenThreeSixtyElementPlaceholderProps = {
   itemIndex: number;
   images: ImageWithHotspots[];
+  loadingProgress: number | null;
   onPlaceholderImageLoaded: () => void;
-  onSpinImagesLoaded: () => void;
-  onError: () => void;
+  onPlaceholderImageError?: () => void;
+  onStartLoading: (type: "click" | "auto") => void;
 };
 
 const NextGenThreeSixtyElementPlaceholder: React.FC<
@@ -537,26 +748,14 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
 > = ({
   itemIndex,
   images,
+  loadingProgress,
   onPlaceholderImageLoaded,
-  onSpinImagesLoaded,
-  onError,
+  onPlaceholderImageError,
+  onStartLoading,
 }) => {
   const { autoLoad360, emitAnalyticsEvent, themeConfig } = useGlobalContext();
   const { displayedCategoryId, displayedCategoryName } = useControlsContext();
   const theme = useMemo(() => getThemeConfig(themeConfig), [themeConfig]);
-
-  const imagesSrc = useMemo(() => images.map(({ src }) => src), [images]);
-
-  const [loadingStatusMap, setLoadingStatusMap] = useState<Map<
-    string,
-    boolean
-  > | null>(null);
-
-  const loadingProgress = loadingStatusMap
-    ? ([...loadingStatusMap.values()].filter(loaded => loaded).length /
-        images.length) *
-      100
-    : null;
 
   const fetchSpinImages = useCallback(
     (type: "click" | "auto") => {
@@ -564,7 +763,7 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
         return;
       }
 
-      setLoadingStatusMap(new Map(imagesSrc.map(src => [src, false])));
+      onStartLoading(type);
       emitAnalyticsEvent({
         type: "interaction",
         current: {
@@ -582,7 +781,7 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
     },
     [
       loadingProgress,
-      imagesSrc,
+      onStartLoading,
       emitAnalyticsEvent,
       displayedCategoryId,
       displayedCategoryName,
@@ -595,14 +794,6 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
     fetchSpinImages("click");
   }, [fetchSpinImages]);
 
-  const onImageLoaded = useCallback((image: string) => {
-    setLoadingStatusMap(prev => {
-      const newStatusMap = new Map(prev);
-      newStatusMap.set(image, true);
-      return newStatusMap;
-    });
-  }, []);
-
   // Autoplay
   useEffect(() => {
     if (autoLoad360) {
@@ -610,33 +801,13 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
     }
   }, [autoLoad360, fetchSpinImages]);
 
-  // When all images are loaded, we emit the event
-  useEffect(() => {
-    if (loadingProgress === 100) {
-      onSpinImagesLoaded();
-    }
-  }, [loadingProgress, onSpinImagesLoaded]);
-
   return (
     <div className="relative aspect-[4/3] w-full">
-      {loadingProgress !== null && loadingProgress !== 100 && (
-        // Add images to DOM to preload them
-        <div className="hidden">
-          {imagesSrc.map(src => (
-            <CdnImage
-              key={src}
-              src={src}
-              onLoad={() => onImageLoaded(src)}
-              onError={onError}
-            />
-          ))}
-        </div>
-      )}
-
       <CdnImage
         className="size-full"
-        src={imagesSrc[0]}
+        src={images[0].src}
         onLoad={onPlaceholderImageLoaded}
+        onError={() => onPlaceholderImageError?.()}
       />
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
         <ThreeSixtyIcon className="size-20" isVisible={theme?.threeSixtyIcon} />
@@ -650,7 +821,7 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
           }
           style={
             theme?.playButton
-              ? { width: 74, height: 74, padding: 0 }
+              ? { width: 140, height: 140, padding: 0 }
               : undefined
           }
           color="neutral"
@@ -684,19 +855,60 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
 /**
  * NextGenThreeSixtyElement component renders a carrousel's 360
  *
+ * The interactive component is pre-mounted (hidden) during loading so that
+ * all 180 CdnImage frames are rendered and cached by the browser before
+ * the user starts spinning. This eliminates the first-spin mount lag and
+ * ensures the browser cache matches the exact srcSet URLs that CdnImage uses.
+ *
  * @prop `onlyPreload`: If true, zoom will not affect the 360. It is useful to pre-fetch images.
  * @prop `index`: The index of the item in the carrousel. Used to share state.
  */
 const NextGenThreeSixtyElement: React.FC<
   NextGenThreeSixtyElementProps
 > = props => {
-  const { itemIndex } = props;
+  const { itemIndex, images } = props;
 
   const { setItemInteraction } = useControlsContext();
 
-  const [status, setStatus] = useState<null | "placeholder" | "spin" | "error">(
+  const [status, setStatus] = useState<null | "placeholder" | "loading" | "spin" | "error">(
     null
   );
+
+  // Track loading progress from the pre-mounted interactive component's CdnImage onLoad events
+  const [loadedFrameCount, setLoadedFrameCount] = useState(0);
+  const loadingProgress = status === "loading" || status === "spin"
+    ? (loadedFrameCount / images.length) * 100
+    : null;
+
+  // Ref to store resolved currentSrc URLs from CdnImage srcSet selection
+  const resolvedFrameUrls = useRef<string[]>([]);
+
+  const onAllFramesLoaded = useCallback(() => {
+    setStatus("spin");
+  }, []);
+
+  const onStartLoading = useCallback((_type: "click" | "auto") => {
+    setStatus("loading");
+  }, []);
+
+  const onFrameLoadedForProgress = useCallback(() => {
+    setLoadedFrameCount(c => c + 1);
+  }, []);
+
+  const onFrameError = useCallback(() => {
+    setStatus("error");
+  }, []);
+
+  // Reset preload state whenever the image set changes, so a new spin starts
+  // from "placeholder" with a fresh progress count and no stale resolved URLs.
+  // We key by first frame src + length to avoid resets on referentially-new
+  // arrays that contain the same frames.
+  const imagesKey = `${images[0]?.src ?? ""}|${images.length}`;
+  useEffect(() => {
+    setStatus(null);
+    setLoadedFrameCount(0);
+    resolvedFrameUrls.current = [];
+  }, [imagesKey]);
 
   // Update the item interaction state according to the readiness of the 360
   useEffect(() => {
@@ -714,20 +926,45 @@ const NextGenThreeSixtyElement: React.FC<
         text="Spin could not be loaded"
       />
     );
-  } else if (status !== "spin") {
-    return (
-      <NextGenThreeSixtyElementPlaceholder
-        {...props}
-        onPlaceholderImageLoaded={() =>
-          setStatus(s => (s === null ? "placeholder" : s))
-        }
-        onSpinImagesLoaded={() => setStatus("spin")}
-        onError={() => setStatus("error")}
-      />
-    );
-  } else {
-    return <NextGenThreeSixtyElementInteractive {...props} />;
   }
+
+  const isSpinning = status === "spin";
+
+  const showInteractive = status === "loading" || isSpinning;
+
+  return (
+    <div className="relative">
+      {/* Placeholder overlay: visible until spin is ready.
+          We keep the slot in the tree (null when spinning) so the Interactive
+          component below stays at a stable position and React does not
+          unmount/remount it when the placeholder disappears. */}
+      {!isSpinning ? (
+        <NextGenThreeSixtyElementPlaceholder
+          itemIndex={itemIndex}
+          images={images}
+          loadingProgress={loadingProgress}
+          onPlaceholderImageLoaded={() =>
+            setStatus(s => (s === null ? "placeholder" : s))
+          }
+          onPlaceholderImageError={onFrameError}
+          onStartLoading={onStartLoading}
+        />
+      ) : null}
+      {/* Interactive component: pre-mounted hidden during loading, revealed when spin starts.
+          The CdnImage frames inside serve as the preloader — their onLoad events drive the
+          progress bar, and the browser caches the exact srcSet URLs. */}
+      {showInteractive && (
+        <NextGenThreeSixtyElementInteractive
+          {...props}
+          hidden={!isSpinning}
+          onAllFramesLoaded={onAllFramesLoaded}
+          onFrameLoaded={onFrameLoadedForProgress}
+          onFrameError={onFrameError}
+          resolvedFrameUrls={resolvedFrameUrls}
+        />
+      )}
+    </div>
+  );
 };
 
 export default NextGenThreeSixtyElement;

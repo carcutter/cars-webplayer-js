@@ -10,6 +10,11 @@ import Hotspot from "../Hotspot";
 type Props = ZoomableCdnImageProps &
   ImageWithHotspots & {
     itemIndex: number;
+    /**
+     * If true, hotspots will not be rendered by this component.
+     * Useful when hotspots are rendered by an external overlay (e.g. NextGenThreeSixtyElement).
+     */
+    suppressHotspots?: boolean;
   };
 
 /**
@@ -20,6 +25,7 @@ const ImageElement: React.FC<Props> = ({
   itemIndex,
   className,
   onLoad,
+  suppressHotspots,
   ...props
 }) => {
   const { isShowingDetails, currentItemHotspotsVisible, setItemInteraction } =
@@ -46,6 +52,7 @@ const ImageElement: React.FC<Props> = ({
           {...props}
         />
         {currentItemHotspotsVisible &&
+          !suppressHotspots &&
           hotspots?.map((hotspot, index) => (
             <Hotspot
               key={index}
