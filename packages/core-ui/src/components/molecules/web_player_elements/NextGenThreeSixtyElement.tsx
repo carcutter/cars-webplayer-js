@@ -904,7 +904,12 @@ const NextGenThreeSixtyElement: React.FC<
   // We key by first frame src + length to avoid resets on referentially-new
   // arrays that contain the same frames.
   const imagesKey = `${images[0]?.src ?? ""}|${images.length}`;
+  const previousImagesKeyRef = useRef(imagesKey);
   useEffect(() => {
+    if (previousImagesKeyRef.current === imagesKey) {
+      return;
+    }
+    previousImagesKeyRef.current = imagesKey;
     setStatus(null);
     setLoadedFrameCount(0);
     resolvedFrameUrls.current = [];
