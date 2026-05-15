@@ -10,18 +10,18 @@
     "analyze": "vite-bundle-visualizer"
   },
   "dependencies": {
-    "@car-cutter/core-wc-react-16-17": "3.2.8"
+    "@car-cutter/core-wc-react-16-17": "*"
   },
   "peerDependencies": {
-    "react": ">=16.8 <18",
-    "react-dom": ">=16.8 <18"
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
     "browserslist": "^4.23.3",
     "browserslist-to-esbuild": "^2.1.1",
-    "typescript": "^5.5.4",
+    "typescript": "^5",
     "vite": "^6.4.2",
     "vite-bundle-visualizer": "^1.2.1"
   },

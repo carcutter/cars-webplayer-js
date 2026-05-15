@@ -8,12 +8,12 @@
     "lint": "eslint . --ext ts,tsx --max-warnings 0"
   },
   "dependencies": {
-    "@car-cutter/core": "3.2.8"
+    "@car-cutter/core": "*"
   },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
-    "eslint": "^8.57.0",
-    "typescript": "^5.5.4"
+    "eslint": "^8",
+    "typescript": "^5"
   }
 }

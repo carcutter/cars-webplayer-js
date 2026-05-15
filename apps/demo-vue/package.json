@@ -8,12 +8,12 @@
   },
   "dependencies": {
     "@car-cutter/vue-webplayer": "*",
-    "vue": "^3.4.37"
+    "vue": "^3"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.0",
-    "typescript": "^5.5.3",
+    "typescript": "^5",
     "vite": "^6.4.2",
-    "vue-tsc": "^2.0.29"
+    "vue-tsc": "^2.1.6"
   }
 }

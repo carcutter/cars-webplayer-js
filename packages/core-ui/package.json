@@ -10,34 +10,34 @@
     "lint": "eslint . --ext ts,tsx --max-warnings 0"
   },
   "dependencies": {
-    "@car-cutter/core": "3.2.8",
+    "@car-cutter/core": "*",
     "pannellum-react": "^1.2.4"
   },
   "peerDependencies": {
-    "react": ">=16.8"
+    "react": ">=18"
   },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
     "@preact/preset-vite": "^2.9.1",
-    "@types/node": "^20.16.5",
+    "@types/node": "^20",
     "@types/react": "^18.3.28",
     "@vitejs/plugin-react": "^5.0.0",
     "autoprefixer": "^10.4.20",
     "browserslist": "^4.23.3",
     "browserslist-to-esbuild": "^2.1.1",
-    "eslint": "^8.57.0",
+    "eslint": "^8",
     "eslint-plugin-tailwindcss": "^3.17.4",
-    "postcss": "^8.5.10",
+    "postcss": "^8",
     "preact": "^10.27.3",
     "preact-compat": "^3.19.0",
     "prettier": "^3.3.3",
     "prettier-eslint": "^16.3.0",
     "prettier-plugin-tailwindcss": "^0.6.6",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": ">=18",
+    "react-dom": ">=18",
     "tailwindcss": "^3.4.11",
-    "typescript": "^5.5.4",
+    "typescript": "^5",
     "vite": "^6.4.2"
   },
   "browserslist": [

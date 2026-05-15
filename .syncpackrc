@@ -1,0 +1,10 @@
+{
+  "versionGroups": [
+    {
+      "label": "Local packages are linked via workspaces",
+      "dependencies": ["@car-cutter/**"],
+      "dependencyTypes": ["dev", "prod"],
+      "policy": "sameRange"
+    }
+  ]
+}
