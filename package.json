@@ -29,7 +29,7 @@
     "lint": "turbo lint --ui tui --continue",
     "syncpack:lint": "syncpack lint",
     "syncpack:fix": "syncpack fix",
-    "ci": "yarn && turbo run build lint --ui tui",
+    "ci": "yarn && syncpack lint && turbo run build lint --ui tui",
     "ci:core": "turbo run build lint --filter=@car-cutter/core-ui",
     "ci:hard": "yarn clean && yarn ci",
     "version:commit": "changeset add",
