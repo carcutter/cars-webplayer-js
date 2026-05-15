@@ -8,19 +8,19 @@
     "lint": "eslint . --ext ts,tsx --max-warnings 0"
   },
   "dependencies": {
-    "@car-cutter/core": "3.2.8",
-    "@car-cutter/core-ui": "3.2.8",
-    "@car-cutter/core-wc": "3.2.8",
-    "@r2wc/react-to-web-component": "^1.0.0"
+    "@car-cutter/core": "*",
+    "@car-cutter/core-ui": "*",
+    "@car-cutter/core-wc": "*",
+    "@r2wc/react-to-web-component": "^2.0.3"
   },
   "peerDependencies": {
-    "react": ">=16.8 <18",
-    "react-dom": ">=16.8 <18"
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
-    "eslint": "^8.57.0",
-    "typescript": "^5.5.4"
+    "eslint": "^8",
+    "typescript": "^5"
   }
 }

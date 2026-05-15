@@ -35,15 +35,15 @@
     "analyze": "vite-bundle-visualizer"
   },
   "dependencies": {
-    "@car-cutter/wc-webplayer": "3.2.8"
+    "@car-cutter/wc-webplayer": "*"
   },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
     "browserslist": "^4.23.3",
     "browserslist-to-esbuild": "^2.1.1",
-    "eslint": "^8.57.0",
-    "typescript": "^5.5.4",
+    "eslint": "^8",
+    "typescript": "^5",
     "vite": "^6.4.2",
     "vite-bundle-visualizer": "^1.2.1",
     "vite-plugin-dts": "^4.2.1"

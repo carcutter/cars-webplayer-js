@@ -45,10 +45,10 @@
     "analyze": "vite-bundle-visualizer"
   },
   "dependencies": {
-    "@car-cutter/react-webplayer": "3.2.8"
+    "@car-cutter/react-webplayer": "*"
   },
   "peerDependencies": {
-    "next": ">=10"
+    "next": "16.2.6"
   },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
@@ -56,9 +56,9 @@
     "@vitejs/plugin-react": "^5.0.0",
     "browserslist": "^4.23.3",
     "browserslist-to-esbuild": "^2.1.1",
-    "eslint": "^8.57.0",
+    "eslint": "^8",
     "rollup-preserve-directives": "^1.1.1",
-    "typescript": "^5.5.4",
+    "typescript": "^5",
     "vite": "^6.4.2",
     "vite-bundle-visualizer": "^1.2.1",
     "vite-plugin-dts": "^4.2.1"

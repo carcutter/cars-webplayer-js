@@ -46,21 +46,21 @@
     "analyze": "vite-bundle-visualizer"
   },
   "peerDependencies": {
-    "react": ">=16.8",
-    "react-dom": ">=16.8"
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "devDependencies": {
-    "@car-cutter/core": "3.2.8",
-    "@car-cutter/core-ui": "3.2.8",
-    "@car-cutter/core-wc-react-16-17": "3.2.8",
-    "@car-cutter/core-wc-react-18": "3.2.8",
+    "@car-cutter/core": "*",
+    "@car-cutter/core-ui": "*",
+    "@car-cutter/core-wc-react-16-17": "*",
+    "@car-cutter/core-wc-react-18": "*",
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
     "@vitejs/plugin-react": "^5.0.0",
     "browserslist": "^4.23.3",
     "browserslist-to-esbuild": "^2.1.1",
-    "eslint": "^8.57.0",
-    "typescript": "^5.5.4",
+    "eslint": "^8",
+    "typescript": "^5",
     "vite": "^6.4.2",
     "vite-bundle-visualizer": "^1.2.1",
     "vite-plugin-dts": "^4.2.1"
