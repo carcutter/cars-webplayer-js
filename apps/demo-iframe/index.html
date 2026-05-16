@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🚗 Demo - Iframe 🖼️</title>
+    <link rel="stylesheet" href="/src/index.css" />
+    <link rel="stylesheet" href="/src/app.css" />
+  </head>
+  <body>
+    <div id="root">
+      <header class="header">
+        <div class="header__container">
+          <div class="header__left">
+            <img
+              src="/src/assets/iframe.svg"
+              class="header__logo"
+              alt="Iframe logo"
+            />
+
+            <nav class="header__nav">
+              <a href="#">Prestation</a>
+              <a href="#">Succursale</a>
+            </nav>
+          </div>
+          <a href="#">Vers le site le plus proche</a>
+        </div>
+      </header>
+
+      <main class="main">
+        <iframe
+          class="main__webplayer"
+          src="https://cdn.car-cutter.com/libs/web-player/v3/integrations/iframe/index.html?composition-url=https://cdn.car-cutter.com/gallery/1a7136e1b91c8898b5ceff1d7dcb85e41f77a17fa64f7267d60b0fd5e99005d2/TMBEP9PJ0P4089138/composition_v3.json"
+          title="Car Cutter WebPlayer"
+          allowfullscreen
+        ></iframe>
+
+        <div class="main__right">
+          <div>
+            <div class="titles">
+              <h1>Volkswagen - Passat 2.0 TDI SCR DSG 4MOT Alltrack</h1>
+              <h2>Passat 2.0 TDI SCR DSG 4MOT Alltrack Servotronic</h2>
+            </div>
+          </div>
+
+          <div class="features">
+            <span>Eningen unter Achalm</span>
+            <span>occasion</span>
+            <span>108.000 km</span>
+            <span>EZ 08/2017</span>
+            <span>239 PS</span>
+            <span>Diesel</span>
+            <span>Vollleder</span>
+            <span>Regensensor</span>
+            <span>Leichtmetallfelgen</span>
+            <span>Bluetooth</span>
+            <span>Sitzheizung</span>
+            <span>+ 5 autres</span>
+          </div>
+
+          <p>
+            Consommation comb.: 6,0 l/100 km; Émissions de CO2: 157 g/km; Classe
+            CO2: F (WLTP)
+          </p>
+
+          <div class="payment">
+            <h3>Mode de paiement</h3>
+            <div class="price-infos">
+              <span>Price d'achat</span>
+              <span class="price">23.860 €</span>
+            </div>
+            <div class="buttons">
+              <button>Demande de contact sans engagement</button>
+              <button>Vers le site</button>
+              <button>Vers la demande d'achat</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
