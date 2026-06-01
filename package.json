@@ -43,7 +43,7 @@
     "@commitlint/config-conventional": "^20.5.0",
     "postinstall-postinstall": "^2.1.0",
     "syncpack": "^15.1.2",
-    "turbo": "^2.1.2"
+    "turbo": "^2.9.14"
   },
   "packageManager": "yarn@1.22.22",
   "workspaces": {
