@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 
+import { MAX_SMALL_MEDIA_QUERY } from "../../const/browser";
 import { MAX_ZOOM } from "../../const/zoom";
 import { useControlsContext } from "../../providers/ControlsContext";
 import { easeOut } from "../../utils/animation";
@@ -480,6 +481,15 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
       }
       // 2 fingers => zoom
       else if (nbrTouches === 2) {
+        // Pinch-zoom is disabled on mobile: the zoom controls are hidden there
+        // (`max-small:hidden`), so allowing pinch would only surface the close
+        // button without a usable zoom. Evaluated at event time (not cached) so
+        // it stays correct across viewport/orientation changes. We bail before
+        // preventDefault so native page pinch-zoom is allowed instead.
+        if (window.matchMedia(MAX_SMALL_MEDIA_QUERY).matches) {
+          return;
+        }
+
         e.preventDefault(); // Prevents native page zooming
 
         const [touch1, touch2] = e.touches;
