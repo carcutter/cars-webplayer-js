@@ -438,11 +438,6 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
 
     const touchStartXYmapRef = touchStartXYmap.current;
 
-    // Pinch-zoom is disabled on mobile: the zoom controls are hidden there
-    // (`max-small:hidden`), so allowing pinch would only surface the close
-    // button without a usable zoom. We let native page pinch-zoom happen instead.
-    const isMobile = window.matchMedia(MAX_SMALL_MEDIA_QUERY).matches;
-
     const onTouchStart = (e: TouchEvent) => {
       for (let i = 0; i < e.changedTouches.length; i++) {
         const touch = e.changedTouches[i];
@@ -486,9 +481,12 @@ const ZoomableCdnImage: React.FC<ZoomableCdnImageProps> = ({
       }
       // 2 fingers => zoom
       else if (nbrTouches === 2) {
-        // Pinch-zoom disabled on mobile (zoom controls are hidden there).
-        // Bail before preventDefault so native page pinch-zoom is allowed.
-        if (isMobile) {
+        // Pinch-zoom is disabled on mobile: the zoom controls are hidden there
+        // (`max-small:hidden`), so allowing pinch would only surface the close
+        // button without a usable zoom. Evaluated at event time (not cached) so
+        // it stays correct across viewport/orientation changes. We bail before
+        // preventDefault so native page pinch-zoom is allowed instead.
+        if (window.matchMedia(MAX_SMALL_MEDIA_QUERY).matches) {
           return;
         }
 
