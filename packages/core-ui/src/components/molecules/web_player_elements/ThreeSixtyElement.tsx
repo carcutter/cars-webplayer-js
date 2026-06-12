@@ -388,6 +388,9 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       e.preventDefault();
       e.stopPropagation();
 
+      // Cancel any ongoing inertia/demo animation so it does not fight the wheel.
+      cancelAnimation();
+
       wheelAccumX += e.deltaX;
 
       while (Math.abs(wheelAccumX) >= wheelStepPx) {
