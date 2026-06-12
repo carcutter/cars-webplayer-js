@@ -14,8 +14,8 @@
     "@r2wc/react-to-web-component": "^2.0.3"
   },
   "peerDependencies": {
-    "react": ">=18",
-    "react-dom": ">=18"
+    "react": ">=16.8",
+    "react-dom": ">=16.8"
   },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",

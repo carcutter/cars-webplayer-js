@@ -45,10 +45,6 @@
     "lint": "eslint . --ext ts,tsx --max-warnings 0",
     "analyze": "vite-bundle-visualizer"
   },
-  "peerDependencies": {
-    "react": ">=18",
-    "react-dom": ">=18"
-  },
   "devDependencies": {
     "@car-cutter/core": "*",
     "@car-cutter/core-ui": "*",

@@ -5,6 +5,12 @@
       "dependencies": ["@car-cutter/**"],
       "dependencyTypes": ["dev", "prod"],
       "policy": "sameRange"
+    },
+    {
+      "label": "Framework peer ranges must stay wide (publishable wrappers omit them; internal pkgs keep wide ranges - never pin/unify to installed version)",
+      "dependencies": ["next", "react", "react-dom", "vue"],
+      "dependencyTypes": ["peer"],
+      "isIgnored": true
     }
   ]
 }
