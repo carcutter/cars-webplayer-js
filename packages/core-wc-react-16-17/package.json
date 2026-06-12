@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/core-wc-react-16-17",
-  "version": "3.2.10",
+  "version": "3.2.11",
   "private": true,
   "type": "module",
   "main": "index.ts",
