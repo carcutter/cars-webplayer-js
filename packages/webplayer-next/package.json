@@ -47,9 +47,6 @@
   "dependencies": {
     "@car-cutter/react-webplayer": "*"
   },
-  "peerDependencies": {
-    "next": "16.2.6"
-  },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",

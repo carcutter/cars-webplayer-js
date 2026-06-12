@@ -14,7 +14,7 @@
     "pannellum-react": "^1.2.4"
   },
   "peerDependencies": {
-    "react": ">=18"
+    "react": ">=16.8"
   },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
