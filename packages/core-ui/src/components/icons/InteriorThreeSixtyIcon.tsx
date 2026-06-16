@@ -1,8 +1,12 @@
 import CustomizableIcon from "../atoms/CustomizableIcon";
 
-type Props = { className?: string };
+type Props = { className?: string; isVisible?: boolean };
 
-const InteriorThreeSixtyIcon: React.FC<Props> = ({ className }) => {
+const InteriorThreeSixtyIcon: React.FC<Props> = ({
+  className,
+  isVisible = true,
+}) => {
+  if (!isVisible) return null;
   return (
     <CustomizableIcon className={className} customizationKey="INTERIOR_UI_360">
       <svg
