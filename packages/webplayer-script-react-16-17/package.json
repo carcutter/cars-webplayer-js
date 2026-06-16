@@ -22,7 +22,7 @@
     "browserslist": "^4.23.3",
     "browserslist-to-esbuild": "^2.1.1",
     "typescript": "^5",
-    "vite": "^6.4.2",
+    "vite": "^6.4.3",
     "vite-bundle-visualizer": "^1.2.1"
   },
   "browserslist": [
