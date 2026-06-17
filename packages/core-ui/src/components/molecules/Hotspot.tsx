@@ -81,20 +81,51 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   const withDetail = withImage || withLink || withPdf;
   const clickable = !!description || withDetail;
   const withTitle = !!title;
+  // Hotspots that only carry a title + description (no image/link/pdf detail)
+  // expand their label inline instead of opening the side details pane.
+  const inlineExpandable = !withDetail && !!description;
   const hotspotLinkRef = useRef<HTMLAnchorElement | null>(null);
   const hotspotDivRef = useRef<HTMLDivElement | null>(null);
   const titleRef = useRef<HTMLDivElement | null>(null);
   const [shouldFlipTitle, setShouldFlipTitle] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  // Keeps the panel laid out (full width / opacity) while the description
+  // retracts, so closing animates smoothly instead of snapping.
+  const [collapsing, setCollapsing] = useState(false);
+  const collapseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const DefaultIcon = withDetail ? (
+  const clearCollapseTimeout = useCallback(() => {
+    if (collapseTimeoutRef.current !== null) {
+      clearTimeout(collapseTimeoutRef.current);
+      collapseTimeoutRef.current = null;
+    }
+  }, []);
+
+  const collapsePanel = useCallback(() => {
+    setExpanded(wasExpanded => {
+      if (!wasExpanded) {
+        return false;
+      }
+      // Keep the panel laid out while the description retracts.
+      setCollapsing(true);
+      clearCollapseTimeout();
+      // Fallback in case transitionend never fires (e.g. reduced motion)
+      collapseTimeoutRef.current = setTimeout(() => {
+        setCollapsing(false);
+        collapseTimeoutRef.current = null;
+      }, 280);
+      return false;
+    });
+  }, [clearCollapseTimeout]);
+
+  useEffect(() => clearCollapseTimeout, [clearCollapseTimeout]);
+
+  const DefaultIcon =
     type === "damage" ? (
       <WarningIcon className="size-4" />
     ) : (
       <ImageIcon className="size-4" />
-    )
-  ) : (
-    <div className="size-1" />
-  );
+    );
 
   const onClick = () => {
     if (!clickable) {
@@ -105,6 +136,18 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
 
     if (withLink || withPdf) {
       // Navigation is handled by the semantic <a> element
+      return;
+    }
+
+    if (inlineExpandable) {
+      // Toggle the inline description panel instead of opening the side pane
+      if (expanded) {
+        collapsePanel();
+      } else {
+        clearCollapseTimeout();
+        setCollapsing(false);
+        setExpanded(true);
+      }
       return;
     }
 
@@ -126,6 +169,34 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     if (!over) return;
     setOver(false);
   }, [over, setOver]);
+
+  // Close the inline description panel on Escape or when clicking outside of it
+  useEffect(() => {
+    if (!expanded) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        collapsePanel();
+      }
+    };
+
+    const handlePointerDown = (event: PointerEvent) => {
+      const rootElement = hotspotDivRef.current;
+      if (rootElement && !rootElement.contains(event.target as Node)) {
+        collapsePanel();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("pointerdown", handlePointerDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("pointerdown", handlePointerDown);
+    };
+  }, [expanded, collapsePanel]);
 
   // Determine which CSS variable to use based on hotspot type
   const getHotspotColorVariable = useCallback(() => {
@@ -218,9 +289,14 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     };
   }, [withTitle, title, clickable, extendMode, withDetail]);
 
+  // While collapsing, keep the panel laid out (wide + opaque) so the
+  // description can retract smoothly before reverting to the title pill.
+  const panelMounted = expanded || collapsing;
+
   const sharedClassName = cn(
     "group absolute z-hotspot -translate-x-1/2 -translate-y-1/2 hover:z-hotspot-hover",
-    clickable ? "cursor-pointer" : "cursor-default"
+    clickable ? "cursor-pointer" : "cursor-default",
+    panelMounted && "z-hotspot-hover"
   );
 
   const sharedStyle = {
@@ -233,14 +309,8 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       <div
         // Hoverable icon
         className={cn(
-          "relative top-px flex shrink-0 items-center justify-center rounded-full border-2 border-background bg-primary text-primary-foreground",
-          withDetail
-            ? shouldFlipTitle
-              ? "right-[-5px] size-7"
-              : "left-[-5px] size-7"
-            : shouldFlipTitle
-              ? "-right-px size-4"
-              : "-left-px size-4"
+          "relative top-px flex size-7 shrink-0 items-center justify-center rounded-full border-2 border-background bg-primary text-primary-foreground",
+          shouldFlipTitle ? "right-[-5px]" : "left-[-5px]"
         )}
         style={{ backgroundColor: hotspotColorVariable }}
       >
@@ -251,31 +321,120 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
         />
 
         {/* Use the icon from the config if available. Else, replace it if needed */}
-        <div className={cn(withDetail ? "size-4 [&_*]:size-4" : "size-1")}>
-          {hotspotConfig?.Icon ? hotspotConfig.Icon : DefaultIcon}
-        </div>
+        {(withDetail || hotspotConfig?.Icon) && (
+          <div className="size-4 [&_*]:size-4">
+            {hotspotConfig?.Icon ? hotspotConfig.Icon : DefaultIcon}
+          </div>
+        )}
       </div>
       {withTitle && (
         <div
           className={cn(
-            "absolute bottom-0 -z-10 flex w-max max-w-60 items-center gap-1.5 rounded-t-full bg-foreground py-1.5 text-background transition-[opacity,transform] duration-200 small:max-w-64",
-            extendMode && "large:max-w-72",
-            shouldFlipTitle
-              ? "right-0 rounded-bl-full group-hover:-translate-x-1"
-              : "left-0 rounded-br-full group-hover:translate-x-1",
-            withDetail
-              ? shouldFlipTitle
-                ? "rounded-br-[10px] pl-2.5 pr-6 small:pl-3 small:pr-7"
-                : "rounded-bl-[10px] pl-6 pr-2.5 small:pl-7 small:pr-3"
-              : shouldFlipTitle
-                ? "rounded-br-[8px] pl-2.5 pr-5 small:pl-3 small:pr-6"
-                : "rounded-bl-[8px] pl-5 pr-2.5 small:pl-6 small:pr-3",
-            "pointer-events-none opacity-0 group-hover:pointer-events-auto group-hover:opacity-100"
+            "absolute top-[calc(50%+1px)] -z-10 -translate-y-1/2 transition-[opacity,transform] duration-200",
+            panelMounted
+              ? // Expanded: grow to a comfortable reading width, bounded by the media
+                "w-72 max-w-[70vw] small:w-80 large:w-96"
+              : "w-max max-w-60 small:max-w-64",
+            !panelMounted && extendMode && "large:max-w-72",
+            shouldFlipTitle ? "right-0" : "left-0",
+            panelMounted
+              ? "pointer-events-auto opacity-100"
+              : cn(
+                  "pointer-events-none opacity-0 group-hover:pointer-events-auto group-hover:opacity-100",
+                  shouldFlipTitle
+                    ? "group-hover:-translate-x-1"
+                    : "group-hover:translate-x-1"
+                )
           )}
           ref={titleRef}
         >
-          <div className="truncate text-xs font-normal">{title}</div>
-          {clickable && <ArrowRightIcon className="size-5 shrink-0" />}
+          {/* Title row — vertically centered on the hotspot dot */}
+          <div
+            className={cn(
+              "relative flex items-center gap-1.5 bg-foreground py-1.5 text-background",
+              panelMounted
+                ? cn(
+                    "z-10",
+                    // The corner under the hotspot icon matches the circle radius (size-7 = 28px ⇒ 14px)
+                    shouldFlipTitle
+                      ? "rounded-tl-[16px] rounded-tr-[14px] pl-3 pr-6 small:pr-7"
+                      : "rounded-tl-[14px] rounded-tr-[16px] pl-6 pr-3 small:pl-7"
+                  )
+                : cn(
+                    "rounded-t-full",
+                    shouldFlipTitle
+                      ? "rounded-bl-full rounded-br-[10px] pl-2.5 pr-6 small:pl-3 small:pr-7"
+                      : "rounded-bl-[10px] rounded-br-full pl-6 pr-2.5 small:pl-7 small:pr-3"
+                  )
+            )}
+          >
+            <div
+              className={cn(
+                "text-xs font-normal",
+                panelMounted
+                  ? "min-w-0 flex-1 break-words font-medium"
+                  : "truncate"
+              )}
+            >
+              {title}
+            </div>
+            {clickable && (
+              <span
+                className="flex shrink-0"
+                style={
+                  inlineExpandable
+                    ? {
+                        // Two-phase motion: slide right first, then rotate down.
+                        // On collapse the order reverses (rotate up first, then
+                        // slide back) and runs a touch quicker.
+                        translate: expanded ? "5px 0" : "0 0",
+                        rotate: expanded ? "90deg" : "0deg",
+                        transition: expanded
+                          ? "translate 200ms ease, rotate 200ms ease"
+                          : "translate 150ms ease, rotate 150ms ease",
+                        transitionDelay: expanded
+                          ? "0ms, 180ms"
+                          : "120ms, 0ms",
+                      }
+                    : undefined
+                }
+              >
+                <ArrowRightIcon className="size-5 shrink-0" />
+              </span>
+            )}
+          </div>
+
+          {/* Description — grows downward below the title without moving it */}
+          {inlineExpandable && (
+            <div
+              className={cn(
+                "absolute inset-x-0 top-full grid transition-[grid-template-rows] ease-out",
+                expanded ? "grid-rows-[1fr] duration-300" : "grid-rows-[0fr] duration-200"
+              )}
+              onTransitionEnd={event => {
+                // Once the description has fully retracted, revert to the pill
+                if (
+                  event.propertyName === "grid-template-rows" &&
+                  !expanded
+                ) {
+                  clearCollapseTimeout();
+                  setCollapsing(false);
+                }
+              }}
+            >
+              <div className="min-h-0 overflow-hidden">
+                <div
+                  className={cn(
+                    "max-h-[clamp(4rem,40vh,16rem)] overflow-y-auto overscroll-contain whitespace-normal break-words rounded-b-[16px] bg-foreground pb-2 pt-1.5 text-xs font-normal leading-relaxed text-background",
+                    // Align description start with the title text start
+                    shouldFlipTitle ? "pl-3 pr-6 small:pr-7" : "pl-6 pr-3 small:pl-7"
+                  )}
+                >
+                  {description}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </>
