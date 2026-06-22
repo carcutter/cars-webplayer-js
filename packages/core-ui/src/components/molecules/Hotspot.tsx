@@ -399,8 +399,8 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                 : cn(
                     "rounded-t-full",
                     shouldFlipTitle
-                      ? "rounded-bl-full rounded-br-[10px] pl-2.5 pr-6 small:pl-3 small:pr-7"
-                      : "rounded-bl-[10px] rounded-br-full pl-6 pr-2.5 small:pl-7 small:pr-3"
+                      ? "rounded-b-full pl-2.5 pr-6 small:pl-3 small:pr-7"
+                      : "rounded-b-full pl-6 pr-2.5 small:pl-7 small:pr-3"
                   )
             )}
           >
@@ -426,14 +426,13 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
             <div
               className={cn(
                 "absolute inset-x-0 top-[calc(100%-1px)] grid transition-[grid-template-rows] ease-out",
-                expanded ? "grid-rows-[1fr] duration-300" : "grid-rows-[0fr] duration-200"
+                expanded
+                  ? "grid-rows-[1fr] duration-300"
+                  : "grid-rows-[0fr] duration-200"
               )}
               onTransitionEnd={event => {
                 // Once the description has fully retracted, revert to the pill
-                if (
-                  event.propertyName === "grid-template-rows" &&
-                  !expanded
-                ) {
+                if (event.propertyName === "grid-template-rows" && !expanded) {
                   clearCollapseTimeout();
                   setCollapsing(false);
                 }
@@ -444,7 +443,9 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                   className={cn(
                     "max-h-[clamp(4rem,40vh,16rem)] transform-gpu overflow-y-auto overscroll-contain whitespace-normal break-words rounded-b-[16px] border-x-[0.5px] border-b-[0.5px] border-[#64748B] bg-foreground py-2 text-xs font-normal leading-relaxed text-background",
                     // Align description start with the title text start
-                    shouldFlipTitle ? "pl-3 pr-6 small:pr-7" : "pl-6 pr-3 small:pl-7"
+                    shouldFlipTitle
+                      ? "pl-3 pr-6 small:pr-7"
+                      : "pl-6 pr-3 small:pl-7"
                   )}
                 >
                   {description}
