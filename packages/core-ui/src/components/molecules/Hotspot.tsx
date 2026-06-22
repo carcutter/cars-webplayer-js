@@ -2,6 +2,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type { Hotspot as HotspotType } from "@car-cutter/core";
 
+import {
+  HOTSPOT_EXPANDED_PANEL_WIDTH,
+  LARGE_MEDIA_QUERY,
+  SMALL_MEDIA_QUERY,
+} from "../../const/browser";
 import { useControlsContext } from "../../providers/ControlsContext";
 import { useCustomizationContext } from "../../providers/CustomizationContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
@@ -19,6 +24,26 @@ type HotspotProps = {
 };
 type IconHotspotProps = HotspotProps & {
   analyticsValue: object;
+};
+
+// Mirrors the `w-72 max-w-[70vw] small:w-80 large:w-96` classes applied to the
+// inline detail panel when expanded. Used to pick the flip direction based on
+// the panel's *expanded* width (not the collapsed pill) so the expanded panel
+// stays within the media on whichever side it opens.
+const getExpandedPanelWidth = (): number => {
+  if (typeof window === "undefined") {
+    return HOTSPOT_EXPANDED_PANEL_WIDTH.base;
+  }
+
+  let width: number = HOTSPOT_EXPANDED_PANEL_WIDTH.base;
+  if (window.matchMedia(LARGE_MEDIA_QUERY).matches) {
+    width = HOTSPOT_EXPANDED_PANEL_WIDTH.large;
+  } else if (window.matchMedia(SMALL_MEDIA_QUERY).matches) {
+    width = HOTSPOT_EXPANDED_PANEL_WIDTH.small;
+  }
+
+  // Mirror the `max-w-[70vw]` cap on the expanded panel.
+  return Math.min(width, window.innerWidth * 0.7);
 };
 
 const IconHotspot: React.FC<IconHotspotProps> = ({
@@ -246,15 +271,26 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
         const hotspotRect = hotspotElement.getBoundingClientRect();
         const titleRect = titleElement.getBoundingClientRect();
 
-        const availableRight = containerRect.right - hotspotRect.left;
-        const availableLeft = hotspotRect.right - containerRect.left;
-        const titleWidth = titleRect.width;
+        // Measure available space from the hotspot dot's center, which is the
+        // anchor point of the panel (left-0 / right-0 of the dot-centered root).
+        // Using the same reference on both sides keeps the comparison symmetric.
+        const hotspotCenter = (hotspotRect.left + hotspotRect.right) / 2;
+        const availableRight = containerRect.right - hotspotCenter;
+        const availableLeft = hotspotCenter - containerRect.left;
+
+        // For hotspots that expand inline, decide the direction based on the
+        // panel's *expanded* width so the expanded detail fits the media too —
+        // not just the collapsed pill. The expanded width is always >= the pill
+        // width, so the chosen side fits both states (no flip on expand).
+        const requiredWidth = inlineExpandable
+          ? Math.max(titleRect.width, getExpandedPanelWidth())
+          : titleRect.width;
 
         let nextShouldFlip = false;
 
-        if (availableRight >= titleWidth) {
+        if (availableRight >= requiredWidth) {
           nextShouldFlip = false;
-        } else if (availableLeft >= titleWidth) {
+        } else if (availableLeft >= requiredWidth) {
           nextShouldFlip = true;
         } else {
           nextShouldFlip = availableLeft >= availableRight;
@@ -287,7 +323,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       }
       resizeObserver.disconnect();
     };
-  }, [withTitle, title, clickable, extendMode, withDetail]);
+  }, [withTitle, title, clickable, extendMode, withDetail, inlineExpandable]);
 
   // While collapsing, keep the panel laid out (wide + opaque) so the
   // description can retract smoothly before reverting to the title pill.
@@ -351,10 +387,10 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
           {/* Title row — vertically centered on the hotspot dot */}
           <div
             className={cn(
-              "relative flex items-center gap-1.5 bg-foreground py-1.5 text-background",
+              "relative flex items-center gap-1.5 border-[0.5px] border-[#64748B] bg-foreground py-1.5 text-background",
               panelMounted
                 ? cn(
-                    "z-10",
+                    "z-10 border-b-0",
                     // The corner under the hotspot icon matches the circle radius (size-7 = 28px ⇒ 14px)
                     shouldFlipTitle
                       ? "rounded-tl-[16px] rounded-tr-[14px] pl-3 pr-6 small:pr-7"
@@ -378,27 +414,8 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
             >
               {title}
             </div>
-            {clickable && (
-              <span
-                className="flex shrink-0"
-                style={
-                  inlineExpandable
-                    ? {
-                        // Two-phase motion: slide right first, then rotate down.
-                        // On collapse the order reverses (rotate up first, then
-                        // slide back) and runs a touch quicker.
-                        translate: expanded ? "5px 0" : "0 0",
-                        rotate: expanded ? "90deg" : "0deg",
-                        transition: expanded
-                          ? "translate 200ms ease, rotate 200ms ease"
-                          : "translate 150ms ease, rotate 150ms ease",
-                        transitionDelay: expanded
-                          ? "0ms, 180ms"
-                          : "120ms, 0ms",
-                      }
-                    : undefined
-                }
-              >
+            {clickable && !inlineExpandable && (
+              <span className="flex shrink-0">
                 <ArrowRightIcon className="size-5 shrink-0" />
               </span>
             )}
@@ -408,7 +425,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
           {inlineExpandable && (
             <div
               className={cn(
-                "absolute inset-x-0 top-full grid transition-[grid-template-rows] ease-out",
+                "absolute inset-x-0 top-[calc(100%-1px)] grid transition-[grid-template-rows] ease-out",
                 expanded ? "grid-rows-[1fr] duration-300" : "grid-rows-[0fr] duration-200"
               )}
               onTransitionEnd={event => {
@@ -425,7 +442,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
               <div className="min-h-0 overflow-hidden">
                 <div
                   className={cn(
-                    "max-h-[clamp(4rem,40vh,16rem)] overflow-y-auto overscroll-contain whitespace-normal break-words rounded-b-[16px] bg-foreground pb-2 pt-1.5 text-xs font-normal leading-relaxed text-background",
+                    "max-h-[clamp(4rem,40vh,16rem)] transform-gpu overflow-y-auto overscroll-contain whitespace-normal break-words rounded-b-[16px] border-x-[0.5px] border-b-[0.5px] border-[#64748B] bg-foreground py-2 text-xs font-normal leading-relaxed text-background",
                     // Align description start with the title text start
                     shouldFlipTitle ? "pl-3 pr-6 small:pr-7" : "pl-6 pr-3 small:pl-7"
                   )}
