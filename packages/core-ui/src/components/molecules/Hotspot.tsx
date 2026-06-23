@@ -453,7 +453,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
               <div className="min-h-0 overflow-hidden">
                 <div
                   className={cn(
-                    "max-h-[clamp(4rem,40vh,16rem)] transform-gpu overflow-y-auto overscroll-contain whitespace-normal break-words rounded-b-[16px] border-x-[0.5px] border-b-[0.5px] border-[#64748B] bg-foreground pb-6 pt-1.5 text-xxs font-normal leading-relaxed text-background small:pb-7",
+                    "max-h-[clamp(4rem,40vh,16rem)] overflow-y-auto overscroll-y-none whitespace-normal break-words rounded-b-[16px] border-x-[0.5px] border-b-[0.5px] border-[#64748B] bg-foreground pb-6 pt-1.5 text-xxs font-normal leading-relaxed text-background small:pb-7",
                     // Align description padding with the expanded title
                     "px-6 small:px-7"
                   )}
