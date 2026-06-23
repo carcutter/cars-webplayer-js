@@ -21,8 +21,6 @@ const AUTO_SPIN_DELAY = 750;
 const AUTO_SPIN_DURATION = 1250;
 
 const DRAG_SPIN_PX = 360; // 10px for each image of a 36 images spin
-const SCROLL_SPIN_PX = 480; // 15px for each image of a 36 images spin
-const WHEEL_SPIN_PX = 360; // Match drag sensitivity so trackpad swipe & click-drag feel the same
 
 type ThreeSixtyElementProps = Extract<CustomizableItem, { type: "360" }> & {
   itemIndex: number;
@@ -329,87 +327,9 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     document.addEventListener("mouseup", onStopDragging);
     document.addEventListener("contextmenu", onStopDragging);
 
-    // - Scroll events to update the image thanks to the "invisible scroller"
-
-    const scrollStepPx = SCROLL_SPIN_PX / length;
-
-    const getScrollerWidth = () => scroller.getBoundingClientRect().width;
-
-    const getScrollerCenterPosition = () =>
-      scroller.scrollWidth / 2 - getScrollerWidth() / 2;
-
-    const centerScroller = () => {
-      const target = getScrollerCenterPosition();
-      scroller.scrollLeft = target;
-    };
-
-    // When initializing, we want to center the scroller
-    centerScroller();
-
-    const onScroll = () => {
-      const walk = scroller.scrollLeft - getScrollerCenterPosition();
-
-      if (Math.abs(walk) < scrollStepPx) {
-        return;
-      }
-
-      // XOR operation to reverse the logic
-      if (walk < 0 !== reverse360) {
-        displayNextImage();
-      } else {
-        displayPreviousImage();
-      }
-
-      // We just changed the image, we want to re-center the scroller
-      centerScroller();
-    };
-
-    scroller.addEventListener("scroll", onScroll);
-
-    // - Wheel events (trackpad horizontal swipe & mouse wheel)
-    // NOTE: We handle horizontal wheel explicitly instead of relying on the
-    //       invisible scroller's native scroll-chaining. On macOS trackpads, a
-    //       2-finger horizontal swipe emits `wheel` events whose native scroll
-    //       would otherwise be hijacked by the parent carrousel, moving the
-    //       slide instead of rotating the 360.
-
-    const wheelStepPx = WHEEL_SPIN_PX / length;
-
-    let wheelAccumX = 0;
-
-    const onWheel = (e: WheelEvent) => {
-      // Let zoom (ctrl/pinch) and vertical scroll pass through untouched.
-      if (e.ctrlKey || Math.abs(e.deltaX) <= Math.abs(e.deltaY)) {
-        return;
-      }
-
-      // This is a horizontal gesture we want to consume for spinning: prevent
-      // it from bubbling to the parent carrousel or triggering native scroll.
-      e.preventDefault();
-      e.stopPropagation();
-
-      // Cancel any ongoing inertia/demo animation so it does not fight the wheel.
-      cancelAnimation();
-
-      wheelAccumX += e.deltaX;
-
-      while (Math.abs(wheelAccumX) >= wheelStepPx) {
-        // XOR operation to reverse the logic
-        if (wheelAccumX < 0 !== reverse360) {
-          displayNextImage();
-        } else {
-          displayPreviousImage();
-        }
-
-        wheelAccumX -= Math.sign(wheelAccumX) * wheelStepPx;
-      }
-    };
-
-    container.addEventListener("wheel", onWheel, { passive: false });
-
-    // - Touch events (only mandatory for Safari mobile)
-    // NOTE: It is due to Safari mobile not allowing to update the scrollLeft property while scrolling
-    //       If the behavior is updated, we can remove this part
+    // - Touch events (drag-to-spin on touch devices)
+    // NOTE: We track clientX deltas and preventDefault to spin without relying
+    //       on native scroll.
 
     let mainTouchId: Touch["identifier"] | null = null;
 
@@ -516,10 +436,6 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
       document.removeEventListener("mouseup", onStopDragging);
       document.removeEventListener("contextmenu", onStopDragging);
 
-      scroller.removeEventListener("scroll", onScroll);
-
-      container.removeEventListener("wheel", onWheel);
-
       scroller.removeEventListener("touchstart", onTouchStart);
       scroller.removeEventListener("touchmove", onTouchMove);
       scroller.removeEventListener("touchend", onTouchEnd);
@@ -537,9 +453,8 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
   return (
     <div ref={containerRef} style={cursorStyle}>
-      {/* Scroller is element larger than the image to capture scroll event and then, make the 360 spin */}
-      {/* NOTE: ImageElement is within so that it can capture events first */}
-      <div ref={scrollerRef} className="overflow-x-scroll">
+      {/* Touch-event target for drag-to-spin (mouse drag is handled on the container). */}
+      <div ref={scrollerRef}>
         <div className="sticky left-0 top-0">
           {/* Flip book (Ensures image are already in the DOM) */}
           {images.map(image => (
@@ -555,10 +470,6 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
             itemIndex={-1}
           />
         </div>
-        {/* Add space on both sides to allow scrolling */}
-        {/* NOTE: We need the element to have an height, otherwise, Safari will ignore it */}
-        {/*       We need a lot of extra space on the side, otherwise, the 360 will not have inertia on Safari */}
-        <div className="pointer-events-none -mt-px h-px w-[calc(100%+1024px)]" />
       </div>
     </div>
   );
