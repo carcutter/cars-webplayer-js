@@ -343,11 +343,12 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   const hotspotContent = (
     <>
       <div
-        // Hoverable icon
-        className={cn(
-          "relative top-px flex size-7 shrink-0 items-center justify-center rounded-full border-2 border-background bg-primary text-primary-foreground",
-          shouldFlipTitle ? "right-[-5px]" : "left-[-5px]"
-        )}
+        // Hoverable icon — kept centered on the hotspot coordinate (no relative
+        // x-offset) so the painted circle, the CSS :hover region that reveals the
+        // title, and the click hit-box are the exact same 28px area. A paint-only
+        // offset would shift the visible/hover circle off the click box, creating
+        // an edge sliver where hovering shows the title but clicking misses.
+        className="relative top-px flex size-7 shrink-0 items-center justify-center rounded-full border-2 border-background bg-primary text-primary-foreground"
         style={{ backgroundColor: hotspotColorVariable }}
       >
         <div
