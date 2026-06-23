@@ -366,7 +366,15 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       {withTitle && (
         <div
           className={cn(
-            "absolute top-[calc(50%+1px)] -z-10 -translate-y-1/2 transition-[opacity,transform] duration-200",
+            "absolute -z-10",
+            panelMounted
+              ? // Expanded: anchor the panel's top edge to the top of the hotspot dot
+                // (dot is size-7 = 28px with top-px ⇒ its top sits at 50% - 13px), so the
+                // panel grows downward from the hotspot instead of being centered on it.
+                // Only animate opacity here; the vertical anchor snaps with the width/padding
+                // when toggling so the transform doesn't slide the panel on collapse.
+                "top-[calc(50%-13px)] transition-opacity duration-200"
+              : "top-[calc(50%+1px)] -translate-y-1/2 transition-[opacity,transform] duration-200",
             panelMounted
               ? // Expanded: grow to a comfortable reading width, bounded by the media
                 "w-72 max-w-[70vw] small:w-80 large:w-96"
@@ -384,20 +392,23 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
           )}
           ref={titleRef}
         >
-          {/* Title row — vertically centered on the hotspot dot */}
+          {/* Title row — centered on the hotspot dot when collapsed; top-anchored when expanded */}
           <div
             className={cn(
-              "relative flex items-center gap-1.5 border-[0.5px] border-[#64748B] bg-foreground py-1.5 text-background",
+              "relative flex items-center gap-1.5 border-[0.5px] border-[#64748B] bg-foreground text-background",
               panelMounted
                 ? cn(
                     "z-10 border-b-0",
                     // The corner under the hotspot icon matches the circle radius (size-7 = 28px ⇒ 14px)
+                    // Match top padding to the horizontal padding; keep the bottom tight so the
+                    // description butts directly against the title to read as one panel.
+                    "px-6 pb-1.5 pt-6 small:px-7 small:pt-7",
                     shouldFlipTitle
-                      ? "rounded-tl-[16px] rounded-tr-[14px] pl-3 pr-6 small:pr-7"
-                      : "rounded-tl-[14px] rounded-tr-[16px] pl-6 pr-3 small:pl-7"
+                      ? "rounded-tl-[16px] rounded-tr-[14px]"
+                      : "rounded-tl-[14px] rounded-tr-[16px]"
                   )
                 : cn(
-                    "rounded-t-full",
+                    "rounded-t-full py-1.5",
                     shouldFlipTitle
                       ? "rounded-b-full pl-2.5 pr-6 small:pl-3 small:pr-7"
                       : "rounded-b-full pl-6 pr-2.5 small:pl-7 small:pr-3"
@@ -441,11 +452,9 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
               <div className="min-h-0 overflow-hidden">
                 <div
                   className={cn(
-                    "max-h-[clamp(4rem,40vh,16rem)] transform-gpu overflow-y-auto overscroll-contain whitespace-normal break-words rounded-b-[16px] border-x-[0.5px] border-b-[0.5px] border-[#64748B] bg-foreground py-2 text-xs font-normal leading-relaxed text-background",
-                    // Align description start with the title text start
-                    shouldFlipTitle
-                      ? "pl-3 pr-6 small:pr-7"
-                      : "pl-6 pr-3 small:pl-7"
+                    "max-h-[clamp(4rem,40vh,16rem)] transform-gpu overflow-y-auto overscroll-contain whitespace-normal break-words rounded-b-[16px] border-x-[0.5px] border-b-[0.5px] border-[#64748B] bg-foreground pb-6 pt-1.5 text-xxs font-normal leading-relaxed text-background small:pb-7",
+                    // Align description padding with the expanded title
+                    "px-6 small:px-7"
                   )}
                 >
                   {description}

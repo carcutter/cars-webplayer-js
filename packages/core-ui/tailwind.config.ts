@@ -26,6 +26,7 @@ const config: Config = {
   content: ["./src/*/**/*.{ts,tsx}"],
   theme: {
     fontSize: {
+      xxs: ["11px", { lineHeight: "15px" }],
       xs: ["12px", { lineHeight: "16px" }],
       sm: ["14px", { lineHeight: "20px" }],
       base: ["16px", { lineHeight: "24px" }],
