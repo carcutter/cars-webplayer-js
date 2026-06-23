@@ -756,8 +756,10 @@ const NextGenThreeSixtyElementInteractive: React.FC<
               flipped imperatively in showFrame() to track the visible frame
               without triggering React re-renders during spin.
               The wrapper is non-interactive while spinning to avoid hijacking
-              drag/touch gestures. */}
-          {currentItemHotspotsVisible && (
+              drag/touch gestures.
+              Hidden while zooming so hotspots disappear until zoomed back to
+              the original size. */}
+          {currentItemHotspotsVisible && !isZooming && (
             <div
               className={cn(
                 "absolute inset-0 z-[3]",
