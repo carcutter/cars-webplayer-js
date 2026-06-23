@@ -26,6 +26,31 @@ type IconHotspotProps = HotspotProps & {
   analyticsValue: object;
 };
 
+const HOTSPOT_INTERACTION_EVENT = "car-cutter:inline-hotspot-interaction";
+
+type HotspotInteractionEvent = CustomEvent<{
+  sourceElement: HTMLElement;
+}>;
+
+const getRootEventTarget = (
+  element: HTMLElement | null
+): Document | ShadowRoot | null => {
+  const rootNode = element?.getRootNode();
+
+  if (!rootNode) {
+    return null;
+  }
+
+  if (
+    rootNode instanceof Document ||
+    (typeof ShadowRoot !== "undefined" && rootNode instanceof ShadowRoot)
+  ) {
+    return rootNode;
+  }
+
+  return null;
+};
+
 // Mirrors the `w-72 max-w-[70vw] small:w-80 large:w-96` classes applied to the
 // inline detail panel when expanded. Used to pick the flip direction based on
 // the panel's *expanded* width (not the collapsed pill) so the expanded panel
@@ -143,6 +168,21 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     });
   }, [clearCollapseTimeout]);
 
+  const dispatchHotspotInteraction = useCallback(() => {
+    const rootElement = hotspotDivRef.current;
+    const eventTarget = getRootEventTarget(rootElement);
+
+    if (!rootElement || !eventTarget) {
+      return;
+    }
+
+    eventTarget.dispatchEvent(
+      new CustomEvent(HOTSPOT_INTERACTION_EVENT, {
+        detail: { sourceElement: rootElement },
+      })
+    );
+  }, []);
+
   useEffect(() => clearCollapseTimeout, [clearCollapseTimeout]);
 
   const DefaultIcon =
@@ -169,6 +209,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       if (expanded) {
         collapsePanel();
       } else {
+        dispatchHotspotInteraction();
         clearCollapseTimeout();
         setCollapsing(false);
         setExpanded(true);
@@ -187,8 +228,14 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   const onMouseEnter = useCallback(() => {
     if (over) return;
     setOver(true);
+    dispatchHotspotInteraction();
     emitAnalyticsEventHotspotHovered();
-  }, [over, setOver, emitAnalyticsEventHotspotHovered]);
+  }, [
+    over,
+    setOver,
+    dispatchHotspotInteraction,
+    emitAnalyticsEventHotspotHovered,
+  ]);
 
   const onMouseLeave = useCallback(() => {
     if (!over) return;
@@ -201,27 +248,70 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       return;
     }
 
+    const rootElement = hotspotDivRef.current;
+    const pointerEventTarget = getRootEventTarget(rootElement);
+
+    if (!rootElement || !pointerEventTarget) {
+      return;
+    }
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         collapsePanel();
       }
     };
 
-    const handlePointerDown = (event: PointerEvent) => {
-      const rootElement = hotspotDivRef.current;
-      if (rootElement && !rootElement.contains(event.target as Node)) {
+    const handlePointerDown = (event: Event) => {
+      const eventPath = event.composedPath();
+      const isInsideHotspot =
+        eventPath.includes(rootElement) ||
+        rootElement.contains(event.target as Node);
+
+      if (!isInsideHotspot) {
         collapsePanel();
       }
     };
 
     document.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("pointerdown", handlePointerDown);
+    pointerEventTarget.addEventListener("pointerdown", handlePointerDown);
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("pointerdown", handlePointerDown);
+      pointerEventTarget.removeEventListener("pointerdown", handlePointerDown);
     };
   }, [expanded, collapsePanel]);
+
+  useEffect(() => {
+    if (!inlineExpandable || !expanded) {
+      return;
+    }
+
+    const rootElement = hotspotDivRef.current;
+    const eventTarget = getRootEventTarget(rootElement);
+
+    if (!rootElement || !eventTarget) {
+      return;
+    }
+
+    const handleHotspotInteraction = (event: Event) => {
+      const interactionEvent = event as HotspotInteractionEvent;
+      if (interactionEvent.detail.sourceElement !== rootElement) {
+        collapsePanel();
+      }
+    };
+
+    eventTarget.addEventListener(
+      HOTSPOT_INTERACTION_EVENT,
+      handleHotspotInteraction
+    );
+
+    return () => {
+      eventTarget.removeEventListener(
+        HOTSPOT_INTERACTION_EVENT,
+        handleHotspotInteraction
+      );
+    };
+  }, [inlineExpandable, expanded, collapsePanel]);
 
   // Determine which CSS variable to use based on hotspot type
   const getHotspotColorVariable = useCallback(() => {
