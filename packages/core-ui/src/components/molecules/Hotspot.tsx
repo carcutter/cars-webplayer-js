@@ -508,10 +508,10 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
           >
             <div
               className={cn(
-                "text-xs font-normal",
+                "font-normal",
                 panelMounted
-                  ? "min-w-0 flex-1 break-words font-medium"
-                  : "truncate"
+                  ? "min-w-0 flex-1 break-words text-[13px] font-medium"
+                  : "truncate text-xs"
               )}
             >
               {title}
