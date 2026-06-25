@@ -1,6 +1,12 @@
 import type { Config } from "tailwindcss";
 import type { PluginCreator } from "tailwindcss/types/config";
 
+import {
+  BREAKPOINT_LARGE,
+  BREAKPOINT_SMALL_LANDSCAPE,
+  BREAKPOINT_SMALL_PORTRAIT,
+} from "./src/const/browser";
+
 const noScrollbarPlugin: PluginCreator = ({ addUtilities }) =>
   addUtilities({
     ".no-scrollbar": {
@@ -13,10 +19,6 @@ const noScrollbarPlugin: PluginCreator = ({ addUtilities }) =>
     },
   });
 
-const BREAKPOINT_SMALL_PORTRAIT = 768;
-const BREAKPOINT_SMALL_LANDSCAPE = 1024;
-const BREAKPOINT_LARGE = 1280;
-
 const joinMediaQueries = (...queries: string[]) =>
   queries.map(query => `(${query})`).join(" or ");
 
@@ -24,6 +26,7 @@ const config: Config = {
   content: ["./src/*/**/*.{ts,tsx}"],
   theme: {
     fontSize: {
+      xxs: ["11px", { lineHeight: "15px" }],
       xs: ["12px", { lineHeight: "16px" }],
       sm: ["14px", { lineHeight: "20px" }],
       base: ["16px", { lineHeight: "24px" }],
