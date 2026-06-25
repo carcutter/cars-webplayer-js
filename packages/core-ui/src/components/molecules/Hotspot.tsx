@@ -187,9 +187,9 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
 
   const DefaultIcon =
     type === "damage" ? (
-      <WarningIcon className="size-4" />
+      <WarningIcon className="size-full" />
     ) : (
-      <ImageIcon className="size-4" />
+      <ImageIcon className="size-full" />
     );
 
   const onClick = () => {
@@ -327,6 +327,12 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
 
   const hotspotColorVariable = getHotspotColorVariable();
 
+  // Responsive hotspot size using container query width units.
+  // The hotspot circle scales proportionally to the container width
+  // with a min/max to stay usable on small screens and not grow too large.
+  const hotspotSize = "clamp(28px, 3.5cqw, 48px)";
+  const hotspotPingSize = "clamp(32px, 4cqw, 56px)";
+
   useEffect(() => {
     if (!withTitle) {
       return;
@@ -435,21 +441,35 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       <div
         // Hoverable icon — kept centered on the hotspot coordinate (no relative
         // x-offset) so the painted circle, the CSS :hover region that reveals the
-        // title, and the click hit-box are the exact same 28px area. A paint-only
+        // title, and the click hit-box are the exact same area. A paint-only
         // offset would shift the visible/hover circle off the click box, creating
         // an edge sliver where hovering shows the title but clicking misses.
-        className="relative top-px flex size-7 shrink-0 items-center justify-center rounded-full border-2 border-background bg-primary text-primary-foreground"
-        style={{ backgroundColor: hotspotColorVariable }}
+        className="relative top-px flex shrink-0 items-center justify-center rounded-full border-2 border-background bg-primary text-primary-foreground"
+        style={{
+          backgroundColor: hotspotColorVariable,
+          width: hotspotSize,
+          height: hotspotSize,
+        }}
       >
         <div
           // Ping animation
-          className="pointer-events-none absolute -z-20 size-8 animate-hotspot-ping rounded-full border-0 bg-primary"
-          style={{ backgroundColor: hotspotColorVariable }}
+          className="pointer-events-none absolute -z-20 animate-hotspot-ping rounded-full border-0 bg-primary"
+          style={{
+            backgroundColor: hotspotColorVariable,
+            width: hotspotPingSize,
+            height: hotspotPingSize,
+          }}
         />
 
         {/* Use the icon from the config if available. Else, replace it if needed */}
         {(withDetail || hotspotConfig?.Icon) && (
-          <div className="size-4 [&_*]:size-4">
+          <div
+            className="[&_*]:size-full"
+            style={{
+              width: `calc(${hotspotSize} * 0.57)`,
+              height: `calc(${hotspotSize} * 0.57)`,
+            }}
+          >
             {hotspotConfig?.Icon ? hotspotConfig.Icon : DefaultIcon}
           </div>
         )}
@@ -459,13 +479,15 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
           className={cn(
             "absolute -z-10",
             panelMounted
-              ? // Expanded: anchor the panel's top edge to the top of the hotspot dot
-                // (dot is size-7 = 28px with top-px ⇒ its top sits at 50% - 13px), so the
-                // panel grows downward from the hotspot instead of being centered on it.
-                // Only animate opacity here; the vertical anchor snaps with the width/padding
-                // when toggling so the transform doesn't slide the panel on collapse.
-                "top-[calc(50%-13px)] transition-opacity duration-200"
-              : "top-[calc(50%+1px)] -translate-y-1/2 transition-[opacity,transform] duration-200",
+              ? // Expanded: anchor the panel's top edge to the top of the hotspot
+                // dot (its top sits at 50% - hotspotSize/2 + 1px from the top-px
+                // offset, applied via inline style below), so the panel grows
+                // downward from the hotspot instead of being centered on it.
+                // Only animate opacity here; the vertical anchor snaps with the
+                // width/padding when toggling so the transform doesn't slide the
+                // panel on collapse.
+                "transition-opacity duration-200"
+              : "-translate-y-1/2 transition-[opacity,transform] duration-200",
             panelMounted
               ? // Expanded: grow to a comfortable reading width, bounded by the media
                 "w-72 max-w-[70vw] small:w-80 large:w-96"
@@ -481,6 +503,14 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                     : "group-hover:translate-x-1"
                 )
           )}
+          style={{
+            // Anchor relative to the responsive hotspot dot. Expanded: top edge
+            // aligns with the dot's top (50% - hotspotSize/2 + 1px for top-px).
+            // Collapsed: centered on the dot (50% + 1px), with -translate-y-1/2.
+            top: panelMounted
+              ? `calc(50% - ${hotspotSize} / 2 + 1px)`
+              : "calc(50% + 1px)",
+          }}
           ref={titleRef}
         >
           {/* Title row — centered on the hotspot dot when collapsed; top-anchored when expanded */}
@@ -490,13 +520,14 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
               panelMounted
                 ? cn(
                     "z-10 border-b-0",
-                    // The corner under the hotspot icon matches the circle radius (size-7 = 28px ⇒ 14px)
+                    // The corner under the hotspot icon matches the circle radius
+                    // (hotspotSize / 2, applied via inline style below so it stays
+                    // aligned as the dot scales). The opposite corner uses a small
+                    // fixed accent radius.
                     // Match top padding to the horizontal padding; keep the bottom tight so the
                     // description butts directly against the title to read as one panel.
                     "px-6 pb-1.5 pt-6 small:px-7 small:pt-7",
-                    shouldFlipTitle
-                      ? "rounded-tl-[16px] rounded-tr-[14px]"
-                      : "rounded-tl-[14px] rounded-tr-[16px]"
+                    shouldFlipTitle ? "rounded-tl-[16px]" : "rounded-tr-[16px]"
                   )
                 : cn(
                     "rounded-t-full py-1.5",
@@ -505,6 +536,13 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                       : "rounded-b-full pl-6 pr-2.5 small:pl-7 small:pr-3"
                   )
             )}
+            style={
+              panelMounted
+                ? shouldFlipTitle
+                  ? { borderTopRightRadius: `calc(${hotspotSize} / 2)` }
+                  : { borderTopLeftRadius: `calc(${hotspotSize} / 2)` }
+                : undefined
+            }
           >
             <div
               className={cn(
