@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { MAX_HFOV, MIN_HFOV } from "../../../const/pannellum";
 import { MAX_ZOOM, ZOOM_STEP } from "../../../const/zoom";
@@ -6,6 +6,7 @@ import { useLoadingProgress } from "../../../hooks/useLoadingProgress";
 import { usePannellumViewer } from "../../../hooks/usePannellumViewer";
 import { useControlsContext } from "../../../providers/ControlsContext";
 import { useGlobalContext } from "../../../providers/GlobalContext";
+import { getThemeConfig } from "../../../theme-config";
 import { CustomizableItem } from "../../../types/customizable_item";
 import { createThrottleDebounce } from "../../../utils/debounce";
 import {
@@ -37,8 +38,9 @@ const InteriorThreeSixtyElementLoadControls: React.FC<
   autoloadInterior360,
   loadScene,
 }) => {
-  const { emitAnalyticsEvent } = useGlobalContext();
+  const { emitAnalyticsEvent, themeConfig } = useGlobalContext();
   const { displayedCategoryId, displayedCategoryName } = useControlsContext();
+  const theme = useMemo(() => getThemeConfig(themeConfig), [themeConfig]);
 
   const emitAnalyticsEventInterior360Play = useCallback(
     (type: "click" | "auto") => {
@@ -80,10 +82,32 @@ const InteriorThreeSixtyElementLoadControls: React.FC<
   return (
     <div className="pointer-events-auto absolute inset-0 flex flex-col items-center justify-center gap-y-4">
       <div className="pointer-events-auto absolute inset-0 flex flex-col items-center justify-center gap-y-4 bg-foreground/35">
-        <InteriorThreeSixtyIcon className="size-20" />
+        <InteriorThreeSixtyIcon
+          className="size-20"
+          isVisible={theme?.threeSixtyIcon}
+        />
 
-        <Button color="neutral" shape="icon" onClick={onClickPLayButton}>
-          <Interior360PlayIcon className="size-full" />
+        <Button
+          aria-label="Play interior 360 view"
+          className={
+            theme?.playButton
+              ? "border-0 bg-transparent p-0 shadow-none hover:bg-transparent"
+              : undefined
+          }
+          style={
+            theme?.playButton
+              ? { width: 140, height: 140, padding: 0 }
+              : undefined
+          }
+          color="neutral"
+          shape="icon"
+          onClick={onClickPLayButton}
+        >
+          {theme?.playButton ? (
+            <img className="size-full" src={theme.playButton.default} alt="" />
+          ) : (
+            <Interior360PlayIcon className="size-full" />
+          )}
         </Button>
 
         <div
