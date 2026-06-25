@@ -5,6 +5,7 @@ import type { Hotspot as HotspotType } from "@car-cutter/core";
 import {
   HOTSPOT_EXPANDED_PANEL_WIDTH,
   LARGE_MEDIA_QUERY,
+  MAX_SMALL_MEDIA_QUERY,
   SMALL_MEDIA_QUERY,
 } from "../../const/browser";
 import { useControlsContext } from "../../providers/ControlsContext";
@@ -69,6 +70,17 @@ const getExpandedPanelWidth = (): number => {
 
   // Mirror the `max-w-[70vw]` cap on the expanded panel.
   return Math.min(width, window.innerWidth * 0.7);
+};
+
+// Whether the viewport is in the "mobile" range (below the `max-small`
+// breakpoint). Evaluated at call-time (not cached) so it stays correct across
+// viewport/orientation changes, mirroring the pattern in ZoomableCdnImage.
+const isMobileViewport = (): boolean => {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  return window.matchMedia(MAX_SMALL_MEDIA_QUERY).matches;
 };
 
 const IconHotspot: React.FC<IconHotspotProps> = ({
@@ -205,7 +217,15 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     }
 
     if (inlineExpandable) {
-      // Toggle the inline description panel instead of opening the side pane
+      // On mobile, open the shared side panel (like image hotspots) instead of
+      // the cramped inline description panel.
+      if (isMobileViewport()) {
+        setShownDetails({ title, text: description });
+        return;
+      }
+
+      // Desktop/tablet: toggle the inline description panel instead of opening
+      // the side pane.
       if (expanded) {
         collapsePanel();
       } else {
@@ -313,6 +333,29 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     };
   }, [inlineExpandable, expanded, collapsePanel]);
 
+  // If the viewport shrinks into the mobile range while the inline panel is
+  // open (e.g. rotation/resize), collapse it: on mobile these hotspots open the
+  // side pane instead, so a lingering inline panel would co-exist with it.
+  useEffect(() => {
+    if (typeof window === "undefined" || !inlineExpandable || !expanded) {
+      return;
+    }
+
+    const mediaQueryList = window.matchMedia(MAX_SMALL_MEDIA_QUERY);
+
+    const handleViewportChange = (event: MediaQueryListEvent) => {
+      if (event.matches) {
+        collapsePanel();
+      }
+    };
+
+    mediaQueryList.addEventListener("change", handleViewportChange);
+
+    return () => {
+      mediaQueryList.removeEventListener("change", handleViewportChange);
+    };
+  }, [inlineExpandable, expanded, collapsePanel]);
+
   // Determine which CSS variable to use based on hotspot type
   const getHotspotColorVariable = useCallback(() => {
     if (type === "damage") {
@@ -372,9 +415,12 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
         // panel's *expanded* width so the expanded detail fits the media too —
         // not just the collapsed pill. The expanded width is always >= the pill
         // width, so the chosen side fits both states (no flip on expand).
-        const requiredWidth = inlineExpandable
-          ? Math.max(titleRect.width, getExpandedPanelWidth())
-          : titleRect.width;
+        // On mobile the panel never expands inline (it opens the side pane
+        // instead), so only the collapsed pill width matters there.
+        const requiredWidth =
+          inlineExpandable && !isMobileViewport()
+            ? Math.max(titleRect.width, getExpandedPanelWidth())
+            : titleRect.width;
 
         let nextShouldFlip = false;
 
@@ -540,16 +586,18 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                 }
               }}
             >
-              <div className="min-h-0 overflow-hidden">
+              <div className="relative min-h-0 overflow-hidden rounded-b-[16px]">
                 <div
                   className={cn(
-                    "max-h-[clamp(4rem,40vh,16rem)] overflow-y-auto overscroll-y-none whitespace-normal break-words rounded-b-[16px] border-x-[0.5px] border-b-[0.5px] border-[#64748B] bg-foreground pb-6 pt-1.5 text-xxs font-normal leading-relaxed text-background small:pb-7",
+                    "max-h-[clamp(4rem,40vh,16rem)] overflow-y-auto overscroll-y-none whitespace-normal break-words rounded-b-[16px] border-x-[0.5px] border-b-[0.5px] border-[#64748B] bg-foreground pb-6 pt-1.5 text-xxs font-normal leading-relaxed text-background no-scrollbar small:pb-7",
                     // Align description padding with the expanded title
                     "px-6 small:px-7"
                   )}
                 >
                   {description}
                 </div>
+                {/* Bottom fade — hints the text continues beyond the visible area */}
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-8 rounded-b-[16px] bg-gradient-to-t from-foreground to-transparent" />
               </div>
             </div>
           )}
