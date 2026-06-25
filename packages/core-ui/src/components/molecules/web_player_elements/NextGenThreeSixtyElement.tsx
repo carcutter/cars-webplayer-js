@@ -661,6 +661,10 @@ const NextGenThreeSixtyElementInteractive: React.FC<
                 "absolute inset-0 z-[3]",
                 isSpinActive ? "pointer-events-none" : "pointer-events-auto"
               )}
+              // Establish a container-query context so the hotspots' responsive
+              // `cqw`-based sizing resolves against the player's content width
+              // (matching how ImageElement sizes them for image/spin items).
+              style={{ containerType: "inline-size" }}
             >
               {images.map((image, i) => (
                 <div
