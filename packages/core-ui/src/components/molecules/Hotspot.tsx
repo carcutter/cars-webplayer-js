@@ -3,9 +3,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Hotspot as HotspotType } from "@car-cutter/core";
 
 import {
+  BREAKPOINT_HOTSPOT_SIDE_PANEL,
   HOTSPOT_EXPANDED_PANEL_WIDTH,
   LARGE_MEDIA_QUERY,
-  MAX_SMALL_MEDIA_QUERY,
   SMALL_MEDIA_QUERY,
 } from "../../const/browser";
 import { useControlsContext } from "../../providers/ControlsContext";
@@ -72,24 +72,18 @@ const getExpandedPanelWidth = (): number => {
   return Math.min(width, window.innerWidth * 0.7);
 };
 
-// Whether the viewport is in the "mobile" range (below the `max-small`
-// breakpoint). Evaluated at call-time (not cached) so it stays correct across
-// viewport/orientation changes, mirroring the pattern in ZoomableCdnImage.
-const isMobileViewport = (): boolean => {
-  if (typeof window === "undefined") {
-    return false;
-  }
-
-  return window.matchMedia(MAX_SMALL_MEDIA_QUERY).matches;
-};
-
 const IconHotspot: React.FC<IconHotspotProps> = ({
   hotspot,
   item,
   analyticsValue,
 }) => {
   const { title, icon, description, detail, type } = hotspot;
-  const { emitAnalyticsEvent } = useGlobalContext();
+  const { emitAnalyticsEvent, playerWidth } = useGlobalContext();
+  // Below the side-panel breakpoint the web-player is too narrow for the inline
+  // description panel, so expandable hotspots open the shared side pane instead.
+  // The `> 0` guard avoids treating the pre-measurement initial state as compact.
+  const isCompactPlayer =
+    playerWidth > 0 && playerWidth < BREAKPOINT_HOTSPOT_SIDE_PANEL;
   const {
     extendMode,
     setShownDetails,
@@ -150,6 +144,12 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   const hotspotDivRef = useRef<HTMLDivElement | null>(null);
   const titleRef = useRef<HTMLDivElement | null>(null);
   const [shouldFlipTitle, setShouldFlipTitle] = useState(false);
+  // Max height (px) the inline description may grow to before it would overflow
+  // the bottom of the media container. `null` until measured (falls back to the
+  // CSS clamp). Recomputed by the placement effect on resize/expand.
+  const [descriptionMaxHeight, setDescriptionMaxHeight] = useState<
+    number | null
+  >(null);
   const [expanded, setExpanded] = useState(false);
   // Keeps the panel laid out (full width / opacity) while the description
   // retracts, so closing animates smoothly instead of snapping.
@@ -217,9 +217,9 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     }
 
     if (inlineExpandable) {
-      // On mobile, open the shared side panel (like image hotspots) instead of
-      // the cramped inline description panel.
-      if (isMobileViewport()) {
+      // When the player is narrow, open the shared side panel (like image
+      // hotspots) instead of the cramped inline description panel.
+      if (isCompactPlayer) {
         setShownDetails({ title, text: description });
         return;
       }
@@ -333,28 +333,14 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     };
   }, [inlineExpandable, expanded, collapsePanel]);
 
-  // If the viewport shrinks into the mobile range while the inline panel is
-  // open (e.g. rotation/resize), collapse it: on mobile these hotspots open the
-  // side pane instead, so a lingering inline panel would co-exist with it.
+  // If the player shrinks below the side-panel breakpoint while the inline panel
+  // is open (e.g. responsive resize), collapse it: at that width these hotspots
+  // open the side pane instead, so a lingering inline panel would co-exist with it.
   useEffect(() => {
-    if (typeof window === "undefined" || !inlineExpandable || !expanded) {
-      return;
+    if (inlineExpandable && expanded && isCompactPlayer) {
+      collapsePanel();
     }
-
-    const mediaQueryList = window.matchMedia(MAX_SMALL_MEDIA_QUERY);
-
-    const handleViewportChange = (event: MediaQueryListEvent) => {
-      if (event.matches) {
-        collapsePanel();
-      }
-    };
-
-    mediaQueryList.addEventListener("change", handleViewportChange);
-
-    return () => {
-      mediaQueryList.removeEventListener("change", handleViewportChange);
-    };
-  }, [inlineExpandable, expanded, collapsePanel]);
+  }, [inlineExpandable, expanded, isCompactPlayer, collapsePanel]);
 
   // Determine which CSS variable to use based on hotspot type
   const getHotspotColorVariable = useCallback(() => {
@@ -430,10 +416,10 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
         // panel's *expanded* width so the expanded detail fits the media too —
         // not just the collapsed pill. The expanded width is always >= the pill
         // width, so the chosen side fits both states (no flip on expand).
-        // On mobile the panel never expands inline (it opens the side pane
-        // instead), so only the collapsed pill width matters there.
+        // On a compact player the panel never expands inline (it opens the side
+        // pane instead), so only the collapsed pill width matters there.
         const requiredWidth =
-          inlineExpandable && !isMobileViewport()
+          inlineExpandable && !isCompactPlayer
             ? Math.max(titleRect.width, getExpandedPanelWidth())
             : titleRect.width;
 
@@ -450,6 +436,32 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
         setShouldFlipTitle(current =>
           current === nextShouldFlip ? current : nextShouldFlip
         );
+
+        // Cap the inline description so the panel never overflows the bottom of
+        // the media container. The panel is top-anchored at the dot, so the room
+        // available below = container bottom − dot top − the title row height
+        // (which sits above the description) − a small margin off the edge.
+        if (inlineExpandable) {
+          const titleRowEl = titleElement.firstElementChild as HTMLElement | null;
+          const titleRowHeight = titleRowEl
+            ? titleRowEl.getBoundingClientRect().height
+            : titleRect.height;
+          const dotTopInContainer = hotspotRect.top - containerRect.top;
+          const VERTICAL_MARGIN = 8;
+          const available =
+            containerRect.height -
+            dotTopInContainer -
+            titleRowHeight -
+            VERTICAL_MARGIN;
+          // Keep a usable minimum and an upper bound matching the CSS clamp ceiling.
+          const nextMaxHeight = Math.round(
+            Math.min(Math.max(available, 64), 256)
+          );
+
+          setDescriptionMaxHeight(current =>
+            current === nextMaxHeight ? current : nextMaxHeight
+          );
+        }
       });
     };
 
@@ -474,7 +486,16 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       }
       resizeObserver.disconnect();
     };
-  }, [withTitle, title, clickable, extendMode, withDetail, inlineExpandable]);
+  }, [
+    withTitle,
+    title,
+    clickable,
+    extendMode,
+    withDetail,
+    inlineExpandable,
+    isCompactPlayer,
+    expanded,
+  ]);
 
   // While collapsing, keep the panel laid out (wide + opaque) so the
   // description can retract smoothly before reverting to the title pill.
@@ -660,6 +681,11 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                     fontSize: `calc(${hotspotSize} * 0.39)`,
                     // Align the description's dot-side indent with the title text.
                     ...dotSidePaddingStyle,
+                    // Cap to the room measured below the dot so the panel stays
+                    // within the media container (falls back to the CSS clamp).
+                    ...(descriptionMaxHeight !== null
+                      ? { maxHeight: `${descriptionMaxHeight}px` }
+                      : {}),
                   }}
                 >
                   {description}
