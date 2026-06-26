@@ -376,6 +376,15 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   const hotspotSize = "clamp(28px, 3.5cqw, 48px)";
   const hotspotPingSize = "clamp(32px, 4cqw, 56px)";
 
+  // Padding on the side where the dot sits, so the title/description text always
+  // clears the dot as it grows. The title pill is anchored at the dot's outer edge
+  // (left-0 of the dot-sized root), so the text must clear the full dot width plus
+  // a fixed gap — not just the radius.
+  const dotSidePadding = `calc(${hotspotSize} + 0.5rem)`;
+  const dotSidePaddingStyle = shouldFlipTitle
+    ? { paddingRight: dotSidePadding }
+    : { paddingLeft: dotSidePadding };
+
   useEffect(() => {
     if (!withTitle) {
       return;
@@ -569,34 +578,47 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                     // The corner under the hotspot icon matches the circle radius
                     // (hotspotSize / 2, applied via inline style below so it stays
                     // aligned as the dot scales). The opposite corner uses a small
-                    // fixed accent radius.
-                    // Match top padding to the horizontal padding; keep the bottom tight so the
+                    // fixed accent radius. The dot-side padding is applied inline
+                    // (dotSidePaddingStyle) so the title text clears the dot as it
+                    // grows; the far side keeps its fixed padding.
+                    // Match top padding to the far-side padding; keep the bottom tight so the
                     // description butts directly against the title to read as one panel.
                     "px-6 pb-1.5 pt-6 small:px-7 small:pt-7",
                     shouldFlipTitle ? "rounded-tl-[16px]" : "rounded-tr-[16px]"
                   )
                 : cn(
-                    "rounded-t-full py-1.5",
-                    shouldFlipTitle
-                      ? "rounded-b-full pl-2.5 pr-6 small:pl-3 small:pr-7"
-                      : "rounded-b-full pl-6 pr-2.5 small:pl-7 small:pr-3"
+                    "rounded-t-full rounded-b-full py-1.5",
+                    // Dot-side padding comes from dotSidePaddingStyle; only the
+                    // far side is fixed here.
+                    shouldFlipTitle ? "pl-2.5 small:pl-3" : "pr-2.5 small:pr-3"
                   )
             )}
             style={
               panelMounted
-                ? shouldFlipTitle
-                  ? { borderTopRightRadius: `calc(${hotspotSize} / 2)` }
-                  : { borderTopLeftRadius: `calc(${hotspotSize} / 2)` }
-                : undefined
+                ? {
+                    ...dotSidePaddingStyle,
+                    ...(shouldFlipTitle
+                      ? { borderTopRightRadius: `calc(${hotspotSize} / 2)` }
+                      : { borderTopLeftRadius: `calc(${hotspotSize} / 2)` }),
+                  }
+                : dotSidePaddingStyle
             }
           >
             <div
               className={cn(
                 "font-normal",
                 panelMounted
-                  ? "min-w-0 flex-1 break-words text-[13px] font-medium"
-                  : "truncate text-xs"
+                  ? "min-w-0 flex-1 break-words font-medium"
+                  : "truncate"
               )}
+              style={{
+                // Scale the title with the hotspot dot so text and dot grow in
+                // lockstep. Fractions preserve the prior fixed sizes at the
+                // dot's 28px minimum (~13px expanded, ~12px collapsed).
+                fontSize: panelMounted
+                  ? `calc(${hotspotSize} * 0.46)`
+                  : `calc(${hotspotSize} * 0.43)`,
+              }}
             >
               {title}
             </div>
@@ -627,10 +649,18 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
               <div className="relative min-h-0 overflow-hidden rounded-b-[16px]">
                 <div
                   className={cn(
-                    "max-h-[clamp(4rem,40vh,16rem)] overflow-y-auto overscroll-y-none whitespace-normal break-words rounded-b-[16px] border-x-[0.5px] border-b-[0.5px] border-[#64748B] bg-foreground pb-6 pt-1.5 text-xxs font-normal leading-relaxed text-background no-scrollbar small:pb-7",
-                    // Align description padding with the expanded title
+                    "max-h-[clamp(4rem,40vh,16rem)] overflow-y-auto overscroll-y-none whitespace-normal break-words rounded-b-[16px] border-x-[0.5px] border-b-[0.5px] border-[#64748B] bg-foreground pb-6 pt-1.5 font-normal leading-relaxed text-background no-scrollbar small:pb-7",
+                    // Far-side padding is fixed; the dot-side padding comes from
+                    // dotSidePaddingStyle so the text aligns with the expanded title.
                     "px-6 small:px-7"
                   )}
+                  style={{
+                    // Scale the description with the hotspot dot. Fraction preserves
+                    // the prior ~11px size at the dot's 28px minimum.
+                    fontSize: `calc(${hotspotSize} * 0.39)`,
+                    // Align the description's dot-side indent with the title text.
+                    ...dotSidePaddingStyle,
+                  }}
                 >
                   {description}
                 </div>
