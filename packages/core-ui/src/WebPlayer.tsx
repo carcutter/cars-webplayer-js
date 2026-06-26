@@ -96,6 +96,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [playerInViewportWidthRatio, setPlayerInViewportWidthRatio] =
     useState(0.5); // NOTE: Hardcoded for typing convenience, but will be updated in the useEffect
+  const [playerWidth, setPlayerWidth] = useState(0);
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   const emitEvent = useCallback(
@@ -227,10 +228,13 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
     return () => clearTimeout(timeout);
   }, [emitAnalyticsEvent, loadEvent]);
 
-  // Compute player width ratio in viewport (to handle imgs' srcSet)
+  // Compute player width ratio in viewport (to handle imgs' srcSet) and track
+  // the player's own rendered width (drives the compact-width hotspot behavior).
   useEffect(() => {
     if (isFullScreen) {
       setPlayerInViewportWidthRatio(1);
+      // Fullscreen player spans the viewport, so it is never "compact".
+      setPlayerWidth(window.innerWidth);
       return;
     }
 
@@ -245,14 +249,25 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
       const playerWrapperWidth = wrapper.clientWidth;
 
       setPlayerInViewportWidthRatio(playerWrapperWidth / viewportWidth);
+      setPlayerWidth(playerWrapperWidth);
     };
 
     update();
 
-    addEventListener("resize", update);
+    // Observe the wrapper itself so the player's width stays in sync even when
+    // it is resized without a window resize (responsive container, layout shifts).
+    if (typeof ResizeObserver === "undefined") {
+      addEventListener("resize", update);
+      return () => {
+        removeEventListener("resize", update);
+      };
+    }
+
+    const resizeObserver = new ResizeObserver(update);
+    resizeObserver.observe(wrapper);
 
     return () => {
-      removeEventListener("resize", update);
+      resizeObserver.disconnect();
     };
   }, [isFullScreen]);
 
@@ -335,6 +350,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
         emitAnalyticsEvent,
 
         playerInViewportWidthRatio,
+        playerWidth,
         isFullScreen,
         requestFullscreen,
         exitFullscreen,

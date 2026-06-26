@@ -3,9 +3,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Hotspot as HotspotType } from "@car-cutter/core";
 
 import {
+  BREAKPOINT_HOTSPOT_SIDE_PANEL,
   HOTSPOT_EXPANDED_PANEL_WIDTH,
   LARGE_MEDIA_QUERY,
-  MAX_SMALL_MEDIA_QUERY,
   SMALL_MEDIA_QUERY,
 } from "../../const/browser";
 import { useControlsContext } from "../../providers/ControlsContext";
@@ -72,24 +72,18 @@ const getExpandedPanelWidth = (): number => {
   return Math.min(width, window.innerWidth * 0.7);
 };
 
-// Whether the viewport is in the "mobile" range (below the `max-small`
-// breakpoint). Evaluated at call-time (not cached) so it stays correct across
-// viewport/orientation changes, mirroring the pattern in ZoomableCdnImage.
-const isMobileViewport = (): boolean => {
-  if (typeof window === "undefined") {
-    return false;
-  }
-
-  return window.matchMedia(MAX_SMALL_MEDIA_QUERY).matches;
-};
-
 const IconHotspot: React.FC<IconHotspotProps> = ({
   hotspot,
   item,
   analyticsValue,
 }) => {
   const { title, icon, description, detail, type } = hotspot;
-  const { emitAnalyticsEvent } = useGlobalContext();
+  const { emitAnalyticsEvent, playerWidth } = useGlobalContext();
+  // Below the side-panel breakpoint the web-player is too narrow for the inline
+  // description panel, so expandable hotspots open the shared side pane instead.
+  // The `> 0` guard avoids treating the pre-measurement initial state as compact.
+  const isCompactPlayer =
+    playerWidth > 0 && playerWidth < BREAKPOINT_HOTSPOT_SIDE_PANEL;
   const {
     extendMode,
     setShownDetails,
@@ -150,6 +144,12 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   const hotspotDivRef = useRef<HTMLDivElement | null>(null);
   const titleRef = useRef<HTMLDivElement | null>(null);
   const [shouldFlipTitle, setShouldFlipTitle] = useState(false);
+  // Max height (px) the inline description may grow to before it would overflow
+  // the bottom of the media container. `null` until measured (falls back to the
+  // CSS clamp). Recomputed by the placement effect on resize/expand.
+  const [descriptionMaxHeight, setDescriptionMaxHeight] = useState<
+    number | null
+  >(null);
   const [expanded, setExpanded] = useState(false);
   // Keeps the panel laid out (full width / opacity) while the description
   // retracts, so closing animates smoothly instead of snapping.
@@ -217,9 +217,9 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     }
 
     if (inlineExpandable) {
-      // On mobile, open the shared side panel (like image hotspots) instead of
-      // the cramped inline description panel.
-      if (isMobileViewport()) {
+      // When the player is narrow, open the shared side panel (like image
+      // hotspots) instead of the cramped inline description panel.
+      if (isCompactPlayer) {
         setShownDetails({ title, text: description });
         return;
       }
@@ -333,28 +333,14 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     };
   }, [inlineExpandable, expanded, collapsePanel]);
 
-  // If the viewport shrinks into the mobile range while the inline panel is
-  // open (e.g. rotation/resize), collapse it: on mobile these hotspots open the
-  // side pane instead, so a lingering inline panel would co-exist with it.
+  // If the player shrinks below the side-panel breakpoint while the inline panel
+  // is open (e.g. responsive resize), collapse it: at that width these hotspots
+  // open the side pane instead, so a lingering inline panel would co-exist with it.
   useEffect(() => {
-    if (typeof window === "undefined" || !inlineExpandable || !expanded) {
-      return;
+    if (inlineExpandable && expanded && isCompactPlayer) {
+      collapsePanel();
     }
-
-    const mediaQueryList = window.matchMedia(MAX_SMALL_MEDIA_QUERY);
-
-    const handleViewportChange = (event: MediaQueryListEvent) => {
-      if (event.matches) {
-        collapsePanel();
-      }
-    };
-
-    mediaQueryList.addEventListener("change", handleViewportChange);
-
-    return () => {
-      mediaQueryList.removeEventListener("change", handleViewportChange);
-    };
-  }, [inlineExpandable, expanded, collapsePanel]);
+  }, [inlineExpandable, expanded, isCompactPlayer, collapsePanel]);
 
   // Determine which CSS variable to use based on hotspot type
   const getHotspotColorVariable = useCallback(() => {
@@ -375,6 +361,15 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   // with a min/max to stay usable on small screens and not grow too large.
   const hotspotSize = "clamp(28px, 3.5cqw, 48px)";
   const hotspotPingSize = "clamp(32px, 4cqw, 56px)";
+
+  // Padding on the side where the dot sits, so the title/description text always
+  // clears the dot as it grows. The title pill is anchored at the dot's outer edge
+  // (left-0 of the dot-sized root), so the text must clear the full dot width plus
+  // a fixed gap — not just the radius.
+  const dotSidePadding = `calc(${hotspotSize} + 0.5rem)`;
+  const dotSidePaddingStyle = shouldFlipTitle
+    ? { paddingRight: dotSidePadding }
+    : { paddingLeft: dotSidePadding };
 
   useEffect(() => {
     if (!withTitle) {
@@ -421,10 +416,10 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
         // panel's *expanded* width so the expanded detail fits the media too —
         // not just the collapsed pill. The expanded width is always >= the pill
         // width, so the chosen side fits both states (no flip on expand).
-        // On mobile the panel never expands inline (it opens the side pane
-        // instead), so only the collapsed pill width matters there.
+        // On a compact player the panel never expands inline (it opens the side
+        // pane instead), so only the collapsed pill width matters there.
         const requiredWidth =
-          inlineExpandable && !isMobileViewport()
+          inlineExpandable && !isCompactPlayer
             ? Math.max(titleRect.width, getExpandedPanelWidth())
             : titleRect.width;
 
@@ -441,6 +436,33 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
         setShouldFlipTitle(current =>
           current === nextShouldFlip ? current : nextShouldFlip
         );
+
+        // Cap the inline description so the panel never overflows the bottom of
+        // the media container. The panel is top-anchored at the dot, so the room
+        // available below = container bottom − dot top − the title row height
+        // (which sits above the description) − a small margin off the edge.
+        if (inlineExpandable) {
+          const titleRowEl =
+            titleElement.firstElementChild as HTMLElement | null;
+          const titleRowHeight = titleRowEl
+            ? titleRowEl.getBoundingClientRect().height
+            : titleRect.height;
+          const dotTopInContainer = hotspotRect.top - containerRect.top;
+          const VERTICAL_MARGIN = 8;
+          const available =
+            containerRect.height -
+            dotTopInContainer -
+            titleRowHeight -
+            VERTICAL_MARGIN;
+          // Keep a usable minimum and an upper bound matching the CSS clamp ceiling.
+          const nextMaxHeight = Math.round(
+            Math.min(Math.max(available, 64), 256)
+          );
+
+          setDescriptionMaxHeight(current =>
+            current === nextMaxHeight ? current : nextMaxHeight
+          );
+        }
       });
     };
 
@@ -465,7 +487,16 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       }
       resizeObserver.disconnect();
     };
-  }, [withTitle, title, clickable, extendMode, withDetail, inlineExpandable]);
+  }, [
+    withTitle,
+    title,
+    clickable,
+    extendMode,
+    withDetail,
+    inlineExpandable,
+    isCompactPlayer,
+    expanded,
+  ]);
 
   // While collapsing, keep the panel laid out (wide + opaque) so the
   // description can retract smoothly before reverting to the title pill.
@@ -569,34 +600,47 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                     // The corner under the hotspot icon matches the circle radius
                     // (hotspotSize / 2, applied via inline style below so it stays
                     // aligned as the dot scales). The opposite corner uses a small
-                    // fixed accent radius.
-                    // Match top padding to the horizontal padding; keep the bottom tight so the
+                    // fixed accent radius. The dot-side padding is applied inline
+                    // (dotSidePaddingStyle) so the title text clears the dot as it
+                    // grows; the far side keeps its fixed padding.
+                    // Match top padding to the far-side padding; keep the bottom tight so the
                     // description butts directly against the title to read as one panel.
                     "px-6 pb-1.5 pt-6 small:px-7 small:pt-7",
                     shouldFlipTitle ? "rounded-tl-[16px]" : "rounded-tr-[16px]"
                   )
                 : cn(
-                    "rounded-t-full py-1.5",
-                    shouldFlipTitle
-                      ? "rounded-b-full pl-2.5 pr-6 small:pl-3 small:pr-7"
-                      : "rounded-b-full pl-6 pr-2.5 small:pl-7 small:pr-3"
+                    "rounded-full py-1.5",
+                    // Dot-side padding comes from dotSidePaddingStyle; only the
+                    // far side is fixed here.
+                    shouldFlipTitle ? "pl-2.5 small:pl-3" : "pr-2.5 small:pr-3"
                   )
             )}
             style={
               panelMounted
-                ? shouldFlipTitle
-                  ? { borderTopRightRadius: `calc(${hotspotSize} / 2)` }
-                  : { borderTopLeftRadius: `calc(${hotspotSize} / 2)` }
-                : undefined
+                ? {
+                    ...dotSidePaddingStyle,
+                    ...(shouldFlipTitle
+                      ? { borderTopRightRadius: `calc(${hotspotSize} / 2)` }
+                      : { borderTopLeftRadius: `calc(${hotspotSize} / 2)` }),
+                  }
+                : dotSidePaddingStyle
             }
           >
             <div
               className={cn(
                 "font-normal",
                 panelMounted
-                  ? "min-w-0 flex-1 break-words text-[13px] font-medium"
-                  : "truncate text-xs"
+                  ? "min-w-0 flex-1 break-words font-medium"
+                  : "truncate"
               )}
+              style={{
+                // Scale the title with the hotspot dot so text and dot grow in
+                // lockstep. Fractions preserve the prior fixed sizes at the
+                // dot's 28px minimum (~13px expanded, ~12px collapsed).
+                fontSize: panelMounted
+                  ? `calc(${hotspotSize} * 0.46)`
+                  : `calc(${hotspotSize} * 0.43)`,
+              }}
             >
               {title}
             </div>
@@ -627,10 +671,23 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
               <div className="relative min-h-0 overflow-hidden rounded-b-[16px]">
                 <div
                   className={cn(
-                    "max-h-[clamp(4rem,40vh,16rem)] overflow-y-auto overscroll-y-none whitespace-normal break-words rounded-b-[16px] border-x-[0.5px] border-b-[0.5px] border-[#64748B] bg-foreground pb-6 pt-1.5 text-xxs font-normal leading-relaxed text-background no-scrollbar small:pb-7",
-                    // Align description padding with the expanded title
+                    "max-h-[clamp(4rem,40vh,16rem)] overflow-y-auto overscroll-y-none whitespace-normal break-words rounded-b-[16px] border-x-[0.5px] border-b-[0.5px] border-[#64748B] bg-foreground pb-6 pt-1.5 font-normal leading-relaxed text-background no-scrollbar small:pb-7",
+                    // Far-side padding is fixed; the dot-side padding comes from
+                    // dotSidePaddingStyle so the text aligns with the expanded title.
                     "px-6 small:px-7"
                   )}
+                  style={{
+                    // Scale the description with the hotspot dot. Fraction preserves
+                    // the prior ~11px size at the dot's 28px minimum.
+                    fontSize: `calc(${hotspotSize} * 0.39)`,
+                    // Align the description's dot-side indent with the title text.
+                    ...dotSidePaddingStyle,
+                    // Cap to the room measured below the dot so the panel stays
+                    // within the media container (falls back to the CSS clamp).
+                    ...(descriptionMaxHeight !== null
+                      ? { maxHeight: `${descriptionMaxHeight}px` }
+                      : {}),
+                  }}
                 >
                   {description}
                 </div>

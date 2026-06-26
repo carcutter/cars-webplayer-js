@@ -22,6 +22,10 @@ export const SMALL_MEDIA_QUERY =
 // Mirrors the `large` breakpoint defined in tailwind.config.ts.
 export const LARGE_MEDIA_QUERY = `(min-width: ${BREAKPOINT_LARGE}px)`;
 
+// Below this web-player width (px), expandable hotspots open the shared side
+// details pane instead of expanding their description inline (0–479px range).
+export const BREAKPOINT_HOTSPOT_SIDE_PANEL = 480;
+
 // Width (in px) the inline hotspot detail panel grows to when expanded, per
 // breakpoint. Mirrors the `w-72 small:w-80 large:w-96` classes in Hotspot.tsx
 // (Tailwind spacing scale: 72 => 288, 80 => 320, 96 => 384). Used at runtime

@@ -28,6 +28,7 @@ type ProviderProps = Required<
   emitEvent: (name: string, detail?: unknown) => void;
   emitAnalyticsEvent: (event: AnalyticsEventProps) => Promise<void>;
   playerInViewportWidthRatio: number;
+  playerWidth: number;
   isFullScreen: boolean;
   requestFullscreen: () => Promise<boolean>;
   exitFullscreen: () => Promise<boolean>;
