@@ -442,7 +442,8 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
         // available below = container bottom − dot top − the title row height
         // (which sits above the description) − a small margin off the edge.
         if (inlineExpandable) {
-          const titleRowEl = titleElement.firstElementChild as HTMLElement | null;
+          const titleRowEl =
+            titleElement.firstElementChild as HTMLElement | null;
           const titleRowHeight = titleRowEl
             ? titleRowEl.getBoundingClientRect().height
             : titleRect.height;
@@ -608,7 +609,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                     shouldFlipTitle ? "rounded-tl-[16px]" : "rounded-tr-[16px]"
                   )
                 : cn(
-                    "rounded-t-full rounded-b-full py-1.5",
+                    "rounded-full py-1.5",
                     // Dot-side padding comes from dotSidePaddingStyle; only the
                     // far side is fixed here.
                     shouldFlipTitle ? "pl-2.5 small:pl-3" : "pr-2.5 small:pr-3"
