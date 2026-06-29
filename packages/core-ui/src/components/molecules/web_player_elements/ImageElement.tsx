@@ -32,10 +32,7 @@ const ImageElement: React.FC<Props> = ({
     useControlsContext();
 
   return (
-    <div
-      className={cn("relative size-full overflow-hidden", className)}
-      style={{ containerType: "inline-size" }}
-    >
+    <div className={cn("relative size-full overflow-hidden", className)}>
       <div
         // Scale effect on show details
         className={cn(
@@ -54,18 +51,38 @@ const ImageElement: React.FC<Props> = ({
           }}
           {...props}
         />
-        {currentItemHotspotsVisible &&
-          !suppressHotspots &&
-          hotspots?.map((hotspot, index) => (
-            <Hotspot
-              key={index}
-              hotspot={hotspot}
-              item={{
-                item_type: "image",
-                item_position: itemIndex,
-              }}
-            />
-          ))}
+        {currentItemHotspotsVisible && !suppressHotspots && hotspots?.length ? (
+          // Establish the container-query context on an absolutely-positioned
+          // overlay (not on the image's flow-path wrapper) so the hotspots'
+          // `cqw`-based sizing still resolves against the player's content
+          // width, WITHOUT applying inline-size containment to an ancestor of
+          // the <img>. Inline-size containment zeroes the contained element's
+          // intrinsic width, which collapses the whole player to 0×0 whenever
+          // its host sits in a content-sized container (e.g. a Swiper slide
+          // with `slidesPerView: "auto"`). An abs-positioned layer never
+          // contributes to ancestor intrinsic width, so the image's natural
+          // width keeps propagating up.
+          <div
+            // `pointer-events-none` so this full-size overlay does not swallow
+            // the wheel/mouse/touch events that ZoomableCdnImage (painted
+            // underneath) needs for zoom & pan; `[&>*]:pointer-events-auto`
+            // re-enables input on the hotspots themselves so they stay
+            // interactive.
+            className="pointer-events-none absolute inset-0 [&>*]:pointer-events-auto"
+            style={{ containerType: "inline-size" }}
+          >
+            {hotspots.map((hotspot, index) => (
+              <Hotspot
+                key={index}
+                hotspot={hotspot}
+                item={{
+                  item_type: "image",
+                  item_position: itemIndex,
+                }}
+              />
+            ))}
+          </div>
+        ) : null}
       </div>
     </div>
   );
