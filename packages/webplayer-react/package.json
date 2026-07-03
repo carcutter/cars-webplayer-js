@@ -46,6 +46,7 @@
     "analyze": "vite-bundle-visualizer"
   },
   "devDependencies": {
+    "@car-cutter/analytics": "*",
     "@car-cutter/core": "*",
     "@car-cutter/core-ui": "*",
     "@car-cutter/core-wc-react-16-17": "*",
