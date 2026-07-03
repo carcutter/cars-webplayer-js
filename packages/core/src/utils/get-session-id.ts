@@ -8,14 +8,25 @@ import { generateUUID } from "./сryptography/generate-uuid";
  */
 export function getSessionId(): string {
   const STORAGE_KEY = "car-cutter-webplayer-session-id";
-  const currentId =
-    typeof window !== "undefined"
-      ? window.sessionStorage.getItem(STORAGE_KEY)
-      : null;
+
+  let currentId: string | null = null;
+  try {
+    currentId =
+      typeof window !== "undefined"
+        ? window.sessionStorage.getItem(STORAGE_KEY)
+        : null;
+  } catch {
+    currentId = null;
+  }
   if (currentId) return currentId;
+
   const newId = generateUUID();
-  if (typeof window !== "undefined") {
-    window.sessionStorage.setItem(STORAGE_KEY, newId);
+  try {
+    if (typeof window !== "undefined") {
+      window.sessionStorage.setItem(STORAGE_KEY, newId);
+    }
+  } catch {
+    // Storage unavailable (e.g. private browsing): fall back to an in-memory ID.
   }
   return newId;
 }
