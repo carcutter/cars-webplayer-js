@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
 
+import type { AnalyticsErrorEventProps } from "@car-cutter/analytics";
 import {
   EVENT_COMPOSITION_LOAD_ERROR,
   EVENT_COMPOSITION_LOADED,
   EVENT_COMPOSITION_LOADING,
-  type AnalyticsErrorEventProps,
 } from "@car-cutter/core";
 
 import { useComposition } from "../../hooks/useComposition";

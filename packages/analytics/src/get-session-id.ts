@@ -1,4 +1,4 @@
-import { generateUUID } from "./сryptography/generate-uuid";
+import { generateUUID } from "./cryptography/generate-uuid";
 
 /**
  * Gets or generates a session ID.

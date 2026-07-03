@@ -1,6 +1,12 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted } from "vue";
 
+import type {
+  AnalyticsLoadEvent,
+  AnalyticsDisplayEvent,
+  AnalyticsInteractionEvent,
+  AnalyticsErrorEvent,
+} from "@car-cutter/analytics";
 import {
   ANALYTICS_EVENT_LOAD,
   ANALYTICS_EVENT_DISPLAY,
@@ -18,10 +24,6 @@ import {
   EVENT_HOTSPOTS_OFF,
   EVENT_GALLERY_OPEN,
   EVENT_GALLERY_CLOSE,
-  type AnalyticsLoadEvent,
-  type AnalyticsDisplayEvent,
-  type AnalyticsInteractionEvent,
-  type AnalyticsErrorEvent,
   type MediaItem,
   type Composition,
   type WebPlayerProps as WebPlayerCoreProps,

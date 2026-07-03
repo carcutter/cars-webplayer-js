@@ -1,4 +1,4 @@
-import { generateUUID } from "./сryptography/generate-uuid";
+import { generateUUID } from "./cryptography/generate-uuid";
 
 /**
  * Generates a unique instance ID.

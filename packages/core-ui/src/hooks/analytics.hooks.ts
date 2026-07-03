@@ -4,7 +4,7 @@ import {
   getBrowserId,
   getSessionId,
   getInstanceId,
-} from "@car-cutter/core/src/utils";
+} from "@car-cutter/analytics";
 
 export const useAnalyticsBrowserId = () => {
   return useMemo(() => getBrowserId(), []);

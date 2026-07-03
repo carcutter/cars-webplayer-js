@@ -1,6 +1,7 @@
-import { DEFAULT_ANALYTICS_EVENT_PREFIX } from "../const/webplayer-default-props";
-import type { AnalyticsEvent } from "../types/analytics/analytics-event";
-import type { AnalyticsEventType } from "../types/analytics/analytics-event-type";
+import { DEFAULT_ANALYTICS_EVENT_PREFIX } from "@car-cutter/core";
+
+import type { AnalyticsEvent } from "./types/analytics-event";
+import type { AnalyticsEventType } from "./types/analytics-event-type";
 
 /**
  * Adds event listeners to the document and removes previous listeners for the same event name.
@@ -30,6 +31,8 @@ export function subscribeToAnalyticsEvents<TType extends AnalyticsEventType>(
   const prefix = analyticsEventPrefix ?? DEFAULT_ANALYTICS_EVENT_PREFIX;
   const eventName = prefix + type;
   _addEventListenersAndRemovePrevious(eventName, (event: Event) => {
-    onEvent((event as CustomEvent<Extract<AnalyticsEvent, { type: TType }>>).detail);
+    onEvent(
+      (event as CustomEvent<Extract<AnalyticsEvent, { type: TType }>>).detail
+    );
   });
 }

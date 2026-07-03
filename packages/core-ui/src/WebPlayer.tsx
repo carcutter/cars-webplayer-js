@@ -7,6 +7,12 @@ import {
   type PropsWithChildren as ReactPropsWithChildren,
 } from "react";
 
+import type {
+  AnalyticsEvent,
+  AnalyticsEventProps,
+  AnalyticsLoadEventProps,
+  WebplayerInstance,
+} from "@car-cutter/analytics";
 import {
   WEB_PLAYER_WC_TAG,
   DEFAULT_HIDE_CATEGORIES_NAV,
@@ -33,10 +39,6 @@ import {
   DEFAULT_ANALYTICS_DRY_RUN,
   DEFAULT_ANALYTICS_DEBUG,
   type WebPlayerProps,
-  type AnalyticsEvent,
-  type AnalyticsEventProps,
-  type AnalyticsLoadEventProps,
-  type WebplayerInstance,
 } from "@car-cutter/core";
 
 import WebPlayerContainer from "./components/organisms/WebPlayerContainer";

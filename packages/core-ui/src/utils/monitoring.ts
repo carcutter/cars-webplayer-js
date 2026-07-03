@@ -1,4 +1,4 @@
-import type { AnalyticsEvent, AnalyticsEventType } from "@car-cutter/core";
+import type { AnalyticsEvent, AnalyticsEventType } from "@car-cutter/analytics";
 
 interface MonitoringActivityOptions {
   payload: AnalyticsEvent;

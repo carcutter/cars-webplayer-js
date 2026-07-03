@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 
+import type { AnalyticsDisplayEventProps } from "@car-cutter/analytics";
 import {
   EVENT_ITEM_CHANGE,
   EVENT_EXTEND_MODE_OFF,
@@ -16,7 +17,6 @@ import {
   EVENT_HOTSPOTS_OFF,
   EVENT_HOTSPOTS_ON,
   type MediaItem as CompositionItem,
-  type AnalyticsDisplayEventProps,
 } from "@car-cutter/core";
 
 import { RESIZE_TRANSITION_DURATION } from "../const/browser";

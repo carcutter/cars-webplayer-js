@@ -1,6 +1,7 @@
 import { createContext, useContext } from "react";
 
-import type { AnalyticsEventProps, WebPlayerProps } from "@car-cutter/core";
+import type { AnalyticsEventProps } from "@car-cutter/analytics";
+import type { WebPlayerProps } from "@car-cutter/core";
 
 type ProviderProps = Required<
   Pick<

@@ -1,5 +1,12 @@
 <script lang="ts">
 import { defineComponent } from "vue";
+
+import type {
+  AnalyticsLoadEvent,
+  AnalyticsDisplayEvent,
+  AnalyticsInteractionEvent,
+  AnalyticsErrorEvent,
+} from "@car-cutter/analytics";
 import {
   DEFAULT_EVENT_PREFIX,
   EVENT_COMPOSITION_LOADING,
@@ -15,10 +22,6 @@ import {
   type MediaItem,
   type Composition,
   type WebPlayerProps,
-  AnalyticsLoadEvent,
-  AnalyticsDisplayEvent,
-  AnalyticsInteractionEvent,
-  AnalyticsErrorEvent,
   DEFAULT_ANALYTICS_EVENT_PREFIX,
 } from "@car-cutter/core";
 import {

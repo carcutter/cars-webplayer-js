@@ -10,6 +10,7 @@
     "lint": "eslint . --ext ts,tsx --max-warnings 0"
   },
   "dependencies": {
+    "@car-cutter/analytics": "*",
     "@car-cutter/core": "*",
     "pannellum-react": "^1.2.4"
   },

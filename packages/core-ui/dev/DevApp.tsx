@@ -6,7 +6,7 @@ import {
   AnalyticsInteractionEvent,
   AnalyticsErrorEvent,
   subscribeToAnalyticsEvents,
-} from "@car-cutter/core";
+} from "@car-cutter/analytics";
 
 import WebPlayer from "../src/WebPlayer";
 import WebPlayerCustomMedia from "../src/WebPlayerCustomMedia";

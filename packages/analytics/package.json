@@ -1,0 +1,19 @@
+{
+  "name": "@car-cutter/analytics",
+  "version": "3.2.14",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "scripts": {
+    "lint": "eslint . --ext ts --max-warnings 0"
+  },
+  "dependencies": {
+    "@car-cutter/core": "*"
+  },
+  "devDependencies": {
+    "@car-cutter/eslint-config": "*",
+    "@car-cutter/typescript-config": "*",
+    "eslint": "^8",
+    "typescript": "^5"
+  }
+}

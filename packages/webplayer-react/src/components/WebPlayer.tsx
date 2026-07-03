@@ -5,6 +5,12 @@ import {
   type PropsWithChildren as ReactPropsWithChildren,
 } from "react";
 
+import type {
+  AnalyticsLoadEvent,
+  AnalyticsDisplayEvent,
+  AnalyticsInteractionEvent,
+  AnalyticsErrorEvent,
+} from "@car-cutter/analytics";
 import {
   DEFAULT_EVENT_PREFIX,
   EVENT_COMPOSITION_LOADING,
@@ -24,10 +30,6 @@ import {
   ANALYTICS_EVENT_ERROR,
   type MediaItem,
   type Composition,
-  AnalyticsLoadEvent,
-  AnalyticsDisplayEvent,
-  AnalyticsInteractionEvent,
-  AnalyticsErrorEvent,
 } from "@car-cutter/core";
 import { type WebPlayerProps as WebPlayerCoreProps } from "@car-cutter/core";
 import { webPlayerPropsToAttributes } from "@car-cutter/core-wc";

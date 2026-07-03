@@ -68,24 +68,4 @@ export type {
   WebPlayerIconProps,
 } from "./src/types/web-player/webplayer-icon-props";
 
-export type { WebplayerInstance } from "./src/types/analytics/webplayer-instance";
-export type { WebplayerDisplayedItem } from "./src/types/analytics/webplayer-displayed-item";
-export type { WebplayerAction } from "./src/types/analytics/webplayer-action";
-export type { WebplayerError } from "./src/types/analytics/webplayer-error";
-export type { AnalyticsEventType } from "./src/types/analytics/analytics-event-type";
-export type { AnalyticsLoadEventProps } from "./src/types/analytics/analytics-event-props/analytics-load-event-props";
-export type { AnalyticsDisplayEventProps } from "./src/types/analytics/analytics-event-props/analytics-display-event-props";
-export type { AnalyticsInteractionEventProps } from "./src/types/analytics/analytics-event-props/analytics-interaction-event-props";
-export type { AnalyticsErrorEventProps } from "./src/types/analytics/analytics-event-props/analytics-error-event-props";
-export type { AnalyticsEventProps } from "./src/types/analytics/analytics-event-props";
-export type { AnalyticsLoadEvent } from "./src/types/analytics/analytics-event/analytics-load-event";
-export type { AnalyticsDisplayEvent } from "./src/types/analytics/analytics-event/analytics-display-event";
-export type { AnalyticsInteractionEvent } from "./src/types/analytics/analytics-event/analytics-interaction-event";
-export type { AnalyticsErrorEvent } from "./src/types/analytics/analytics-event/analytics-error-event";
-export type { AnalyticsEvent } from "./src/types/analytics/analytics-event";
-
-export {
-  getCdnImgSrcWithWidth,
-  generateCompositionUrl,
-  subscribeToAnalyticsEvents,
-} from "./src/utils";
+export { getCdnImgSrcWithWidth, generateCompositionUrl } from "./src/utils";
