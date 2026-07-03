@@ -1,5 +1,3 @@
-import type { Plugin } from "vite";
-
 /**
  * Vite plugin that strips all JavaScript chunks from the output
  * and keeps only generated CSS assets.
@@ -7,19 +5,19 @@ import type { Plugin } from "vite";
  * Useful when you want to build style-only packages, extract CSS
  * for distribution, or prevent unnecessary JS files from being emitted.
  *
- * @returns {Plugin} A Vite plugin instance.
+ * @returns {import("vite").Plugin} A Vite plugin instance.
  *
  * @example
- * ```ts
+ * ```js
  * import { defineConfig } from "vite";
- * import extractcss from "./extractcss";
+ * import extractcss from "@car-cutter/export-css-plugin";
  *
  * export default defineConfig({
  *   plugins: [extractcss()],
  * });
  * ```
  */
-export default function extractcss(): Plugin {
+export default function extractcss() {
   return {
     name: "extractcss",
 
@@ -28,8 +26,8 @@ export default function extractcss(): Plugin {
      * - Removing all JS chunks (`chunk.type === "chunk"`)
      * - Removing any non-CSS assets
      *
-     * @param _ - Rollup output options (unused)
-     * @param bundle - The generated output bundle
+     * @param {import("rollup").NormalizedOutputOptions} _ - Rollup output options (unused)
+     * @param {import("rollup").OutputBundle} bundle - The generated output bundle
      */
     generateBundle(_, bundle) {
       for (const [fileName, chunk] of Object.entries(bundle)) {
