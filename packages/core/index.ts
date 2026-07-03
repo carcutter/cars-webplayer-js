@@ -62,6 +62,7 @@ export type { MediaLoadStrategy } from "./src/types/web-player/webplayer-media-l
 
 export type { WebPlayerProps } from "./src/types/web-player/webplayer-props";
 export type { WebPlayerCustomMediaProps } from "./src/types/web-player/webplayer-custom-media-props";
+export type { ExtendBehavior } from "./src/types/web-player/webplayer-extended-behavior";
 export type {
   WebPlayerIconName,
   WebPlayerIconProps,
