@@ -18,6 +18,7 @@
   },
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
+    "@car-cutter/export-css-plugin": "*",
     "@car-cutter/typescript-config": "*",
     "@preact/preset-vite": "^2.9.1",
     "@types/node": "^20",
