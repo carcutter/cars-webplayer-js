@@ -26,7 +26,6 @@ CARS-WEBPLAYER/
 │   ├── webplayer-wc/        # Expose the WC from core-wc and add React & ReactDOM
 │   .
 │   .
-└── schemas/                 # JSON schemas
 ```
 
 - **apps/**: Contains demo applications showcasing the usage of the web player in various frameworks. Each demo is isolated, allowing you to see how the web player can be integrated into different environments.
