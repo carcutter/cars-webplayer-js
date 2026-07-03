@@ -1,4 +1,7 @@
-import type { ExtendBehavior, MediaLoadStrategy, MediaWidth } from "./misc";
+import type { MediaWidth } from "../composition/media-width";
+
+import { ExtendBehavior } from "./webplayer-extended-behavior";
+import type { MediaLoadStrategy } from "./webplayer-media-load-strategy";
 
 export type WebPlayerProps = {
   compositionUrl: string;

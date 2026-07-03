@@ -1,11 +1,11 @@
 import { createContext, useContext, useMemo } from "react";
 
-import type { Composition, Item, MediaWidth } from "@car-cutter/core";
+import type { Composition, MediaItem, MediaWidth } from "@car-cutter/core";
 
 import { useGlobalContext } from "./GlobalContext";
 
 type ContextType = Pick<Composition, "categories" | "imageHdWidth"> & {
-  items: Item[];
+  items: MediaItem[];
 
   aspectRatioStyle: React.CSSProperties;
   usedMediaWidths: MediaWidth[];
@@ -56,7 +56,7 @@ const CompositionContextProvider: React.FC<
     return categories.filter(({ id }) => matchesPattern(id));
   }, [categories, categoriesFilter]);
 
-  const items: Item[] = useMemo(
+  const items: MediaItem[] = useMemo(
     () => usedCategories.flatMap(({ items }) => items),
     [usedCategories]
   );

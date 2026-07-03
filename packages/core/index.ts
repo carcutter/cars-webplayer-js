@@ -1,9 +1,8 @@
-// - Const
 export {
   WEB_PLAYER_CUSTOM_MEDIA_WC_TAG,
   WEB_PLAYER_ICON_WC_TAG,
   WEB_PLAYER_WC_TAG,
-} from "./src/const/wc";
+} from "./src/const/web-component";
 
 export {
   EVENT_COMPOSITION_LOAD_ERROR,
@@ -16,14 +15,14 @@ export {
   EVENT_HOTSPOTS_OFF,
   EVENT_HOTSPOTS_ON,
   EVENT_ITEM_CHANGE,
-} from "./src/const/event";
+} from "./src/const/webplayer-events";
 
 export {
   ANALYTICS_EVENT_LOAD,
   ANALYTICS_EVENT_DISPLAY,
   ANALYTICS_EVENT_INTERACTION,
   ANALYTICS_EVENT_ERROR,
-} from "./src/const/event";
+} from "./src/const/webplayer-events";
 
 export {
   DEFAULT_ANALYTICS_EVENT_PREFIX,
@@ -50,58 +49,42 @@ export {
   DEFAULT_REVERSE_360,
   DEFAULT_SPIN_CURSOR,
   DEFAULT_MONITORING,
-} from "./src/const/default_props";
+} from "./src/const/webplayer-default-props";
 
-// - Utils
-export { cdnImgSrcWithWidth, generateCompositionUrl } from "./src/utils";
+export type { Category } from "./src/types/composition/category";
+export type { Composition } from "./src/types/composition";
+export type { Hotspot } from "./src/types/composition/hotspot";
+export type { ImageWithHotspots } from "./src/types/composition/image";
+export type { MediaItem } from "./src/types/composition/media-item";
+export type { MediaWidth } from "./src/types/composition/media-width";
+export type { AspectRatio } from "./src/types/composition/aspect-ratio";
+export type { MediaLoadStrategy } from "./src/types/web-player/webplayer-media-load-strategy";
 
-// - Types
-export type {
-  Category,
-  Composition,
-  Hotspot,
-  ImageWithHotspots,
-  Item,
-} from "./src/types/composition";
-
-export type {
-  AspectRatio,
-  MediaLoadStrategy,
-  MediaWidth,
-} from "./src/types/misc";
-
-// - Components props
-export type { WebPlayerProps } from "./src/types/WebPlayer.props";
-export type { WebPlayerCustomMediaProps } from "./src/types/WebPlayerCustomMedia.props";
+export type { WebPlayerProps } from "./src/types/web-player/webplayer-props";
+export type { WebPlayerCustomMediaProps } from "./src/types/web-player/webplayer-custom-media-props";
 export type {
   WebPlayerIconName,
   WebPlayerIconProps,
-} from "./src/types/WebPlayerIcon.props";
+} from "./src/types/web-player/webplayer-icon-props";
 
-// - Analytics
-export type {
-  // Shared sub-types
-  WebplayerInstance,
-  WebplayerDisplayedItem,
-  WebplayerAction,
-  WebplayerError,
+export type { WebplayerInstance } from "./src/types/analytics/webplayer-instance";
+export type { WebplayerDisplayedItem } from "./src/types/analytics/webplayer-displayed-item";
+export type { WebplayerAction } from "./src/types/analytics/webplayer-action";
+export type { WebplayerError } from "./src/types/analytics/webplayer-error";
+export type { AnalyticsEventType } from "./src/types/analytics/analytics-event-type";
+export type { AnalyticsLoadEventProps } from "./src/types/analytics/analytics-event-props/analytics-load-event-props";
+export type { AnalyticsDisplayEventProps } from "./src/types/analytics/analytics-event-props/analytics-display-event-props";
+export type { AnalyticsInteractionEventProps } from "./src/types/analytics/analytics-event-props/analytics-interaction-event-props";
+export type { AnalyticsErrorEventProps } from "./src/types/analytics/analytics-event-props/analytics-error-event-props";
+export type { AnalyticsEventProps } from "./src/types/analytics/analytics-event-props";
+export type { AnalyticsLoadEvent } from "./src/types/analytics/analytics-event/analytics-load-event";
+export type { AnalyticsDisplayEvent } from "./src/types/analytics/analytics-event/analytics-display-event";
+export type { AnalyticsInteractionEvent } from "./src/types/analytics/analytics-event/analytics-interaction-event";
+export type { AnalyticsErrorEvent } from "./src/types/analytics/analytics-event/analytics-error-event";
+export type { AnalyticsEvent } from "./src/types/analytics/analytics-event";
 
-  // Event type
-  AnalyticsEventType,
-
-  // Props (caller-facing)
-  AnalyticsLoadEventProps,
-  AnalyticsDisplayEventProps,
-  AnalyticsInteractionEventProps,
-  AnalyticsErrorEventProps,
-  AnalyticsEventProps,
-
-  // Full events (after enrichment)
-  AnalyticsLoadEvent,
-  AnalyticsDisplayEvent,
-  AnalyticsInteractionEvent,
-  AnalyticsErrorEvent,
-  AnalyticsEvent,
-} from "./src/types/analytics";
-
-export { subscribeToAnalyticsEvents } from "./src/utils";
+export {
+  getCdnImgSrcWithWidth,
+  generateCompositionUrl,
+  subscribeToAnalyticsEvents,
+} from "./src/utils";

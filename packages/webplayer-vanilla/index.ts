@@ -25,7 +25,7 @@ export {
   // - Utils
   generateCompositionUrl,
   // - Types
-  type Item,
+  type MediaItem,
   type Composition,
   type MediaLoadStrategy,
 } from "@car-cutter/core";

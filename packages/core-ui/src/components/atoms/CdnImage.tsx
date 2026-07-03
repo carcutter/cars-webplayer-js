@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useMemo, useState } from "react";
 
-import { cdnImgSrcWithWidth } from "@car-cutter/core";
+import { getCdnImgSrcWithWidth } from "@car-cutter/core";
 
 import { useCompositionContext } from "../../providers/CompositionContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
@@ -50,7 +50,7 @@ const CdnImage = forwardRef<HTMLImageElement, CdnImageProps>(
       // - Generate the srcSet attribute (list of image URLs with their widths)
       const srcSetList = usedMediaWidths.map(width => {
         const url =
-          width !== imageHdWidth ? cdnImgSrcWithWidth(src, width) : src;
+          width !== imageHdWidth ? getCdnImgSrcWithWidth(src, width) : src;
         return `${url} ${width}w`;
       });
 

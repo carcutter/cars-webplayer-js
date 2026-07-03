@@ -22,7 +22,7 @@ import {
   type AnalyticsDisplayEvent,
   type AnalyticsInteractionEvent,
   type AnalyticsErrorEvent,
-  type Item,
+  type MediaItem,
   type Composition,
   type WebPlayerProps as WebPlayerCoreProps,
 } from "@car-cutter/core";
@@ -49,7 +49,7 @@ export type WebPlayerEvents = {
   compositionLoading: [url: string];
   compositionLoaded: [composition: Composition];
   compositionLoadError: [error: unknown];
-  itemChange: [props: { index: number; item: Item }];
+  itemChange: [props: { index: number; item: MediaItem }];
   extendModeOn: [];
   extendModeOff: [];
   hotspotsOn: [];
@@ -78,7 +78,7 @@ const eventListenerMap = {
     emit("compositionLoaded", composition),
   [EVENT_COMPOSITION_LOAD_ERROR]: (error: unknown) =>
     emit("compositionLoadError", error),
-  [EVENT_ITEM_CHANGE]: (props: { index: number; item: Item }) =>
+  [EVENT_ITEM_CHANGE]: (props: { index: number; item: MediaItem }) =>
     emit("itemChange", props),
   [EVENT_EXTEND_MODE_ON]: () => emit("extendModeOn"),
   [EVENT_EXTEND_MODE_OFF]: () => emit("extendModeOff"),

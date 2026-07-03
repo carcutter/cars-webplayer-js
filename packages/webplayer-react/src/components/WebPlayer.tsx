@@ -22,7 +22,7 @@ import {
   ANALYTICS_EVENT_DISPLAY,
   ANALYTICS_EVENT_INTERACTION,
   ANALYTICS_EVENT_ERROR,
-  type Item,
+  type MediaItem,
   type Composition,
   AnalyticsLoadEvent,
   AnalyticsDisplayEvent,
@@ -36,7 +36,7 @@ type WebPlayerProps = ReactPropsWithChildren<WebPlayerCoreProps> & {
   onCompositionLoading?: (url: string) => void;
   onCompositionLoaded?: (composition: Composition) => void;
   onCompositionLoadError?: (error: unknown) => void;
-  onItemChange?: (props: { index: number; item: Item }) => void;
+  onItemChange?: (props: { index: number; item: MediaItem }) => void;
   onExtendModeOn?: () => void;
   onExtendModeOff?: () => void;
   onHotspotsOn?: () => void;

@@ -1,19 +1,19 @@
 import { useMemo } from "react";
 
 import {
-  getOrGenerateBrowserId,
-  getOrGenerateSessionId,
-  getOrGenerateInstanceId,
+  getBrowserId,
+  getSessionId,
+  getInstanceId,
 } from "@car-cutter/core/src/utils";
 
 export const useAnalyticsBrowserId = () => {
-  return useMemo(() => getOrGenerateBrowserId(), []);
+  return useMemo(() => getBrowserId(), []);
 };
 
 export const useAnalyticsSessionId = () => {
-  return useMemo(() => getOrGenerateSessionId(), []);
+  return useMemo(() => getSessionId(), []);
 };
 
 export const useAnalyticsInstanceId = () => {
-  return useMemo(() => getOrGenerateInstanceId(), []);
+  return useMemo(() => getInstanceId(), []);
 };

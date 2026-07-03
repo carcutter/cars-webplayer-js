@@ -1,4 +1,4 @@
-import { DEFAULT_MAX_ITEMS_SHOWN } from "@car-cutter/core/src/const/default_props";
+import { DEFAULT_MAX_ITEMS_SHOWN } from "@car-cutter/core/src/const/webplayer-default-props";
 
 import { useGlobalContext } from "../providers/GlobalContext";
 

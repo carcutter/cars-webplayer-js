@@ -12,7 +12,7 @@ import {
   EVENT_HOTSPOTS_OFF,
   EVENT_GALLERY_OPEN,
   EVENT_GALLERY_CLOSE,
-  type Item,
+  type MediaItem,
   type Composition,
   type WebPlayerProps,
   AnalyticsLoadEvent,
@@ -30,7 +30,7 @@ import {
   ANALYTICS_EVENT_DISPLAY,
   ANALYTICS_EVENT_INTERACTION,
   ANALYTICS_EVENT_ERROR,
-} from "@car-cutter/core/src/const/event";
+} from "@car-cutter/core/src/const/webplayer-events";
 
 ensureCustomElementsDefinition();
 
@@ -91,7 +91,7 @@ export default defineComponent({
           this.$emit("compositionLoaded", composition),
         [EVENT_COMPOSITION_LOAD_ERROR]: (error: unknown) =>
           this.$emit("compositionLoadError", error),
-        [EVENT_ITEM_CHANGE]: (props: { index: number; item: Item }) =>
+        [EVENT_ITEM_CHANGE]: (props: { index: number; item: MediaItem }) =>
           this.$emit("itemChange", props),
         [EVENT_EXTEND_MODE_ON]: () => this.$emit("extendModeOn"),
         [EVENT_EXTEND_MODE_OFF]: () => this.$emit("extendModeOff"),

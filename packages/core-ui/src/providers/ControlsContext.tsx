@@ -15,7 +15,7 @@ import {
   EVENT_GALLERY_OPEN,
   EVENT_HOTSPOTS_OFF,
   EVENT_HOTSPOTS_ON,
-  type Item as CompositionItem,
+  type MediaItem as CompositionItem,
   type AnalyticsDisplayEventProps,
 } from "@car-cutter/core";
 
