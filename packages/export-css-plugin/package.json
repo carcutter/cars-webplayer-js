@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "lint": "eslint . --ext js --max-warnings 0"
   },

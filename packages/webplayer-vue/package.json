@@ -46,6 +46,7 @@
     "vue": "^3"
   },
   "devDependencies": {
+    "@car-cutter/analytics": "*",
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
     "@vitejs/plugin-vue": "^6.0.0",
