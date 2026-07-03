@@ -1,5 +1,0 @@
-{
-  "extends": "@car-cutter/typescript-config/base.json",
-
-  "include": ["src"]
-}
