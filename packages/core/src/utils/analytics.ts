@@ -22,17 +22,14 @@ const _addEventListenersAndRemovePrevious = (
   document.addEventListener(eventName, listener);
 };
 
-export function subscribeToAnalyticsEvents<
-  TType extends AnalyticsEventType,
-  TEvent extends AnalyticsEvent,
->(
+export function subscribeToAnalyticsEvents<TType extends AnalyticsEventType>(
   type: TType,
-  onEvent: (event: TEvent) => void,
+  onEvent: (event: Extract<AnalyticsEvent, { type: TType }>) => void,
   analyticsEventPrefix?: string
 ) {
   const prefix = analyticsEventPrefix ?? DEFAULT_ANALYTICS_EVENT_PREFIX;
   const eventName = prefix + type;
   _addEventListenersAndRemovePrevious(eventName, (event: Event) => {
-    onEvent((event as CustomEvent<TEvent>).detail);
+    onEvent((event as CustomEvent<Extract<AnalyticsEvent, { type: TType }>>).detail);
   });
 }
