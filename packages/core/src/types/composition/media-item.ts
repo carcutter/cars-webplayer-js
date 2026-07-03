@@ -1,7 +1,7 @@
-import type { ThreeSixtyItem } from "./360";
 import type { ImageItem } from "./image";
-import type { InteriorThreeSixtyItem } from "./interior360";
-import type { NextGenThreeSixtyItem } from "./next360";
+import type { InteriorThreeSixtyItem } from "./interior-three-sixty";
+import type { NextGenThreeSixtyItem } from "./next-three-sixty";
+import type { ThreeSixtyItem } from "./three-sixty";
 import type { VideoItem } from "./video";
 
 export type MediaItem =

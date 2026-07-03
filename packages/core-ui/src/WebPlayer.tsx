@@ -53,6 +53,7 @@ import CustomizationContextProvider from "./providers/CustomizationContext";
 import GlobalContextProvider from "./providers/GlobalContext";
 import { findClosestValidNumberInRange } from "./utils/math";
 import { emitMonitoringActivityEvent } from "./utils/monitoring";
+
 const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   compositionUrl,
   integration = DEFAULT_INTEGRATION,
