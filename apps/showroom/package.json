@@ -28,7 +28,7 @@
     "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react": "^5.0.0",
     "autoprefixer": "^10.4.20",
-    "browserslist": "^4.23.3",
+    "browserslist": "^4.28.7",
     "browserslist-to-esbuild": "^2.1.1",
     "eslint": "^8",
     "eslint-plugin-tailwindcss": "^3.17.4",
