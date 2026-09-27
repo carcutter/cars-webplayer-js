@@ -6,7 +6,7 @@ import { useLoadingProgress } from "../../../hooks/useLoadingProgress";
 import { usePannellumViewer } from "../../../hooks/usePannellumViewer";
 import { useControlsContext } from "../../../providers/ControlsContext";
 import { useGlobalContext } from "../../../providers/GlobalContext";
-import { getThemeConfig } from "../../../theme-config";
+import { cursorCssValue, getThemeConfig } from "../../../theme-config";
 import { CustomizableItem } from "../../../types/customizable_item";
 import { createThrottleDebounce } from "../../../utils/debounce";
 import {
@@ -18,6 +18,12 @@ import Interior360PlayIcon from "../../icons/Interior360PlayIcon";
 import InteriorThreeSixtyIcon from "../../icons/InteriorThreeSixtyIcon";
 import ErrorTemplate from "../../template/ErrorTemplate";
 import Button from "../../ui/Button";
+
+/** Horizontal drag distance before the cursor switches to a directional arrow.
+    Keeps a near-vertical drag (pitch only) on the default cursor. */
+const DIRECTION_THRESHOLD_PX = 3;
+
+type SpinCursorDirection = "default" | "left" | "right";
 
 type InteriorThreeSixtyElementLoadControlsProps = {
   itemIndex: number;
@@ -140,10 +146,13 @@ const InteriorThreeSixtyElementInteractive: React.FC<
   InteriorThreeSixtyElementProps
 > = props => {
   const { itemIndex, src, poster, onLoaded, onError, onlyPreload } = props;
-  const { autoLoadInterior360 } = useGlobalContext();
+  const { autoLoadInterior360, themeConfig } = useGlobalContext();
   const { isShowingDetails, zoom, setZoom } = useControlsContext();
   const [progress, isLoading] = useLoadingProgress(src);
+  const theme = useMemo(() => getThemeConfig(themeConfig), [themeConfig]);
+  const themeCursor = theme?.cursor;
 
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isPannellumLoaded, setIsPannellumLoaded] = useState(false);
   const [shouldAutoLoad, setShouldAutoLoad] = useState(autoLoadInterior360);
@@ -166,6 +175,69 @@ const InteriorThreeSixtyElementInteractive: React.FC<
     e.stopImmediatePropagation();
   }, []);
 
+  // - Themed spin cursor: pannellum owns the cursor of its UI layer, so we only
+  //   expose the drag direction as a data attribute and let CSS pick the SVG
+  //   (see the `[data-cc-spin-cursor]` rules in index.css). Written imperatively
+  //   to keep the drag free of React re-renders.
+  const dragStartXRef = useRef<number | null>(null);
+
+  const setSpinCursorDirection = useCallback(
+    (direction: SpinCursorDirection) => {
+      const wrapper = wrapperRef.current;
+      if (!wrapper || !wrapper.dataset.ccSpinCursor) return;
+
+      wrapper.dataset.ccSpinCursor = direction;
+    },
+    []
+  );
+
+  // Pannellum stops propagation of the mousedown/mouseup it handles (see
+  // `onMouse` above), so we track the drag through its own events rather than
+  // adding listeners of our own.
+  const onMousedown = useCallback(
+    (e: Event) => {
+      onMouse(e);
+      if (!(e instanceof MouseEvent) || e.button !== 0) return;
+
+      dragStartXRef.current = e.clientX;
+      setSpinCursorDirection("default");
+    },
+    [onMouse, setSpinCursorDirection]
+  );
+
+  const onMouseup = useCallback(
+    (e: Event) => {
+      onMouse(e);
+      dragStartXRef.current = null;
+      setSpinCursorDirection("default");
+    },
+    [onMouse, setSpinCursorDirection]
+  );
+
+  // Pannellum's own mousemove handler neither fires an event nor stops
+  // propagation, so a plain document listener is enough here.
+  useEffect(() => {
+    if (!themeCursor) return;
+
+    const onMousemove = (e: MouseEvent) => {
+      const dragStartX = dragStartXRef.current;
+      if (dragStartX === null) return;
+
+      const walkX = e.clientX - dragStartX;
+      if (Math.abs(walkX) < DIRECTION_THRESHOLD_PX) return;
+
+      // Reset the reference point so the cursor tracks recent movement
+      dragStartXRef.current = e.clientX;
+      setSpinCursorDirection(walkX < 0 ? "left" : "right");
+    };
+
+    document.addEventListener("mousemove", onMousemove);
+
+    return () => {
+      document.removeEventListener("mousemove", onMousemove);
+    };
+  }, [themeCursor, setSpinCursorDirection]);
+
   const loadScene = useCallback(() => {
     setShouldAutoLoad(true);
   }, []);
@@ -176,8 +248,8 @@ const InteriorThreeSixtyElementInteractive: React.FC<
     {
       onLoad,
       onError,
-      onMousedown: onMouse,
-      onMouseup: onMouse,
+      onMousedown,
+      onMouseup,
       onTouchstart: onMouse,
       onTouchend: onMouse,
     }
@@ -256,9 +328,22 @@ const InteriorThreeSixtyElementInteractive: React.FC<
 
   return (
     <div
+      ref={wrapperRef}
       className={cn(
         "relative aspect-[4/3] w-full overflow-hidden bg-transparent"
       )}
+      // The attribute gates the themed cursor override and carries the drag
+      // direction; the variables hold the theme's cursor SVGs.
+      data-cc-spin-cursor={themeCursor ? "default" : undefined}
+      style={
+        themeCursor
+          ? ({
+              "--cc-spin-cursor-default": cursorCssValue(themeCursor.default),
+              "--cc-spin-cursor-left": cursorCssValue(themeCursor.leftSpin),
+              "--cc-spin-cursor-right": cursorCssValue(themeCursor.rightSpin),
+            } as React.CSSProperties)
+          : undefined
+      }
     >
       <div
         className={cn(

@@ -4,10 +4,14 @@ import { config as autonationConfig } from "./autonation";
 
 export type ThemeConfigName = NonNullable<WebPlayerProps["themeConfig"]>;
 
-type CursorEntry = {
+export type CursorEntry = {
   url: string;
   hotspot: { x: number; y: number };
 };
+
+/** `url("…") x y` — append a keyword fallback to get a full `cursor` value. */
+export const cursorCssValue = ({ url, hotspot }: CursorEntry): string =>
+  `url("${url}") ${hotspot.x} ${hotspot.y}`;
 
 export type ThemeConfig = {
   playButton: {
