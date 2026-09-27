@@ -5,13 +5,17 @@ import type { Hotspot as HotspotType } from "@car-cutter/core";
 import {
   BREAKPOINT_HOTSPOT_SIDE_PANEL,
   HOTSPOT_EXPANDED_PANEL_WIDTH,
+  HOTSPOT_INLINE_IMAGE_MAX_DESCRIPTION_LENGTH,
+  HOTSPOT_INLINE_IMAGE_MAX_TITLE_LENGTH,
   LARGE_MEDIA_QUERY,
   SMALL_MEDIA_QUERY,
 } from "../../const/browser";
+import { useCompositionContext } from "../../providers/CompositionContext";
 import { useControlsContext } from "../../providers/ControlsContext";
 import { useCustomizationContext } from "../../providers/CustomizationContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
 import { cn } from "../../utils/style";
+import CdnImage from "../atoms/CdnImage";
 import ArrowRightIcon from "../icons/ArrowRightIcon";
 import ImageIcon from "../icons/ImageIcon";
 import WarningIcon from "../icons/WarningIcon";
@@ -127,6 +131,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     emitAnalyticsEventHotspot("hover");
   }, [emitAnalyticsEventHotspot]);
 
+  const { aspectRatioStyle } = useCompositionContext();
   const { getIconConfig } = useCustomizationContext();
   const hotspotConfig = icon ? getIconConfig(icon) : undefined;
 
@@ -137,9 +142,23 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   const withDetail = withImage || withLink || withPdf;
   const clickable = !!description || withDetail;
   const withTitle = !!title;
+  const detailImageSrc = withImage ? detail.src : undefined;
   // Hotspots that only carry a title + description (no image/link/pdf detail)
   // expand their label inline instead of opening the side details pane.
-  const inlineExpandable = !withDetail && !!description;
+  const textInlineExpandable = !withDetail && !!description;
+  // Image hotspots whose text is short enough to read beside the media expand
+  // in-context too (image on top, title + description below) instead of opening
+  // the side pane. A missing description counts as short; past either limit the
+  // pane offers the room a long text needs — and a long title would push the
+  // card past the player height. An untitled image keeps its full-bleed
+  // side-pane treatment.
+  const imageInlineExpandable =
+    withImage &&
+    withTitle &&
+    title.trim().length <= HOTSPOT_INLINE_IMAGE_MAX_TITLE_LENGTH &&
+    (description?.trim().length ?? 0) <=
+      HOTSPOT_INLINE_IMAGE_MAX_DESCRIPTION_LENGTH;
+  const inlineExpandable = textInlineExpandable || imageInlineExpandable;
   const hotspotLinkRef = useRef<HTMLAnchorElement | null>(null);
   const hotspotDivRef = useRef<HTMLDivElement | null>(null);
   const titleRef = useRef<HTMLDivElement | null>(null);
@@ -150,6 +169,22 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   const [descriptionMaxHeight, setDescriptionMaxHeight] = useState<
     number | null
   >(null);
+  // Max height (px) the in-context image card may grow to before it would
+  // overflow the bottom of the media container. Unlike `descriptionMaxHeight`
+  // this caps the *whole* card (image + title + description), which scrolls as
+  // one, so it carries no upper bound that would crop the image.
+  const [panelMaxHeight, setPanelMaxHeight] = useState<number | null>(null);
+  // The detail image is only mounted once the hotspot has been hovered or
+  // opened. Every carrousel item renders its hotspots, so mounting eagerly
+  // would fetch a detail image for each one of them up front.
+  const [imagePrimed, setImagePrimed] = useState(false);
+  // Flipped once the detail image reports its own dimensions; until then the
+  // card reserves a placeholder box (see `aspectRatioStyle` use below).
+  const [imageLoaded, setImageLoaded] = useState(false);
+  // Share of the media width the expanded panel takes, so `CdnImage` requests a
+  // panel-sized source rather than a full-width one. Measured by the placement
+  // effect, which is the only thing that knows the current panel width.
+  const [panelWidthRatio, setPanelWidthRatio] = useState(0.4);
   const [expanded, setExpanded] = useState(false);
   // Keeps the panel laid out (full width / opacity) while the description
   // retracts, so closing animates smoothly instead of snapping.
@@ -197,12 +232,27 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
 
   useEffect(() => clearCollapseTimeout, [clearCollapseTimeout]);
 
+  // Hotspots are keyed by index within an item, so switching category can hand
+  // this component a different detail image; drop the stale "measured" flag so
+  // the new one reserves its box again.
+  useEffect(() => {
+    setImageLoaded(false);
+  }, [detailImageSrc]);
+
   const DefaultIcon =
     type === "damage" ? (
       <WarningIcon className="size-full" />
     ) : (
       <ImageIcon className="size-full" />
     );
+
+  const openSideDetails = useCallback(() => {
+    setShownDetails({
+      src: detailImageSrc,
+      title: title,
+      text: description,
+    });
+  }, [detailImageSrc, title, description, setShownDetails]);
 
   const onClick = () => {
     if (!clickable) {
@@ -217,18 +267,19 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     }
 
     if (inlineExpandable) {
-      // When the player is narrow, open the shared side panel (like image
-      // hotspots) instead of the cramped inline description panel.
+      // When the player is narrow, open the shared side panel instead of the
+      // cramped in-context panel.
       if (isCompactPlayer) {
-        setShownDetails({ title, text: description });
+        openSideDetails();
         return;
       }
 
-      // Desktop/tablet: toggle the inline description panel instead of opening
-      // the side pane.
+      // Desktop/tablet: toggle the in-context panel instead of opening the side
+      // pane.
       if (expanded) {
         collapsePanel();
       } else {
+        setImagePrimed(true);
         dispatchHotspotInteraction();
         clearCollapseTimeout();
         setCollapsing(false);
@@ -237,22 +288,25 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       return;
     }
 
-    setShownDetails({
-      src: withImage ? detail.src : undefined,
-      title: title,
-      text: description,
-    });
+    openSideDetails();
   };
 
   const [over, setOver] = useState(false);
   const onMouseEnter = useCallback(() => {
     if (over) return;
     setOver(true);
+    // On a compact player the card never expands (clicks open the side pane,
+    // which fetches its own full-width source), so priming here would download
+    // a panel-sized variant that is never shown.
+    if (!isCompactPlayer) {
+      setImagePrimed(true);
+    }
     dispatchHotspotInteraction();
     emitAnalyticsEventHotspotHovered();
   }, [
     over,
     setOver,
+    isCompactPlayer,
     dispatchHotspotInteraction,
     emitAnalyticsEventHotspotHovered,
   ]);
@@ -371,6 +425,12 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     ? { paddingRight: dotSidePadding }
     : { paddingLeft: dotSidePadding };
 
+  // Radius of the panel corner sitting under the hotspot dot. Matching the dot's
+  // own radius makes the circle nestle exactly into the cut corner as it scales.
+  const dotCornerRadiusStyle = shouldFlipTitle
+    ? { borderTopRightRadius: `calc(${hotspotSize} / 2)` }
+    : { borderTopLeftRadius: `calc(${hotspotSize} / 2)` };
+
   useEffect(() => {
     if (!withTitle) {
       return;
@@ -418,10 +478,26 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
         // width, so the chosen side fits both states (no flip on expand).
         // On a compact player the panel never expands inline (it opens the side
         // pane instead), so only the collapsed pill width matters there.
+        const expandedPanelWidth = getExpandedPanelWidth();
         const requiredWidth =
           inlineExpandable && !isCompactPlayer
-            ? Math.max(titleRect.width, getExpandedPanelWidth())
+            ? Math.max(titleRect.width, expandedPanelWidth)
             : titleRect.width;
+
+        // `getExpandedPanelWidth()` reads media queries and the window width,
+        // so it can only be kept fresh from here — this effect is the one the
+        // ResizeObserver re-runs. The container is the media overlay, so its
+        // width is the "player width" `imgInPlayerWidthRatio` is relative to.
+        if (imageInlineExpandable && containerRect.width > 0) {
+          const nextRatio = Math.min(
+            1,
+            expandedPanelWidth / containerRect.width
+          );
+
+          setPanelWidthRatio(current =>
+            Math.abs(current - nextRatio) < 0.01 ? current : nextRatio
+          );
+        }
 
         let nextShouldFlip = false;
 
@@ -437,18 +513,34 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
           current === nextShouldFlip ? current : nextShouldFlip
         );
 
-        // Cap the inline description so the panel never overflows the bottom of
-        // the media container. The panel is top-anchored at the dot, so the room
-        // available below = container bottom − dot top − the title row height
-        // (which sits above the description) − a small margin off the edge.
-        if (inlineExpandable) {
+        // Cap the in-context panel so it never overflows the bottom of the
+        // media container. Both variants are top-anchored at the dot, so the
+        // room available below = container bottom − dot top − a small margin
+        // off the edge, minus whatever sits above the scrolling part.
+        const dotTopInContainer = hotspotRect.top - containerRect.top;
+        const VERTICAL_MARGIN = 8;
+
+        if (imageInlineExpandable) {
+          // The image card is one scroll area anchored at the dot's top, so all
+          // of it — not just its text — has to fit in the room below the dot.
+          // No upper bound here: capping it would crop the image.
+          const available =
+            containerRect.height - dotTopInContainer - VERTICAL_MARGIN;
+          // Clamped at 0 rather than a usable minimum: where there is less
+          // room than that, a taller box would not become visible — it would
+          // spill past the media, which the carrousel clips — and the scroll
+          // area would claim height the user cannot reach.
+          const nextPanelMaxHeight = Math.round(Math.max(available, 0));
+
+          setPanelMaxHeight(current =>
+            current === nextPanelMaxHeight ? current : nextPanelMaxHeight
+          );
+        } else if (inlineExpandable) {
           const titleRowEl =
             titleElement.firstElementChild as HTMLElement | null;
           const titleRowHeight = titleRowEl
             ? titleRowEl.getBoundingClientRect().height
             : titleRect.height;
-          const dotTopInContainer = hotspotRect.top - containerRect.top;
-          const VERTICAL_MARGIN = 8;
           const available =
             containerRect.height -
             dotTopInContainer -
@@ -494,6 +586,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     extendMode,
     withDetail,
     inlineExpandable,
+    imageInlineExpandable,
     isCompactPlayer,
     expanded,
   ]);
@@ -501,6 +594,10 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   // While collapsing, keep the panel laid out (wide + opaque) so the
   // description can retract smoothly before reverting to the title pill.
   const panelMounted = expanded || collapsing;
+  // Text-only hotspots morph their title pill into the panel's header row.
+  // Image hotspots instead render the title inside the card, below the image,
+  // so their pill keeps its collapsed shape and just fades out underneath.
+  const titleRowExpanded = panelMounted && !imageInlineExpandable;
 
   const sharedClassName = cn(
     "group absolute z-hotspot -translate-x-1/2 -translate-y-1/2 hover:z-hotspot-hover",
@@ -594,7 +691,12 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
           <div
             className={cn(
               "relative flex items-center gap-1.5 border-[0.5px] border-[#64748B] bg-foreground text-background",
-              panelMounted
+              imageInlineExpandable &&
+                cn(
+                  "transition-opacity duration-200",
+                  panelMounted && "opacity-0"
+                ),
+              titleRowExpanded
                 ? cn(
                     "z-10 border-b-0",
                     // The corner under the hotspot icon matches the circle radius
@@ -616,20 +718,16 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                   )
             )}
             style={
-              panelMounted
-                ? {
-                    ...dotSidePaddingStyle,
-                    ...(shouldFlipTitle
-                      ? { borderTopRightRadius: `calc(${hotspotSize} / 2)` }
-                      : { borderTopLeftRadius: `calc(${hotspotSize} / 2)` }),
-                  }
+              titleRowExpanded
+                ? { ...dotSidePaddingStyle, ...dotCornerRadiusStyle }
                 : dotSidePaddingStyle
             }
+            aria-hidden={imageInlineExpandable && panelMounted}
           >
             <div
               className={cn(
                 "font-normal",
-                panelMounted
+                titleRowExpanded
                   ? "min-w-0 flex-1 break-words font-medium"
                   : "truncate"
               )}
@@ -637,22 +735,113 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                 // Scale the title with the hotspot dot so text and dot grow in
                 // lockstep. Fractions preserve the prior fixed sizes at the
                 // dot's 28px minimum (~13px expanded, ~12px collapsed).
-                fontSize: panelMounted
+                fontSize: titleRowExpanded
                   ? `calc(${hotspotSize} * 0.46)`
                   : `calc(${hotspotSize} * 0.43)`,
               }}
             >
               {title}
             </div>
-            {clickable && !inlineExpandable && (
+            {clickable && !(inlineExpandable && !isCompactPlayer) && (
               <span className="flex shrink-0">
                 <ArrowRightIcon className="size-5 shrink-0" />
               </span>
             )}
           </div>
 
+          {/* In-context image card — image on top, title and description below.
+              Absolutely positioned over the title pill so it wipes down across
+              it while the pill fades out, reading as one morphing panel. */}
+          {imageInlineExpandable && (
+            <div
+              className={cn(
+                "absolute inset-x-0 top-0 grid transition-[grid-template-rows] ease-out",
+                expanded
+                  ? "grid-rows-[1fr] duration-300"
+                  : "grid-rows-[0fr] duration-200"
+              )}
+              onTransitionEnd={event => {
+                // Once the card has fully retracted, revert to the pill
+                if (event.propertyName === "grid-template-rows" && !expanded) {
+                  clearCollapseTimeout();
+                  setCollapsing(false);
+                }
+              }}
+            >
+              <div
+                className={cn(
+                  "relative min-h-0 overflow-hidden rounded-[16px]",
+                  // Elevation only while the card is laid out: collapsed it sits
+                  // at grid-rows-[0fr], where a shadow on the 0-high box would
+                  // smudge across the title pill underneath.
+                  panelMounted && "shadow-[2px_4px_4px_0_rgba(0,0,0,0.15)]"
+                )}
+                style={dotCornerRadiusStyle}
+              >
+                <div
+                  className="overflow-y-auto overscroll-y-none rounded-[16px] border-[0.5px] border-[#64748B] bg-foreground text-background no-scrollbar"
+                  style={{
+                    ...dotCornerRadiusStyle,
+                    // Cap to the room measured below the dot so the card stays
+                    // within the media container and scrolls instead of
+                    // overflowing it.
+                    ...(panelMaxHeight !== null
+                      ? { maxHeight: `${panelMaxHeight}px` }
+                      : {}),
+                  }}
+                >
+                  {imagePrimed && detailImageSrc && (
+                    <div
+                      className="w-full"
+                      // An <img> has no height until it decodes, so without a
+                      // reservation the open animation would land on the
+                      // text-only height and then jump. Hovering primes the
+                      // fetch early on pointer devices, but a tap has no hover
+                      // to speak of. Reserve the composition's ratio until the
+                      // real one is known — detail shots come from the same
+                      // shoot, so this is usually the final height already.
+                      style={imageLoaded ? undefined : aspectRatioStyle}
+                    >
+                      {/* Once loaded, no explicit height: the intrinsic aspect
+                          ratio is kept while the image spans the card. */}
+                      <CdnImage
+                        src={detailImageSrc}
+                        alt={title}
+                        fadeIn
+                        imgInPlayerWidthRatio={panelWidthRatio}
+                        className={cn(
+                          "block w-full",
+                          !imageLoaded && "h-full object-cover"
+                        )}
+                        onLoad={() => setImageLoaded(true)}
+                      />
+                    </div>
+                  )}
+                  <div className="px-6 pb-6 pt-3 small:px-7 small:pb-7">
+                    <div
+                      className="break-words font-medium"
+                      style={{ fontSize: `calc(${hotspotSize} * 0.46)` }}
+                    >
+                      {title}
+                    </div>
+                    {!!description && (
+                      <div
+                        className="mt-1.5 whitespace-normal break-words font-normal leading-relaxed text-hotspot-description"
+                        style={{ fontSize: `calc(${hotspotSize} * 0.39)` }}
+                      >
+                        {description}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                {/* Bottom fade — hints the content continues beyond the visible area */}
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-8 rounded-b-[16px] bg-gradient-to-t from-foreground to-transparent" />
+              </div>
+            </div>
+          )}
+
           {/* Description — grows downward below the title without moving it */}
-          {inlineExpandable && (
+          {textInlineExpandable && (
             <div
               className={cn(
                 "absolute inset-x-0 top-[calc(100%-1px)] grid transition-[grid-template-rows] ease-out",
@@ -671,7 +860,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
               <div className="relative min-h-0 overflow-hidden rounded-b-[16px]">
                 <div
                   className={cn(
-                    "max-h-[clamp(4rem,40vh,16rem)] overflow-y-auto overscroll-y-none whitespace-normal break-words rounded-b-[16px] border-x-[0.5px] border-b-[0.5px] border-[#64748B] bg-foreground pb-6 pt-1.5 font-normal leading-relaxed text-background no-scrollbar small:pb-7",
+                    "max-h-[clamp(4rem,40vh,16rem)] overflow-y-auto overscroll-y-none whitespace-normal break-words rounded-b-[16px] border-x-[0.5px] border-b-[0.5px] border-[#64748B] bg-foreground pb-6 pt-1.5 font-normal leading-relaxed text-hotspot-description no-scrollbar small:pb-7",
                     // Far-side padding is fixed; the dot-side padding comes from
                     // dotSidePaddingStyle so the text aligns with the expanded title.
                     "px-6 small:px-7"
@@ -731,6 +920,9 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       role={clickable ? "button" : undefined}
       tabIndex={clickable ? 0 : undefined}
       aria-label={clickable ? title || "View details" : undefined}
+      aria-expanded={
+        inlineExpandable && !isCompactPlayer ? expanded : undefined
+      }
     >
       {hotspotContent}
     </div>

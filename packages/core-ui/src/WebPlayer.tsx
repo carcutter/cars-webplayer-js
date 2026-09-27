@@ -370,6 +370,11 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
               "--details-background":
                 "var(--cc-webplayer-details-background, 216 47% 11%)",
               "--details-text": "var(--cc-webplayer-details-text, 0 0% 100%)",
+              // #EAECF0. Bare HSL triplet feeding a Tailwind token, like
+              // `--details-text` — not wrapped in hsl() like the hotspot dot
+              // colors below, which are read straight into an inline style.
+              "--hotspot-description-text":
+                "var(--cc-webplayer-hotspot-description-text, 220 17% 93%)",
               "--foreground": "var(--cc-webplayer-foreground, 240 10% 3.9%)",
               "--primary": "var(--cc-webplayer-primary, 216 100% 52%)",
               "--primary-foreground":
