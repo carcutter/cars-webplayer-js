@@ -35,3 +35,11 @@ export const HOTSPOT_EXPANDED_PANEL_WIDTH = {
   small: 320,
   large: 384,
 } as const;
+
+// Longest title / description (characters) an image hotspot may carry and still
+// expand its detail in-context (image + text, anchored at the dot). Above either
+// limit the shared side details pane is used instead: it has the room a long
+// text needs, and a long title would otherwise push the in-context card past the
+// player height.
+export const HOTSPOT_INLINE_IMAGE_MAX_TITLE_LENGTH = 74;
+export const HOTSPOT_INLINE_IMAGE_MAX_DESCRIPTION_LENGTH = 80;

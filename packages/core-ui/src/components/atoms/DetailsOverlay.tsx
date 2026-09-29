@@ -218,7 +218,7 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
                   {description && (
                     <p
                       className={cn(
-                        "text-[clamp(0.75rem,0.55rem+1.3cqw,0.875rem)] text-white",
+                        "text-[clamp(0.75rem,0.55rem+1.3cqw,0.875rem)] text-hotspot-description",
                         extendMode && "large:text-sm"
                       )}
                     >
