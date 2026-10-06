@@ -17,7 +17,7 @@ import { useGlobalContext } from "../../providers/GlobalContext";
 import { cn } from "../../utils/style";
 import CdnImage from "../atoms/CdnImage";
 import ArrowRightIcon from "../icons/ArrowRightIcon";
-import ImageIcon from "../icons/ImageIcon";
+import HotspotImageIcon from "../icons/HotspotImageIcon";
 import WarningIcon from "../icons/WarningIcon";
 
 type HotspotProps = {
@@ -140,12 +140,16 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   const withLink = detail?.type === "link" && hasDetailSrc;
   const withPdf = detail?.type === "pdf" && hasDetailSrc;
   const withDetail = withImage || withLink || withPdf;
-  const clickable = !!description || withDetail;
   const withTitle = !!title;
   const detailImageSrc = withImage ? detail.src : undefined;
-  // Hotspots that only carry a title + description (no image/link/pdf detail)
-  // expand their label inline instead of opening the side details pane.
-  const textInlineExpandable = !withDetail && !!description;
+  // Hotspots that only carry a title and/or description (no image/link/pdf
+  // detail) expand their label inline instead of opening the side details pane.
+  // A title-only hotspot expands too, so a truncated title can be read in full.
+  const textInlineExpandable = !withDetail && (!!description || withTitle);
+  // A title-only panel has no description to wipe in: the title row itself
+  // closes the panel, so it opens and closes without the grow/retract step.
+  const titleOnlyExpandable = textInlineExpandable && !description;
+  const clickable = textInlineExpandable || withDetail;
   // Image hotspots whose text is short enough to read beside the media expand
   // in-context too (image on top, title + description below) instead of opening
   // the side pane. A missing description counts as short; past either limit the
@@ -200,7 +204,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
 
   const collapsePanel = useCallback(() => {
     setExpanded(wasExpanded => {
-      if (!wasExpanded) {
+      if (!wasExpanded || titleOnlyExpandable) {
         return false;
       }
       // Keep the panel laid out while the description retracts.
@@ -213,7 +217,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       }, 280);
       return false;
     });
-  }, [clearCollapseTimeout]);
+  }, [clearCollapseTimeout, titleOnlyExpandable]);
 
   const dispatchHotspotInteraction = useCallback(() => {
     const rootElement = hotspotDivRef.current;
@@ -243,7 +247,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     type === "damage" ? (
       <WarningIcon className="size-full" />
     ) : (
-      <ImageIcon className="size-full" />
+      <HotspotImageIcon className="size-full" />
     );
 
   const openSideDetails = useCallback(() => {
@@ -696,26 +700,34 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                   "transition-opacity duration-200",
                   panelMounted && "opacity-0"
                 ),
-              titleRowExpanded
-                ? cn(
-                    "z-10 border-b-0",
-                    // The corner under the hotspot icon matches the circle radius
-                    // (hotspotSize / 2, applied via inline style below so it stays
-                    // aligned as the dot scales). The opposite corner uses a small
-                    // fixed accent radius. The dot-side padding is applied inline
-                    // (dotSidePaddingStyle) so the title text clears the dot as it
-                    // grows; the far side keeps its fixed padding.
-                    // Match top padding to the far-side padding; keep the bottom tight so the
-                    // description butts directly against the title to read as one panel.
-                    "px-6 pb-1.5 pt-6 small:px-7 small:pt-7",
-                    shouldFlipTitle ? "rounded-tl-[16px]" : "rounded-tr-[16px]"
-                  )
-                : cn(
-                    "rounded-full py-1.5",
-                    // Dot-side padding comes from dotSidePaddingStyle; only the
-                    // far side is fixed here.
-                    shouldFlipTitle ? "pl-2.5 small:pl-3" : "pr-2.5 small:pr-3"
-                  )
+              titleRowExpanded && titleOnlyExpandable
+                ? // No description below: the title row is the whole panel,
+                  // so it carries the bottom padding and rounded corners itself.
+                  "rounded-[16px] p-6 small:p-7"
+                : titleRowExpanded
+                  ? cn(
+                      "z-10 border-b-0",
+                      // The corner under the hotspot icon matches the circle radius
+                      // (hotspotSize / 2, applied via inline style below so it stays
+                      // aligned as the dot scales). The opposite corner uses a small
+                      // fixed accent radius. The dot-side padding is applied inline
+                      // (dotSidePaddingStyle) so the title text clears the dot as it
+                      // grows; the far side keeps its fixed padding.
+                      // Match top padding to the far-side padding; keep the bottom tight so the
+                      // description butts directly against the title to read as one panel.
+                      "px-6 pb-1.5 pt-6 small:px-7 small:pt-7",
+                      shouldFlipTitle
+                        ? "rounded-tl-[16px]"
+                        : "rounded-tr-[16px]"
+                    )
+                  : cn(
+                      "rounded-full py-1.5",
+                      // Dot-side padding comes from dotSidePaddingStyle; only the
+                      // far side is fixed here.
+                      shouldFlipTitle
+                        ? "pl-2.5 small:pl-3"
+                        : "pr-2.5 small:pr-3"
+                    )
             )}
             style={
               titleRowExpanded
@@ -841,7 +853,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
           )}
 
           {/* Description — grows downward below the title without moving it */}
-          {textInlineExpandable && (
+          {textInlineExpandable && !!description && (
             <div
               className={cn(
                 "absolute inset-x-0 top-[calc(100%-1px)] grid transition-[grid-template-rows] ease-out",
