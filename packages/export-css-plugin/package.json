@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/export-css-plugin",
-  "version": "3.2.14",
+  "version": "3.2.15",
   "private": true,
   "type": "module",
   "main": "index.js",
