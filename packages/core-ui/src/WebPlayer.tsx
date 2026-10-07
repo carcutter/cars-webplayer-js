@@ -364,6 +364,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
         <div
           ref={wrapperRef}
           className="size-full select-none text-foreground"
+          data-cc-webplayer-root
           style={
             {
               "--background": "var(--cc-webplayer-background, 0 0% 100%)",

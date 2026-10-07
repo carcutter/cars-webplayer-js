@@ -44,6 +44,7 @@ const CategorySelect: React.FC<Props> = ({ sharedClassName }) => {
           positionToClassName("top-left"),
           "flex gap-x-2 small:hidden"
         )}
+        data-hotspot-top-inset
       >
         <Button
           shape="icon"
@@ -84,7 +85,10 @@ const CategorySelect: React.FC<Props> = ({ sharedClassName }) => {
           "w-full overflow-x-auto max-small:hidden"
         )}
       >
-        <div className="mx-auto flex w-fit gap-x-1 rounded-ui-md bg-background p-1 shadow">
+        <div
+          className="mx-auto flex w-fit gap-x-1 rounded-ui-md bg-background p-1 shadow"
+          data-hotspot-top-inset
+        >
           {categories.map(({ id, title }) => (
             <Button
               key={id}
