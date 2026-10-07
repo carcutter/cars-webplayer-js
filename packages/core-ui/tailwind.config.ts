@@ -95,6 +95,7 @@ const config: Config = {
       navy: "hsl(var(--details-background))",
       white: "hsl(var(--details-text))",
       background: "hsl(var(--background))",
+      "hotspot-description": "hsl(var(--hotspot-description-text))",
       foreground: "hsl(var(--foreground))",
       primary: {
         DEFAULT: "hsl(var(--primary))",
