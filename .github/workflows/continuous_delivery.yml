@@ -1,5 +1,6 @@
 name: Continuous Delivery
 on:
+  workflow_dispatch:
   release:
     types: [published]
 
@@ -44,7 +45,7 @@ jobs:
         uses: ./.github/actions/prepare_delivery
 
       - name: Install npm 11
-        run: npm install -g npm@latest
+        run: npm install -g npm@11
 
       - name: Verify npm version
         run: |
