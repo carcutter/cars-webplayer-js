@@ -13,6 +13,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: "main"
+          fetch-depth: 0
           fetch-tags: true
 
       - name: Prepare delivery
@@ -39,6 +40,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: "main"
+          fetch-depth: 0
           fetch-tags: true
 
       - name: Prepare delivery
@@ -63,6 +65,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: "main"
+          fetch-depth: 0
           fetch-tags: true
 
       - name: Prepare delivery
