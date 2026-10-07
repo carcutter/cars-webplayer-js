@@ -142,7 +142,10 @@ const WebPlayerOverlay: React.FC = () => {
 
       {/* Index Indicator */}
       {slidable && !isZooming && (
-        <div className={cn(sharedClassName, positionToClassName("top-right"))}>
+        <div
+          className={cn(sharedClassName, positionToClassName("top-right"))}
+          data-hotspot-top-inset
+        >
           <IndexIndicator
             currentIndex={(() => {
               if (!integration || isFullScreen) return carrouselItemIndex;

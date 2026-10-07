@@ -33,6 +33,18 @@ type IconHotspotProps = HotspotProps & {
 
 const HOTSPOT_INTERACTION_EVENT = "car-cutter:inline-hotspot-interaction";
 
+// Smallest height (px) the inline card's image shrinks to when the card is
+// short on room; below it the card scrolls instead.
+const MIN_CARD_IMAGE_HEIGHT = 96;
+
+// Height / width of the composition, from its `aspect-ratio` style ("4 / 3").
+const getCompositionRatio = (style: React.CSSProperties): number => {
+  const [width, height] = String(style.aspectRatio ?? "")
+    .split("/")
+    .map(part => parseFloat(part));
+  return width > 0 && height > 0 ? height / width : 3 / 4;
+};
+
 // `useId` needs React 18 while the package supports React >= 16.8, so ids come
 // from a module counter instead.
 let hotspotDescriptionIdCounter = 0;
@@ -136,6 +148,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   }, [emitAnalyticsEventHotspot]);
 
   const { aspectRatioStyle } = useCompositionContext();
+  const compositionRatio = getCompositionRatio(aspectRatioStyle);
   const { getIconConfig } = useCustomizationContext();
   const hotspotConfig = icon ? getIconConfig(icon) : undefined;
 
@@ -187,6 +200,18 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   // this caps the *whole* card (image + title + description), which scrolls as
   // one, so it carries no upper bound that would crop the image.
   const [panelMaxHeight, setPanelMaxHeight] = useState<number | null>(null);
+  // Hotspots low in the media open their image card upward (bottom-anchored at
+  // the dot) when it does not fit below and there is more room above. Locked
+  // while the card is open so it never jumps mid-read.
+  const [cardOpensUpward, setCardOpensUpward] = useState(false);
+  const cardOpensUpwardRef = useRef(false);
+  const cardScrollRef = useRef<HTMLDivElement | null>(null);
+  const cardImageBoxRef = useRef<HTMLDivElement | null>(null);
+  // Cap on the card's image height so title + description still fit beside the
+  // dot without scrolling. `null` when the image fits at its natural height.
+  const [cardImageMaxHeight, setCardImageMaxHeight] = useState<number | null>(
+    null
+  );
   // The detail image is only mounted once the hotspot has been hovered or
   // opened. Every carrousel item renders its hotspots, so mounting eagerly
   // would fetch a detail image for each one of them up front.
@@ -459,6 +484,17 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   const dotCornerRadiusStyle = shouldFlipTitle
     ? { borderTopRightRadius: `calc(${hotspotSize} / 2)` }
     : { borderTopLeftRadius: `calc(${hotspotSize} / 2)` };
+  // An upward image card has the dot at its bottom corner instead.
+  const cardCornerRadiusStyle = !cardOpensUpward
+    ? dotCornerRadiusStyle
+    : shouldFlipTitle
+      ? { borderBottomRightRadius: `calc(${hotspotSize} / 2)` }
+      : { borderBottomLeftRadius: `calc(${hotspotSize} / 2)` };
+  const cardUpward = imageInlineExpandable && cardOpensUpward;
+  const cardImageMaxHeightStyle =
+    cardImageMaxHeight !== null
+      ? { maxHeight: `${cardImageMaxHeight}px` }
+      : undefined;
 
   useEffect(() => {
     if (!withTitle) {
@@ -480,6 +516,12 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       return;
     }
 
+    // The player's top controls live in a sibling overlay: look them up within
+    // this player only, so another player on the page never counts.
+    const topInsetScope = containerElement.closest<HTMLElement>(
+      "[data-cc-webplayer-root]"
+    );
+
     let frameId: number | null = null;
 
     const updatePlacement = () => {
@@ -490,6 +532,13 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       frameId = requestAnimationFrame(() => {
         frameId = null;
 
+        const topInsetElements = topInsetScope
+          ? Array.from(
+              topInsetScope.querySelectorAll<HTMLElement>(
+                "[data-hotspot-top-inset]"
+              )
+            )
+          : [];
         const containerRect = containerElement.getBoundingClientRect();
         const hotspotRect = hotspotElement.getBoundingClientRect();
         const titleRect = titleElement.getBoundingClientRect();
@@ -549,19 +598,64 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
           current === nextShouldFlip ? current : nextShouldFlip
         );
 
-        // Cap the in-context panel so it never overflows the bottom of the
-        // media container. Both variants are top-anchored at the dot, so the
-        // room available below = container bottom − dot top − a small margin
-        // off the edge, minus whatever sits above the scrolling part.
+        // Cap the in-context panel so it never overflows the media container.
+        // Panels are top-anchored at the dot, so the room available below =
+        // container bottom − dot top − a small margin off the edge, minus
+        // whatever sits above the scrolling part. An upward image card is
+        // bottom-anchored at the dot instead and uses the room above it.
         const dotTopInContainer = hotspotRect.top - containerRect.top;
+        const dotBottomInContainer = hotspotRect.bottom - containerRect.top;
         const VERTICAL_MARGIN = 8;
 
         if (imageInlineExpandable) {
-          // The image card is one scroll area anchored at the dot's top, so all
-          // of it — not just its text — has to fit in the room below the dot.
-          // No upper bound here: capping it would crop the image.
-          const available =
+          const roomBelow =
             containerRect.height - dotTopInContainer - VERTICAL_MARGIN;
+          // Player controls along the top edge (category nav, index counter)
+          // sit above the hotspots, so an upward card must stop below the
+          // ones it would run under rather than at the container's top.
+          const cardLeft = nextShouldFlip
+            ? hotspotRect.right - expandedPanelWidth
+            : hotspotRect.left;
+          const cardRight = cardLeft + expandedPanelWidth;
+          const topInset = topInsetElements.reduce((inset, element) => {
+            const rect = element.getBoundingClientRect();
+            const overlapsCard =
+              rect.height > 0 && rect.left < cardRight && rect.right > cardLeft;
+            return overlapsCard
+              ? Math.max(inset, rect.bottom - containerRect.top)
+              : inset;
+          }, 0);
+          const roomAbove =
+            dotBottomInContainer - Math.max(topInset, 0) - VERTICAL_MARGIN;
+          // The card is laid out at its open width even while closed, so its
+          // text height is the real one. The image is sized from its natural
+          // ratio, since its box may already be capped by `cardImageMaxHeight`.
+          const contentHeight = cardScrollRef.current?.scrollHeight ?? 0;
+          const imageBox = cardImageBoxRef.current;
+          const textHeight = contentHeight - (imageBox?.offsetHeight ?? 0);
+          const imageElement = imageBox?.querySelector("img");
+          const imageRatio =
+            imageElement && imageElement.naturalWidth > 0
+              ? imageElement.naturalHeight / imageElement.naturalWidth
+              : compositionRatio;
+          const imageNaturalHeight = imageBox
+            ? imageBox.offsetWidth * imageRatio
+            : 0;
+          const cardHeight = textHeight + imageNaturalHeight;
+          // Locked while the card is on screen, closing animation included, so
+          // it never jumps between above and below the dot.
+          if (!expanded && !collapsing) {
+            const nextOpensUpward =
+              cardHeight > roomBelow && roomAbove > roomBelow;
+            cardOpensUpwardRef.current = nextOpensUpward;
+            setCardOpensUpward(current =>
+              current === nextOpensUpward ? current : nextOpensUpward
+            );
+          }
+          // The image card is one scroll area, so all of it — not just its
+          // text — has to fit in the room on its side of the dot. No upper
+          // bound here: capping it would crop the image.
+          const available = cardOpensUpwardRef.current ? roomAbove : roomBelow;
           // Clamped at 0 rather than a usable minimum: where there is less
           // room than that, a taller box would not become visible — it would
           // spill past the media, which the carrousel clips — and the scroll
@@ -570,6 +664,18 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
 
           setPanelMaxHeight(current =>
             current === nextPanelMaxHeight ? current : nextPanelMaxHeight
+          );
+
+          // Short on room: shrink the image (cropped, full width) so the text
+          // stays in view without scrolling — down to a floor below which the
+          // image would stop reading as one, and the card scrolls instead.
+          const roomForImage = available - textHeight;
+          const nextImageMaxHeight =
+            imageBox && roomForImage < imageNaturalHeight
+              ? Math.round(Math.max(roomForImage, MIN_CARD_IMAGE_HEIGHT))
+              : null;
+          setCardImageMaxHeight(current =>
+            current === nextImageMaxHeight ? current : nextImageMaxHeight
           );
         } else if (inlineExpandable) {
           const titleRowEl =
@@ -625,6 +731,9 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     imageInlineExpandable,
     isCompactPlayer,
     expanded,
+    collapsing,
+    imageLoaded,
+    compositionRatio,
   ]);
 
   // While collapsing, keep the panel laid out (wide + opaque) so the
@@ -717,9 +826,15 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
             // Anchor relative to the responsive hotspot dot. Expanded: top edge
             // aligns with the dot's top (50% - hotspotSize/2 + 1px for top-px).
             // Collapsed: centered on the dot (50% + 1px), with -translate-y-1/2.
-            top: panelMounted
-              ? `calc(50% - ${hotspotSize} / 2 + 1px)`
-              : "calc(50% + 1px)",
+            // An upward image card instead aligns its bottom edge with the
+            // dot's bottom (50% - hotspotSize/2 - 1px from the root's bottom).
+            ...(panelMounted && cardUpward
+              ? { bottom: `calc(50% - ${hotspotSize} / 2 - 1px)` }
+              : {
+                  top: panelMounted
+                    ? `calc(50% - ${hotspotSize} / 2 + 1px)`
+                    : "calc(50% + 1px)",
+                }),
           }}
           ref={titleRef}
         >
@@ -799,7 +914,13 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
           {imageInlineExpandable && (
             <div
               className={cn(
-                "absolute inset-x-0 top-0 grid transition-[grid-template-rows] ease-out",
+                // Always at the expanded panel width (not the pill's), so the
+                // closed card — 0 high and clipped, hence invisible — lays its
+                // content out at its open size and can be measured up front.
+                "absolute grid w-72 max-w-[70vw] transition-[grid-template-rows] ease-out small:w-80 large:w-96",
+                shouldFlipTitle ? "right-0" : "left-0",
+                // Upward cards grow from their bottom edge at the dot.
+                cardUpward ? "bottom-0" : "top-0",
                 expanded
                   ? "grid-rows-[1fr] duration-300"
                   : "grid-rows-[0fr] duration-200"
@@ -820,13 +941,14 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                   // smudge across the title pill underneath.
                   panelMounted && "shadow-[2px_4px_4px_0_rgba(0,0,0,0.15)]"
                 )}
-                style={dotCornerRadiusStyle}
+                style={cardCornerRadiusStyle}
               >
                 <div
+                  ref={cardScrollRef}
                   className="overflow-y-auto overscroll-y-none rounded-[16px] border-[0.5px] border-[#64748B] bg-foreground text-background no-scrollbar"
                   style={{
-                    ...dotCornerRadiusStyle,
-                    // Cap to the room measured below the dot so the card stays
+                    ...cardCornerRadiusStyle,
+                    // Cap to the room measured beside the dot so the card stays
                     // within the media container and scrolls instead of
                     // overflowing it.
                     ...(panelMaxHeight !== null
@@ -834,8 +956,9 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                       : {}),
                   }}
                 >
-                  {imagePrimed && detailImageSrc && (
+                  {detailImageSrc && (
                     <div
+                      ref={cardImageBoxRef}
                       className="w-full"
                       // An <img> has no height until it decodes, so without a
                       // reservation the open animation would land on the
@@ -844,21 +967,33 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                       // to speak of. Reserve the composition's ratio until the
                       // real one is known — detail shots come from the same
                       // shoot, so this is usually the final height already.
-                      style={imageLoaded ? undefined : aspectRatioStyle}
+                      style={
+                        imageLoaded
+                          ? undefined
+                          : { ...aspectRatioStyle, ...cardImageMaxHeightStyle }
+                      }
                     >
                       {/* Once loaded, no explicit height: the intrinsic aspect
                           ratio is kept while the image spans the card. */}
-                      <CdnImage
-                        src={detailImageSrc}
-                        alt={title}
-                        fadeIn
-                        imgInPlayerWidthRatio={panelWidthRatio}
-                        className={cn(
-                          "block w-full",
-                          !imageLoaded && "h-full object-cover"
-                        )}
-                        onLoad={() => setImageLoaded(true)}
-                      />
+                      {/* The box above is always laid out so the card's height
+                          is known up front; the image itself still waits for a
+                          hover/open to fetch. */}
+                      {imagePrimed && (
+                        <CdnImage
+                          src={detailImageSrc}
+                          alt={title}
+                          fadeIn
+                          imgInPlayerWidthRatio={panelWidthRatio}
+                          className={cn(
+                            "block w-full object-cover transition-[max-height] duration-300",
+                            !imageLoaded && "h-full"
+                          )}
+                          // Shrunk (and cropped) when the card is short on
+                          // room, so its text needs no scrolling.
+                          style={cardImageMaxHeightStyle}
+                          onLoad={() => setImageLoaded(true)}
+                        />
+                      )}
                     </div>
                   )}
                   <div className="px-6 pb-6 pt-3 small:px-7 small:pb-7">
