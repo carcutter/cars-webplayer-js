@@ -22,6 +22,8 @@ You can customize the WebPlayer color & roundness with CSS Variables
 | `--cc-webplayer-radius-carrousel`         | Carrousel border radius            | `0`               |
 | `--cc-webplayer-radius-gallery`           | Gallery medias border radius       | `0`               |
 
+`--cc-webplayer-hotspot-description-text` applies to descriptions shown on dark panels: the inline hotspot panel and the centered details pane. The light aside and fullwidth details panes use a muted foreground color instead, since a color tuned for dark panels would be unreadable on them.
+
 ## Examples
 
 You can insert CSS variables in your style files

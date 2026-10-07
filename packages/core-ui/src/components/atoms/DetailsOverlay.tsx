@@ -283,6 +283,8 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
                     {title}
                   </span>
                 )}
+                {/* Light pane: `text-hotspot-description` is tuned for the dark
+                    inline/centered panels, so this keeps the muted foreground. */}
                 {description && (
                   <p
                     className={cn(

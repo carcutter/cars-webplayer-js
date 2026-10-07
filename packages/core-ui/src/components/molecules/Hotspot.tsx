@@ -33,6 +33,10 @@ type IconHotspotProps = HotspotProps & {
 
 const HOTSPOT_INTERACTION_EVENT = "car-cutter:inline-hotspot-interaction";
 
+// `useId` needs React 18 while the package supports React >= 16.8, so ids come
+// from a module counter instead.
+let hotspotDescriptionIdCounter = 0;
+
 type HotspotInteractionEvent = CustomEvent<{
   sourceElement: HTMLElement;
 }>;
@@ -156,12 +160,17 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   // pane offers the room a long text needs — and a long title would push the
   // card past the player height. An untitled image keeps its full-bleed
   // side-pane treatment.
-  const imageInlineExpandable =
+  const imageInlineEligible =
     withImage &&
     withTitle &&
     title.trim().length <= HOTSPOT_INLINE_IMAGE_MAX_TITLE_LENGTH &&
     (description?.trim().length ?? 0) <=
       HOTSPOT_INLINE_IMAGE_MAX_DESCRIPTION_LENGTH;
+  // Whether the expanded panel width fits on at least one side of the dot.
+  // Measured by the placement effect; an image card that would be clipped by
+  // the media opens the side pane instead.
+  const [expandedPanelFits, setExpandedPanelFits] = useState(true);
+  const imageInlineExpandable = imageInlineEligible && expandedPanelFits;
   const inlineExpandable = textInlineExpandable || imageInlineExpandable;
   const hotspotLinkRef = useRef<HTMLAnchorElement | null>(null);
   const hotspotDivRef = useRef<HTMLDivElement | null>(null);
@@ -190,6 +199,11 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   // effect, which is the only thing that knows the current panel width.
   const [panelWidthRatio, setPanelWidthRatio] = useState(0.4);
   const [expanded, setExpanded] = useState(false);
+  // The button role makes its contents presentational, so the expanded
+  // description is exposed to assistive technology via `aria-describedby`.
+  const [descriptionId] = useState(
+    () => `car-cutter-hotspot-description-${++hotspotDescriptionIdCounter}`
+  );
   // Keeps the panel laid out (full width / opacity) while the description
   // retracts, so closing animates smoothly instead of snapping.
   const [collapsing, setCollapsing] = useState(false);
@@ -400,6 +414,17 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     }
   }, [inlineExpandable, expanded, isCompactPlayer, collapsePanel]);
 
+  // Same for an open image card that no longer fits beside the dot: it has
+  // switched to the side-pane treatment, so drop the inline state outright
+  // (there is no card left to animate out).
+  useEffect(() => {
+    if (imageInlineEligible && !expandedPanelFits && expanded) {
+      clearCollapseTimeout();
+      setCollapsing(false);
+      setExpanded(false);
+    }
+  }, [imageInlineEligible, expandedPanelFits, expanded, clearCollapseTimeout]);
+
   // Determine which CSS variable to use based on hotspot type
   const getHotspotColorVariable = useCallback(() => {
     if (type === "damage") {
@@ -502,6 +527,13 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
             Math.abs(current - nextRatio) < 0.01 ? current : nextRatio
           );
         }
+
+        const nextExpandedPanelFits =
+          availableRight >= expandedPanelWidth ||
+          availableLeft >= expandedPanelWidth;
+        setExpandedPanelFits(current =>
+          current === nextExpandedPanelFits ? current : nextExpandedPanelFits
+        );
 
         let nextShouldFlip = false;
 
@@ -838,6 +870,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                     </div>
                     {!!description && (
                       <div
+                        id={descriptionId}
                         className="mt-1.5 whitespace-normal break-words font-normal leading-relaxed text-hotspot-description"
                         style={{ fontSize: `calc(${hotspotSize} * 0.39)` }}
                       >
@@ -871,6 +904,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
             >
               <div className="relative min-h-0 overflow-hidden rounded-b-[16px]">
                 <div
+                  id={descriptionId}
                   className={cn(
                     "max-h-[clamp(4rem,40vh,16rem)] overflow-y-auto overscroll-y-none whitespace-normal break-words rounded-b-[16px] border-x-[0.5px] border-b-[0.5px] border-[#64748B] bg-foreground pb-6 pt-1.5 font-normal leading-relaxed text-hotspot-description no-scrollbar small:pb-7",
                     // Far-side padding is fixed; the dot-side padding comes from
@@ -934,6 +968,11 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
       aria-label={clickable ? title || "View details" : undefined}
       aria-expanded={
         inlineExpandable && !isCompactPlayer ? expanded : undefined
+      }
+      aria-describedby={
+        inlineExpandable && !isCompactPlayer && expanded && !!description
+          ? descriptionId
+          : undefined
       }
     >
       {hotspotContent}
