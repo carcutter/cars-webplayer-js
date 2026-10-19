@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/core-wc",
-  "version": "3.2.16",
+  "version": "3.2.17",
   "private": true,
   "type": "module",
   "main": "index.ts",
