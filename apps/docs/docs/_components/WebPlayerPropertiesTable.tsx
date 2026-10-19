@@ -29,6 +29,14 @@ const properties: Array<Property> = [
     description: "Hide the category-based navigation",
   },
   {
+    propName: "forceTopNav",
+    attribute: "force-top-nav",
+    type: "boolean",
+    defaultValue: "false",
+    description:
+      "Always show the top category navigation (never the burger menu), scrolling horizontally when it doesn't fit",
+  },
+  {
     propName: "infiniteCarrousel",
     attribute: "infinite-carrousel",
     type: "boolean",

@@ -95,6 +95,8 @@ const CustomizationDrawer: React.FC<Props> = ({
     setDemoSpin,
     extendBehavior,
     setExtendBehavior,
+    forceTopNav,
+    setForceTopNav,
     hideCategoriesNav,
     setHideCategoriesNav,
     infiniteCarrousel,
@@ -310,6 +312,16 @@ const CustomizationDrawer: React.FC<Props> = ({
                         }
                       />
                       <PropertyLink attribute="hide-categories-nav" />
+
+                      <Checkbox
+                        id="forceTopNav"
+                        checked={forceTopNav}
+                        aria-labelledby={getPropertyLabelId("force-top-nav")}
+                        onCheckedChange={checked =>
+                          setForceTopNav(checked === true)
+                        }
+                      />
+                      <PropertyLink attribute="force-top-nav" />
 
                       <Checkbox
                         id="integration"

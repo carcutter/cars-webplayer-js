@@ -12,6 +12,7 @@ export type WebPlayerProps = {
 
   // Layout
   hideCategoriesNav?: boolean;
+  forceTopNav?: boolean;
   infiniteCarrousel?: boolean;
   permanentGallery?: boolean;
 

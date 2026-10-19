@@ -5,6 +5,7 @@ export type AnalyticsLoadEventProps = {
     integration: boolean;
     max_items_shown: number;
     hide_categories_nav: boolean;
+    force_top_nav: boolean;
     infinite_carrousel: boolean;
     permanent_gallery: boolean;
     media_load_strategy: string;

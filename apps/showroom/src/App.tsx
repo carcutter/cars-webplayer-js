@@ -48,6 +48,7 @@ const AppContent: React.FC = () => {
     extendBehavior,
     permanentGallery,
     hideCategoriesNav,
+    forceTopNav,
     infiniteCarrousel,
     integration,
     mediaLoadStrategy,
@@ -163,6 +164,7 @@ const AppContent: React.FC = () => {
           mediaLoadStrategy={mediaLoadStrategy}
           permanentGallery={permanentGallery}
           hideCategoriesNav={hideCategoriesNav}
+          forceTopNav={forceTopNav}
           demoSpin={demoSpin}
         >
           {withCustomMedias && (

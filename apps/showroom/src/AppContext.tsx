@@ -16,6 +16,7 @@ import {
   DEFAULT_CATEGORIES_FILTER,
   DEFAULT_DEMO_SPIN,
   DEFAULT_EXTEND_BEHAVIOR,
+  DEFAULT_FORCE_TOP_NAV,
   DEFAULT_HIDE_CATEGORIES_NAV,
   DEFAULT_INFINITE_CARROUSEL,
   DEFAULT_INTEGRATION,
@@ -44,6 +45,8 @@ type ContextType = {
   setPermanentGallery: (permanentGallery: boolean) => void;
   hideCategoriesNav: boolean;
   setHideCategoriesNav: (hideCategoriesNav: boolean) => void;
+  forceTopNav: boolean;
+  setForceTopNav: (forceTopNav: boolean) => void;
   categoriesFilter: string;
   setCategoriesFilter: (categoriesFilter: string) => void;
   mediaLoadStrategy: MediaLoadStrategy;
@@ -105,6 +108,10 @@ const AppContextProvider: React.FC<React.PropsWithChildren> = ({
   const [hideCategoriesNav, setHideCategoriesNav] = useSearchParam<boolean>(
     "hideCategoriesNav",
     DEFAULT_HIDE_CATEGORIES_NAV
+  );
+  const [forceTopNav, setForceTopNav] = useSearchParam<boolean>(
+    "forceTopNav",
+    DEFAULT_FORCE_TOP_NAV
   );
   const [categoriesFilter, setCategoriesFilter] = useSearchParam<string>(
     "categoriesFilter",
@@ -168,6 +175,7 @@ const AppContextProvider: React.FC<React.PropsWithChildren> = ({
   const resetWebPlayerProps = useCallback(() => {
     setPermanentGallery(DEFAULT_PERMANENT_GALLERY);
     setHideCategoriesNav(DEFAULT_HIDE_CATEGORIES_NAV);
+    setForceTopNav(DEFAULT_FORCE_TOP_NAV);
     setCategoriesFilter(DEFAULT_CATEGORIES_FILTER);
     setMediaLoadStrategy(DEFAULT_MEDIA_LOAD_STRATEGY);
     setIntegration(DEFAULT_INTEGRATION);
@@ -185,6 +193,7 @@ const AppContextProvider: React.FC<React.PropsWithChildren> = ({
     setColor,
     setDemoSpin,
     setExtendBehavior,
+    setForceTopNav,
     setHideCategoriesNav,
     setInfiniteCarrousel,
     setIntegration,
@@ -212,6 +221,8 @@ const AppContextProvider: React.FC<React.PropsWithChildren> = ({
         setPermanentGallery,
         hideCategoriesNav,
         setHideCategoriesNav,
+        forceTopNav,
+        setForceTopNav,
         categoriesFilter,
         setCategoriesFilter,
         mediaLoadStrategy,

@@ -16,6 +16,7 @@ export type WebPlayerPropertyAttribute =
   | "categories-filter"
   | "demo-spin"
   | "extend-behavior"
+  | "force-top-nav"
   | "hide-categories-nav"
   | "infinite-carrousel"
   | "integration"
@@ -35,6 +36,9 @@ export const DEFAULT_DEMO_SPIN = false satisfies NonNullable<
   WebPlayerProps["demoSpin"]
 >;
 export const DEFAULT_EXTEND_BEHAVIOR = "full_screen" satisfies ExtendBehavior;
+export const DEFAULT_FORCE_TOP_NAV = false satisfies NonNullable<
+  WebPlayerProps["forceTopNav"]
+>;
 export const DEFAULT_HIDE_CATEGORIES_NAV = false satisfies NonNullable<
   WebPlayerProps["hideCategoriesNav"]
 >;
@@ -56,6 +60,7 @@ export const PROPERTY_LABELS: Record<WebPlayerPropertyAttribute, string> = {
   "categories-filter": "Categories filter",
   "demo-spin": "Demo spin",
   "extend-behavior": "Extend behavior",
+  "force-top-nav": "Force top nav",
   "hide-categories-nav": "Hide categories nav",
   "infinite-carrousel": "Infinite carrousel",
   integration: "Integration",

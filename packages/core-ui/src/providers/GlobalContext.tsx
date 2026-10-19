@@ -8,6 +8,7 @@ type ProviderProps = Required<
     WebPlayerProps,
     | "compositionUrl"
     | "hideCategoriesNav"
+    | "forceTopNav"
     | "infiniteCarrousel"
     | "permanentGallery"
     | "mediaLoadStrategy"
