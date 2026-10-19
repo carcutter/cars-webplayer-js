@@ -1,6 +1,6 @@
 {
   "name": "@car-cutter/webplayer-docs",
-  "version": "3.2.16",
+  "version": "3.2.17",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
