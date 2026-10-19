@@ -44,6 +44,7 @@ export default defineComponent({
     compositionUrl: { type: String, required: true },
 
     hideCategoriesNav: Boolean,
+    forceTopNav: Boolean,
     infiniteCarrousel: Boolean,
     permanentGallery: Boolean,
 

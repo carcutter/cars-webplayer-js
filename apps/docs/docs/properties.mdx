@@ -99,6 +99,33 @@ Default value is `false`.
   </TabItem>
 </Tabs>
 
+## Force Top Nav
+
+Use `forceTopNav` to always display the category navigation as the top bar, whatever the width. By default, on small screens (or in a narrow iframe, where the viewport is the iframe) the navigation collapses into a burger menu. When enabled, the burger is never rendered; if the categories don't fit, the bar scrolls horizontally and keeps the active category in view. The rest of the player stays responsive.
+
+Default value is `false`.
+
+<Tabs>
+  <TabItem value="framework" label="Frameworks">
+
+```tsx
+<WebPlayer compositionUrl={compositionUrl} forceTopNav={true} />
+```
+
+  </TabItem>
+
+  <TabItem value="native" label="Native / WebComponent">
+
+```html
+<cc-webplayer
+  composition-url="https://example.com/composition_v3.json"
+  force-top-nav="true"
+></cc-webplayer>
+```
+
+  </TabItem>
+</Tabs>
+
 ## Integration
 
 Use `integration` to enable a compact embedded layout designed for integration into external pages (e.g., car listing cards). When enabled, it automatically overrides several properties: `hideCategoriesNav` is forced to `true`, `infiniteCarrousel` to `false`, and `permanentGallery` to `false`.

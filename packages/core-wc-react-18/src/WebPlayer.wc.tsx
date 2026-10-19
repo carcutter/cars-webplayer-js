@@ -9,6 +9,7 @@ const WebPlayerWebComponent = r2wc(WebPlayerWithInjectedStyles, {
 
     // Layout
     hideCategoriesNav: "boolean",
+    forceTopNav: "boolean",
     infiniteCarrousel: "boolean",
     permanentGallery: "boolean",
     integration: "boolean",

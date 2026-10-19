@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
 import { useEscapeKeyEffect } from "../../hooks/useEscapeKeyEffect";
 import { useCompositionContext } from "../../providers/CompositionContext";
@@ -34,6 +34,7 @@ import CategorySelect from "./CategorySelect";
 const WebPlayerOverlay: React.FC = () => {
   const {
     hideCategoriesNav,
+    forceTopNav,
     infiniteCarrousel,
     permanentGallery,
     extendBehavior,
@@ -99,6 +100,10 @@ const WebPlayerOverlay: React.FC = () => {
 
   const sharedClassName = "absolute z-overlay";
 
+  // Measured by the forced top nav so it doesn't run under the indicator
+  const [indexIndicatorElement, setIndexIndicatorElement] =
+    useState<HTMLDivElement | null>(null);
+
   // Handle index count when integration is enabled
   const getIntegrationIndicatorNumbers = () => {
     // For single item view, just return the current index
@@ -137,12 +142,14 @@ const WebPlayerOverlay: React.FC = () => {
             "transition-opacity",
             !isZooming ? "opacity-100" : "!pointer-events-none opacity-0"
           )}
+          indicatorElement={indexIndicatorElement}
         />
       )}
 
       {/* Index Indicator */}
       {slidable && !isZooming && (
         <div
+          ref={forceTopNav ? setIndexIndicatorElement : undefined}
           className={cn(sharedClassName, positionToClassName("top-right"))}
           data-hotspot-top-inset
         >

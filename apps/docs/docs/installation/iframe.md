@@ -34,6 +34,8 @@ In order to construct the `src` URL for the iframe integration you need
 ></iframe>
 ```
 
+Boolean properties are passed as `true` / `false`, e.g. `&force-top-nav=true` keeps the top category navigation even when the iframe is narrow.
+
 ### Example
 
 _\* Required [Properties](../properties.mdx)_
