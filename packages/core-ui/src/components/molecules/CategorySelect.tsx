@@ -70,7 +70,9 @@ const ForcedTopNav: React.FC<ForcedTopNavProps> = ({
   // re-center the active category whenever the layout changes (resize,
   // rotation, fullscreen, fonts loaded, player shown after being hidden…)
   const getActiveItemRef = useRef(getActiveItem);
-  getActiveItemRef.current = getActiveItem;
+  useLayoutEffect(() => {
+    getActiveItemRef.current = getActiveItem;
+  }, [getActiveItem]);
   useLayoutEffect(() => {
     const scroller = scrollerRef.current;
     const list = listRef.current;
