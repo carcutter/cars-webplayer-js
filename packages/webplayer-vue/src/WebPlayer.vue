@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onBeforeMount, onUnmounted } from "vue";
+import { computed, onBeforeMount, onUnmounted, watch } from "vue";
 
 import type {
   AnalyticsLoadEvent,
@@ -46,9 +46,11 @@ const props = withDefaults(defineProps<WebPlayerProps>(), booleanPropsDefaults);
 // Computed (props are not destructured) so prop updates reach the element
 const style_ = computed(() => ({ display: "block", ...(props.style ?? {}) }));
 
-// The `^` prefix forces Vue to set attributes, like for every other key: keys
-// matching a property of the element (integration, monitoring, reverse360)
-// would otherwise be set as properties
+// The `^` prefix forces Vue to set attributes for every key. Keys matching a
+// property of the element (integration, monitoring, reverse360) would
+// otherwise be set as properties, and a prop going back to undefined would
+// set the property to false instead of removing the attribute, which lets the
+// element use its default again
 const attributes = computed(() => {
   const { class: _class, style: _style, ...wcProps } = props;
 
@@ -80,14 +82,6 @@ export type WebPlayerEvents = {
 
 const emit = defineEmits<WebPlayerEvents>();
 
-const eventPrefix = props.eventPrefix ?? DEFAULT_EVENT_PREFIX;
-const analyticsEventPrefix =
-  props.analyticsEventPrefix ?? DEFAULT_ANALYTICS_EVENT_PREFIX;
-
-const generateEventName = (event: string) => `${eventPrefix}${event}`;
-const generateAnalyticsEventName = (event: string) =>
-  `${analyticsEventPrefix}${event}`;
-
 const eventListenerMap = {
   [EVENT_COMPOSITION_LOADING]: (url: string) => emit("compositionLoading", url),
   [EVENT_COMPOSITION_LOADED]: (composition: Composition) =>
@@ -115,52 +109,52 @@ const analyticsEventListenerMap = {
     emit("analyticsError", event),
 };
 
+/** Document listeners for the current prefixes, keyed by event name */
 const eventCbMap = new Map<string, EventListener>();
-const analyticsEventCbMap = new Map<string, EventListener>();
 
-Object.entries(eventListenerMap).forEach(([event, listener]) => {
-  if (!listener) {
-    return;
-  }
+function addEventListeners() {
+  const eventPrefix = props.eventPrefix ?? DEFAULT_EVENT_PREFIX;
+  const analyticsEventPrefix =
+    props.analyticsEventPrefix ?? DEFAULT_ANALYTICS_EVENT_PREFIX;
 
-  const eventName = generateEventName(event);
-  const eventListener = (event: Event) =>
-    listener((event as CustomEvent).detail);
+  const listen = (
+    prefix: string,
+    listeners: Record<string, (detail: never) => void>
+  ) => {
+    Object.entries(listeners).forEach(([event, listener]) => {
+      const eventListener = (e: Event) =>
+        listener((e as CustomEvent).detail as never);
 
-  eventCbMap.set(eventName, eventListener);
-});
+      eventCbMap.set(`${prefix}${event}`, eventListener);
+      document.addEventListener(`${prefix}${event}`, eventListener);
+    });
+  };
 
-Object.entries(analyticsEventListenerMap).forEach(([event, listener]) => {
-  if (!listener) {
-    return;
-  }
+  listen(eventPrefix, eventListenerMap);
+  listen(analyticsEventPrefix, analyticsEventListenerMap);
+}
 
-  const eventName = generateAnalyticsEventName(event);
-  const eventListener = (event: Event) =>
-    listener((event as CustomEvent).detail);
-
-  analyticsEventCbMap.set(eventName, eventListener);
-});
+function removeEventListeners() {
+  eventCbMap.forEach((eventListener, eventName) => {
+    document.removeEventListener(eventName, eventListener);
+  });
+  eventCbMap.clear();
+}
 
 // Before mount, so that events dispatched as soon as <cc-webplayer> is
 // connected (e.g. composition-loading) are not missed
-onBeforeMount(() => {
-  eventCbMap.forEach((eventListener, eventName) => {
-    document.addEventListener(eventName, eventListener);
-  });
-  analyticsEventCbMap.forEach((eventListener, eventName) => {
-    document.addEventListener(eventName, eventListener);
-  });
-});
+onBeforeMount(addEventListeners);
 
-onUnmounted(() => {
-  eventCbMap.forEach((eventListener, eventName) => {
-    document.removeEventListener(eventName, eventListener);
-  });
-  analyticsEventCbMap.forEach((eventListener, eventName) => {
-    document.removeEventListener(eventName, eventListener);
-  });
-});
+// The element dispatches its events with the new prefixes right away
+watch(
+  () => [props.eventPrefix, props.analyticsEventPrefix],
+  () => {
+    removeEventListeners();
+    addEventListeners();
+  }
+);
+
+onUnmounted(removeEventListeners);
 </script>
 
 <template>
