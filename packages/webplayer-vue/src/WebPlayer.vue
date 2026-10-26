@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onBeforeMount, onUnmounted } from "vue";
+import { computed, onBeforeMount, onUnmounted } from "vue";
 
 import type {
   AnalyticsLoadEvent,
@@ -57,18 +57,22 @@ const props = withDefaults(defineProps<WebPlayerProps>(), {
   analyticsDebug: undefined,
   monitoring: undefined,
 });
-const { class: class_, style, ...wcProps } = props;
-const style_ = { display: "block", ...(style ?? {}) };
+// Computed (props are not destructured) so prop updates reach the element
+const style_ = computed(() => ({ display: "block", ...(props.style ?? {}) }));
 
 // The `^` prefix forces Vue to set attributes: keys matching a property of the
 // element (integration, monitoring, reverse360) would otherwise be set as
 // properties, where the "false" string is read as `true`
-const attributes = Object.fromEntries(
-  Object.entries(webPlayerPropsToAttributes(wcProps)).map(([key, value]) => [
-    `^${key}`,
-    value,
-  ])
-);
+const attributes = computed(() => {
+  const { class: _class, style: _style, ...wcProps } = props;
+
+  return Object.fromEntries(
+    Object.entries(webPlayerPropsToAttributes(wcProps)).map(([key, value]) => [
+      `^${key}`,
+      value,
+    ])
+  );
+});
 
 // -- Event listeners
 export type WebPlayerEvents = {
@@ -174,7 +178,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <cc-webplayer v-bind="attributes" :class="class_" :style="style_">
+  <cc-webplayer v-bind="attributes" :class="props.class" :style="style_">
     <slot></slot>
   </cc-webplayer>
 </template>
