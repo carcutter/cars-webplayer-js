@@ -1,5 +1,7 @@
 export { checkCustomElementsDefinition } from "./src/wc";
 
+export { parseBooleanProperties } from "./src/utils";
+
 export {
   WebPlayerWithInjectedStyles,
   webPlayerPropsToAttributes,

@@ -30,3 +30,36 @@ export function propsToAttributes<T extends object>(
     return acc;
   }, {} as PropsToAttributes<T>);
 }
+
+/**
+ * r2wc stores a value set on a "boolean" property as is, then reflects it to
+ * the attribute as `value ? "true" : "false"`: a "false" string set as a
+ * property (as Vue does for props matching a property name) ends up `true`.
+ * Parses strings like r2wc parses attributes before they reach its setter.
+ */
+export function parseBooleanProperties(
+  element: CustomElementConstructor,
+  props: Record<string, string>
+): void {
+  Object.entries(props).forEach(([name, type]) => {
+    if (type !== "boolean") {
+      return;
+    }
+
+    const descriptor = Object.getOwnPropertyDescriptor(element.prototype, name);
+    const set = descriptor?.set;
+    if (!descriptor || !set) {
+      return;
+    }
+
+    Object.defineProperty(element.prototype, name, {
+      ...descriptor,
+      set(value: unknown) {
+        set.call(
+          this,
+          typeof value === "string" ? /^[ty1-9]/i.test(value) : value
+        );
+      },
+    });
+  });
+}
