@@ -11,7 +11,7 @@
     "@car-cutter/core": "*",
     "@car-cutter/core-ui": "*",
     "@car-cutter/core-wc": "*",
-    "@r2wc/react-to-web-component": "^2.0.3"
+    "@r2wc/react-to-web-component": "^1.0.0"
   },
   "peerDependencies": {
     "react": ">=16.8",

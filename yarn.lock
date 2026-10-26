@@ -3536,10 +3536,22 @@
     "@prefresh/utils" "^1.2.0"
     "@rollup/pluginutils" "^4.2.1"
 
+"@r2wc/core@^1.0.0":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@r2wc/core/-/core-1.3.1.tgz#c400f25dec2a4447086b07d38375c0e33a5185b0"
+  integrity sha512-x9nMthXsTjqr1alE+boX1Zuzqb6/oFi4wAOdWaWcWKcrwq9M/PATK74c3DFJfRnUOkYWPlsz0e4CsFBXJGStSA==
+
 "@r2wc/core@^1.3.0":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@r2wc/core/-/core-1.3.0.tgz#ad3a0e1a022d7186007403b3319c2245de4db721"
   integrity sha512-aPBnND92Itl+SWWbWyyxdFFF0+RqKB6dptGHEdiPB8ZvnHWHlVzOfEvbEcyUYGtB6HBdsfkVuBiaGYyBFVTzVQ==
+
+"@r2wc/react-to-web-component@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@r2wc/react-to-web-component/-/react-to-web-component-1.0.0.tgz#29d79d983fafc56712a73f0b6b4c0b289c6daecf"
+  integrity sha512-iiHwwJohi3PD5O/sKD3v1Hc+qLkqwno+cMlXXXJmcGu6GzlVBJLEHbLfzil+xapcCL18eL1tyu45JuFsXdmuMQ==
+  dependencies:
+    "@r2wc/core" "^1.0.0"
 
 "@r2wc/react-to-web-component@^2.0.3":
   version "2.1.0"
