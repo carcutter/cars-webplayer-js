@@ -1,0 +1,505 @@
+/*
+ * Shared styles for the demo apps, ported from the design canvas
+ * "WebPlayer Integrations" (Main artboard).
+ * Header colours come from CSS custom properties set by `themeStyle()`.
+ */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #fafafa;
+}
+
+.dm {
+  --dm-text: #0a0a0a;
+  --dm-muted: #737373;
+  --dm-border: #e5e5e5;
+  --dm-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --dm-accent: hsl(var(--cc-webplayer-primary, 221 83% 53%));
+
+  /* WebPlayer customisation (on top of the theme's primary colour) */
+  --cc-webplayer-radius-ui: 0.5rem;
+  --cc-webplayer-radius-carrousel: 0.625rem;
+  --cc-webplayer-radius-gallery: 0.375rem;
+
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #fafafa;
+  color: var(--dm-text);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.dm a {
+  color: var(--dm-accent);
+}
+
+/* -- Header -- */
+.dm-header {
+  background: var(--dm-header-bg, #0a0a0a);
+  color: var(--dm-header-fg, #fafafa);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.dm-header__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.dm .dm-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.dm-brand__tile {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--dm-tile-bg, #ffffff);
+  color: var(--dm-tile-fg, #0a0a0a);
+  font-family: var(--dm-mono);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.dm-brand__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.dm-brand__title {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 700;
+}
+
+.dm-brand__subtitle {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.dm-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 26px;
+  max-width: 100%;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+  font-family: var(--dm-mono);
+  font-size: 12px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+/* -- Main -- */
+.dm-main {
+  flex: 1 1 auto;
+  padding: 48px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.dm-stage,
+.dm-below {
+  width: 100%;
+  max-width: 960px;
+}
+
+.dm-stage {
+  padding: 16px;
+  border: 1px solid var(--dm-border);
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.dm-below {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dm-player {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.dm-iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: 0;
+}
+
+.dm-stage__note {
+  margin: 0;
+  padding: 48px 16px;
+  color: var(--dm-muted);
+  text-align: center;
+}
+
+.dm-note {
+  margin: 0;
+  color: var(--dm-muted);
+  font-size: 12px;
+}
+
+@media (max-width: 640px) {
+  .dm-header__inner {
+    padding: 12px 16px;
+  }
+
+  .dm-main {
+    padding: 24px 16px;
+  }
+
+  .dm-stage {
+    padding: 8px;
+  }
+}
+
+/* -- Event log -- */
+.dm-events {
+  border: 1px solid var(--dm-border);
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.dm-events__summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  list-style: none;
+}
+
+.dm-events__summary::-webkit-details-marker {
+  display: none;
+}
+
+.dm-events__summary::after {
+  content: "";
+  margin-left: auto;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--dm-muted);
+  border-bottom: 2px solid var(--dm-muted);
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 200ms;
+}
+
+.dm-events[open] > .dm-events__summary::after {
+  transform: translateY(2px) rotate(-135deg);
+}
+
+.dm-events__count {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #f4f4f5;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.dm-events__body {
+  border-top: 1px solid var(--dm-border);
+  padding: 8px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dm-events__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--dm-muted);
+  font-size: 12px;
+}
+
+.dm-events__clear {
+  font: inherit;
+  font-weight: 500;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--dm-border);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--dm-text);
+  cursor: pointer;
+}
+
+.dm-events__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  font-family: var(--dm-mono);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.dm-events__entry {
+  display: flex;
+  gap: 12px;
+  padding: 4px 0;
+  border-bottom: 1px dashed #ececec;
+}
+
+.dm-events__time {
+  color: var(--dm-muted);
+  flex: none;
+}
+
+.dm-events__name {
+  color: var(--dm-accent);
+  font-weight: 600;
+  flex: none;
+}
+
+.dm-events__detail {
+  color: #404040;
+  overflow-wrap: anywhere;
+}
+
+.dm-events__empty {
+  margin: 0;
+  color: var(--dm-muted);
+}
+
+/* -- Index page -- */
+.dm-grid {
+  width: 100%;
+  max-width: 960px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.dm .dm-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--dm-border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #ffffff;
+  color: inherit;
+  text-decoration: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 150ms;
+}
+
+.dm .dm-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.dm-card .dm-header__inner {
+  padding: 14px 16px;
+}
+
+.dm-card__body {
+  padding: 12px 16px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dm-card__pkg {
+  font-family: var(--dm-mono);
+  font-size: 12px;
+  color: var(--dm-muted);
+  overflow-wrap: anywhere;
+}
+
+.dm-card__port {
+  flex: none;
+  font-family: var(--dm-mono);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* -- Demo pages: everything fits the viewport, nothing scrolls but the log -- */
+.dm--fit {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.dm--fit .dm-header__inner {
+  max-width: 1440px;
+}
+
+.dm--fit .dm-main {
+  min-height: 0;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(220px, 28vw, 320px);
+  align-items: stretch;
+}
+
+.dm--fit .dm-stage {
+  max-width: none;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  container-type: size;
+}
+
+/* The player is 4:3 plus its permanent gallery (48px high) */
+.dm--fit .dm-stage > * {
+  display: block;
+  flex: none;
+  width: min(100cqw, (100cqh - 48px) * 4 / 3);
+}
+
+.dm--fit .dm-stage > .dm-iframe {
+  width: min(100cqw, 100cqh * 4 / 3);
+}
+
+.dm--fit .dm-below {
+  max-width: none;
+  min-height: 0;
+}
+
+.dm--fit .dm-events {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.dm--fit .dm-events__body {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.dm--fit .dm-events__list {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+}
+
+/* Narrow log column: time + name on one line, detail under them */
+.dm--fit .dm-events__entry {
+  flex-wrap: wrap;
+  column-gap: 8px;
+  row-gap: 0;
+}
+
+.dm--fit .dm-events__detail {
+  flex: 1 0 100%;
+}
+
+/* Narrow portrait screens: the log goes under the player and takes what's
+   left. In landscape the player stays fitted to the height, next to the log */
+@media (max-width: 900px) and (orientation: portrait) {
+  .dm--fit .dm-main {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .dm--fit .dm-stage {
+    container-type: inline-size;
+  }
+
+  .dm--fit .dm-stage > *,
+  .dm--fit .dm-stage > .dm-iframe {
+    width: 100%;
+  }
+}
+
+/* Short screens (phones in landscape): less chrome around the player */
+@media (max-height: 500px) {
+  .dm--fit .dm-header__inner {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .dm--fit .dm-main {
+    padding: 8px 12px;
+    gap: 8px;
+  }
+
+  .dm--fit .dm-stage {
+    padding: 8px;
+  }
+}
+
+/* Index on phones (portrait or landscape): compact cards, so the whole list
+   fits the screen */
+@media (max-width: 640px), (max-height: 500px) {
+  .dm-grid {
+    gap: 8px;
+  }
+
+  .dm-card .dm-header__inner {
+    padding: 10px 12px;
+  }
+
+  .dm-card__body {
+    display: none;
+  }
+
+  /* Only the coloured header is left: it fills the card */
+  .dm-card > .dm-header {
+    flex: 1 1 auto;
+  }
+}
+
+@media (max-height: 500px) {
+  .dm-header__inner {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .dm-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+
+  .dm-main {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+}

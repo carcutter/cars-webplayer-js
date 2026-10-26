@@ -1,54 +1,13 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🚗 Demo - Web Components 🌐</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Web Component · CarCutter WebPlayer demo</title>
   </head>
   <body>
-    <script type="module">
-      import {
-        ensureCustomElementsDefinition,
-        DEFAULT_EVENT_PREFIX,
-        EVENT_COMPOSITION_LOADED,
-      } from "@car-cutter/wc-webplayer";
-
-      ensureCustomElementsDefinition();
-
-      document.addEventListener(
-        `${DEFAULT_EVENT_PREFIX}${EVENT_COMPOSITION_LOADED}`,
-        () => console.log("Composition loaded")
-      );
-    </script>
-
-    <h1>WC App</h1>
-
-    <div style="max-width: 800px; margin-inline: auto">
-      <cc-webplayer
-        composition-url="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
-        infinite-carrousel="true"
-        permanent-gallery="true"
-      >
-        <cc-webplayer-custom-media index="4">
-          <img
-            src="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_image_1.jpg"
-          />
-        </cc-webplayer-custom-media>
-
-        <cc-webplayer-icon name="UI_360_PLAY">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill="currentColor"
-              d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"
-            />
-          </svg>
-        </cc-webplayer-icon>
-      </cc-webplayer>
-    </div>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

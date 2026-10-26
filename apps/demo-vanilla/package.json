@@ -4,12 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite"
+    "dev": "vite",
+    "lint": "tsc --noEmit -p ."
   },
   "dependencies": {
+    "@car-cutter/demo": "*",
     "@car-cutter/vanilla-webplayer": "*"
   },
   "devDependencies": {
+    "typescript": "^5",
     "vite": "^6.4.3"
   }
 }

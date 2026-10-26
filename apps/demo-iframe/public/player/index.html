@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--
+  Local copy of the hosted iframe page
+  (https://cdn.car-cutter.com/libs/web-player/v3/integrations/iframe/index.html),
+  loading the bundle built from packages/webplayer-script instead of the CDN one.
+  /local/bundle.js is SCRIPT_BUNDLES.default.localPath (packages/demo/src/bundles.ts).
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CarCutter WebPlayer</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        border: 0;
+        overflow: hidden;
+      }
+      body {
+        width: 100%;
+        height: 100%;
+        user-select: none;
+      }
+      cc-webplayer {
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        width: 100vw;
+        max-height: 100vh;
+      }
+    </style>
+    <script src="/local/bundle.js" defer></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const c = document.createElement("cc-webplayer");
+        const p = new URLSearchParams(window.location.search);
+        if (p.get("aspect-ratio") === "16/9") {
+          c.style.height = "56.25vw";
+          c.style.maxWidth = "177.78vh";
+        } else {
+          c.style.height = "75vw";
+          c.style.maxWidth = "133.33vh";
+        }
+        p.forEach((v, k) => {
+          v = v?.trim() || "";
+          let d = decodeURIComponent(v);
+          while (v !== d) {
+            v = d;
+            d = decodeURIComponent(v);
+          }
+          c.setAttribute(k, v);
+        });
+        document.body.replaceChildren(c);
+      });
+    </script>
+  </head>
+  <body></body>
+</html>
