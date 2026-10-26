@@ -72,6 +72,8 @@ Run `yarn lint`
 
 Run `yarn test` to run the unit tests (vitest) of `core-wc`, `core-wc-react-*` and the `webplayer-*` wrappers. Each package requires 100% coverage, and its report is written to its `coverage` folder. In a package, `npx vitest` runs them in watch mode.
 
+Run `yarn e2e` to run the Playwright tests of `apps/e2e` over every demo app, on the local builds (run `yarn build` first, then `yarn workspace e2e playwright install chromium` once). They start the demo dev servers themselves, or reuse the ones already running. `yarn e2e:cdn` checks the files published on the CDN instead, which CI also does every night.
+
 ### Run demos
 
 Every demo renders the same listing page (from `packages/demo`) with a real WebPlayer loading the demo composition, and logs the player events.

@@ -33,6 +33,8 @@
     "build:wc": "turbo build --filter=@car-cutter/wc-webplayer",
     "lint": "turbo lint --ui tui --continue",
     "test": "turbo test --ui tui --continue",
+    "e2e": "yarn workspace e2e e2e",
+    "e2e:cdn": "yarn workspace e2e e2e:cdn",
     "syncpack:lint": "syncpack lint",
     "syncpack:fix": "syncpack fix",
     "ci": "yarn && syncpack lint && turbo run build lint --ui tui",

@@ -60,7 +60,9 @@ type ItemChangeLike = { index?: number; item?: { type?: string } };
 function describeEventDetail(name: PlayerEventName, detail: unknown): string {
   switch (name) {
     case "composition-loading":
-      return typeof detail === "string" ? detail.split("/").pop() ?? "" : "";
+      return typeof detail === "string"
+        ? detail.slice(detail.lastIndexOf("/") + 1)
+        : "";
     case "composition-loaded": {
       const categories = (detail as CompositionLike)?.categories ?? [];
       const items = categories.reduce(
