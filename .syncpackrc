@@ -7,6 +7,17 @@
       "policy": "sameRange"
     },
     {
+      "label": "demo-react-legacy runs on React 17, unlike the rest of the repo",
+      "packages": ["demo-react-legacy"],
+      "dependencies": [
+        "react",
+        "react-dom",
+        "@types/react",
+        "@types/react-dom"
+      ],
+      "isIgnored": true
+    },
+    {
       "label": "core-wc-react-16-17 needs r2wc v1: v2 uses react-dom/client (React 18+)",
       "packages": ["@car-cutter/core-wc-react-16-17"],
       "dependencies": ["@r2wc/react-to-web-component"],

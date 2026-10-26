@@ -1,14 +1,18 @@
 {
   "name": "demo-iframe",
-  "version": "0.0.0",
   "private": true,
+  "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "lint": "tsc --noEmit -p ."
+  },
+  "dependencies": {
+    "@car-cutter/demo": "*"
   },
   "devDependencies": {
+    "@car-cutter/script-webplayer": "*",
+    "typescript": "^5",
     "vite": "^6.4.3"
   }
 }

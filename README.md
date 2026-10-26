@@ -13,11 +13,13 @@ The structure of this monorepo is organized as follows:
 ```bash
 CARS-WEBPLAYER/
 ├── apps/                    # Demo applications for different frameworks
+│   ├── demo-index/          # Index linking to every demo
 │   ├── demo-next/           # Demo app using Next.js
 │   ├── demo-vanilla/        # Demo app using Vanilla JS
 │   .
 │   .
 ├── packages/                # Shared packages for different frameworks
+│   ├── demo/                # Layout, themes & helpers shared by the demo apps
 │   ├── core/                # Core logic for the web player (Composition typing, utils functions, ...)
 │   ├── core-ui/             # WebPlayer implementation (carrousel, 360, hotspots, ...)
 │   ├── core-wc/             # Wraps the WebPlayer in a WebComponent
@@ -72,7 +74,25 @@ Run `yarn test` to run the unit tests (vitest) of `core-wc`, `core-wc-react-*` a
 
 ### Run demos
 
-Run `yarn demo:XX` to start any demo app
+Every demo renders the same listing page (from `packages/demo`) with a real WebPlayer loading the demo composition, and logs the player events.
+
+Run `yarn demo` to start all of them, then open the index at http://localhost:4170. Run `yarn demo:XX` to start a single one:
+
+| Command                  | Integration                                        | URL                   |
+| ------------------------ | -------------------------------------------------- | --------------------- |
+| `yarn demo:index`        | Index of all demos                                 | http://localhost:4170 |
+| `yarn demo:react`        | `@car-cutter/react-webplayer`                      | http://localhost:4171 |
+| `yarn demo:react-legacy` | `@car-cutter/react-webplayer/legacy` (React 17)    | http://localhost:4178 |
+| `yarn demo:next`         | `@car-cutter/next-webplayer`                       | http://localhost:4172 |
+| `yarn demo:vanilla`      | `@car-cutter/vanilla-webplayer`                    | http://localhost:4173 |
+| `yarn demo:script`       | `<script>` bundle (`@car-cutter/script-webplayer`) | http://localhost:4174 |
+| `yarn demo:wc`           | `@car-cutter/wc-webplayer`                         | http://localhost:4175 |
+| `yarn demo:vue`          | `@car-cutter/vue-webplayer`                        | http://localhost:4176 |
+| `yarn demo:iframe`       | iframe integration (local copy or hosted page)     | http://localhost:4177 |
+
+The ports are listed in `packages/demo/src/ports.ts`: the vite apps read them from there, demo-next sets its port in its `dev` script.
+
+The script demo loads the bundle built locally from `packages/webplayer-script`, so changes can be checked before the bundle is released. Open http://localhost:4174/?bundle=cdn to load the published `v3/bundle.js` instead. `?variant=react-16-17` / `?variant=react-18` load `bundle-react-16-17.js` / `bundle-react-18.js` instead, on a page providing React 17 / 18 as UMD globals. The iframe demo works the same way: by default it embeds a local copy of the hosted iframe page (`apps/demo-iframe/public/player`) that loads the local bundle; open http://localhost:4177/?bundle=cdn to embed the hosted iframe instead.
 
 ## Publication
 
