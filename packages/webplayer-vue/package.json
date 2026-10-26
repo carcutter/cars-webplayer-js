@@ -52,7 +52,7 @@
     "@car-cutter/typescript-config": "*",
     "@vitejs/plugin-vue": "^6.0.0",
     "@vitest/coverage-v8": "^4.1.12",
-    "@vue/test-utils": "^2.5.1",
+    "@vue/test-utils": "~2.4.6",
     "browserslist": "^4.28.7",
     "browserslist-to-esbuild": "^2.1.1",
     "eslint": "^8",
