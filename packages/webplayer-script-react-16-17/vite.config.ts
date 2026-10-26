@@ -6,6 +6,10 @@ import { defineConfig } from "vite";
 import { version } from "./package.json";
 
 export default defineConfig({
+  resolve: {
+    // JSX from the host page's React (see jsx-runtime.ts)
+    alias: { "react/jsx-runtime": resolve(__dirname, "./jsx-runtime.ts") },
+  },
   define: {
     "process.env": {
       NODE_ENV: "production",
