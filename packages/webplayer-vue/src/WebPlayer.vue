@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, onUnmounted } from "vue";
+import { onBeforeMount, onUnmounted } from "vue";
 
 import type {
   AnalyticsLoadEvent,
@@ -40,11 +40,35 @@ export type WebPlayerProps = WebPlayerCoreProps & {
   style?: HTMLElement["style"];
 };
 
-const props = defineProps<WebPlayerProps>();
+// Vue casts absent boolean props to `false`: default them to `undefined`
+// instead, so the web component keeps its own defaults (e.g. demoSpin, monitoring)
+const props = withDefaults(defineProps<WebPlayerProps>(), {
+  integration: undefined,
+  hideCategoriesNav: undefined,
+  forceTopNav: undefined,
+  infiniteCarrousel: undefined,
+  permanentGallery: undefined,
+  autoLoad360: undefined,
+  autoLoadInterior360: undefined,
+  demoSpin: undefined,
+  reverse360: undefined,
+  analyticsSimpleRequestsOnly: undefined,
+  analyticsDryRun: undefined,
+  analyticsDebug: undefined,
+  monitoring: undefined,
+});
 const { class: class_, style, ...wcProps } = props;
 const style_ = { display: "block", ...(style ?? {}) };
 
-const attributes = webPlayerPropsToAttributes(wcProps);
+// The `^` prefix forces Vue to set attributes: keys matching a property of the
+// element (integration, monitoring, reverse360) would otherwise be set as
+// properties, where the "false" string is read as `true`
+const attributes = Object.fromEntries(
+  Object.entries(webPlayerPropsToAttributes(wcProps)).map(([key, value]) => [
+    `^${key}`,
+    value,
+  ])
+);
 
 // -- Event listeners
 export type WebPlayerEvents = {
@@ -128,7 +152,9 @@ Object.entries(analyticsEventListenerMap).forEach(([event, listener]) => {
   analyticsEventCbMap.set(eventName, eventListener);
 });
 
-onMounted(() => {
+// Before mount, so that events dispatched as soon as <cc-webplayer> is
+// connected (e.g. composition-loading) are not missed
+onBeforeMount(() => {
   eventCbMap.forEach((eventListener, eventName) => {
     document.addEventListener(eventName, eventListener);
   });
