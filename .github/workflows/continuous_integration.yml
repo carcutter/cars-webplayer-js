@@ -62,3 +62,17 @@ jobs:
         with:
           name: playwright-report
           path: apps/e2e/playwright-report
+
+  consumers:
+    name: Consumers
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/install_tools
+
+      - name: Install the Playwright browser
+        run: yarn workspace e2e playwright install --with-deps chromium
+
+      - name: Packed packages in consumer apps
+        run: yarn test:consumers

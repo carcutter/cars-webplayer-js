@@ -74,6 +74,8 @@ Run `yarn test` to run the unit tests (vitest) of `core-wc`, `core-wc-react-*` a
 
 Run `yarn e2e` to run the Playwright tests of `apps/e2e` over every demo app, on the local builds (run `yarn build` first, then `yarn workspace e2e playwright install chromium` once). They start the demo dev servers themselves, or reuse the ones already running. `yarn e2e:cdn` checks the files published on the CDN instead, which CI also does every night.
 
+Run `yarn test:consumers` (after `yarn build`) to check the published packages the way customers get them: they're packed with `npm pack`, checked with publint and attw, then installed with npm in the apps of `consumers/` (React 19, 18 and 17, Next.js, Vue 3.3, vanilla, Web Component), type-checked, built and checked in the browser. `node scripts/consumer-test.mjs react-17 vue-3.3` runs only some of them.
+
 ### Run demos
 
 Every demo renders the same listing page (from `packages/demo`) with a real WebPlayer loading the demo composition, and logs the player events.
