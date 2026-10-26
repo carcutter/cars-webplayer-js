@@ -6,7 +6,8 @@
   "main": "index.ts",
   "scripts": {
     "postinstall": "patch-package",
-    "lint": "eslint . --ext ts,tsx --max-warnings 0"
+    "lint": "eslint . --ext ts,tsx --max-warnings 0",
+    "test": "vitest run --coverage"
   },
   "dependencies": {
     "@car-cutter/core": "*",
@@ -21,8 +22,11 @@
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
+    "@vitest/coverage-v8": "^4.1.12",
     "eslint": "^8",
+    "happy-dom": "^21.0.4",
     "patch-package": "^8.0.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.12"
   }
 }

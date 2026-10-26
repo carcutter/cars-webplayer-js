@@ -68,6 +68,10 @@ NOTE : the sourcemap seems to interfere with size calculation [GitHub issue](htt
 
 Run `yarn lint`
 
+### Testing
+
+Run `yarn test` to run the unit tests (vitest) of `core-wc`, `core-wc-react-*` and the `webplayer-*` wrappers. Each package requires 100% coverage, and its report is written to its `coverage` folder. In a package, `npx vitest` runs them in watch mode.
+
 ### Run demos
 
 Every demo renders the same listing page (from `packages/demo`) with a real WebPlayer loading the demo composition, and logs the player events.

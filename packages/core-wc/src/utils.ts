@@ -39,17 +39,12 @@ type R2wcElement = HTMLElement & {
   [R2WC_RENDER]: () => void;
 };
 
-/** Parses a string like r2wc parses attributes of that type */
-function parseString(type: string, value: string): unknown {
-  switch (type) {
-    case "boolean":
-      return /^[ty1-9]/i.test(value);
-    case "number":
-      return parseFloat(value);
-    default:
-      return value;
-  }
-}
+/** Parse strings like r2wc parses "boolean" and "number" attributes */
+const STRING_PARSERS: Record<string, ((value: string) => unknown) | undefined> =
+  {
+    boolean: value => /^[ty1-9]/i.test(value),
+    number: value => parseFloat(value),
+  };
 
 /**
  * Fixes two r2wc behaviours on an element it created:
@@ -69,23 +64,17 @@ export function patchWebComponentProps(
   Object.entries(props).forEach(([name, type]) => {
     propsByAttribute[camelToDashedCase(name)] = name;
 
-    if (type !== "boolean" && type !== "number") {
-      return;
-    }
-
+    const parse = STRING_PARSERS[type];
     const descriptor = Object.getOwnPropertyDescriptor(element.prototype, name);
-    const set = descriptor?.set;
-    if (!descriptor || !set) {
+    if (!parse || !descriptor?.set) {
       return;
     }
 
+    const { set } = descriptor;
     Object.defineProperty(element.prototype, name, {
       ...descriptor,
       set(value: unknown) {
-        set.call(
-          this,
-          typeof value === "string" ? parseString(type, value) : value
-        );
+        set.call(this, typeof value === "string" ? parse(value) : value);
       },
     });
   });

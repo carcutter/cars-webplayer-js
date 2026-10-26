@@ -43,7 +43,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --max-warnings 0",
-    "analyze": "vite-bundle-visualizer"
+    "analyze": "vite-bundle-visualizer",
+    "test": "vitest run --coverage"
   },
   "devDependencies": {
     "@car-cutter/analytics": "*",
@@ -53,14 +54,19 @@
     "@car-cutter/core-wc-react-18": "*",
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
     "@vitejs/plugin-react": "^5.0.0",
+    "@vitest/coverage-v8": "^4.1.12",
     "browserslist": "^4.28.7",
     "browserslist-to-esbuild": "^2.1.1",
     "eslint": "^8",
+    "happy-dom": "^21.0.4",
     "typescript": "^5",
     "vite": "^6.4.3",
     "vite-bundle-visualizer": "^1.2.1",
-    "vite-plugin-dts": "^4.2.1"
+    "vite-plugin-dts": "^4.2.1",
+    "vitest": "^4.1.12"
   },
   "browserslist": [
     "defaults"

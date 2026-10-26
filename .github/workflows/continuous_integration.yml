@@ -32,13 +32,13 @@ jobs:
       - name: Build
         run: yarn build
 
-  # test:
-  #   name: Test
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-  #     - uses: ./.github/actions/install_tools
+      - uses: ./.github/actions/install_tools
 
-  #     - name: Test
-  #       run: yarn test
+      - name: Test
+        run: yarn test

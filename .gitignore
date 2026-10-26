@@ -20,3 +20,6 @@ yarn-error.log*
 
 # GitHub actions
 !.github/**
+
+# Test coverage reports
+coverage

@@ -5,7 +5,8 @@
   "type": "module",
   "main": "index.ts",
   "scripts": {
-    "lint": "eslint . --ext ts,tsx --max-warnings 0"
+    "lint": "eslint . --ext ts,tsx --max-warnings 0",
+    "test": "vitest run --coverage"
   },
   "dependencies": {
     "@car-cutter/core": "*",
@@ -20,7 +21,10 @@
   "devDependencies": {
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
+    "@vitest/coverage-v8": "^4.1.12",
     "eslint": "^8",
-    "typescript": "^5"
+    "happy-dom": "^21.0.4",
+    "typescript": "^5",
+    "vitest": "^4.1.12"
   }
 }
