@@ -4,9 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite"
+    "dev": "vite",
+    "lint": "vue-tsc --noEmit -p tsconfig.app.json && vue-tsc --noEmit -p tsconfig.node.json"
   },
   "dependencies": {
+    "@car-cutter/demo": "*",
     "@car-cutter/vue-webplayer": "*",
     "vue": "^3"
   },

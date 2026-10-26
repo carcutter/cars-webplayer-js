@@ -1,0 +1,23 @@
+{
+  "name": "demo-react-legacy",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "lint": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json"
+  },
+  "dependencies": {
+    "@car-cutter/demo": "*",
+    "@car-cutter/react-webplayer": "*",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.93",
+    "@types/react-dom": "^17.0.26",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "^5",
+    "vite": "^6.4.3"
+  }
+}

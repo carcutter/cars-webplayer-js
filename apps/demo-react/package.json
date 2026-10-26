@@ -4,9 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite"
+    "dev": "vite",
+    "lint": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json"
   },
   "dependencies": {
+    "@car-cutter/demo": "*",
     "@car-cutter/react-webplayer": "*",
     "react": ">=18",
     "react-dom": ">=18"

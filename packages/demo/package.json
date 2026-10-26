@@ -1,0 +1,32 @@
+{
+  "name": "@car-cutter/demo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Layout, theme data and helpers shared by the demo apps",
+  "scripts": {
+    "lint": "tsc --noEmit -p ."
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./dom": "./src/dom.ts",
+    "./react": "./src/react/index.ts",
+    "./styles.css": "./src/styles.css"
+  },
+  "dependencies": {
+    "@car-cutter/core": "*"
+  },
+  "peerDependencies": {
+    "react": ">=16.8"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.28",
+    "typescript": "^5",
+    "vite": "^6.4.3"
+  }
+}

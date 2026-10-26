@@ -1,5 +1,20 @@
 {
   "name": "demo-script",
   "private": true,
-  "version": "0.0.0"
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "lint": "tsc --noEmit -p ."
+  },
+  "dependencies": {
+    "@car-cutter/demo": "*"
+  },
+  "devDependencies": {
+    "@car-cutter/script-webplayer": "*",
+    "@car-cutter/script-webplayer-react-16-17": "*",
+    "@car-cutter/script-webplayer-react-18": "*",
+    "typescript": "^5",
+    "vite": "^6.4.3"
+  }
 }

@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* React 17 types everywhere, like in an app using the published packages
+       (the repo root has React 19 types, which the linked packages would get) */
+    "paths": {
+      "react": ["./node_modules/@types/react"],
+      "react/*": ["./node_modules/@types/react/*"],
+      "react-dom": ["./node_modules/@types/react-dom"],
+      "react-dom/*": ["./node_modules/@types/react-dom/*"]
+    },
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src"]
+}
