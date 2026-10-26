@@ -5,7 +5,8 @@
   "type": "module",
   "description": "Layout, theme data and helpers shared by the demo apps",
   "scripts": {
-    "lint": "tsc --noEmit -p ."
+    "lint": "tsc --noEmit -p .",
+    "test": "vitest run --coverage"
   },
   "exports": {
     ".": "./src/index.ts",
@@ -25,8 +26,15 @@
     }
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
     "@types/react": "^18.3.28",
+    "@vitest/coverage-v8": "^4.1.12",
+    "happy-dom": "^21.0.4",
+    "react": ">=18",
+    "react-dom": ">=18",
     "typescript": "^5",
-    "vite": "^6.4.3"
+    "vite": "^6.4.3",
+    "vitest": "^4.1.12"
   }
 }

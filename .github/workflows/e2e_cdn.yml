@@ -1,0 +1,28 @@
+name: E2E on the CDN
+# Checks the WebPlayer files published on the CDN, through the script and
+# iframe demos (Playwright project "cdn")
+on:
+  schedule:
+    - cron: "0 5 * * *"
+  workflow_dispatch:
+
+jobs:
+  e2e-cdn:
+    name: E2E on the CDN
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/install_tools
+
+      - name: Install the Playwright browser
+        run: yarn workspace e2e playwright install --with-deps chromium
+
+      - name: E2E on the CDN
+        run: yarn e2e:cdn
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-cdn
+          path: apps/e2e/playwright-report

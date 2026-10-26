@@ -1,0 +1,20 @@
+{
+  "name": "e2e",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Playwright tests over the demo apps",
+  "scripts": {
+    "e2e": "playwright test --project=demos",
+    "e2e:cdn": "playwright test --project=cdn",
+    "lint": "tsc --noEmit -p ."
+  },
+  "dependencies": {
+    "@car-cutter/demo": "*"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^20",
+    "typescript": "^5"
+  }
+}

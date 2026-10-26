@@ -7,5 +7,9 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["demo-*", "@car-cutter/demo"]
+  "ignore": [
+    "demo-*",
+    "@car-cutter/demo",
+    "e2e"
+  ]
 }
