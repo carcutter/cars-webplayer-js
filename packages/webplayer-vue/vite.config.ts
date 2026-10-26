@@ -41,6 +41,9 @@ export default defineConfig({
       entry: {
         index: resolve(__dirname, "src/index.ts"),
       },
+      // With a single entry, vite would build "es" + "umd" (index.umd.cjs),
+      // while package.json points CommonJS at index.cjs
+      formats: ["es", "cjs"],
     },
     target: browserslistToEsbuild(),
 
