@@ -33,6 +33,8 @@ import {
   webPlayerPropsToAttributes,
 } from "@car-cutter/wc-webplayer";
 
+import { booleanPropsDefaults } from "./boolean-props";
+
 ensureCustomElementsDefinition();
 
 export type WebPlayerProps = WebPlayerCoreProps & {
@@ -40,29 +42,13 @@ export type WebPlayerProps = WebPlayerCoreProps & {
   style?: HTMLElement["style"];
 };
 
-// Vue casts absent boolean props to `false`: default them to `undefined`
-// instead, so the web component keeps its own defaults (e.g. demoSpin, monitoring)
-const props = withDefaults(defineProps<WebPlayerProps>(), {
-  integration: undefined,
-  hideCategoriesNav: undefined,
-  forceTopNav: undefined,
-  infiniteCarrousel: undefined,
-  permanentGallery: undefined,
-  autoLoad360: undefined,
-  autoLoadInterior360: undefined,
-  demoSpin: undefined,
-  reverse360: undefined,
-  analyticsSimpleRequestsOnly: undefined,
-  analyticsDryRun: undefined,
-  analyticsDebug: undefined,
-  monitoring: undefined,
-});
+const props = withDefaults(defineProps<WebPlayerProps>(), booleanPropsDefaults);
 // Computed (props are not destructured) so prop updates reach the element
 const style_ = computed(() => ({ display: "block", ...(props.style ?? {}) }));
 
-// The `^` prefix forces Vue to set attributes: keys matching a property of the
-// element (integration, monitoring, reverse360) would otherwise be set as
-// properties, where the "false" string is read as `true`
+// The `^` prefix forces Vue to set attributes, like for every other key: keys
+// matching a property of the element (integration, monitoring, reverse360)
+// would otherwise be set as properties
 const attributes = computed(() => {
   const { class: _class, style: _style, ...wcProps } = props;
 
