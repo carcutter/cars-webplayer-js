@@ -27,6 +27,7 @@
     "build:vue": "turbo build --filter=@car-cutter/vue-webplayer",
     "build:wc": "turbo build --filter=@car-cutter/wc-webplayer",
     "lint": "turbo lint --ui tui --continue",
+    "test": "turbo test --ui tui --continue",
     "syncpack:lint": "syncpack lint",
     "syncpack:fix": "syncpack fix",
     "ci": "yarn && syncpack lint && turbo run build lint --ui tui",

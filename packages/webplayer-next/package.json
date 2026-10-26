@@ -42,7 +42,8 @@
   "scripts": {
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --max-warnings 0",
-    "analyze": "vite-bundle-visualizer"
+    "analyze": "vite-bundle-visualizer",
+    "test": "vitest run --coverage"
   },
   "dependencies": {
     "@car-cutter/react-webplayer": "*"
@@ -51,14 +52,17 @@
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
     "@vitejs/plugin-react": "^5.0.0",
+    "@vitest/coverage-v8": "^4.1.12",
     "browserslist": "^4.28.7",
     "browserslist-to-esbuild": "^2.1.1",
     "eslint": "^8",
+    "happy-dom": "^21.0.4",
     "rollup-preserve-directives": "^1.1.1",
     "typescript": "^5",
     "vite": "^6.4.3",
     "vite-bundle-visualizer": "^1.2.1",
-    "vite-plugin-dts": "^4.2.1"
+    "vite-plugin-dts": "^4.2.1",
+    "vitest": "^4.1.12"
   },
   "browserslist": [
     "defaults"
