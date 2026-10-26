@@ -7,8 +7,10 @@ import { version } from "./package.json";
 
 export default defineConfig({
   resolve: {
-    // JSX from the host page's React (see jsx-runtime.ts)
-    alias: { "react/jsx-runtime": resolve(__dirname, "./jsx-runtime.ts") },
+    // JSX from the host page's React (see core-wc/src/jsx-runtime.ts)
+    alias: {
+      "react/jsx-runtime": resolve(__dirname, "../core-wc/src/jsx-runtime.ts"),
+    },
   },
   define: {
     "process.env": {

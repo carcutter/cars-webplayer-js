@@ -31,18 +31,45 @@ export function propsToAttributes<T extends object>(
   }, {} as PropsToAttributes<T>);
 }
 
+const R2WC_PROPS = Symbol.for("r2wc.props");
+const R2WC_RENDER = Symbol.for("r2wc.render");
+
+type R2wcElement = HTMLElement & {
+  [R2WC_PROPS]: Record<string, unknown>;
+  [R2WC_RENDER]: () => void;
+};
+
+/** Parses a string like r2wc parses attributes of that type */
+function parseString(type: string, value: string): unknown {
+  switch (type) {
+    case "boolean":
+      return /^[ty1-9]/i.test(value);
+    case "number":
+      return parseFloat(value);
+    default:
+      return value;
+  }
+}
+
 /**
- * r2wc stores a value set on a "boolean" property as is, then reflects it to
- * the attribute as `value ? "true" : "false"`: a "false" string set as a
- * property (as Vue does for props matching a property name) ends up `true`.
- * Parses strings like r2wc parses attributes before they reach its setter.
+ * Fixes two r2wc behaviours on an element it created:
+ * - A value set on a typed property is stored as is, then reflected to the
+ *   attribute: a "false" string set as a property (as Vue does for props
+ *   matching a property name) ended up `true`, a "3" string stayed a string.
+ *   Strings are now parsed like attributes before reaching its setter.
+ * - Removing an attribute was ignored, so the element kept the last value.
+ *   The prop is now reset, letting the component use its default again.
  */
-export function parseBooleanProperties(
+export function patchWebComponentProps(
   element: CustomElementConstructor,
   props: Record<string, string>
 ): void {
+  const propsByAttribute: Record<string, string> = {};
+
   Object.entries(props).forEach(([name, type]) => {
-    if (type !== "boolean") {
+    propsByAttribute[camelToDashedCase(name)] = name;
+
+    if (type !== "boolean" && type !== "number") {
       return;
     }
 
@@ -57,9 +84,26 @@ export function parseBooleanProperties(
       set(value: unknown) {
         set.call(
           this,
-          typeof value === "string" ? /^[ty1-9]/i.test(value) : value
+          typeof value === "string" ? parseString(type, value) : value
         );
       },
     });
   });
+
+  const { attributeChangedCallback } = element.prototype;
+  element.prototype.attributeChangedCallback = function (
+    this: R2wcElement,
+    name: string,
+    oldValue: string | null,
+    newValue: string | null
+  ) {
+    const prop = propsByAttribute[name];
+    if (prop && newValue === null) {
+      delete this[R2WC_PROPS][prop];
+      this[R2WC_RENDER]();
+      return;
+    }
+
+    attributeChangedCallback.call(this, name, oldValue, newValue);
+  };
 }
