@@ -13,6 +13,6 @@
   "devDependencies": {
     "@car-cutter/script-webplayer": "*",
     "typescript": "^5",
-    "vite": "^6.4.3"
+    "vite": "^6.4.4"
   }
 }

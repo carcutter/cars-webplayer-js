@@ -60,7 +60,7 @@
     "happy-dom": "^21.0.4",
     "rollup-preserve-directives": "^1.1.1",
     "typescript": "^5",
-    "vite": "^6.4.3",
+    "vite": "^6.4.4",
     "vite-bundle-visualizer": "^1.2.1",
     "vite-plugin-dts": "^4.2.1",
     "vitest": "^4.1.12"
