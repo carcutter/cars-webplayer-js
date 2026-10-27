@@ -1,0 +1,18 @@
+{
+  // Strict type-check of the published .d.ts of @car-cutter/next-webplayer
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": false,
+    "types": []
+  },
+  "files": [
+    "node_modules/@car-cutter/next-webplayer/dist/index.d.ts",
+    "node_modules/@car-cutter/next-webplayer/dist/legacy.d.ts"
+  ]
+}

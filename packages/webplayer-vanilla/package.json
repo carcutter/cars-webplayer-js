@@ -39,6 +39,7 @@
     "@car-cutter/wc-webplayer": "*"
   },
   "devDependencies": {
+    "@car-cutter/core": "*",
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
     "@vitest/coverage-v8": "^4.1.12",

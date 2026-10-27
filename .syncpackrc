@@ -7,6 +7,12 @@
       "policy": "sameRange"
     },
     {
+      "label": "vue-webplayer builds its declarations against the lowest Vue it supports (peer ^3.3)",
+      "packages": ["@car-cutter/vue-webplayer"],
+      "dependencies": ["vue-3.3"],
+      "isIgnored": true
+    },
+    {
       "label": "demo-react-legacy runs on React 17, unlike the rest of the repo",
       "packages": ["demo-react-legacy"],
       "dependencies": [

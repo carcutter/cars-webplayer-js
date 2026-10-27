@@ -5,6 +5,7 @@
   "type": "module",
   "main": "index.ts",
   "scripts": {
+    "build": "tsc -p tsconfig.types.json",
     "lint": "eslint . --ext ts --max-warnings 0"
   },
   "devDependencies": {
