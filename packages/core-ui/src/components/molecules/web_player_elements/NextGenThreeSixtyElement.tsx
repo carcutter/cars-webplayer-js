@@ -5,7 +5,11 @@ import { DEFAULT_SPIN_CURSOR, type ImageWithHotspots } from "@car-cutter/core";
 import spinCursorDefault from "../../../assets/cursors/spin-360-default.svg";
 import { useControlsContext } from "../../../providers/ControlsContext";
 import { useGlobalContext } from "../../../providers/GlobalContext";
-import { getThemeConfig } from "../../../theme-config";
+import {
+  cursorCssValue,
+  getThemeConfig,
+  type CursorEntry,
+} from "../../../theme-config";
 import { CustomizableItem } from "../../../types/customizable_item";
 import { clamp } from "../../../utils/math";
 import { cn } from "../../../utils/style";
@@ -31,12 +35,8 @@ type NextGenThreeSixtyElementProps = Extract<
   onlyPreload: boolean;
 };
 
-const getCursorString = (
-  cursorUrl: string,
-  hotspot: { x: number; y: number },
-  fallback: string
-): string => {
-  return `url("${cursorUrl}") ${hotspot.x} ${hotspot.y}, ${fallback}`;
+const getCursorString = (entry: CursorEntry, fallback: string): string => {
+  return `${cursorCssValue(entry)}, ${fallback}`;
 };
 
 const NextGenThreeSixtyElementInteractive: React.FC<
@@ -128,7 +128,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
 
     if (currentTheme?.cursor) {
       const entry = currentTheme.cursor.default;
-      container.style.cursor = getCursorString(entry.url, entry.hotspot, cursor);
+      container.style.cursor = getCursorString(entry, cursor);
     } else if (cursor === DEFAULT_SPIN_CURSOR) {
       container.style.cursor = `url("${spinCursorDefault}") 45 28, ew-resize`;
     } else {
@@ -149,11 +149,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       if (currentTheme?.cursor) {
         const cursorKey = direction === "left" ? "leftSpin" : "rightSpin";
         const entry = currentTheme.cursor[cursorKey];
-        container.style.cursor = getCursorString(
-          entry.url,
-          entry.hotspot,
-          activeCursor
-        );
+        container.style.cursor = getCursorString(entry, activeCursor);
       } else if (activeCursor === DEFAULT_SPIN_CURSOR) {
         container.style.cursor = `url("${spinCursorDefault}") 45 28, ew-resize`;
       } else {
@@ -173,11 +169,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
     if (currentTheme?.cursor) {
       const entry = currentTheme.cursor.default;
       const activeCursor = cursor === "grab" ? "grabbing" : cursor;
-      container.style.cursor = getCursorString(
-        entry.url,
-        entry.hotspot,
-        activeCursor
-      );
+      container.style.cursor = getCursorString(entry, activeCursor);
     } else if (cursor === "grab") {
       container.style.cursor = "grabbing";
     }

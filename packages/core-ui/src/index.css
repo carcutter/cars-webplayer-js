@@ -27,3 +27,25 @@
   display: none;
   visibility: hidden;
 }
+
+/* Themed spin cursors for the interior 360.
+   Pannellum toggles .pnlm-grab / .pnlm-grabbing on its own UI layer, so its
+   cursor rules have to be beaten with a more specific selector. The cursor
+   URLs come from the theme config via CSS variables, and the drag direction
+   from the data attribute set by InteriorThreeSixtyElement. */
+
+[data-cc-spin-cursor] .pnlm-ui.pnlm-grab {
+  cursor: var(--cc-spin-cursor-default), grab;
+}
+
+[data-cc-spin-cursor] .pnlm-ui.pnlm-grabbing {
+  cursor: var(--cc-spin-cursor-default), grabbing;
+}
+
+[data-cc-spin-cursor="left"] .pnlm-ui.pnlm-grabbing {
+  cursor: var(--cc-spin-cursor-left), grabbing;
+}
+
+[data-cc-spin-cursor="right"] .pnlm-ui.pnlm-grabbing {
+  cursor: var(--cc-spin-cursor-right), grabbing;
+}

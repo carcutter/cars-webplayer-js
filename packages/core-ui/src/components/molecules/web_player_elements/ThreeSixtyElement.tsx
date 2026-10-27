@@ -5,7 +5,11 @@ import { DEFAULT_SPIN_CURSOR, type ImageWithHotspots } from "@car-cutter/core";
 import spinCursorDefault from "../../../assets/cursors/spin-360-default.svg";
 import { useControlsContext } from "../../../providers/ControlsContext";
 import { useGlobalContext } from "../../../providers/GlobalContext";
-import { getThemeConfig } from "../../../theme-config";
+import {
+  cursorCssValue,
+  getThemeConfig,
+  type CursorEntry,
+} from "../../../theme-config";
 import { CustomizableItem } from "../../../types/customizable_item";
 import { clamp } from "../../../utils/math";
 import { cn } from "../../../utils/style";
@@ -30,11 +34,10 @@ type ThreeSixtyElementProps = Extract<CustomizableItem, { type: "360" }> & {
 type SpinCursorState = "default" | "left" | "right";
 
 const getCursorStyle = (
-  cursorUrl: string,
-  hotspot: { x: number; y: number },
+  entry: CursorEntry,
   fallback: string
 ): React.CSSProperties => {
-  return { cursor: `url("${cursorUrl}") ${hotspot.x} ${hotspot.y}, ${fallback}` };
+  return { cursor: `${cursorCssValue(entry)}, ${fallback}` };
 };
 
 const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
@@ -65,7 +68,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
               ? "rightSpin"
               : "default";
         const entry = theme.cursor[cursorKey];
-        return getCursorStyle(entry.url, entry.hotspot, activeCursor);
+        return getCursorStyle(entry, activeCursor);
       })()
     : activeCursor === DEFAULT_SPIN_CURSOR
       ? { cursor: `url("${spinCursorDefault}") 45 28, ew-resize` }
