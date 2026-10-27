@@ -49,6 +49,7 @@
     "@car-cutter/react-webplayer": "*"
   },
   "devDependencies": {
+    "@car-cutter/core": "*",
     "@car-cutter/eslint-config": "*",
     "@car-cutter/typescript-config": "*",
     "@vitejs/plugin-react": "^5.0.0",

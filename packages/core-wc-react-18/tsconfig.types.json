@@ -1,0 +1,16 @@
+{
+  // Declarations of this private package, that the published wrappers roll
+  // up into their own .d.ts (see their vite.config.ts)
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "composite": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "dist/types",
+    "rootDir": ".",
+    // The player sources it compiles import .svg files and use NodeJS types
+    "types": ["vite/client", "node"]
+  },
+  "exclude": ["dist", "node_modules", "**/*.test.ts", "**/*.test.tsx"]
+}

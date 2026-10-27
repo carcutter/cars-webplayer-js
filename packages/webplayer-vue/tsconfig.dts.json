@@ -1,0 +1,15 @@
+{
+  // Declarations build: the private workspace packages resolve to their built
+  // declarations (dist/types), which are rolled up into this package's .d.ts,
+  // and vue to the lowest supported version (peer ^3.3), so that the
+  // declarations work with it
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "paths": {
+      "vue": ["../../node_modules/vue-3.3"],
+      "@car-cutter/core": ["../core/dist/types/index"],
+      "@car-cutter/core-wc": ["../core-wc/dist/types/index"],
+      "@car-cutter/analytics": ["../analytics/dist/types/src/index"]
+    }
+  }
+}

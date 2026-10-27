@@ -1,0 +1,14 @@
+{
+  // Declarations of this private package, that the published wrappers roll
+  // up into their own .d.ts (see their vite.config.ts)
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "composite": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "dist/types",
+    "rootDir": "."
+  },
+  "exclude": ["dist", "node_modules", "**/*.test.ts", "**/*.test.tsx"]
+}

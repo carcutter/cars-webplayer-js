@@ -2,6 +2,7 @@
   "name": "consumer-next-16",
   "private": true,
   "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.package-types.json",
     "build": "next build",
     "preview": "next start"
   },
