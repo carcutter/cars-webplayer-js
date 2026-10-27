@@ -1,0 +1,17 @@
+{
+  "name": "consumer-wc",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "vite build",
+    "preview": "vite preview --strictPort"
+  },
+  "dependencies": {
+    "@car-cutter/wc-webplayer": "*"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0",
+    "vite": "^6.4.3"
+  }
+}

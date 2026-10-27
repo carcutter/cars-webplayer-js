@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "preserve",
+    "strict": true,
+    "noEmit": true,
+    // Temporary: the published .d.ts don't type-check yet (core code copied
+    // as is, wc importing private packages, Vue 3.5 types). To be strict
+    // once the package types are fixed
+    "skipLibCheck": true,
+    "types": ["vite/client"]
+  },
+  "include": ["src/**/*.ts", "src/**/*.vue"]
+}

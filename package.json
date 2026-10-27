@@ -35,6 +35,7 @@
     "test": "turbo test --ui tui --continue",
     "e2e": "yarn workspace e2e e2e",
     "e2e:cdn": "yarn workspace e2e e2e:cdn",
+    "test:consumers": "node scripts/consumer-test.mjs",
     "syncpack:lint": "syncpack lint",
     "syncpack:fix": "syncpack fix",
     "ci": "yarn && syncpack lint && turbo run build lint --ui tui",
@@ -46,10 +47,12 @@
     "publish:docs": "turbo build --filter=@car-cutter/webplayer-docs && cd apps/docs && yarn deploy"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
     "@changesets/cli": "^2.27.8",
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
     "postinstall-postinstall": "^2.1.0",
+    "publint": "^0.3.25",
     "syncpack": "^15.1.2",
     "turbo": "^2.9.14"
   },

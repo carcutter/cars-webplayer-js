@@ -31,15 +31,20 @@ export default defineConfig({
   },
   projects: [
     // The demos on the local builds of the packages
-    { name: "demos", grepInvert: /@cdn/ },
+    { name: "demos", grepInvert: /@cdn/, testIgnore: /consumers\.spec\.ts/ },
     // The files published on the CDN, checked on a schedule
     { name: "cdn", grep: /@cdn/ },
+    // The apps of consumers/, served by scripts/consumer-test.mjs
+    { name: "consumers", testMatch: /consumers\.spec\.ts/ },
   ],
-  // The demo dev servers, on their ports from packages/demo/src/ports.ts
-  webServer: Object.entries(DEMO_APPS).map(([key, workspace]) => ({
-    command: `yarn workspace ${workspace} dev`,
-    url: `http://localhost:${DEMO_PORTS[key as DemoKey]}/`,
-    reuseExistingServer: !CI,
-    timeout: 120_000,
-  })),
+  // The demo dev servers, on their ports from packages/demo/src/ports.ts.
+  // Not needed for the consumer apps, which the script serves
+  webServer: process.env.CONSUMERS
+    ? undefined
+    : Object.entries(DEMO_APPS).map(([key, workspace]) => ({
+        command: `yarn workspace ${workspace} dev`,
+        url: `http://localhost:${DEMO_PORTS[key as DemoKey]}/`,
+        reuseExistingServer: !CI,
+        timeout: 120_000,
+      })),
 });
