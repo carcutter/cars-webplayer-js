@@ -15,12 +15,10 @@
     "@car-cutter/wc-webplayer": "workspace:^"
   },
   "devDependencies": {
-    "@car-cutter/eslint-config": "workspace:^",
     "@car-cutter/typescript-config": "workspace:^",
     "@types/node": "^20",
     "browserslist": "^4.28.7",
     "browserslist-to-esbuild": "^2.1.1",
-    "eslint": "^8",
     "typescript": "^5",
     "vite": "^6.4.4",
     "vite-bundle-visualizer": "^1.2.1"

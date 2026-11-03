@@ -12,9 +12,7 @@
     "@car-cutter/core": "workspace:^"
   },
   "devDependencies": {
-    "@car-cutter/eslint-config": "workspace:^",
     "@car-cutter/typescript-config": "workspace:^",
-    "eslint": "^8",
     "typescript": "^5"
   }
 }

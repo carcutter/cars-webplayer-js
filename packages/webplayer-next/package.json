@@ -50,7 +50,6 @@
   },
   "devDependencies": {
     "@car-cutter/core": "workspace:^",
-    "@car-cutter/eslint-config": "workspace:^",
     "@car-cutter/typescript-config": "workspace:^",
     "@types/node": "^20",
     "@types/react": "^18.3.28",
@@ -58,7 +57,6 @@
     "@vitest/coverage-v8": "^4.1.12",
     "browserslist": "^4.28.7",
     "browserslist-to-esbuild": "^2.1.1",
-    "eslint": "^8",
     "happy-dom": "^21.0.4",
     "next": "16.4.1",
     "rollup-preserve-directives": "^1.1.1",
