@@ -1,9 +1,10 @@
 // Tests the published WebPlayer packages the way a customer gets them:
-// packed with `npm pack`, checked with publint and attw, then installed with
-// npm in the apps of consumers/ (outside the yarn workspaces), type-checked,
-// built, served and checked by the Playwright project "consumers".
+// packed with `pnpm pack` (which turns the `workspace:^` versions into ^
+// ranges), checked with publint and attw, then installed with npm in the apps of
+// consumers/ (outside the pnpm workspace), type-checked, built, served and
+// checked by the Playwright project "consumers".
 //
-// Usage: node scripts/consumer-test.mjs [app...]   (after `yarn build`)
+// Usage: node scripts/consumer-test.mjs [app...]   (after `pnpm build`)
 // KEEP=1 keeps the temp folder.
 
 import { execFileSync, spawn } from "node:child_process";
@@ -71,7 +72,7 @@ const apps = readdirSync(join(ROOT, "consumers"), { withFileTypes: true })
 
 for (const dir of Object.values(PACKAGES)) {
   if (!existsSync(join(ROOT, "packages", dir, "dist"))) {
-    throw new Error(`packages/${dir} isn't built: run \`yarn build\` first`);
+    throw new Error(`packages/${dir} isn't built: run \`pnpm build\` first`);
   }
 }
 for (const [i, app] of apps.entries()) {
@@ -87,24 +88,24 @@ try {
   step("Packing the packages");
   const tarballs = {};
   for (const [name, dir] of Object.entries(PACKAGES)) {
-    const [{ filename }] = JSON.parse(
-      execFileSync("npm", ["pack", "--json", "--pack-destination", work], {
+    const { filename } = JSON.parse(
+      execFileSync("pnpm", ["pack", "--json", "--pack-destination", work], {
         cwd: join(ROOT, "packages", dir),
       }).toString()
     );
-    tarballs[name] = join(work, filename);
+    tarballs[name] = filename;
   }
 
   step("Checking the tarballs (publint, attw)");
   for (const tarball of Object.values(tarballs)) {
-    run("npx", ["--no-install", "publint", tarball, "--level", "error"], ROOT);
+    run("pnpm", ["exec", "publint", tarball, "--level", "error"], ROOT);
     // Bundlers and Node from ESM must resolve everything. Known gaps, not
     // checked: the .d.ts read as ESM from CommonJS (false-esm) and the
     // `/legacy` subpath under moduleResolution "node" (node10)
     run(
-      "npx",
+      "pnpm",
       [
-        "--no-install",
+        "exec",
         "attw",
         tarball,
         "--profile",
@@ -159,8 +160,8 @@ try {
   step("Checking the apps in the browser");
   await Promise.all(targets.map(({ url }) => waitFor(url)));
   run(
-    "yarn",
-    ["workspace", "e2e", "playwright", "test", "--project=consumers"],
+    "pnpm",
+    ["--filter", "e2e", "exec", "playwright", "test", "--project=consumers"],
     ROOT,
     {
       CONSUMERS: JSON.stringify(targets),

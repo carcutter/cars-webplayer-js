@@ -34,7 +34,9 @@ const getCursorStyle = (
   hotspot: { x: number; y: number },
   fallback: string
 ): React.CSSProperties => {
-  return { cursor: `url("${cursorUrl}") ${hotspot.x} ${hotspot.y}, ${fallback}` };
+  return {
+    cursor: `url("${cursorUrl}") ${hotspot.x} ${hotspot.y}, ${fallback}`,
+  };
 };
 
 const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
@@ -73,7 +75,7 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
 
   // - Value refs
   const playDemoSpinRef = useRef(demoSpin);
-  const demoSpinTimeout = useRef<NodeJS.Timeout | null>(null);
+  const demoSpinTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const clearAutoSpinTimeout = useCallback(() => {
     if (!demoSpinTimeout.current) {
       return;

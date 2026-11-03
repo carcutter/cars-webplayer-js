@@ -27,7 +27,7 @@ jobs:
           GIT_USER_NAME: "CarCutter"
           GIT_USER_EMAIL: "it@car-cutter.com"
           CURRENT_BRANCH: "main"
-        run: yarn publish:docs
+        run: pnpm publish:docs
 
   npm:
     name: npm
@@ -55,7 +55,7 @@ jobs:
           echo "node version: $(node --version)"
 
       - name: Publish to npm
-        run: yarn publish:packages
+        run: pnpm publish:packages
 
   cdn:
     name: cdn

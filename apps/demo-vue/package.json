@@ -8,11 +8,12 @@
     "lint": "vue-tsc --noEmit -p tsconfig.app.json && vue-tsc --noEmit -p tsconfig.node.json"
   },
   "dependencies": {
-    "@car-cutter/demo": "*",
-    "@car-cutter/vue-webplayer": "*",
+    "@car-cutter/demo": "workspace:^",
+    "@car-cutter/vue-webplayer": "workspace:^",
     "vue": "^3"
   },
   "devDependencies": {
+    "@types/node": "^20",
     "@vitejs/plugin-vue": "^6.0.0",
     "typescript": "^5",
     "vite": "^6.4.4",

@@ -43,7 +43,7 @@ test.describe("Script demo", () => {
 
     const note = page.locator(".dm-stage__note");
     await expect(note.locator("code")).toHaveText(
-      "yarn turbo build --filter=@car-cutter/script-webplayer"
+      "pnpm turbo build --filter=@car-cutter/script-webplayer"
     );
     await expect(note.locator("a")).toHaveAttribute("href", "?bundle=cdn");
   });
@@ -66,7 +66,7 @@ test.describe("iframe demo", () => {
     await page.goto(pageUrl("iframe"));
 
     await expect(page.locator(".dm-stage__note code")).toHaveText(
-      "yarn turbo build --filter=@car-cutter/script-webplayer"
+      "pnpm turbo build --filter=@car-cutter/script-webplayer"
     );
     await expect(page.locator(".dm-iframe")).toHaveCount(0);
   });

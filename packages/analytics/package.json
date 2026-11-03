@@ -9,11 +9,11 @@
     "lint": "eslint . --ext ts --max-warnings 0"
   },
   "dependencies": {
-    "@car-cutter/core": "*"
+    "@car-cutter/core": "workspace:^"
   },
   "devDependencies": {
-    "@car-cutter/eslint-config": "*",
-    "@car-cutter/typescript-config": "*",
+    "@car-cutter/eslint-config": "workspace:^",
+    "@car-cutter/typescript-config": "workspace:^",
     "eslint": "^8",
     "typescript": "^5"
   }

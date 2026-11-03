@@ -41,15 +41,17 @@
     "test": "vitest run --coverage"
   },
   "dependencies": {
-    "@car-cutter/wc-webplayer": "*"
+    "@car-cutter/wc-webplayer": "workspace:^"
   },
   "peerDependencies": {
     "vue": "^3.3"
   },
   "devDependencies": {
-    "@car-cutter/analytics": "*",
-    "@car-cutter/eslint-config": "*",
-    "@car-cutter/typescript-config": "*",
+    "@car-cutter/analytics": "workspace:^",
+    "@car-cutter/core": "workspace:^",
+    "@car-cutter/eslint-config": "workspace:^",
+    "@car-cutter/typescript-config": "workspace:^",
+    "@types/node": "^20",
     "@vitejs/plugin-vue": "^6.0.0",
     "@vitest/coverage-v8": "^4.1.12",
     "@vue/test-utils": "~2.4.6",

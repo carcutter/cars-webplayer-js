@@ -1,10 +1,10 @@
 {
   "versionGroups": [
     {
-      "label": "Local packages are linked via workspaces",
+      "label": "Local packages are linked via the pnpm workspace, and published with a ^ range",
       "dependencies": ["@car-cutter/**"],
       "dependencyTypes": ["dev", "prod"],
-      "policy": "sameRange"
+      "pinVersion": "workspace:^"
     },
     {
       "label": "vue-webplayer builds its declarations against the lowest Vue it supports (peer ^3.3)",

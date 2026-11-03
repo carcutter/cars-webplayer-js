@@ -42,7 +42,7 @@ export default defineConfig({
   webServer: process.env.CONSUMERS
     ? undefined
     : Object.entries(DEMO_APPS).map(([key, workspace]) => ({
-        command: `yarn workspace ${workspace} dev`,
+        command: `pnpm --filter ${workspace} dev`,
         url: `http://localhost:${DEMO_PORTS[key as DemoKey]}/`,
         reuseExistingServer: !CI,
         timeout: 120_000,

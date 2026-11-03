@@ -9,9 +9,9 @@
     "test": "vitest run --coverage"
   },
   "dependencies": {
-    "@car-cutter/core": "*",
-    "@car-cutter/core-ui": "*",
-    "@car-cutter/core-wc": "*",
+    "@car-cutter/core": "workspace:^",
+    "@car-cutter/core-ui": "workspace:^",
+    "@car-cutter/core-wc": "workspace:^",
     "@r2wc/react-to-web-component": "^1.0.0"
   },
   "peerDependencies": {
@@ -19,8 +19,9 @@
     "react-dom": ">=16.8"
   },
   "devDependencies": {
-    "@car-cutter/eslint-config": "*",
-    "@car-cutter/typescript-config": "*",
+    "@car-cutter/eslint-config": "workspace:^",
+    "@car-cutter/typescript-config": "workspace:^",
+    "@types/node": "^20",
     "@vitest/coverage-v8": "^4.1.12",
     "eslint": "^8",
     "happy-dom": "^21.0.4",

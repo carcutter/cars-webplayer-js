@@ -5,7 +5,7 @@ const CONSUMERS: { name: string; url: string }[] = JSON.parse(
   process.env.CONSUMERS ?? "[]"
 );
 
-test.skip(!CONSUMERS.length, "Run through `yarn test:consumers`");
+test.skip(!CONSUMERS.length, "Run through `pnpm test:consumers`");
 
 for (const { name, url } of CONSUMERS) {
   test(`${name} renders the player from the packed packages`, async ({

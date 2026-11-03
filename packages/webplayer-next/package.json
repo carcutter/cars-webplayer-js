@@ -46,18 +46,21 @@
     "test": "vitest run --coverage"
   },
   "dependencies": {
-    "@car-cutter/react-webplayer": "*"
+    "@car-cutter/react-webplayer": "workspace:^"
   },
   "devDependencies": {
-    "@car-cutter/core": "*",
-    "@car-cutter/eslint-config": "*",
-    "@car-cutter/typescript-config": "*",
+    "@car-cutter/core": "workspace:^",
+    "@car-cutter/eslint-config": "workspace:^",
+    "@car-cutter/typescript-config": "workspace:^",
+    "@types/node": "^20",
+    "@types/react": "^18.3.28",
     "@vitejs/plugin-react": "^5.0.0",
     "@vitest/coverage-v8": "^4.1.12",
     "browserslist": "^4.28.7",
     "browserslist-to-esbuild": "^2.1.1",
     "eslint": "^8",
     "happy-dom": "^21.0.4",
+    "next": "16.4.1",
     "rollup-preserve-directives": "^1.1.1",
     "typescript": "^5",
     "vite": "^6.4.4",

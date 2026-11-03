@@ -36,12 +36,13 @@
     "test": "vitest run --coverage"
   },
   "dependencies": {
-    "@car-cutter/wc-webplayer": "*"
+    "@car-cutter/wc-webplayer": "workspace:^"
   },
   "devDependencies": {
-    "@car-cutter/core": "*",
-    "@car-cutter/eslint-config": "*",
-    "@car-cutter/typescript-config": "*",
+    "@car-cutter/core": "workspace:^",
+    "@car-cutter/eslint-config": "workspace:^",
+    "@car-cutter/typescript-config": "workspace:^",
+    "@types/node": "^20",
     "@vitest/coverage-v8": "^4.1.12",
     "browserslist": "^4.28.7",
     "browserslist-to-esbuild": "^2.1.1",

@@ -1,15 +1,15 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
-    "postinstall": {
-      "cache": false
-    },
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", "!README.md", "!LICENSE", "!dev/**"],
       "outputs": ["dist/**"]
     },
-    "lint": {},
+    "lint": {
+      // Type-checks against the built declarations of the workspace packages
+      "dependsOn": ["^build"]
+    },
     "test": {
       "dependsOn": ["^build"],
       "outputs": ["coverage/**"]

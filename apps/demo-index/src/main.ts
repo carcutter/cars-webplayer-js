@@ -29,7 +29,7 @@ const cards = THEME_KEYS.map(key => {
         <span class="dm-brand__tile">${e(theme.mono)}</span>
         <span class="dm-brand__text">
           <span class="dm-brand__title">${e(theme.title)}</span>
-          <span class="dm-brand__subtitle">yarn demo:${key}</span>
+          <span class="dm-brand__subtitle">pnpm demo:${key}</span>
         </span>
       </span>
     </div>

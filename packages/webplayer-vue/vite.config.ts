@@ -1,9 +1,24 @@
+import { realpathSync } from "fs";
 import { resolve } from "path";
 
 import vue from "@vitejs/plugin-vue";
 import browserslistToEsbuild from "browserslist-to-esbuild";
+import ts from "typescript";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
+
+const dtsTsconfigPath = resolve(__dirname, "./tsconfig.dts.json");
+const dtsTsconfig = ts.readConfigFile(dtsTsconfigPath, ts.sys.readFile);
+const dtsPaths: Record<string, string[]> | undefined =
+  dtsTsconfig.config?.compilerOptions?.paths;
+if (!dtsPaths) {
+  throw new Error(
+    `${dtsTsconfigPath} must set compilerOptions.paths` +
+      (dtsTsconfig.error
+        ? `: ${ts.flattenDiagnosticMessageText(dtsTsconfig.error.messageText, "\n")}`
+        : "")
+  );
+}
 
 export default defineConfig({
   plugins: [
@@ -23,7 +38,17 @@ export default defineConfig({
       // Resolves the private workspace packages it uses (not dependencies of
       // the published package) to their built declarations, which are rolled
       // up into its own .d.ts
-      tsconfigPath: resolve(__dirname, "./tsconfig.dts.json"),
+      tsconfigPath: dtsTsconfigPath,
+      compilerOptions: {
+        paths: {
+          ...dtsPaths,
+          // vue to the lowest supported version (peer ^3.3), so that the
+          // declarations work with it. Through the real folder of vue-3.3:
+          // through its pnpm symlink, they would import "vue-3.3/dist/vue.js"
+          // instead of "vue"
+          vue: [realpathSync(resolve(__dirname, "node_modules/vue-3.3"))],
+        },
+      },
       rollupTypes: true,
       bundledPackages: [
         "@car-cutter/core",

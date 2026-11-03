@@ -183,7 +183,9 @@ const VideoElement: React.FC<Props> = ({ src, poster, itemIndex }) => {
   // -- Controls
   const [showControls, setShowControls] = useState(false);
 
-  const hideControlsTimeout = useRef<NodeJS.Timeout | undefined>(undefined);
+  const hideControlsTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined
+  );
   const clearHideControlsTimeout = useCallback(
     () => clearTimeout(hideControlsTimeout.current),
     []

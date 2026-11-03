@@ -8,10 +8,11 @@
     "lint": "tsc --noEmit -p ."
   },
   "dependencies": {
-    "@car-cutter/demo": "*",
-    "@car-cutter/vanilla-webplayer": "*"
+    "@car-cutter/demo": "workspace:^",
+    "@car-cutter/vanilla-webplayer": "workspace:^"
   },
   "devDependencies": {
+    "@types/node": "^20",
     "typescript": "^5",
     "vite": "^6.4.4"
   }

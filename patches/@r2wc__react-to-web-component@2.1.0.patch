@@ -1,14 +1,14 @@
-diff --git a/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.cjs b/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.cjs
+diff --git a/dist/react-to-web-component.cjs b/dist/react-to-web-component.cjs
 index 80193c5..762dcbb 100644
---- a/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.cjs
-+++ b/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.cjs
+--- a/dist/react-to-web-component.cjs
++++ b/dist/react-to-web-component.cjs
 @@ -1 +1 @@
 -"use strict";const c=require("react"),u=require("react-dom/client"),i=require("@r2wc/core");function s(e,t,r){const n=u.createRoot(e),o=c.createElement(t,r);return n.render(o),{root:n,ReactComponent:t}}function m({root:e,ReactComponent:t},r){const n=c.createElement(t,r);e.render(n)}function l({root:e}){e.unmount()}function a(e,t={}){return i(e,t,{mount:s,update:m,unmount:l})}module.exports=a;
 +"use strict";const c=require("react"),u=require("react-dom/client"),i=require("@r2wc/core");const containerRoots=new Map();function s(e,t,r){const pending=containerRoots.get(e);if(pending){if(pending.tid!==null)clearTimeout(pending.tid);pending.tid=null;const o=c.createElement(t,r);pending.root.render(o);return{root:pending.root,ReactComponent:t}}const n=u.createRoot(e);containerRoots.set(e,{root:n,tid:null});const o=c.createElement(t,r);n.render(o);return{root:n,ReactComponent:t}}function m({root:e,ReactComponent:t},r){const n=c.createElement(t,r);e.render(n)}function l({root:e}){for(const[container,entry]of containerRoots){if(entry.root===e){entry.tid=setTimeout(()=>{containerRoots.delete(container);e.unmount()},0);return}}setTimeout(()=>{e.unmount()},0)}function a(e,t={}){return i(e,t,{mount:s,update:m,unmount:l})}module.exports=a;
-diff --git a/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.js b/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.js
+diff --git a/dist/react-to-web-component.js b/dist/react-to-web-component.js
 index 2dd89f3..b404606 100644
---- a/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.js
-+++ b/node_modules/@r2wc/react-to-web-component/dist/react-to-web-component.js
+--- a/dist/react-to-web-component.js
++++ b/dist/react-to-web-component.js
 @@ -1,19 +1,50 @@
  import o from "react";
  import { createRoot as c } from "react-dom/client";
@@ -67,10 +67,10 @@ index 2dd89f3..b404606 100644
  }
  function s(t, e = {}) {
    return m(t, e, { mount: f, update: i, unmount: a });
-diff --git a/node_modules/@r2wc/react-to-web-component/src/react-to-web-component.ts b/node_modules/@r2wc/react-to-web-component/src/react-to-web-component.ts
+diff --git a/src/react-to-web-component.ts b/src/react-to-web-component.ts
 index 88c5968..4de0e32 100644
---- a/node_modules/@r2wc/react-to-web-component/src/react-to-web-component.ts
-+++ b/node_modules/@r2wc/react-to-web-component/src/react-to-web-component.ts
+--- a/src/react-to-web-component.ts
++++ b/src/react-to-web-component.ts
 @@ -8,12 +8,34 @@ interface Context<Props extends object> {
    ReactComponent: React.ComponentType<Props>
  }

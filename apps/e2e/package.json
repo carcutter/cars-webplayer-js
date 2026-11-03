@@ -10,7 +10,7 @@
     "lint": "tsc --noEmit -p ."
   },
   "dependencies": {
-    "@car-cutter/demo": "*"
+    "@car-cutter/demo": "workspace:^"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",
