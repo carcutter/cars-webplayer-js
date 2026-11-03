@@ -2,6 +2,8 @@ import {
   BUNDLE_VARIANTS,
   COMPOSITION_URL,
   SCRIPT_BUNDLES,
+  SCRIPT_DIST,
+  SCRIPT_PKG,
   reactUmdUrls,
   type BundleVariant,
 } from "@car-cutter/demo";
@@ -44,7 +46,7 @@ const { mediaSlot, eventsSlot, pkgSlot } = renderDemoPage(
 
 pkgSlot.textContent = useCdn
   ? bundle.cdnUrl.replace(/^https:\/\//, "")
-  : `packages/${bundle.dir}/dist (local)`;
+  : `${SCRIPT_DIST} (local)`;
 
 const note = document.createElement("p");
 note.className = "dm-note";
@@ -103,7 +105,7 @@ scripts
     renderStageNote(
       mediaSlot,
       src === bundle.localPath
-        ? localBundleMissingHtml(bundle.pkg, pageHref({ cdn: true }))
+        ? localBundleMissingHtml(SCRIPT_PKG, pageHref({ cdn: true }))
         : `<code>${escapeHtml(
             src
           )}</code> couldn't be loaded. Check the network and reload.`

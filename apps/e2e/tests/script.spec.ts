@@ -1,4 +1,4 @@
-import { BUNDLE_VARIANTS, SCRIPT_BUNDLES } from "@car-cutter/demo";
+import { BUNDLE_VARIANTS, SCRIPT_BUNDLES, SCRIPT_DIST } from "@car-cutter/demo";
 
 import {
   expect,
@@ -21,7 +21,7 @@ test.describe("Script demo", () => {
       );
 
       await expect(page.locator(".dm-pill")).toHaveText(
-        `packages/${bundle.dir}/dist (local)`
+        `${SCRIPT_DIST} (local)`
       );
       await expectPlayerWithGallery(page);
       await expectPlayerStarted(page);

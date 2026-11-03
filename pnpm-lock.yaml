@@ -198,12 +198,6 @@ importers:
       '@car-cutter/script-webplayer':
         specifier: workspace:^
         version: link:../../packages/webplayer-script
-      '@car-cutter/script-webplayer-react-16-17':
-        specifier: workspace:^
-        version: link:../../packages/webplayer-script-react-16-17
-      '@car-cutter/script-webplayer-react-18':
-        specifier: workspace:^
-        version: link:../../packages/webplayer-script-react-18
       '@types/node':
         specifier: ^20
         version: 20.19.33
@@ -545,9 +539,6 @@ importers:
       '@car-cutter/eslint-config':
         specifier: workspace:^
         version: link:../config-eslint
-      '@car-cutter/export-css-plugin':
-        specifier: workspace:^
-        version: link:../export-css-plugin
       '@car-cutter/typescript-config':
         specifier: workspace:^
         version: link:../config-typescript
@@ -799,21 +790,6 @@ importers:
         specifier: ^4.1.12
         version: 4.1.12(@types/node@20.19.33)(@vitest/coverage-v8@4.1.12)(happy-dom@21.0.4)(vite@6.4.4(@types/node@20.19.33)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.3))
 
-  packages/export-css-plugin:
-    devDependencies:
-      '@car-cutter/eslint-config':
-        specifier: workspace:^
-        version: link:../config-eslint
-      '@types/node':
-        specifier: ^20
-        version: 20.19.33
-      eslint:
-        specifier: ^8
-        version: 8.57.1
-      vite:
-        specifier: ^6.4.4
-        version: 6.4.4(@types/node@20.19.33)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.3)
-
   packages/webplayer-next:
     dependencies:
       '@car-cutter/react-webplayer':
@@ -955,89 +931,15 @@ importers:
 
   packages/webplayer-script:
     dependencies:
-      '@car-cutter/wc-webplayer':
-        specifier: workspace:^
-        version: link:../webplayer-wc
-    devDependencies:
-      '@car-cutter/eslint-config':
-        specifier: workspace:^
-        version: link:../config-eslint
-      '@car-cutter/typescript-config':
-        specifier: workspace:^
-        version: link:../config-typescript
-      '@types/node':
-        specifier: ^20
-        version: 20.19.33
-      browserslist:
-        specifier: ^4.28.7
-        version: 4.28.9
-      browserslist-to-esbuild:
-        specifier: ^2.1.1
-        version: 2.1.1(browserslist@4.28.9)
-      eslint:
-        specifier: ^8
-        version: 8.57.1
-      typescript:
-        specifier: ^5
-        version: 5.9.3
-      vite:
-        specifier: ^6.4.4
-        version: 6.4.4(@types/node@20.19.33)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.3)
-      vite-bundle-visualizer:
-        specifier: ^1.2.1
-        version: 1.2.1(rollup@4.59.0)
-
-  packages/webplayer-script-react-16-17:
-    dependencies:
       '@car-cutter/core-wc-react-16-17':
         specifier: workspace:^
         version: link:../core-wc-react-16-17
-      react:
-        specifier: '>=18'
-        version: 19.2.6
-      react-dom:
-        specifier: '>=18'
-        version: 19.2.6(react@19.2.6)
-    devDependencies:
-      '@car-cutter/eslint-config':
-        specifier: workspace:^
-        version: link:../config-eslint
-      '@car-cutter/typescript-config':
-        specifier: workspace:^
-        version: link:../config-typescript
-      '@types/node':
-        specifier: ^20
-        version: 20.19.33
-      browserslist:
-        specifier: ^4.28.7
-        version: 4.28.9
-      browserslist-to-esbuild:
-        specifier: ^2.1.1
-        version: 2.1.1(browserslist@4.28.9)
-      eslint:
-        specifier: ^8
-        version: 8.57.1
-      typescript:
-        specifier: ^5
-        version: 5.9.3
-      vite:
-        specifier: ^6.4.4
-        version: 6.4.4(@types/node@20.19.33)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.3)
-      vite-bundle-visualizer:
-        specifier: ^1.2.1
-        version: 1.2.1(rollup@4.59.0)
-
-  packages/webplayer-script-react-18:
-    dependencies:
       '@car-cutter/core-wc-react-18':
         specifier: workspace:^
         version: link:../core-wc-react-18
-      react:
-        specifier: '>=18'
-        version: 19.2.6
-      react-dom:
-        specifier: '>=18'
-        version: 19.2.6(react@19.2.6)
+      '@car-cutter/wc-webplayer':
+        specifier: workspace:^
+        version: link:../webplayer-wc
     devDependencies:
       '@car-cutter/eslint-config':
         specifier: workspace:^

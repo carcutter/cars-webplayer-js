@@ -1,6 +1,8 @@
 // Per-integration header branding, from the design canvas
 // "WebPlayer Integrations" (Main artboard), with each technology's colours.
 
+import { SCRIPT_PKG } from "./bundles";
+
 export type ThemeKey =
   | "react"
   | "react-legacy"
@@ -88,7 +90,7 @@ export const THEMES: Record<ThemeKey, Theme> = {
   script: {
     title: "<script> tag",
     mono: "</>",
-    pkg: "@car-cutter/script-webplayer",
+    pkg: SCRIPT_PKG,
     headerBg: "#B83A1B",
     headerFg: "#FFFFFF",
     tileBg: "#FFFFFF",

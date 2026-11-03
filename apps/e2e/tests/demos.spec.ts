@@ -1,4 +1,9 @@
-import { THEMES, THEME_KEYS, type ThemeKey } from "@car-cutter/demo";
+import {
+  SCRIPT_DIST,
+  THEMES,
+  THEME_KEYS,
+  type ThemeKey,
+} from "@car-cutter/demo";
 
 import {
   expect,
@@ -12,7 +17,7 @@ import {
 
 /** Header pill set by the page itself, instead of the theme's */
 const PILL: Partial<Record<ThemeKey, string>> = {
-  script: "packages/webplayer-script/dist (local)",
+  script: `${SCRIPT_DIST} (local)`,
 };
 
 for (const key of THEME_KEYS.filter(key => key !== "iframe")) {

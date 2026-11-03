@@ -63,16 +63,16 @@ describe("CDN URLs", () => {
 });
 
 describe("SCRIPT_BUNDLES", () => {
-  // Built file names, as the script-webplayer packages name them
+  // Built file names, as the script-webplayer package names them
   it.each([
-    ["default", "bundle-3.2.17.js", "bundle-react-16-17@3.2.17.js"],
+    ["default", "bundle-3.2.17.js", "bundle-react-18@3.2.17.js"],
     ["react-16-17", "bundle-react-16-17@3.2.17.js", "bundle-3.2.17.js"],
     ["react-18", "bundle-react-18@3.2.17.js", "bundle-react-16-17@3.2.17.js"],
   ] as const)("finds the %s build by its file name", (variant, own, other) => {
     const { file } = SCRIPT_BUNDLES[variant];
     expect(file.test(own)).toBe(true);
-    expect(file.test("script-webplayer.css")).toBe(false);
-    if (variant !== "default") expect(file.test(other)).toBe(false);
+    expect(file.test(`${own}.map`)).toBe(false);
+    expect(file.test(other)).toBe(false);
   });
 
   it("has a variant per bundle, with its own local path", () => {

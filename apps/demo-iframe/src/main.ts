@@ -1,4 +1,9 @@
-import { IFRAME_QUERY, IFRAME_URL, SCRIPT_BUNDLES } from "@car-cutter/demo";
+import {
+  IFRAME_QUERY,
+  IFRAME_URL,
+  SCRIPT_BUNDLES,
+  SCRIPT_PKG,
+} from "@car-cutter/demo";
 import {
   localBundleMissingHtml,
   renderDemoPage,
@@ -50,7 +55,7 @@ if (useCdn) {
         ? mediaSlot.append(iframe)
         : renderStageNote(
             mediaSlot,
-            localBundleMissingHtml(SCRIPT_BUNDLES.default.pkg, "?bundle=cdn")
+            localBundleMissingHtml(SCRIPT_PKG, "?bundle=cdn")
           ),
     () =>
       renderStageNote(

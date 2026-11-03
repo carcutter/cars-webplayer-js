@@ -3,6 +3,12 @@
 
 export const CDN_BASE = "https://cdn.car-cutter.com/libs/web-player/v3";
 
+/** Package building every bundle */
+export const SCRIPT_PKG = "@car-cutter/script-webplayer";
+
+/** Folder of the built bundles, from the repo root */
+export const SCRIPT_DIST = "packages/webplayer-script/dist";
+
 export type BundleVariant = "default" | "react-16-17" | "react-18";
 
 export const BUNDLE_VARIANTS: BundleVariant[] = [
@@ -14,11 +20,7 @@ export const BUNDLE_VARIANTS: BundleVariant[] = [
 export interface ScriptBundle {
   /** File name, as published on the CDN */
   name: string;
-  /** Package building it */
-  pkg: string;
-  /** Its folder in packages/ */
-  dir: string;
-  /** Matches the built file in `<dir>/dist`, whatever the version */
+  /** Matches the built file in SCRIPT_DIST, whatever the version */
   file: RegExp;
   cdnUrl: string;
   /** URL the demo dev servers serve the local build at */
@@ -30,16 +32,13 @@ export interface ScriptBundle {
 export const SCRIPT_BUNDLES: Record<BundleVariant, ScriptBundle> = {
   default: {
     name: "bundle.js",
-    pkg: "@car-cutter/script-webplayer",
-    dir: "webplayer-script",
-    file: /^bundle-.+\.js$/,
+    // Not the React variants, built in the same folder (bundle-react-*@…)
+    file: /^bundle-[^@]+\.js$/,
     cdnUrl: `${CDN_BASE}/bundle.js`,
     localPath: "/local/bundle.js",
   },
   "react-16-17": {
     name: "bundle-react-16-17.js",
-    pkg: "@car-cutter/script-webplayer-react-16-17",
-    dir: "webplayer-script-react-16-17",
     file: /^bundle-react-16-17@.+\.js$/,
     cdnUrl: `${CDN_BASE}/bundle-react-16-17.js`,
     localPath: "/local/bundle-react-16-17.js",
@@ -47,8 +46,6 @@ export const SCRIPT_BUNDLES: Record<BundleVariant, ScriptBundle> = {
   },
   "react-18": {
     name: "bundle-react-18.js",
-    pkg: "@car-cutter/script-webplayer-react-18",
-    dir: "webplayer-script-react-18",
     file: /^bundle-react-18@.+\.js$/,
     cdnUrl: `${CDN_BASE}/bundle-react-18.js`,
     localPath: "/local/bundle-react-18.js",

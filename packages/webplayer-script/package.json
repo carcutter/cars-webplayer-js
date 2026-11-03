@@ -5,11 +5,13 @@
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {
-    "build": "tsc -b && vite build",
-    "lint": "eslint . --ext ts --max-warnings 0",
+    "build": "tsc -b && node build.mjs",
+    "lint": "eslint . --ext ts,mjs --max-warnings 0",
     "analyze": "vite-bundle-visualizer"
   },
   "dependencies": {
+    "@car-cutter/core-wc-react-16-17": "workspace:^",
+    "@car-cutter/core-wc-react-18": "workspace:^",
     "@car-cutter/wc-webplayer": "workspace:^"
   },
   "devDependencies": {

@@ -1,5 +1,0 @@
-{
-  "extends": "@car-cutter/typescript-config/vite.json",
-
-  "include": ["vite.config.ts"]
-}

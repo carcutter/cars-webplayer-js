@@ -4,7 +4,7 @@ import { createReadStream, existsSync, readdirSync, statSync } from "node:fs";
 
 import type { Plugin } from "vite";
 
-import { SCRIPT_BUNDLES, type ScriptBundle } from "./bundles";
+import { SCRIPT_BUNDLES, SCRIPT_DIST, type ScriptBundle } from "./bundles";
 import { DEMO_PORTS, type DemoKey } from "./ports";
 
 /** Serves the demo on its port from DEMO_PORTS, failing if it's taken */
@@ -20,8 +20,8 @@ export function demoPort(key: DemoKey): Plugin {
 // the CDN one.
 
 /** Most recently built file of a bundle, whatever the current version */
-function findLocalBundle({ dir, file }: ScriptBundle): URL | undefined {
-  const distDir = new URL(`../../${dir}/dist/`, import.meta.url);
+function findLocalBundle({ file }: ScriptBundle): URL | undefined {
+  const distDir = new URL(`../../../${SCRIPT_DIST}/`, import.meta.url);
   if (!existsSync(distDir)) {
     return undefined;
   }
@@ -36,7 +36,7 @@ function findLocalBundle({ dir, file }: ScriptBundle): URL | undefined {
 }
 
 /**
- * Serves the bundles built by the script-webplayer packages (turbo builds them
+ * Serves the bundles built by the script-webplayer package (turbo builds them
  * before `dev` starts, as the demos depend on them) at their `localPath`.
  * Files are resolved on every request, so rebuilding the package and reloading
  * the page is enough to pick up changes.
@@ -60,9 +60,7 @@ export function localBundle(): Plugin {
         const file = findLocalBundle(bundle);
         if (!file) {
           res.statusCode = 404;
-          res.end(
-            `No local build of ${bundle.pkg} in packages/${bundle.dir}/dist`
-          );
+          res.end(`No local build of ${bundle.name} in ${SCRIPT_DIST}`);
           return;
         }
 

@@ -1,8 +1,8 @@
-// Stands in for "react/jsx-runtime" in the script-webplayer-react-* bundles
-// (aliased in their vite configs): they use the React of the host page (the
-// `React` global), so JSX must be created with it too. Bundling the
-// runtime of the React installed in the repo (19) gives elements the host's
-// React can't render.
+// Stands in for "react/jsx-runtime" in the script-webplayer bundles using
+// the React of the host page (aliased in its vite config): as they use the
+// `React` global, JSX must be created with it too. Bundling the runtime of the
+// React installed in the repo (19) gives elements the host's React can't
+// render.
 import React from "react";
 
 type Props = Record<string, unknown> & { children?: React.ReactNode };

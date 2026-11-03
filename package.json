@@ -25,8 +25,6 @@
     "build:next": "turbo build --filter=@car-cutter/next-webplayer",
     "build:react": "turbo build --filter=@car-cutter/react-webplayer",
     "build:script": "turbo build --filter=@car-cutter/script-webplayer",
-    "build:script-react-16-17": "turbo build --filter=@car-cutter/script-webplayer-react-16-17",
-    "build:script-react-18": "turbo build --filter=@car-cutter/script-webplayer-react-18",
     "build:vanilla": "turbo build --filter=@car-cutter/vanilla-webplayer",
     "build:vue": "turbo build --filter=@car-cutter/vue-webplayer",
     "build:wc": "turbo build --filter=@car-cutter/wc-webplayer",

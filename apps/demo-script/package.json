@@ -12,8 +12,6 @@
   },
   "devDependencies": {
     "@car-cutter/script-webplayer": "workspace:^",
-    "@car-cutter/script-webplayer-react-16-17": "workspace:^",
-    "@car-cutter/script-webplayer-react-18": "workspace:^",
     "@types/node": "^20",
     "typescript": "^5",
     "vite": "^6.4.4"
