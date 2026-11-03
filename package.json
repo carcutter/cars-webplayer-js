@@ -51,6 +51,7 @@
     "@changesets/cli": "^2.27.8",
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
+    "conventional-changelog-conventionalcommits": "^9.3.1",
     "eslint": "^8",
     "publint": "^0.3.25",
     "syncpack": "^15.1.2",
