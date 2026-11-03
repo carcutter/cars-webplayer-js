@@ -44,7 +44,14 @@ CARS-WEBPLAYER/
 
 ### Developing the WebPlayer Core
 
-Simply run `pnpm dev` from the workspace root to start the app in development mode.
+Run `pnpm dev` from the workspace root to start the playground of `packages/core-ui` (at the URL Vite prints, `pnpm dev:core-preact` to run it on Preact like the web component). It renders the player from its sources, so a change in core-ui shows up as soon as it's saved, and lets you change:
+
+- the props of the player (but the media widths and the deprecated analytics ones), and its children (custom medias, custom icon)
+- the CSS variables
+- where it's rendered: in the page, or in a shadow root with its inlined styles (as the web component renders it; the customizations stay React children)
+- the width of its container. The breakpoints (`max-small`, `small`, `large`, shown in the header) follow the viewport: use the browser's device mode for them
+
+The settings are kept in the URL, and the events the player dispatches are listed below it. Monitoring is off by default: from localhost, the service refuses its events.
 
 #### Using Local Composition
 
