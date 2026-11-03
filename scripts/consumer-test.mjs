@@ -93,7 +93,8 @@ try {
         cwd: join(ROOT, "packages", dir),
       }).toString()
     );
-    tarballs[name] = filename;
+    // Absolute with pnpm 10, relative to the destination before
+    tarballs[name] = resolve(work, filename);
   }
 
   step("Checking the tarballs (publint, attw)");
