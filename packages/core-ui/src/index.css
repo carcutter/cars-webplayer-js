@@ -27,3 +27,7 @@
   display: none;
   visibility: hidden;
 }
+
+/* Variants (hover:, small:, …) here, before pannellum's styles imported after
+   this file by style.css */
+@tailwind variants;

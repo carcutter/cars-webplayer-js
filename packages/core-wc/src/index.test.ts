@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import * as coreWc from "../index";
 
 vi.mock("@car-cutter/core-ui", () => ({ WebPlayer: () => null }));
-vi.mock("@car-cutter/core-ui/dist/style.css?inline", () => ({ default: "" }));
+vi.mock("@car-cutter/core-ui/style.css?inline", () => ({ default: "" }));
 
 describe("@car-cutter/core-wc", () => {
   it("exposes its API", () => {

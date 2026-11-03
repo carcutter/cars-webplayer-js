@@ -367,7 +367,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
       <CustomizationContextProvider>
         <div
           ref={wrapperRef}
-          className="size-full select-none text-foreground"
+          className="size-full text-foreground"
           data-cc-webplayer-root
           style={
             {

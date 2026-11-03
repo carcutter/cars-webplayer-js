@@ -1,7 +1,7 @@
 import { resolve } from "path";
 
 import browserslistToEsbuild from "browserslist-to-esbuild";
-import { defineConfig, type Plugin, type UserConfig } from "vite";
+import { defineConfig, type UserConfig } from "vite";
 
 import { version } from "./package.json";
 import variants from "./variants.json";
@@ -21,21 +21,6 @@ type Variant = {
 // bundles its own React (preact) through @car-cutter/wc-webplayer.
 const VARIANTS: Record<string, Variant> = variants;
 
-// The players get their styles from core-ui's built style.css (inlined in
-// their shadow root): the CSS imported along core-ui's sources isn't shipped
-const noCss = (): Plugin => ({
-  name: "no-css",
-  // After vite's CSS plugin, which emits the CSS in generateBundle
-  enforce: "post",
-  generateBundle(_, bundle) {
-    for (const fileName of Object.keys(bundle)) {
-      if (fileName.endsWith(".css")) {
-        delete bundle[fileName];
-      }
-    }
-  },
-});
-
 export default defineConfig((): UserConfig => {
   const variant = process.env.SCRIPT_VARIANT ?? "default";
   if (!Object.hasOwn(VARIANTS, variant)) {
@@ -48,7 +33,6 @@ export default defineConfig((): UserConfig => {
   const fileName = VARIANTS[variant].fileName.replace("{version}", version);
 
   return {
-    plugins: [noCss()],
     resolve: reactGlobals && {
       // JSX from the host page's React (see core-wc/src/jsx-runtime.ts)
       alias: {

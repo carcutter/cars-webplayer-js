@@ -12,7 +12,7 @@ vi.mock("@car-cutter/core-ui", () => ({
     return null;
   },
 }));
-vi.mock("@car-cutter/core-ui/dist/style.css?inline", () => ({ default: "" }));
+vi.mock("@car-cutter/core-ui/style.css?inline", () => ({ default: "" }));
 
 type Element = HTMLElement & Record<string, unknown>;
 

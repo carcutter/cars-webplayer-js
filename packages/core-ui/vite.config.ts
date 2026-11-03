@@ -1,3 +1,5 @@
+import { resolve } from "path";
+
 import preact from "@preact/preset-vite";
 import react from "@vitejs/plugin-react";
 import browserslistToEsbuild from "browserslist-to-esbuild";
@@ -16,26 +18,25 @@ const cssOnly = (): Plugin => ({
   },
 });
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ command, mode }) => {
   const isPreactDev = mode === "development-preact";
 
   return {
-    plugins: [isPreactDev ? preact() : react(), cssOnly()],
+    // The framework plugin is only for the dev app (index.html)
+    plugins:
+      command === "serve" ? [isPreactDev ? preact() : react()] : [cssOnly()],
 
     define: {
       "process.env": {
         NODE_ENV: mode,
       },
     },
-    // FUTURE: Find a way to build in watch mode. The simple script "watch": "vite build --watch" does not work because it does not rebuild the TS.
     build: {
-      cssCodeSplit: true,
       outDir: "dist",
       rollupOptions: {
-        input: "index.ts",
+        input: resolve(__dirname, "src/style.css"),
         output: {
           assetFileNames: "style.[ext]",
-          entryFileNames: "[name].js",
         },
       },
       target: browserslistToEsbuild(),

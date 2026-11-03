@@ -3,7 +3,11 @@
   "version": "3.2.17",
   "private": true,
   "type": "module",
-  "main": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./style.css": "./dist/style.css",
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",

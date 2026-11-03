@@ -23,7 +23,7 @@ const joinMediaQueries = (...queries: string[]) =>
   queries.map(query => `(${query})`).join(" or ");
 
 const config: Config = {
-  content: ["./src/*/**/*.{ts,tsx}"],
+  content: { relative: true, files: ["./src/**/*.{ts,tsx}"] },
   theme: {
     fontSize: {
       xxs: ["11px", { lineHeight: "15px" }],

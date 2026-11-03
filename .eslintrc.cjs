@@ -86,6 +86,27 @@ module.exports = {
         "react/prop-types": "off",
       },
     },
+    {
+      // The player's styles are built from core-ui's src/style.css: a CSS
+      // import in the code bundled by the wrappers would be emitted as a
+      // separate, unprocessed CSS file (`?inline` imports are strings)
+      files: ["packages/**"],
+      excludedFiles: ["packages/core-ui/dev/**"],
+
+      rules: {
+        "no-restricted-imports": [
+          "error",
+          {
+            patterns: [
+              {
+                group: ["*.css"],
+                message: "Import it in packages/core-ui/src/style.css",
+              },
+            ],
+          },
+        ],
+      },
+    },
     ...TAILWIND.map(dir => ({
       files: [`${dir}/**`],
 

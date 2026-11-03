@@ -12,7 +12,7 @@ import WebPlayer from "../src/WebPlayer";
 import WebPlayerCustomMedia from "../src/WebPlayerCustomMedia";
 import WebPlayerIcon from "../src/WebPlayerIcon";
 
-import "../src/index.css";
+import "../src/style.css";
 
 const useAnalytics = () => {
   const useCustomAnalyticsEventPrefix = false;
