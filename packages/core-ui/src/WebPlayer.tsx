@@ -14,7 +14,6 @@ import type {
   WebplayerInstance,
 } from "@car-cutter/analytics";
 import {
-  WEB_PLAYER_WC_TAG,
   DEFAULT_HIDE_CATEGORIES_NAV,
   DEFAULT_FORCE_TOP_NAV,
   DEFAULT_INFINITE_CARROUSEL,
@@ -56,6 +55,7 @@ import CustomizationContextProvider from "./providers/CustomizationContext";
 import GlobalContextProvider from "./providers/GlobalContext";
 import { findClosestValidNumberInRange } from "./utils/math";
 import { emitMonitoringActivityEvent } from "./utils/monitoring";
+import { getRootNode, getWebPlayerHost } from "./utils/web";
 
 const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   compositionUrl,
@@ -288,13 +288,20 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
       throw new Error("Wrapper not found");
     }
 
-    const onFullscreenChange = () => {
-      const { fullscreenElement } = document;
+    const webPlayerHost = getWebPlayerHost(wrapper);
 
+    // The fullscreen element of the document or shadow root holding an
+    // element: the document's is retargeted to the outermost shadow host
+    const isFullscreen = (element: Element | null) =>
+      !!element && getRootNode(element)?.fullscreenElement === element;
+
+    const onFullscreenChange = () => {
       setIsFullScreen(
-        fullscreenElement === wrapper ||
-          // NOTE: For custom element, the web browser is making the whole custom element full-screen and not only the wrapper
-          fullscreenElement?.localName === WEB_PLAYER_WC_TAG
+        // Requested by the player (on its wrapper)
+        isFullscreen(wrapper) ||
+          // Requested by the host page, on the player's own web component
+          // (not another player of the page)
+          isFullscreen(webPlayerHost)
       );
     };
 
@@ -364,7 +371,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
         ...(integration ? integrationConfig : {}),
       }}
     >
-      <CustomizationContextProvider>
+      <CustomizationContextProvider wrapperRef={wrapperRef}>
         <div
           ref={wrapperRef}
           className="size-full text-foreground"

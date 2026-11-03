@@ -15,6 +15,7 @@ import { useControlsContext } from "../../providers/ControlsContext";
 import { useCustomizationContext } from "../../providers/CustomizationContext";
 import { useGlobalContext } from "../../providers/GlobalContext";
 import { cn } from "../../utils/style";
+import { getRootNode } from "../../utils/web";
 import CdnImage from "../atoms/CdnImage";
 import ArrowRightIcon from "../icons/ArrowRightIcon";
 import HotspotImageIcon from "../icons/HotspotImageIcon";
@@ -52,25 +53,6 @@ let hotspotDescriptionIdCounter = 0;
 type HotspotInteractionEvent = CustomEvent<{
   sourceElement: HTMLElement;
 }>;
-
-const getRootEventTarget = (
-  element: HTMLElement | null
-): Document | ShadowRoot | null => {
-  const rootNode = element?.getRootNode();
-
-  if (!rootNode) {
-    return null;
-  }
-
-  if (
-    rootNode instanceof Document ||
-    (typeof ShadowRoot !== "undefined" && rootNode instanceof ShadowRoot)
-  ) {
-    return rootNode;
-  }
-
-  return null;
-};
 
 // Mirrors the `w-72 max-w-[70vw] small:w-80 large:w-96` classes applied to the
 // inline detail panel when expanded. Used to pick the flip direction based on
@@ -260,7 +242,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
 
   const dispatchHotspotInteraction = useCallback(() => {
     const rootElement = hotspotDivRef.current;
-    const eventTarget = getRootEventTarget(rootElement);
+    const eventTarget = getRootNode(rootElement);
 
     if (!rootElement || !eventTarget) {
       return;
@@ -366,7 +348,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     }
 
     const rootElement = hotspotDivRef.current;
-    const pointerEventTarget = getRootEventTarget(rootElement);
+    const pointerEventTarget = getRootNode(rootElement);
 
     if (!rootElement || !pointerEventTarget) {
       return;
@@ -404,7 +386,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
     }
 
     const rootElement = hotspotDivRef.current;
-    const eventTarget = getRootEventTarget(rootElement);
+    const eventTarget = getRootNode(rootElement);
 
     if (!rootElement || !eventTarget) {
       return;
