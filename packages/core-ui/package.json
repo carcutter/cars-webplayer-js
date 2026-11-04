@@ -12,7 +12,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "pnpm typecheck && eslint . --ext ts,tsx --max-warnings 0",
-    "typecheck": "tsc --noEmit --composite false --incremental false -p tsconfig.app.json && tsc --noEmit --composite false --incremental false -p tsconfig.node.json"
+    "typecheck": "tsc -b --force"
   },
   "dependencies": {
     "@car-cutter/analytics": "workspace:^",

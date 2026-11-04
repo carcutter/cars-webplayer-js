@@ -5,7 +5,7 @@
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {
-    "build": "tsc -b && node build.mjs",
+    "build": "tsc -b --force && node build.mjs",
     "lint": "eslint . --ext ts,mjs --max-warnings 0",
     "analyze": "vite-bundle-visualizer"
   },

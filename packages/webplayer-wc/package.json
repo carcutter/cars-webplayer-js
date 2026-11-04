@@ -29,7 +29,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc -b && vite build",
+    "build": "tsc -b --force && vite build",
     "lint": "eslint . --ext ts --max-warnings 0",
     "analyze": "vite-bundle-visualizer",
     "test": "vitest run --coverage"

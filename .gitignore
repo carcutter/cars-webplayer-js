@@ -1,3 +1,6 @@
+# TypeScript incremental state (tsc -b, Next's tsc --noEmit), next to each tsconfig
+*.tsbuildinfo
+
 # Production
 build
 dist
