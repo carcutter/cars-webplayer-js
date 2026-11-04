@@ -1,0 +1,70 @@
+{
+  "name": "@car-cutter/angular-webplayer",
+  "version": "3.2.17",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "CarCutter",
+    "url": "https://www.car-cutter.com/"
+  },
+  "homepage": "https://carcutter.github.io/cars-webplayer-js/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/carcutter/cars-webplayer-js"
+  },
+  "description": "Use CarCutter WebPlayer in your Angular app",
+  "keywords": [
+    "car-cutter",
+    "webplayer",
+    "angular"
+  ],
+  "type": "module",
+  "module": "dist/fesm2022/car-cutter-angular-webplayer.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/fesm2022/car-cutter-angular-webplayer.mjs"
+    }
+  },
+  "files": [
+    "dist",
+    "package.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "ng-packagr -p ng-package.json -c tsconfig.lib.json && api-extractor run --local && find dist -name '*.d.ts' ! -name index.d.ts -delete && rm dist/package.json",
+    "lint": "eslint . --max-warnings 0 && tsc --noEmit -p tsconfig.json",
+    "test": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@car-cutter/wc-webplayer": "workspace:^",
+    "tslib": "^2.9.1"
+  },
+  "peerDependencies": {
+    "@angular/core": ">=19"
+  },
+  "devDependencies": {
+    "@analogjs/vite-plugin-angular": "^2.9.5",
+    "@angular/build": "~19.2.27",
+    "@angular/common": "~19.2.25",
+    "@angular/compiler": "~19.2.25",
+    "@angular/compiler-cli": "~19.2.25",
+    "@angular/core": "~19.2.25",
+    "@angular/platform-browser": "~19.2.25",
+    "@angular/platform-browser-dynamic": "~19.2.25",
+    "@microsoft/api-extractor": "^7.60.1",
+    "@types/node": "^22",
+    "@vitest/coverage-v8": "^5.1.0",
+    "happy-dom": "^21.0.4",
+    "ng-packagr": "~19.2.2",
+    "rxjs": "^7.8.2",
+    "typescript": "~5.8.3",
+    "vite": "^6.4.5",
+    "vitest": "^5.1.0",
+    "zone.js": "~0.15.1"
+  },
+  "browserslist": [
+    "defaults"
+  ]
+}

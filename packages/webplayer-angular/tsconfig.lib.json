@@ -1,0 +1,30 @@
+{
+  // Library build (ng-packagr): partial compilation, which the apps link with
+  // their own Angular version. Built with the lowest supported one (peer
+  // >=19), as the output of a newer one may not work with older apps
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022", "DOM"],
+    "useDefineForClassFields": false,
+    "experimentalDecorators": true,
+    "declaration": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "angularCompilerOptions": {
+    "compilationMode": "partial",
+    "strictTemplates": true,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true
+  },
+  "include": ["src"],
+  "exclude": ["src/**/*.test.ts", "src/test-setup.ts"]
+}

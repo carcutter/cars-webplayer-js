@@ -1,0 +1,33 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
+  // Rolls the declarations emitted by ng-packagr up into dist/index.d.ts: they
+  // import each other without extensions, which Node16 resolution rejects
+  "mainEntryPointFilePath": "<projectFolder>/dist/index.d.ts",
+  "compiler": {
+    "overrideTsconfig": {
+      "compilerOptions": {
+        "target": "ES2022",
+        "module": "ES2022",
+        "moduleResolution": "bundler",
+        "lib": ["ES2022", "DOM"],
+        "skipLibCheck": true
+      },
+      "files": ["dist/index.d.ts"]
+    }
+  },
+  "dtsRollup": {
+    "enabled": true,
+    "untrimmedFilePath": "<projectFolder>/dist/index.d.ts"
+  },
+  "apiReport": { "enabled": false },
+  "docModel": { "enabled": false },
+  "tsdocMetadata": { "enabled": false },
+  "messages": {
+    "extractorMessageReporting": {
+      "default": { "logLevel": "none" }
+    },
+    "tsdocMessageReporting": {
+      "default": { "logLevel": "none" }
+    }
+  }
+}

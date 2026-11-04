@@ -1,0 +1,12 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      // Not cached: pnpm updates demo-angular's copy of the package (injected,
+      // see pnpm-workspace.yaml) only when the build script runs, which a
+      // cache hit skips
+      "cache": false
+    }
+  }
+}

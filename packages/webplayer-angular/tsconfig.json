@@ -1,0 +1,9 @@
+{
+  // Type check of the sources and tests (lint), and config of the tests
+  "extends": "./tsconfig.lib.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": ["src", "vitest.config.ts"],
+  "exclude": []
+}
