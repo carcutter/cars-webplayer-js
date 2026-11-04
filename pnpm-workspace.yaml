@@ -34,7 +34,7 @@ packageExtensions:
         optional: true
 
   # It imports the Angular compiler and typescript without depending on them:
-  # they resolved to the hoisted ones (Angular 22 of demo-angular, TypeScript
+  # they resolved to the hoisted ones (Angular 21 of demo-angular, TypeScript
   # 6), instead of the ones of angular-webplayer (Angular 19 and TypeScript
   # 5.8, the lowest versions it supports)
   "@analogjs/vite-plugin-angular":

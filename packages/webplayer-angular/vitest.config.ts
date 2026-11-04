@@ -9,7 +9,7 @@ export default defineConfig({
   resolve: {
     // From this package (Angular 19): @angular/core/testing imports the
     // compiler as an optional peer, which pnpm resolves to the hoisted one
-    // (Angular 22 of demo-angular)
+    // (Angular 21 of demo-angular)
     dedupe: ["@angular/compiler"],
   },
   test: {

@@ -20,6 +20,12 @@
       "isIgnored": true
     },
     {
+      "label": "demo-angular runs on Angular 21, the latest one supporting the Node 22.12 of the repo, and its TypeScript",
+      "packages": ["demo-angular"],
+      "dependencies": ["@angular/**", "typescript"],
+      "isIgnored": true
+    },
+    {
       "label": "demo-react-legacy runs on React 17, unlike the rest of the repo",
       "packages": ["demo-react-legacy"],
       "dependencies": [
