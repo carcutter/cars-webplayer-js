@@ -38,13 +38,20 @@ CARS-WEBPLAYER/
 
 ### Setup
 
-1. Install Node v20. Tutorial for macOS [here](https://sukiphan.medium.com/how-to-install-nvm-node-version-manager-on-macos-d9fe432cc7db)
-2. Install Yarn v1 : `brew install yarn`.
-3. Install the node modules with the command `yarn`.
+1. Install Node v22 (the version of the CI). Tutorial for macOS [here](https://sukiphan.medium.com/how-to-install-nvm-node-version-manager-on-macos-d9fe432cc7db)
+2. Enable pnpm, at the version of the `packageManager` field of `package.json`: `corepack enable` (from Node 25, corepack isn't bundled with Node anymore: install it first with `npm install -g corepack`).
+3. Install the node modules with the command `pnpm install`.
 
 ### Developing the WebPlayer Core
 
-Simply run `yarn dev` from the workspace root to start the app in development mode.
+Run `pnpm dev` from the workspace root to start the playground of `packages/core-ui` (at the URL Vite prints, `pnpm dev:core-preact` to run it on Preact like the web component). It renders the player from its sources, so a change in core-ui shows up as soon as it's saved, and lets you change:
+
+- the props of the player (but the media widths and the deprecated analytics ones), and its children (custom medias, custom icon)
+- the CSS variables
+- where it's rendered: in the page, or in a shadow root with its inlined styles (as the web component renders it; the customizations stay React children)
+- the width of its container. The breakpoints (`max-small`, `small`, `large`, shown in the header) follow the viewport: use the browser's device mode for them
+
+The settings are kept in the URL, and the events the player dispatches are listed below it. Monitoring is off by default: from localhost, the service refuses its events.
 
 #### Using Local Composition
 
@@ -52,51 +59,51 @@ Vite serves all assets in the `/public` directory at the root path `/` during de
 
 ### Developing the Documentation
 
-Simply run `yarn dev:docs` from the workspace root to start the documentation in development mode.
+Simply run `pnpm dev:docs` from the workspace root to start the documentation in development mode.
 
 ### Building
 
-Run `yarn build` to build all packages
+Run `pnpm build` to build all packages
 
 #### Analyze Bundle Size
 
-Go in any package and run `yarn analyze` to analyze the bundle.
+Go in any package and run `pnpm analyze` to analyze the bundle.
 
 NOTE : the sourcemap seems to interfere with size calculation [GitHub issue](https://github.com/KusStar/vite-bundle-visualizer/issues/8). More info [here](https://www.npmjs.com/package/vite-bundle-visualizer).
 
 ### Linting
 
-Run `yarn lint`
+Run `pnpm lint`
 
 ### Testing
 
-Run `yarn test` to run the unit tests (vitest) of `core-wc`, `core-wc-react-*` and the `webplayer-*` wrappers. Each package requires 100% coverage, and its report is written to its `coverage` folder. In a package, `npx vitest` runs them in watch mode.
+Run `pnpm test` to run the unit tests (vitest) of `core-wc`, `core-wc-react-*` and the `webplayer-*` wrappers. Each package requires 100% coverage, and its report is written to its `coverage` folder. In a package, `pnpm vitest` runs them in watch mode.
 
-Run `yarn e2e` to run the Playwright tests of `apps/e2e` over every demo app, on the local builds (run `yarn build` first, then `yarn workspace e2e playwright install chromium` once). They start the demo dev servers themselves, or reuse the ones already running. `yarn e2e:cdn` checks the files published on the CDN instead, which CI also does every night.
+Run `pnpm e2e` to run the Playwright tests of `apps/e2e` over every demo app, on the local builds (run `pnpm build` first, then `pnpm --filter e2e exec playwright install chromium` once). They start the demo dev servers themselves, or reuse the ones already running. `pnpm e2e:cdn` checks the files published on the CDN instead, which CI also does every night.
 
-Run `yarn test:consumers` (after `yarn build`) to check the published packages the way customers get them: they're packed with `npm pack`, checked with publint and attw, then installed with npm in the apps of `consumers/` (React 19, 18 and 17, Next.js, Vue 3.3, vanilla, Web Component), type-checked, built and checked in the browser. `node scripts/consumer-test.mjs react-17 vue-3.3` runs only some of them.
+Run `pnpm test:consumers` (after `pnpm build`) to check the published packages the way customers get them: they're packed with `pnpm pack`, checked with publint and attw, then installed with npm in the apps of `consumers/` (React 19, 18 and 17, Next.js, Vue 3.3, vanilla, Web Component), type-checked, built and checked in the browser. `node scripts/consumer-test.mjs react-17 vue-3.3` runs only some of them.
 
 ### Run demos
 
 Every demo renders the same listing page (from `packages/demo`) with a real WebPlayer loading the demo composition, and logs the player events.
 
-Run `yarn demo` to start all of them, then open the index at http://localhost:4170. Run `yarn demo:XX` to start a single one:
+Run `pnpm demo` to start all of them, then open the index at http://localhost:4170. Run `pnpm demo:XX` to start a single one:
 
 | Command                  | Integration                                        | URL                   |
 | ------------------------ | -------------------------------------------------- | --------------------- |
-| `yarn demo:index`        | Index of all demos                                 | http://localhost:4170 |
-| `yarn demo:react`        | `@car-cutter/react-webplayer`                      | http://localhost:4171 |
-| `yarn demo:react-legacy` | `@car-cutter/react-webplayer/legacy` (React 17)    | http://localhost:4178 |
-| `yarn demo:next`         | `@car-cutter/next-webplayer`                       | http://localhost:4172 |
-| `yarn demo:vanilla`      | `@car-cutter/vanilla-webplayer`                    | http://localhost:4173 |
-| `yarn demo:script`       | `<script>` bundle (`@car-cutter/script-webplayer`) | http://localhost:4174 |
-| `yarn demo:wc`           | `@car-cutter/wc-webplayer`                         | http://localhost:4175 |
-| `yarn demo:vue`          | `@car-cutter/vue-webplayer`                        | http://localhost:4176 |
-| `yarn demo:iframe`       | iframe integration (local copy or hosted page)     | http://localhost:4177 |
+| `pnpm demo:index`        | Index of all demos                                 | http://localhost:4170 |
+| `pnpm demo:react`        | `@car-cutter/react-webplayer`                      | http://localhost:4171 |
+| `pnpm demo:react-legacy` | `@car-cutter/react-webplayer/legacy` (React 17)    | http://localhost:4178 |
+| `pnpm demo:next`         | `@car-cutter/next-webplayer`                       | http://localhost:4172 |
+| `pnpm demo:vanilla`      | `@car-cutter/vanilla-webplayer`                    | http://localhost:4173 |
+| `pnpm demo:script`       | `<script>` bundle (`@car-cutter/script-webplayer`) | http://localhost:4174 |
+| `pnpm demo:wc`           | `@car-cutter/wc-webplayer`                         | http://localhost:4175 |
+| `pnpm demo:vue`          | `@car-cutter/vue-webplayer`                        | http://localhost:4176 |
+| `pnpm demo:iframe`       | iframe integration (local copy or hosted page)     | http://localhost:4177 |
 
 The ports are listed in `packages/demo/src/ports.ts`: the vite apps read them from there, demo-next sets its port in its `dev` script.
 
-The script demo loads the bundle built locally from `packages/webplayer-script`, so changes can be checked before the bundle is released. Open http://localhost:4174/?bundle=cdn to load the published `v3/bundle.js` instead. `?variant=react-16-17` / `?variant=react-18` load `bundle-react-16-17.js` / `bundle-react-18.js` instead, on a page providing React 17 / 18 as UMD globals. The iframe demo works the same way: by default it embeds a local copy of the hosted iframe page (`apps/demo-iframe/public/player`) that loads the local bundle; open http://localhost:4177/?bundle=cdn to embed the hosted iframe instead.
+The script demo loads the bundle built locally from `packages/webplayer-script`, so changes can be checked before the bundle is released. Open http://localhost:4174/?bundle=cdn to load the published `v3/bundle.js` instead. The iframe demo works the same way: by default it embeds a local copy of the hosted iframe page (`apps/demo-iframe/public/player`) that loads the local bundle; open http://localhost:4177/?bundle=cdn to embed the hosted iframe instead.
 
 ## Publication
 
@@ -104,13 +111,13 @@ This repository uses the Changesets CLI to handle versioning and publication to 
 
 ### 1. Create a Changeset
 
-To propose a new version for one or more packages, you need to create a changeset. Run the command `yarn version:commit` and follow the prompts.
+To propose a new version for one or more packages, you need to create a changeset. Run the command `pnpm version:commit` and follow the prompts.
 
 You will be prompted to select the packages that should be affected and to specify the type of change (patch, minor, or major). This will create a changeset file that describes the changes.
 
 ### 2. Version Packages
 
-Once changesets have been added and merged into your base branch (e.g., `main`), you can version the packages. This step updates the version numbers in your `package.json` files and generates changelogs based on your changesets: `yarn version:apply`
+Once changesets have been added and merged into your base branch (e.g., `main`), you can version the packages. This step updates the version numbers in your `package.json` files and generates changelogs based on your changesets: `pnpm version:apply`
 
 This command will:
 
@@ -120,19 +127,19 @@ This command will:
 
 ### 3. Ensure every thing is working as expected
 
-Run `yarn ci` to run both `build` and `lint` commands. It will also run `yarn` to be sure dependencies are correct.
+Run `pnpm run ci` to run both `build` and `lint` commands. It will also run `pnpm install --frozen-lockfile` to be sure dependencies are correct.
 
-_NOTE: at this point, if you see a change in the yarn.lock file, it is certainly because all version have not been properly updated._
+_NOTE: if the install fails because `pnpm-lock.yaml` is outdated, some versions have not been properly updated: run `pnpm install` and commit the updated lockfile._
 
 ### 4. Publish to npm
 
-After versioning the packages, you can publish them to npm. This command will publish all packages that have changed since the last release: `yarn publish:packages`
+After versioning the packages, you can publish them to npm. This command will publish all packages that have changed since the last release: `pnpm publish:packages`
 
 Make sure you are logged in to npm with the correct credentials before running this command. The packages will be published according to the access level specified in your `changesets` configuration (`config.json`).
 
 ### 5. Publish documentation
 
-Run `yarn publish:docs`
+Run `pnpm publish:docs`
 
 ## Use the WebPlayer on your App
 
@@ -202,8 +209,8 @@ Scripts are available in the `scripts` directory
 
 ### Generate JSON schema
 
-Use the command `yarn migrate_composition <COMPOSITION_V1_PATH>`. It will create a new file with the new type
+Use the command `pnpm migrate_composition <COMPOSITION_V1_PATH>`. It will create a new file with the new type
 
 ### Convert composition from V2 to V3
 
-Use the command `yarn generate_json_schema`. It will create a file within the _schemas_ folder
+Use the command `pnpm generate_json_schema`. It will create a file within the _schemas_ folder

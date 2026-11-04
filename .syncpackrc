@@ -1,10 +1,10 @@
 {
   "versionGroups": [
     {
-      "label": "Local packages are linked via workspaces",
+      "label": "Local packages are linked via the pnpm workspace, and published with a ^ range",
       "dependencies": ["@car-cutter/**"],
       "dependencyTypes": ["dev", "prod"],
-      "policy": "sameRange"
+      "pinVersion": "workspace:^"
     },
     {
       "label": "vue-webplayer builds its declarations against the lowest Vue it supports (peer ^3.3)",
@@ -22,12 +22,6 @@
         "@types/react-dom"
       ],
       "isIgnored": true
-    },
-    {
-      "label": "core-wc-react-16-17 needs r2wc v1: v2 uses react-dom/client (React 18+)",
-      "packages": ["@car-cutter/core-wc-react-16-17"],
-      "dependencies": ["@r2wc/react-to-web-component"],
-      "pinVersion": "^1.0.0"
     },
     {
       "label": "Framework peer ranges must stay wide (publishable wrappers omit them; internal pkgs keep wide ranges - never pin/unify to installed version)",

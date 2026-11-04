@@ -647,7 +647,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
 
   const [extendMode, setExtendMode] = useState(false);
   const [extendTransitionTimeout, setExtendTransitionTimeout] =
-    useState<NodeJS.Timeout>();
+    useState<ReturnType<typeof setTimeout>>();
   const [fakeFullScreen, setFakeFullScreen] = useState(false);
 
   const changeExtendMode = useCallback(

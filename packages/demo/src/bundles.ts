@@ -1,64 +1,21 @@
-// Variants of the `<script>` bundle, shown by the script demo. Kept free of
+// The `<script>` bundle, loaded by the script and iframe demos. Kept free of
 // DOM and vite code: the vite plugin and the pages both import it.
 
 export const CDN_BASE = "https://cdn.car-cutter.com/libs/web-player/v3";
 
-export type BundleVariant = "default" | "react-16-17" | "react-18";
+/** Package building the bundle */
+export const SCRIPT_PKG = "@car-cutter/script-webplayer";
 
-export const BUNDLE_VARIANTS: BundleVariant[] = [
-  "default",
-  "react-16-17",
-  "react-18",
-];
+/** Folder of the built bundle, from the repo root */
+export const SCRIPT_DIST = "packages/webplayer-script/dist";
 
-export interface ScriptBundle {
+export const SCRIPT_BUNDLE = {
   /** File name, as published on the CDN */
-  name: string;
-  /** Package building it */
-  pkg: string;
-  /** Its folder in packages/ */
-  dir: string;
-  /** Matches the built file in `<dir>/dist`, whatever the version */
-  file: RegExp;
-  cdnUrl: string;
+  name: "bundle.js",
+  /** Matches the built file in SCRIPT_DIST, whatever the version */
+  // Not the bundle-react-*@… files a dist built before their removal may hold
+  file: /^bundle-[^@]+\.js$/,
+  cdnUrl: `${CDN_BASE}/bundle.js`,
   /** URL the demo dev servers serve the local build at */
-  localPath: string;
-  /** React version the host page must provide as UMD globals, if any */
-  react?: string;
-}
-
-export const SCRIPT_BUNDLES: Record<BundleVariant, ScriptBundle> = {
-  default: {
-    name: "bundle.js",
-    pkg: "@car-cutter/script-webplayer",
-    dir: "webplayer-script",
-    file: /^bundle-.+\.js$/,
-    cdnUrl: `${CDN_BASE}/bundle.js`,
-    localPath: "/local/bundle.js",
-  },
-  "react-16-17": {
-    name: "bundle-react-16-17.js",
-    pkg: "@car-cutter/script-webplayer-react-16-17",
-    dir: "webplayer-script-react-16-17",
-    file: /^bundle-react-16-17@.+\.js$/,
-    cdnUrl: `${CDN_BASE}/bundle-react-16-17.js`,
-    localPath: "/local/bundle-react-16-17.js",
-    react: "17.0.2",
-  },
-  "react-18": {
-    name: "bundle-react-18.js",
-    pkg: "@car-cutter/script-webplayer-react-18",
-    dir: "webplayer-script-react-18",
-    file: /^bundle-react-18@.+\.js$/,
-    cdnUrl: `${CDN_BASE}/bundle-react-18.js`,
-    localPath: "/local/bundle-react-18.js",
-    react: "18.3.1",
-  },
+  localPath: "/local/bundle.js",
 };
-
-/** UMD builds of React and ReactDOM, defining the `React` / `ReactDOM` globals */
-export function reactUmdUrls(version: string): string[] {
-  return ["react", "react-dom"].map(
-    lib => `https://unpkg.com/${lib}@${version}/umd/${lib}.production.min.js`
-  );
-}

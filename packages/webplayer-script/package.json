@@ -5,16 +5,16 @@
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {
-    "build": "tsc -b && vite build",
+    "build": "tsc -b --force && vite build",
     "lint": "eslint . --ext ts --max-warnings 0",
     "analyze": "vite-bundle-visualizer"
   },
   "dependencies": {
-    "@car-cutter/wc-webplayer": "*"
+    "@car-cutter/wc-webplayer": "workspace:^"
   },
   "devDependencies": {
-    "@car-cutter/eslint-config": "*",
-    "@car-cutter/typescript-config": "*",
+    "@car-cutter/typescript-config": "workspace:^",
+    "@types/node": "^20",
     "browserslist": "^4.28.7",
     "browserslist-to-esbuild": "^2.1.1",
     "typescript": "^5",

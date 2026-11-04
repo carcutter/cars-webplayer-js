@@ -27,7 +27,7 @@ jobs:
           GIT_USER_NAME: "CarCutter"
           GIT_USER_EMAIL: "it@car-cutter.com"
           CURRENT_BRANCH: "main"
-        run: yarn publish:docs
+        run: pnpm publish:docs
 
   npm:
     name: npm
@@ -55,7 +55,7 @@ jobs:
           echo "node version: $(node --version)"
 
       - name: Publish to npm
-        run: yarn publish:packages
+        run: pnpm publish:packages
 
   cdn:
     name: cdn
@@ -79,8 +79,10 @@ jobs:
         run: |
           mkdir -p artifacts
           cp "artifacts/bundle-$VERSION.js" "artifacts/bundle.js"
-          cp "artifacts/bundle-react-16-17@$VERSION.js" "artifacts/bundle-react-16-17.js"
-          cp "artifacts/bundle-react-18@$VERSION.js" "artifacts/bundle-react-18.js"
+          # The bundles using the React of the page were dropped: their URLs
+          # serve bundle.js, which works with or without React on the page
+          cp "artifacts/bundle-$VERSION.js" "artifacts/bundle-react-16-17.js"
+          cp "artifacts/bundle-$VERSION.js" "artifacts/bundle-react-18.js"
           ls -la artifacts/
 
       # https://github.com/marketplace/actions/s3-sync

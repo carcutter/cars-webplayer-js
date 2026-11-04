@@ -155,9 +155,9 @@ export function renderEventsNote(slot: HTMLElement, note: string) {
 export function localBundleMissingHtml(pkg: string, cdnHref: string): string {
   return (
     `The local build of ${escapeHtml(pkg)} couldn't be loaded. Build it with ` +
-    // `yarn build` ends with `--`: a --filter given to it would reach the
+    // `pnpm build` ends with `--`: a --filter given to it would reach the
     // packages' build scripts instead of turbo
-    `<code>yarn turbo build --filter=${escapeHtml(pkg)}</code> and reload, ` +
+    `<code>pnpm turbo build --filter=${escapeHtml(pkg)}</code> and reload, ` +
     `or <a href="${escapeHtml(cdnHref)}">use the CDN version</a>.`
   );
 }

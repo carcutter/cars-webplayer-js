@@ -51,9 +51,7 @@ const WebPlayerElement: React.FC<Props> = ({ index, item, isShown }) => {
       Comp = <CustomElement itemIndex={index} {...item} />;
   }
 
-  // HACK: Add 1px on both side to avoid vertical lines due to decimal sizes
-  // NOTE: The hack "-ml-px h-full w-[calc(100%+2px)]" was replaced with "grid grid-cols-[repeat(var(--max-items),1fr)]".
-
+  // A grid track: no vertical lines between the items with decimal sizes
   Comp = (
     <div className="grid grid-cols-[repeat(var(--max-items),1fr)]">{Comp}</div>
   );

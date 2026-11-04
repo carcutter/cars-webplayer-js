@@ -16,10 +16,10 @@ jobs:
       - uses: ./.github/actions/install_tools
 
       - name: Install the Playwright browser
-        run: yarn workspace e2e playwright install --with-deps chromium
+        run: pnpm --filter e2e exec playwright install --with-deps chromium
 
       - name: E2E on the CDN
-        run: yarn e2e:cdn
+        run: pnpm e2e:cdn
 
       - uses: actions/upload-artifact@v4
         if: failure()

@@ -1,3 +1,6 @@
+# TypeScript incremental state (tsc -b, Next's tsc --noEmit), next to each tsconfig
+*.tsbuildinfo
+
 # Production
 build
 dist
@@ -12,8 +15,7 @@ node_modules
 # Misc
 .DS_Store
 
-yarn-debug.log*
-yarn-error.log*
+pnpm-debug.log*
 
 # Secrets
 .secrets

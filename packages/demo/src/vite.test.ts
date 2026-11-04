@@ -61,27 +61,28 @@ describe("demoPort", () => {
 });
 
 describe("localBundle", () => {
-  it("serves the most recent build of the requested bundle", () => {
+  it("serves the most recent build of the bundle", () => {
     const stream = { pipe: vi.fn() };
     fs.existsSync.mockReturnValue(true);
+    // The builds of previous versions stay until dist is emptied
     fs.readdirSync.mockReturnValue([
-      "bundle-react-18@3.2.16.js",
-      "bundle-react-18@3.2.17.js",
-      "script-webplayer-react-18.css",
+      "bundle-3.2.16.js",
+      "bundle-3.2.17.js",
+      "bundle-3.2.17.js.map",
     ]);
     fs.statSync.mockImplementation((url: URL) => ({
       mtimeMs: url.pathname.endsWith("3.2.17.js") ? 2 : 1,
     }));
     fs.createReadStream.mockReturnValue(stream);
 
-    const { res, next } = request("/local/bundle-react-18.js?t=1");
+    const { res, next } = request("/local/bundle.js?t=1");
 
     expect(next).not.toHaveBeenCalled();
     expect(String(fs.existsSync.mock.calls[0][0])).toMatch(
-      /\/webplayer-script-react-18\/dist\/$/
+      /\/packages\/webplayer-script\/dist\/$/
     );
     expect(String(fs.createReadStream.mock.calls[0][0])).toMatch(
-      /bundle-react-18@3\.2\.17\.js$/
+      /bundle-3\.2\.17\.js$/
     );
     expect(res.headers).toEqual({
       "Content-Type": "text/javascript",
@@ -97,13 +98,13 @@ describe("localBundle", () => {
 
     expect(res.statusCode).toBe(404);
     expect(res.body).toBe(
-      "No local build of @car-cutter/script-webplayer in packages/webplayer-script/dist"
+      "No local build of bundle.js in packages/webplayer-script/dist"
     );
   });
 
   it("answers 404 when dist has no bundle", () => {
     fs.existsSync.mockReturnValue(true);
-    fs.readdirSync.mockReturnValue(["script-webplayer.css"]);
+    fs.readdirSync.mockReturnValue(["index.html"]);
 
     expect(request("/local/bundle.js").res.statusCode).toBe(404);
   });

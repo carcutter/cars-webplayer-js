@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b --force && vite build",
     "lint": "eslint . --ext ts,tsx --max-warnings 0"
   },
   "dependencies": {
-    "@car-cutter/react-webplayer": "*",
+    "@car-cutter/react-webplayer": "workspace:^",
     "@radix-ui/react-checkbox": "^1.1.1",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-popover": "^1.1.1",
@@ -22,20 +22,15 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@car-cutter/eslint-config": "*",
-    "@car-cutter/typescript-config": "*",
+    "@car-cutter/typescript-config": "workspace:^",
+    "@types/node": "^20",
     "@types/react": "^18.3.28",
     "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react": "^5.0.0",
     "autoprefixer": "^10.4.20",
     "browserslist": "^4.28.7",
     "browserslist-to-esbuild": "^2.1.1",
-    "eslint": "^8",
-    "eslint-plugin-tailwindcss": "^3.17.4",
     "postcss": "^8",
-    "prettier": "^3.3.3",
-    "prettier-eslint": "^16.3.0",
-    "prettier-plugin-tailwindcss": "^0.6.6",
     "tailwindcss": "^3.4.11",
     "typescript": "^5",
     "vite": "^6.4.4"

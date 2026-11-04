@@ -125,7 +125,7 @@ describe("notes", () => {
 
     const note = root.querySelector(".dm-stage__note")!;
     expect(note.querySelector("code")!.textContent).toBe(
-      "yarn turbo build --filter=@car-cutter/x"
+      "pnpm turbo build --filter=@car-cutter/x"
     );
     expect(note.querySelector("a")!.getAttribute("href")).toBe("?a=1&b=2");
   });

@@ -16,7 +16,8 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@car-cutter/react-webplayer": "*",
+    "@car-cutter/core": "workspace:^",
+    "@car-cutter/react-webplayer": "workspace:^",
     "@docusaurus/core": "^3.10.1",
     "@docusaurus/preset-classic": "^3.10.1",
     "@docusaurus/remark-plugin-npm2yarn": "^3.10.1",
@@ -27,10 +28,12 @@
     "react-dom": ">=18"
   },
   "devDependencies": {
-    "@car-cutter/core-wc": "*",
+    "@car-cutter/core-wc": "workspace:^",
     "@docusaurus/module-type-aliases": "^3.10.1",
+    "@docusaurus/plugin-content-docs": "^3.10.1",
     "@docusaurus/tsconfig": "^3.10.1",
     "@docusaurus/types": "^3.10.1",
+    "@types/node": "^20",
     "@types/react": "^18.3.28",
     "@types/react-dom": "^18.3.7",
     "typescript": "^5"

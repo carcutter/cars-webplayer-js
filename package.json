@@ -3,9 +3,9 @@
   "private": true,
   "license": "Apache-2.0",
   "scripts": {
-    "dev": "yarn dev:core",
+    "dev": "pnpm dev:core",
     "dev:core": "turbo dev --filter=@car-cutter/core-ui --",
-    "dev:core-preact": "yarn dev:core --mode development-preact",
+    "dev:core-preact": "pnpm dev:core --mode development-preact",
     "dev:core-wc": "turbo dev --filter=@car-cutter/core-wc --",
     "dev:showroom": "turbo dev --filter=@car-cutter/webplayer-showroom --",
     "dev:docs": "turbo dev --filter=@car-cutter/webplayer-docs --",
@@ -19,58 +19,52 @@
     "demo:vanilla": "turbo dev --filter=demo-vanilla --",
     "demo:vue": "turbo dev --filter=demo-vue --",
     "demo:wc": "turbo dev --filter=demo-wc --",
-    "clean": "find . -type d \\( -name 'node_modules' -o -name '.turbo' -o -name 'dist' \\) -exec rm -rf {} +",
-    "postinstall": "turbo run postinstall",
+    "clean": "find . \\( -type d \\( -name 'node_modules' -o -name '.turbo' -o -name 'dist' \\) -o -name '*.tsbuildinfo' \\) -prune -exec rm -rf {} +",
     "build": "turbo build --ui tui --",
     "build:core": "turbo build --filter=@car-cutter/core-ui",
     "build:next": "turbo build --filter=@car-cutter/next-webplayer",
     "build:react": "turbo build --filter=@car-cutter/react-webplayer",
     "build:script": "turbo build --filter=@car-cutter/script-webplayer",
-    "build:script-react-16-17": "turbo build --filter=@car-cutter/script-webplayer-react-16-17",
-    "build:script-react-18": "turbo build --filter=@car-cutter/script-webplayer-react-18",
     "build:vanilla": "turbo build --filter=@car-cutter/vanilla-webplayer",
     "build:vue": "turbo build --filter=@car-cutter/vue-webplayer",
     "build:wc": "turbo build --filter=@car-cutter/wc-webplayer",
     "lint": "turbo lint --ui tui --continue",
     "test": "turbo test --ui tui --continue",
-    "e2e": "yarn workspace e2e e2e",
-    "e2e:cdn": "yarn workspace e2e e2e:cdn",
+    "e2e": "pnpm --filter e2e e2e",
+    "e2e:cdn": "pnpm --filter e2e e2e:cdn",
     "test:consumers": "node scripts/consumer-test.mjs",
     "syncpack:lint": "syncpack lint",
     "syncpack:fix": "syncpack fix",
-    "ci": "yarn && syncpack lint && turbo run build lint --ui tui",
+    "ci": "pnpm install --frozen-lockfile && syncpack lint && turbo run build lint --ui tui",
     "ci:core": "turbo run build lint --filter=@car-cutter/core-ui",
-    "ci:hard": "yarn clean && yarn ci",
+    "ci:hard": "pnpm clean && pnpm run ci",
     "version:commit": "changeset add",
     "version:apply": "changeset version",
     "publish:packages": "turbo run build lint && changeset publish",
-    "publish:docs": "turbo build --filter=@car-cutter/webplayer-docs && cd apps/docs && yarn deploy"
+    "publish:docs": "turbo build --filter=@car-cutter/webplayer-docs && pnpm --filter @car-cutter/webplayer-docs run deploy"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
     "@changesets/cli": "^2.27.8",
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
-    "postinstall-postinstall": "^2.1.0",
+    "@types/eslint": "^9.6.1",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "conventional-changelog-conventionalcommits": "^9.3.1",
+    "eslint": "^8",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.30.0",
+    "eslint-plugin-react": "^7.36.1",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-tailwindcss": "^3.17.4",
+    "eslint-plugin-unused-imports": "^3.2.0",
+    "prettier": "^3.3.3",
     "publint": "^0.3.25",
     "syncpack": "^15.1.2",
-    "turbo": "^2.9.14"
+    "tailwindcss": "^3.4.11",
+    "turbo": "^2.9.14",
+    "typescript": "^5"
   },
-  "resolutions": {
-    "@microsoft/api-extractor": "~7.59.4",
-    "**/@typescript-eslint/typescript-estree/minimatch": "^9.0.7",
-    "serialize-javascript": "^7.1.3",
-    "**/sockjs/uuid": "^11.1.1",
-    "tinypool": "^2.1.2"
-  },
-  "packageManager": "yarn@1.22.22",
-  "workspaces": {
-    "packages": [
-      "apps/*",
-      "packages/*"
-    ],
-    "nohoist": [
-      "@car-cutter/core-wc-react-*/@r2wc/**"
-    ]
-  }
+  "packageManager": "pnpm@10.34.7"
 }

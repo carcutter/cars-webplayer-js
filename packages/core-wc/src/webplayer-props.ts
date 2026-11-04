@@ -1,12 +1,15 @@
-import type { WebPlayerProps } from "@car-cutter/core";
+import type {
+  WebPlayerCustomMediaProps,
+  WebPlayerIconProps,
+  WebPlayerProps,
+} from "@car-cutter/core";
 
-type R2wcPropType = "string" | "number" | "boolean";
+import type { PropType } from "./element";
 
-/**
- * r2wc props of the <cc-webplayer> element, shared by the React 16 / 17 and
- * React 18 builds. Typed against WebPlayerProps, so that a prop added to the
- * core fails the build until it's listed here.
- */
+// Props of the elements, read from their attributes. Typed against the props
+// of the core, so that a prop added there fails the build until it's listed.
+
+/** Props of <cc-webplayer> */
 export const WEB_PLAYER_WC_PROPS = {
   compositionUrl: "string",
 
@@ -47,4 +50,15 @@ export const WEB_PLAYER_WC_PROPS = {
 
   // Monitoring
   monitoring: "boolean",
-} as const satisfies Record<keyof WebPlayerProps, R2wcPropType>;
+} as const satisfies Record<keyof WebPlayerProps, PropType>;
+
+/** Props of <cc-webplayer-custom-media> */
+export const WEB_PLAYER_CUSTOM_MEDIA_WC_PROPS = {
+  index: "number",
+  thumbnailSrc: "string",
+} as const satisfies Record<keyof WebPlayerCustomMediaProps, PropType>;
+
+/** Props of <cc-webplayer-icon> */
+export const WEB_PLAYER_ICON_WC_PROPS = {
+  name: "string",
+} as const satisfies Record<keyof WebPlayerIconProps, PropType>;

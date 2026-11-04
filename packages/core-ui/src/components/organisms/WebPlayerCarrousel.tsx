@@ -248,7 +248,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
 
   // - Listen to resizing to avoid layer shift
   const [resizeTransitionTimeout, setResizeTransitionTimeout] =
-    useState<NodeJS.Timeout>();
+    useState<ReturnType<typeof setTimeout>>();
   const isResizing = !!resizeTransitionTimeout;
 
   useEffect(() => {

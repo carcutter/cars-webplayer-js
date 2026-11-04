@@ -1,6 +1,9 @@
-export { checkCustomElementsDefinition } from "./src/wc";
+export {
+  checkCustomElementsDefinition,
+  ensureCustomElementsDefinition,
+} from "./src/wc";
 
-export { patchWebComponentProps } from "./src/utils";
+export type { PropType, Renderer } from "./src/element";
 
 export { WEB_PLAYER_WC_PROPS } from "./src/webplayer-props";
 

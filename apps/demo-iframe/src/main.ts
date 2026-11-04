@@ -1,4 +1,9 @@
-import { IFRAME_QUERY, IFRAME_URL, SCRIPT_BUNDLES } from "@car-cutter/demo";
+import {
+  IFRAME_QUERY,
+  IFRAME_URL,
+  SCRIPT_BUNDLE,
+  SCRIPT_PKG,
+} from "@car-cutter/demo";
 import {
   localBundleMissingHtml,
   renderDemoPage,
@@ -44,13 +49,13 @@ if (useCdn) {
 } else {
   // The local iframe page loads the local bundle: check it's there, otherwise
   // the iframe would just stay blank
-  fetch(SCRIPT_BUNDLES.default.localPath, { method: "HEAD" }).then(
+  fetch(SCRIPT_BUNDLE.localPath, { method: "HEAD" }).then(
     res =>
       res.ok
         ? mediaSlot.append(iframe)
         : renderStageNote(
             mediaSlot,
-            localBundleMissingHtml(SCRIPT_BUNDLES.default.pkg, "?bundle=cdn")
+            localBundleMissingHtml(SCRIPT_PKG, "?bundle=cdn")
           ),
     () =>
       renderStageNote(

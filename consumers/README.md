@@ -1,8 +1,8 @@
 # Consumer apps
 
 Minimal apps using the WebPlayer packages the way a customer does: installed
-from the packed tarballs with npm, outside the yarn workspaces. Run them all
-with `yarn test:consumers` (see `scripts/consumer-test.mjs`): each app is
+from the packed tarballs with npm, outside the pnpm workspace. Run them all
+with `pnpm test:consumers` (see `scripts/consumer-test.mjs`): each app is
 copied to a temp folder, installed, type-checked, built and served, then
 checked by the Playwright project `consumers` (`apps/e2e`).
 

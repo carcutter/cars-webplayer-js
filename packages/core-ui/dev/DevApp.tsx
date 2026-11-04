@@ -1,147 +1,145 @@
-import { useCallback, useEffect, useMemo } from "react";
-
-import {
-  AnalyticsLoadEvent,
-  AnalyticsDisplayEvent,
-  AnalyticsInteractionEvent,
-  AnalyticsErrorEvent,
-  subscribeToAnalyticsEvents,
-} from "@car-cutter/analytics";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import WebPlayer from "../src/WebPlayer";
 import WebPlayerCustomMedia from "../src/WebPlayerCustomMedia";
 import WebPlayerIcon from "../src/WebPlayerIcon";
 
-import "../src/index.css";
+import Breakpoints from "./Breakpoints";
+import Controls from "./Controls";
+import ErrorBoundary from "./ErrorBoundary";
+import EventLog from "./EventLog";
+import {
+  DEFAULT_SETTINGS,
+  parseSettings,
+  serializeSettings,
+  toCssVariables,
+  toPlayerProps,
+  type Settings,
+} from "./settings";
+import Stage from "./Stage";
 
-const useAnalytics = () => {
-  const useCustomAnalyticsEventPrefix = false;
-  const analyticsEventPrefix: string | undefined = useMemo(
-    () => (useCustomAnalyticsEventPrefix ? "cc-analytics-yolo:" : undefined),
-    [useCustomAnalyticsEventPrefix]
-  );
-  const onAnalyticsLoadEvent = useCallback((event: AnalyticsLoadEvent) => {
-    // eslint-disable-next-line no-console
-    console.log("AnalyticsLoadEvent", event);
-  }, []);
-  useEffect(() => {
-    subscribeToAnalyticsEvents(
-      "load",
-      onAnalyticsLoadEvent,
-      analyticsEventPrefix
-    );
-  }, [analyticsEventPrefix, onAnalyticsLoadEvent]);
+// Children of the player, created once: they register themselves again when
+// they change, which would reset the player on every settings change
+const CUSTOM_MEDIAS = (
+  <>
+    <WebPlayerCustomMedia
+      index={4}
+      thumbnailSrc="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_thumbnail_audi.png"
+    >
+      <img src="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_image_1.jpg" />
+    </WebPlayerCustomMedia>
+    <WebPlayerCustomMedia index={-2}>
+      <img src="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_image_2.jpg" />
+    </WebPlayerCustomMedia>
+  </>
+);
 
-  const onAnalyticsDisplayEvent = useCallback(
-    (event: AnalyticsDisplayEvent) => {
-      // eslint-disable-next-line no-console
-      console.log("AnalyticsDisplayEvent", event);
-    },
-    []
-  );
+const CUSTOM_ICON = (
+  <WebPlayerIcon name="UI_360_PLAY">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="currentColor"
+        d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"
+      />
+    </svg>
+  </WebPlayerIcon>
+);
 
-  useEffect(() => {
-    subscribeToAnalyticsEvents(
-      "display",
-      onAnalyticsDisplayEvent,
-      analyticsEventPrefix
-    );
-  }, [analyticsEventPrefix, onAnalyticsDisplayEvent]);
-
-  const onAnalyticsInteractionEvent = useCallback(
-    (event: AnalyticsInteractionEvent) => {
-      // eslint-disable-next-line no-console
-      console.log("AnalyticsInteractionEvent", event);
-    },
-    []
-  );
-
-  useEffect(() => {
-    subscribeToAnalyticsEvents(
-      "interaction",
-      onAnalyticsInteractionEvent,
-      analyticsEventPrefix
-    );
-  }, [analyticsEventPrefix, onAnalyticsInteractionEvent]);
-
-  const onAnalyticsErrorEvent = useCallback((event: AnalyticsErrorEvent) => {
-    // eslint-disable-next-line no-console
-    console.log("AnalyticsErrorEvent", event);
-  }, []);
-
-  useEffect(() => {
-    subscribeToAnalyticsEvents(
-      "error",
-      onAnalyticsErrorEvent,
-      analyticsEventPrefix
-    );
-  }, [analyticsEventPrefix, onAnalyticsErrorEvent]);
-
-  return {
-    analyticsEventPrefix,
-  };
-};
-
+/**
+ * Playground of the player, on its sources: a change in core-ui shows up as
+ * soon as it's saved. Its settings are kept in the URL.
+ */
 const DevApp: React.FC = () => {
-  // Analytics
-  const { analyticsEventPrefix } = useAnalytics();
+  const [settings, setSettings] = useState(() =>
+    parseSettings(window.location.search)
+  );
+  // Remounts the player, for what it only reads when mounted
+  const [playerKey, setPlayerKey] = useState(0);
+
+  // Debounced: a color picker being dragged changes the settings on every
+  // move, more often than browsers allow history changes
+  useEffect(() => {
+    const timeout = setTimeout(
+      () =>
+        window.history.replaceState(
+          null,
+          "",
+          (serializeSettings(settings) || window.location.pathname) +
+            window.location.hash
+        ),
+      300
+    );
+    return () => clearTimeout(timeout);
+  }, [settings]);
+
+  // Only rendered again when its props change, not for the stage's settings
+  // (CSS variables, width)
+  const playerProps = JSON.stringify(toPlayerProps(settings));
+  const { customMedia, customIcon } = settings;
+  const player = useMemo(
+    () => (
+      <WebPlayer {...JSON.parse(playerProps)}>
+        {customMedia && CUSTOM_MEDIAS}
+        {customIcon && CUSTOM_ICON}
+      </WebPlayer>
+    ),
+    [playerProps, customMedia, customIcon]
+  );
+
+  const onChange = useCallback(
+    (changes: Partial<Settings>) =>
+      setSettings(previous => ({ ...previous, ...changes })),
+    []
+  );
 
   return (
-    <div>
-      {/* FUTURE: Add some stuff to make it appear like a real app */}
-
-      <div
-        style={{
-          padding: "1rem",
-          marginBottom: "1rem",
-          borderBottom: "1px solid #000",
-        }}
-      >
-        <h2
-          style={{
-            fontSize: "1.5rem",
+    <div className="pg">
+      <header className="pg-header">
+        <h1>WebPlayer playground</h1>
+        <Breakpoints />
+        <button type="button" onClick={() => setPlayerKey(key => key + 1)}>
+          Remount
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setSettings(DEFAULT_SETTINGS);
+            setPlayerKey(key => key + 1);
           }}
         >
-          CarCutter Demo React
-        </h2>
-      </div>
+          Reset
+        </button>
+      </header>
 
-      <div
-        style={{
-          maxWidth: "800px",
-          marginInline: "auto",
-        }}
-      >
-        <WebPlayer
-          compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition_v3.json"
-          infiniteCarrousel
-          demoSpin
-          analyticsEventPrefix={analyticsEventPrefix}
+      <Controls settings={settings} onChange={onChange} />
+
+      <main className="pg-main">
+        {/* Outside the stage: its message has the playground's styles */}
+        <ErrorBoundary
+          // Retries for a change of the player, not of its stage
+          resetKey={`${playerKey}-${playerProps}-${customMedia}-${customIcon}`}
         >
-          <WebPlayerCustomMedia
-            index={4}
-            thumbnailSrc="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_thumbnail_audi.png"
+          <Stage
+            // The shadow root can't be removed: a new host for each mode
+            key={`${settings.shadowDom}-${playerKey}`}
+            shadowDom={settings.shadowDom}
+            width={settings.stageWidth}
+            cssVariables={toCssVariables(settings)}
           >
-            <img src="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_image_1.jpg" />
-          </WebPlayerCustomMedia>
-          <WebPlayerCustomMedia index={-2}>
-            <img src="https://cdn.car-cutter.com/libs/web-player/v3/assets/mocks/custom_image_2.jpg" />
-          </WebPlayerCustomMedia>
-          <WebPlayerIcon name="UI_360_PLAY">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="currentColor"
-                d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"
-              />
-            </svg>
-          </WebPlayerIcon>
-        </WebPlayer>
-      </div>
+            {player}
+          </Stage>
+        </ErrorBoundary>
+
+        <EventLog
+          eventPrefix={settings.eventPrefix}
+          analyticsEventPrefix={settings.analyticsEventPrefix}
+        />
+      </main>
     </div>
   );
 };

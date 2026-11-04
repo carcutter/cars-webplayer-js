@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { BUNDLE_VARIANTS, SCRIPT_BUNDLES, reactUmdUrls } from "./bundles";
+import { SCRIPT_BUNDLE } from "./bundles";
 import {
   COMPOSITION_URL,
   IFRAME_QUERY,
@@ -62,29 +62,12 @@ describe("CDN URLs", () => {
   });
 });
 
-describe("SCRIPT_BUNDLES", () => {
-  // Built file names, as the script-webplayer packages name them
-  it.each([
-    ["default", "bundle-3.2.17.js", "bundle-react-16-17@3.2.17.js"],
-    ["react-16-17", "bundle-react-16-17@3.2.17.js", "bundle-3.2.17.js"],
-    ["react-18", "bundle-react-18@3.2.17.js", "bundle-react-16-17@3.2.17.js"],
-  ] as const)("finds the %s build by its file name", (variant, own, other) => {
-    const { file } = SCRIPT_BUNDLES[variant];
-    expect(file.test(own)).toBe(true);
-    expect(file.test("script-webplayer.css")).toBe(false);
-    if (variant !== "default") expect(file.test(other)).toBe(false);
-  });
-
-  it("has a variant per bundle, with its own local path", () => {
-    expect(BUNDLE_VARIANTS).toEqual(Object.keys(SCRIPT_BUNDLES));
-    const paths = Object.values(SCRIPT_BUNDLES).map(b => b.localPath);
-    expect(new Set(paths).size).toBe(paths.length);
-  });
-
-  it("builds the React UMD URLs", () => {
-    expect(reactUmdUrls("17.0.2")).toEqual([
-      "https://unpkg.com/react@17.0.2/umd/react.production.min.js",
-      "https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js",
-    ]);
+describe("SCRIPT_BUNDLE", () => {
+  it("finds the build by its file name, as script-webplayer names it", () => {
+    const { file } = SCRIPT_BUNDLE;
+    expect(file.test("bundle-3.2.17.js")).toBe(true);
+    expect(file.test("bundle-3.2.17.js.map")).toBe(false);
+    expect(file.test("bundle.js")).toBe(false);
+    expect(file.test("bundle-react-18@3.2.17.js")).toBe(false);
   });
 });

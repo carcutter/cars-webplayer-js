@@ -7,7 +7,7 @@ vi.mock("@car-cutter/core-ui", () => ({
   WebPlayerCustomMedia: () => null,
   WebPlayerIcon: () => null,
 }));
-vi.mock("@car-cutter/core-ui/dist/style.css?inline", () => ({ default: "" }));
+vi.mock("@car-cutter/core-ui/style.css?inline", () => ({ default: "" }));
 
 describe("@car-cutter/wc-webplayer", () => {
   it("defines the custom elements on demand", () => {

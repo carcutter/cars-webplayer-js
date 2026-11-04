@@ -74,7 +74,7 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
   const attributes = useMemo(() => {
     const wcAttributes = webPlayerPropsToAttributes(props);
 
-    // Add "class" as r2wc does not support camelCase props
+    // "class" is not a prop of the element: passed as is
     if (className) {
       Object.assign(wcAttributes, { class: className });
     }

@@ -3,23 +3,23 @@ description: "Installs dependencies"
 runs:
   using: composite
   steps:
+    # Installs the pnpm version of the packageManager field
+    - uses: pnpm/action-setup@v4
+
     - uses: actions/setup-node@v4
       with:
         node-version: "22.14"
         registry-url: "https://registry.npmjs.org"
-
-    - name: Enable corepack
-      shell: bash
-      run: corepack enable
+        cache: pnpm
 
     - name: Install dependencies
       shell: bash
-      run: yarn
+      run: pnpm install --frozen-lockfile
 
     - name: Build
       shell: bash
-      run: yarn build
+      run: pnpm build
 
     - name: Lint
       shell: bash
-      run: yarn lint
+      run: pnpm lint

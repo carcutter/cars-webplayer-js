@@ -1,6 +1,4 @@
 import { useEffect, useRef } from "react";
-import "pannellum-react/es/pannellum/css/pannellum.css";
-import "pannellum-react/es/pannellum/css/style-textInfo.css";
 import "pannellum-react/es/pannellum/js/libpannellum.js";
 import "pannellum-react/es/pannellum/js/pannellum.js";
 import "pannellum-react/es/pannellum/js/RequestAnimationFrame";

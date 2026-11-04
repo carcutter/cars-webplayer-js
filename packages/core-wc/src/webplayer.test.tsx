@@ -13,7 +13,7 @@ vi.mock("@car-cutter/core-ui", () => ({
     <div data-testid="player" data-url={props.compositionUrl} />
   ),
 }));
-vi.mock("@car-cutter/core-ui/dist/style.css?inline", () => ({
+vi.mock("@car-cutter/core-ui/style.css?inline", () => ({
   default: ".player{}",
 }));
 

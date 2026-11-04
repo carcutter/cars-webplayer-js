@@ -7,8 +7,9 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
-    "@car-cutter/demo": "*",
-    "@car-cutter/next-webplayer": "*",
+    "@car-cutter/core": "workspace:^",
+    "@car-cutter/demo": "workspace:^",
+    "@car-cutter/next-webplayer": "workspace:^",
     "next": "16.4.1",
     "react": ">=18",
     "react-dom": ">=18"
