@@ -34,7 +34,7 @@ export default defineConfig({
     { name: "demos", grepInvert: /@cdn/, testIgnore: /consumers\.spec\.ts/ },
     // The files published on the CDN, checked on a schedule
     { name: "cdn", grep: /@cdn/ },
-    // The apps of consumers/, served by scripts/consumer-test.mjs
+    // The apps of consumers/, served by scripts/consumer-test.js
     { name: "consumers", testMatch: /consumers\.spec\.ts/ },
   ],
   // The demo dev servers, on their ports from packages/demo/src/ports.ts.

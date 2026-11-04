@@ -322,7 +322,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
     try {
       await wrapper.requestFullscreen();
       return true;
-    } catch (error) {
+    } catch {
       return false;
     }
   }, []);
@@ -332,7 +332,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
     try {
       await document.exitFullscreen();
       return true;
-    } catch (error) {
+    } catch {
       return false;
     }
   }, []);

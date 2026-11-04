@@ -42,7 +42,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b --force && vite build",
-    "lint": "eslint . --ext ts,tsx --max-warnings 0",
+    "lint": "eslint . --max-warnings 0",
     "analyze": "vite-bundle-visualizer",
     "test": "vitest run --coverage"
   },
@@ -54,22 +54,23 @@
     "@car-cutter/core-wc-react-16-17": "workspace:^",
     "@car-cutter/core-wc-react-18": "workspace:^",
     "@car-cutter/typescript-config": "workspace:^",
+    "@microsoft/api-extractor": "^7.60.1",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/react": "^16.3.3",
-    "@types/node": "^20",
+    "@types/node": "^22",
     "@types/react": "^18.3.28",
     "@vitejs/plugin-react": "^5.0.0",
-    "@vitest/coverage-v8": "^4.1.12",
-    "browserslist": "^4.28.7",
+    "@vitest/coverage-v8": "^5.1.0",
+    "browserslist": "^4.29.5",
     "browserslist-to-esbuild": "^2.1.1",
     "happy-dom": "^21.0.4",
     "react": ">=18",
     "react-dom": ">=18",
-    "typescript": "^5",
-    "vite": "^6.4.4",
+    "typescript": "~6.0.3",
+    "vite": "^6.4.5",
     "vite-bundle-visualizer": "^1.2.1",
-    "vite-plugin-dts": "^4.2.1",
-    "vitest": "^4.1.12"
+    "vite-plugin-dts": "^5.1.2",
+    "vitest": "^5.1.0"
   },
   "browserslist": [
     "defaults"

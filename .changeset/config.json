@@ -1,5 +1,5 @@
 {
-  "$schema": "https://unpkg.com/@changesets/config@3.0.2/schema.json",
+  "$schema": "https://unpkg.com/@changesets/config@4.0.1/schema.json",
   "changelog": false,
   "commit": false,
   "fixed": [],
@@ -7,6 +7,7 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
+  "privatePackages": { "version": true, "tag": false },
   "ignore": [
     "demo-*",
     "@car-cutter/demo",

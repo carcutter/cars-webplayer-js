@@ -12,7 +12,7 @@ on:
       - "scripts/**"
       - "consumers/**"
       - ".syncpackrc"
-      - ".eslintrc.cjs"
+      - "eslint.config.js"
       - ".github/actions/**"
       - ".github/workflows/continuous_integration.yml"
 

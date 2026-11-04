@@ -13,8 +13,9 @@ export default defineConfig({
       // the published package) to their built declarations, which are rolled
       // up into its own .d.ts
       tsconfigPath: resolve(__dirname, "./tsconfig.dts.json"),
-      rollupTypes: true,
-      bundledPackages: ["@car-cutter/core", "@car-cutter/analytics"],
+      bundleTypes: {
+        bundledPackages: ["@car-cutter/core", "@car-cutter/analytics"],
+      },
       // Keeps the package names in the declarations, for bundledPackages
       pathsToAliases: false,
     }),

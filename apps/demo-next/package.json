@@ -2,6 +2,7 @@
   "name": "demo-next",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev --port 4172",
     "lint": "tsc --noEmit"
@@ -10,14 +11,14 @@
     "@car-cutter/core": "workspace:^",
     "@car-cutter/demo": "workspace:^",
     "@car-cutter/next-webplayer": "workspace:^",
-    "next": "16.4.1",
+    "next": "16.4.5",
     "react": ">=18",
     "react-dom": ">=18"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^22",
     "@types/react": "^18.3.28",
     "@types/react-dom": "^18.3.7",
-    "typescript": "^5"
+    "typescript": "~6.0.3"
   }
 }

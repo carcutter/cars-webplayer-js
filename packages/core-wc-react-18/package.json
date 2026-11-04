@@ -6,7 +6,7 @@
   "main": "index.ts",
   "scripts": {
     "build": "tsc -p tsconfig.types.json",
-    "lint": "eslint . --ext ts,tsx --max-warnings 0",
+    "lint": "eslint . --max-warnings 0",
     "test": "vitest run --coverage"
   },
   "dependencies": {
@@ -20,13 +20,13 @@
   },
   "devDependencies": {
     "@car-cutter/typescript-config": "workspace:^",
-    "@types/node": "^20",
+    "@types/node": "^22",
     "@types/react": "^18.3.28",
     "@types/react-dom": "^18.3.7",
-    "@vitest/coverage-v8": "^4.1.12",
+    "@vitest/coverage-v8": "^5.1.0",
     "happy-dom": "^21.0.4",
-    "typescript": "^5",
-    "vite": "^6.4.4",
-    "vitest": "^4.1.12"
+    "typescript": "~6.0.3",
+    "vite": "^6.4.5",
+    "vitest": "^5.1.0"
   }
 }

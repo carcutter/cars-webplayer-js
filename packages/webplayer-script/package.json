@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc -b --force && vite build",
-    "lint": "eslint . --ext ts --max-warnings 0",
+    "lint": "eslint . --max-warnings 0",
     "analyze": "vite-bundle-visualizer"
   },
   "dependencies": {
@@ -14,11 +14,11 @@
   },
   "devDependencies": {
     "@car-cutter/typescript-config": "workspace:^",
-    "@types/node": "^20",
-    "browserslist": "^4.28.7",
+    "@types/node": "^22",
+    "browserslist": "^4.29.5",
     "browserslist-to-esbuild": "^2.1.1",
-    "typescript": "^5",
-    "vite": "^6.4.4",
+    "typescript": "~6.0.3",
+    "vite": "^6.4.5",
     "vite-bundle-visualizer": "^1.2.1"
   },
   "browserslist": [

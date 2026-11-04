@@ -19,7 +19,6 @@ export type WebPlayerIconName =
   | "UI_VOLUME_OFF" // Muted video
   | "CONTROLS_PREV" // Go to previous media
   | "CONTROLS_NEXT" // Go to next media
-  // eslint-disable-next-line @typescript-eslint/ban-types
   | (string & {}); // NOTE: This is a workaround to allow any string value (as the user can also customize hotspots) but keep autocompletion
 
 export type WebPlayerIconProps = {

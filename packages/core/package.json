@@ -6,10 +6,10 @@
   "main": "index.ts",
   "scripts": {
     "build": "tsc -p tsconfig.types.json",
-    "lint": "eslint . --ext ts --max-warnings 0"
+    "lint": "eslint . --max-warnings 0"
   },
   "devDependencies": {
     "@car-cutter/typescript-config": "workspace:^",
-    "typescript": "^5"
+    "typescript": "~6.0.3"
   }
 }

@@ -100,7 +100,7 @@ const AppContent: React.FC = () => {
             label: title || categoryId,
           }))
         );
-      } catch (error) {
+      } catch {
         if (!isCancelled) {
           setCategoryFilterOptions([]);
         }

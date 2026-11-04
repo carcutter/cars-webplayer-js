@@ -164,11 +164,7 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
   );
 };
 
-type WebPlayerContainerProps = {
-  //
-};
-
-const WebPlayerContainer: React.FC<WebPlayerContainerProps> = () => {
+const WebPlayerContainer: React.FC = () => {
   const { emitEvent, emitAnalyticsEvent, compositionUrl } = useGlobalContext();
 
   const {

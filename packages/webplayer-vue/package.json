@@ -36,7 +36,7 @@
   ],
   "scripts": {
     "build": "vue-tsc -b --force && vite build",
-    "lint": "eslint . --ext ts --max-warnings 0",
+    "lint": "eslint . --max-warnings 0",
     "analyze": "vite-bundle-visualizer",
     "test": "vitest run --coverage"
   },
@@ -50,21 +50,22 @@
     "@car-cutter/analytics": "workspace:^",
     "@car-cutter/core": "workspace:^",
     "@car-cutter/typescript-config": "workspace:^",
-    "@types/node": "^20",
-    "@vitejs/plugin-vue": "^6.0.0",
-    "@vitest/coverage-v8": "^4.1.12",
-    "@vue/test-utils": "~2.4.6",
-    "browserslist": "^4.28.7",
+    "@microsoft/api-extractor": "^7.60.1",
+    "@types/node": "^22",
+    "@vitejs/plugin-vue": "^6.0.10",
+    "@vitest/coverage-v8": "^5.1.0",
+    "@vue/test-utils": "~2.5.1",
+    "browserslist": "^4.29.5",
     "browserslist-to-esbuild": "^2.1.1",
     "happy-dom": "^21.0.4",
-    "typescript": "^5",
-    "vite": "^6.4.4",
+    "typescript": "~6.0.3",
+    "vite": "^6.4.5",
     "vite-bundle-visualizer": "^1.2.1",
-    "vite-plugin-dts": "^4.2.1",
-    "vitest": "^4.1.12",
+    "vite-plugin-dts": "^5.1.2",
+    "vitest": "^5.1.0",
     "vue": "^3",
     "vue-3.3": "npm:vue@~3.3.13",
-    "vue-tsc": "^2.1.6"
+    "vue-tsc": "^3.3.14"
   },
   "browserslist": [
     "defaults"

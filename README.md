@@ -38,7 +38,7 @@ CARS-WEBPLAYER/
 
 ### Setup
 
-1. Install Node v22 (the version of the CI). Tutorial for macOS [here](https://sukiphan.medium.com/how-to-install-nvm-node-version-manager-on-macos-d9fe432cc7db)
+1. Install Node v22.12 or later (the CI runs 22.14). Tutorial for macOS [here](https://sukiphan.medium.com/how-to-install-nvm-node-version-manager-on-macos-d9fe432cc7db)
 2. Enable pnpm, at the version of the `packageManager` field of `package.json`: `corepack enable` (from Node 25, corepack isn't bundled with Node anymore: install it first with `npm install -g corepack`).
 3. Install the node modules with the command `pnpm install`.
 
@@ -81,7 +81,7 @@ Run `pnpm test` to run the unit tests (vitest) of `core-wc`, `core-wc-react-*` a
 
 Run `pnpm e2e` to run the Playwright tests of `apps/e2e` over every demo app, on the local builds (run `pnpm build` first, then `pnpm --filter e2e exec playwright install chromium` once). They start the demo dev servers themselves, or reuse the ones already running. `pnpm e2e:cdn` checks the files published on the CDN instead, which CI also does every night.
 
-Run `pnpm test:consumers` (after `pnpm build`) to check the published packages the way customers get them: they're packed with `pnpm pack`, checked with publint and attw, then installed with npm in the apps of `consumers/` (React 19, 18 and 17, Next.js, Vue 3.3, vanilla, Web Component), type-checked, built and checked in the browser. `node scripts/consumer-test.mjs react-17 vue-3.3` runs only some of them.
+Run `pnpm test:consumers` (after `pnpm build`) to check the published packages the way customers get them: they're packed with `pnpm pack`, checked with publint and attw, then installed with npm in the apps of `consumers/` (React 19, 18 and 17, Next.js, Vue 3.3, vanilla, Web Component), type-checked, built and checked in the browser. `node scripts/consumer-test.js react-17 vue-3.3` runs only some of them.
 
 ### Run demos
 
