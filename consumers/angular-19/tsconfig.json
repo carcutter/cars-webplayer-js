@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "experimentalDecorators": true,
+    // Type-checks the published .d.ts too
+    "skipLibCheck": false
+  },
+  "angularCompilerOptions": {
+    // Checks the bindings against the inputs and outputs of the declarations
+    "strictTemplates": true
+  },
+  "include": ["src/**/*.ts"]
+}
