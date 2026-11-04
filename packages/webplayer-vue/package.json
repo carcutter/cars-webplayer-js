@@ -52,7 +52,7 @@
     "@car-cutter/typescript-config": "workspace:^",
     "@types/node": "^22",
     "@vitejs/plugin-vue": "^6.0.10",
-    "@vitest/coverage-v8": "^4.1.12",
+    "@vitest/coverage-v8": "^5.1.0",
     "@vue/test-utils": "~2.5.1",
     "browserslist": "^4.29.5",
     "browserslist-to-esbuild": "^2.1.1",
@@ -61,7 +61,7 @@
     "vite": "^6.4.5",
     "vite-bundle-visualizer": "^1.2.1",
     "vite-plugin-dts": "^4.2.1",
-    "vitest": "^4.1.12",
+    "vitest": "^5.1.0",
     "vue": "^3",
     "vue-3.3": "npm:vue@~3.3.13",
     "vue-tsc": "^2.1.6"

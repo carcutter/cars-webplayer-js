@@ -38,7 +38,7 @@ CARS-WEBPLAYER/
 
 ### Setup
 
-1. Install Node v22 (the version of the CI). Tutorial for macOS [here](https://sukiphan.medium.com/how-to-install-nvm-node-version-manager-on-macos-d9fe432cc7db)
+1. Install Node v22.12 or later (the CI runs 22.14). Tutorial for macOS [here](https://sukiphan.medium.com/how-to-install-nvm-node-version-manager-on-macos-d9fe432cc7db)
 2. Enable pnpm, at the version of the `packageManager` field of `package.json`: `corepack enable` (from Node 25, corepack isn't bundled with Node anymore: install it first with `npm install -g corepack`).
 3. Install the node modules with the command `pnpm install`.
 
