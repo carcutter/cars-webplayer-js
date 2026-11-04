@@ -6,7 +6,8 @@
     "paths": {
       "@car-cutter/core": ["../core/dist/types/index"],
       "@car-cutter/core-wc": ["../core-wc/dist/types/index"],
-      "@car-cutter/core-wc-react-18": ["../core-wc-react-18/dist/types/index"]
+      "@car-cutter/core-wc-react-18": ["../core-wc-react-18/dist/types/index"],
+      "@car-cutter/analytics": ["../analytics/dist/types/src/index"]
     }
   }
 }

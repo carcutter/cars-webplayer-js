@@ -35,6 +35,7 @@
     "test": "vitest run --coverage"
   },
   "devDependencies": {
+    "@car-cutter/analytics": "workspace:^",
     "@car-cutter/core": "workspace:^",
     "@car-cutter/core-ui": "workspace:^",
     "@car-cutter/core-wc": "workspace:^",

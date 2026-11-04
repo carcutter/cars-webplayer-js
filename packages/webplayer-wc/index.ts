@@ -17,13 +17,28 @@ export {
   EVENT_HOTSPOTS_OFF,
   EVENT_GALLERY_OPEN,
   EVENT_GALLERY_CLOSE,
+  DEFAULT_ANALYTICS_EVENT_PREFIX,
+  ANALYTICS_EVENT_LOAD,
+  ANALYTICS_EVENT_DISPLAY,
+  ANALYTICS_EVENT_INTERACTION,
+  ANALYTICS_EVENT_ERROR,
   // - Utils
   generateCompositionUrl,
   // - Types
   type MediaItem,
   type Composition,
   type MediaLoadStrategy,
+  type WebPlayerProps,
+  type WebPlayerCustomMediaProps,
+  type WebPlayerIconProps,
 } from "@car-cutter/core";
+
+export type {
+  AnalyticsLoadEvent,
+  AnalyticsDisplayEvent,
+  AnalyticsInteractionEvent,
+  AnalyticsErrorEvent,
+} from "@car-cutter/analytics";
 
 export {
   // - Utils
