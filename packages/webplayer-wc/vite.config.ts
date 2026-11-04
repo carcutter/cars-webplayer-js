@@ -44,7 +44,7 @@ export default defineConfig({
       react: "preact/compat",
       "react-dom": "preact/compat",
     },
-    // The workspace packages and @r2wc it bundles don't depend on preact:
+    // The workspace packages it bundles don't depend on preact:
     // resolves it (and the aliases above) from this package
     dedupe: ["preact"],
   },

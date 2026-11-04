@@ -2,7 +2,11 @@ import { describe, expect, it, vi } from "vitest";
 
 import * as coreWc from "../index";
 
-vi.mock("@car-cutter/core-ui", () => ({ WebPlayer: () => null }));
+vi.mock("@car-cutter/core-ui", () => ({
+  WebPlayer: () => null,
+  WebPlayerCustomMedia: () => null,
+  WebPlayerIcon: () => null,
+}));
 vi.mock("@car-cutter/core-ui/style.css?inline", () => ({ default: "" }));
 
 describe("@car-cutter/core-wc", () => {
@@ -11,7 +15,7 @@ describe("@car-cutter/core-wc", () => {
       "WEB_PLAYER_WC_PROPS",
       "WebPlayerWithInjectedStyles",
       "checkCustomElementsDefinition",
-      "patchWebComponentProps",
+      "ensureCustomElementsDefinition",
       "webPlayerCustomMediaPropsToAttributes",
       "webPlayerIconPropsToAttributes",
       "webPlayerPropsToAttributes",

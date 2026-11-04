@@ -10,12 +10,6 @@ overrides:
   serialize-javascript: ^7.1.3
   sockjs>uuid: ^11.1.1
   tinypool: ^2.1.2
-  '@r2wc/react-to-web-component@2.1.0>@r2wc/core': 1.3.0
-
-patchedDependencies:
-  '@r2wc/react-to-web-component@2.1.0':
-    hash: 059a7d5b0560284c530d34d32c6065112edcc36771be2dd0b2e39903d38c2f4e
-    path: patches/@r2wc__react-to-web-component@2.1.0.patch
 
 importers:
 
@@ -606,9 +600,6 @@ importers:
       '@car-cutter/core-wc':
         specifier: workspace:^
         version: link:../core-wc
-      '@r2wc/react-to-web-component':
-        specifier: ^1.0.0
-        version: 1.0.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       react:
         specifier: '>=16.8'
         version: 19.2.6
@@ -622,6 +613,12 @@ importers:
       '@types/node':
         specifier: ^20
         version: 20.19.33
+      '@types/react':
+        specifier: ^18.3.28
+        version: 18.3.28
+      '@types/react-dom':
+        specifier: ^18.3.7
+        version: 18.3.7(@types/react@18.3.28)
       '@vitest/coverage-v8':
         specifier: ^4.1.12
         version: 4.1.12(vitest@4.1.12)
@@ -646,9 +643,6 @@ importers:
       '@car-cutter/core-wc':
         specifier: workspace:^
         version: link:../core-wc
-      '@r2wc/react-to-web-component':
-        specifier: ^2.0.3
-        version: 2.1.0(patch_hash=059a7d5b0560284c530d34d32c6065112edcc36771be2dd0b2e39903d38c2f4e)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       react:
         specifier: '>=18'
         version: 19.2.6
@@ -662,6 +656,12 @@ importers:
       '@types/node':
         specifier: ^20
         version: 20.19.33
+      '@types/react':
+        specifier: ^18.3.28
+        version: 18.3.28
+      '@types/react-dom':
+        specifier: ^18.3.7
+        version: 18.3.7(@types/react@18.3.28)
       '@vitest/coverage-v8':
         specifier: ^4.1.12
         version: 4.1.12(vitest@4.1.12)
@@ -3107,24 +3107,6 @@ packages:
   '@publint/pack@0.1.7':
     resolution: {integrity: sha512-4EDEmvxWtgsCnnVeBvtFIFZtUhPPt1+bA9JrSwU4Sa//6oKtzCSlGGXYJr44OD9aGISymbieJ4mCKHUygUDU+g==}
     engines: {node: '>=18'}
-
-  '@r2wc/core@1.3.0':
-    resolution: {integrity: sha512-aPBnND92Itl+SWWbWyyxdFFF0+RqKB6dptGHEdiPB8ZvnHWHlVzOfEvbEcyUYGtB6HBdsfkVuBiaGYyBFVTzVQ==}
-
-  '@r2wc/core@1.3.1':
-    resolution: {integrity: sha512-x9nMthXsTjqr1alE+boX1Zuzqb6/oFi4wAOdWaWcWKcrwq9M/PATK74c3DFJfRnUOkYWPlsz0e4CsFBXJGStSA==}
-
-  '@r2wc/react-to-web-component@1.0.0':
-    resolution: {integrity: sha512-iiHwwJohi3PD5O/sKD3v1Hc+qLkqwno+cMlXXXJmcGu6GzlVBJLEHbLfzil+xapcCL18eL1tyu45JuFsXdmuMQ==}
-    peerDependencies:
-      react: ^16.0.0 || ^17.0.0
-      react-dom: ^16.0.0 || ^17.0.0
-
-  '@r2wc/react-to-web-component@2.1.0':
-    resolution: {integrity: sha512-m/PzgUOEiL1HxmvfP5LgBLqB7sHeRj+d1QAeZklwS4OEI2HUU+xTpT3hhJipH5DQoFInDqDTfe0lNFFKcrqk4w==}
-    peerDependencies:
-      react: ^18.0.0 || ^19.0.0
-      react-dom: ^18.0.0 || ^19.0.0
 
   '@radix-ui/primitive@1.1.3':
     resolution: {integrity: sha512-JTF99U/6XIjCBo0wqkU5sK10glYe27MRRsfwoiq5zzOEZLHU3A3KCMa5X/azekYRCJ0HlwI0crAXS/5dEHTzDg==}
@@ -12492,22 +12474,6 @@ snapshots:
   '@publint/pack@0.1.7':
     dependencies:
       tinyexec: 1.3.1
-
-  '@r2wc/core@1.3.0': {}
-
-  '@r2wc/core@1.3.1': {}
-
-  '@r2wc/react-to-web-component@1.0.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
-    dependencies:
-      '@r2wc/core': 1.3.1
-      react: 19.2.6
-      react-dom: 19.2.6(react@19.2.6)
-
-  '@r2wc/react-to-web-component@2.1.0(patch_hash=059a7d5b0560284c530d34d32c6065112edcc36771be2dd0b2e39903d38c2f4e)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
-    dependencies:
-      '@r2wc/core': 1.3.0
-      react: 19.2.6
-      react-dom: 19.2.6(react@19.2.6)
 
   '@radix-ui/primitive@1.1.3': {}
 

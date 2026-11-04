@@ -12,7 +12,7 @@ describe("WEB_PLAYER_WC_PROPS", () => {
     });
   });
 
-  it("only uses types r2wc can parse from attributes", () => {
+  it("only uses the types the element parses from attributes", () => {
     expect(new Set(Object.values(WEB_PLAYER_WC_PROPS))).toEqual(
       new Set(["string", "number", "boolean"])
     );

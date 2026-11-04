@@ -87,6 +87,12 @@ module.exports = {
       },
     },
     {
+      // Renders with React 16.8 / 17, whose ReactDOM.render isn't deprecated
+      files: ["packages/core-wc-react-16-17/**"],
+
+      settings: { react: { version: "17.0" } },
+    },
+    {
       // The player's styles are built from core-ui's src/style.css: a CSS
       // import in the code bundled by the wrappers would be emitted as a
       // separate, unprocessed CSS file (`?inline` imports are strings)
