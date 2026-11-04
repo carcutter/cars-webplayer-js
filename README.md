@@ -103,7 +103,7 @@ Run `pnpm demo` to start all of them, then open the index at http://localhost:41
 
 The ports are listed in `packages/demo/src/ports.ts`: the vite apps read them from there, demo-next sets its port in its `dev` script.
 
-The script demo loads the bundle built locally from `packages/webplayer-script`, so changes can be checked before the bundle is released. Open http://localhost:4174/?bundle=cdn to load the published `v3/bundle.js` instead. `?variant=react-16-17` / `?variant=react-18` load `bundle-react-16-17.js` / `bundle-react-18.js` instead, on a page providing React 17 / 18 as UMD globals. The iframe demo works the same way: by default it embeds a local copy of the hosted iframe page (`apps/demo-iframe/public/player`) that loads the local bundle; open http://localhost:4177/?bundle=cdn to embed the hosted iframe instead.
+The script demo loads the bundle built locally from `packages/webplayer-script`, so changes can be checked before the bundle is released. Open http://localhost:4174/?bundle=cdn to load the published `v3/bundle.js` instead. The iframe demo works the same way: by default it embeds a local copy of the hosted iframe page (`apps/demo-iframe/public/player`) that loads the local bundle; open http://localhost:4177/?bundle=cdn to embed the hosted iframe instead.
 
 ## Publication
 

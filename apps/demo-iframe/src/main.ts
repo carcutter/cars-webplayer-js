@@ -1,7 +1,7 @@
 import {
   IFRAME_QUERY,
   IFRAME_URL,
-  SCRIPT_BUNDLES,
+  SCRIPT_BUNDLE,
   SCRIPT_PKG,
 } from "@car-cutter/demo";
 import {
@@ -49,7 +49,7 @@ if (useCdn) {
 } else {
   // The local iframe page loads the local bundle: check it's there, otherwise
   // the iframe would just stay blank
-  fetch(SCRIPT_BUNDLES.default.localPath, { method: "HEAD" }).then(
+  fetch(SCRIPT_BUNDLE.localPath, { method: "HEAD" }).then(
     res =>
       res.ok
         ? mediaSlot.append(iframe)

@@ -847,12 +847,6 @@ importers:
 
   packages/webplayer-script:
     dependencies:
-      '@car-cutter/core-wc-react-16-17':
-        specifier: workspace:^
-        version: link:../core-wc-react-16-17
-      '@car-cutter/core-wc-react-18':
-        specifier: workspace:^
-        version: link:../core-wc-react-18
       '@car-cutter/wc-webplayer':
         specifier: workspace:^
         version: link:../webplayer-wc

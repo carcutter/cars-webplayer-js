@@ -1,11 +1,8 @@
 import {
-  BUNDLE_VARIANTS,
   COMPOSITION_URL,
-  SCRIPT_BUNDLES,
+  SCRIPT_BUNDLE,
   SCRIPT_DIST,
   SCRIPT_PKG,
-  reactUmdUrls,
-  type BundleVariant,
 } from "@car-cutter/demo";
 import {
   attachEventLog,
@@ -16,27 +13,13 @@ import {
 } from "@car-cutter/demo/dom";
 import "@car-cutter/demo/styles.css";
 
-// `?variant=` picks the bundle: `bundle.js` (React included) by default, or
-// `bundle-react-16-17.js` / `bundle-react-18.js`, which use the React of the
-// host page. `?bundle=cdn` loads the published file instead of the local build
-// from packages/, to check changes before release.
-const params = new URLSearchParams(location.search);
-const variantParam = params.get("variant") as BundleVariant | null;
-const variant: BundleVariant =
-  variantParam && BUNDLE_VARIANTS.includes(variantParam)
-    ? variantParam
-    : "default";
-const useCdn = params.get("bundle") === "cdn";
-const bundle = SCRIPT_BUNDLES[variant];
+// `?bundle=cdn` loads the published file instead of the local build from
+// packages/, to check changes before release.
+const useCdn = new URLSearchParams(location.search).get("bundle") === "cdn";
 
-/** Link to this page with other params */
-function pageHref(next: { variant?: BundleVariant; cdn?: boolean }): string {
-  const query = new URLSearchParams();
-  const v = next.variant ?? variant;
-  if (v !== "default") query.set("variant", v);
-  if (next.cdn ?? useCdn) query.set("bundle", "cdn");
-  const search = query.toString();
-  return search ? `?${search}` : location.pathname;
+/** Link to this page, loading the CDN file or the local build */
+function pageHref(cdn: boolean): string {
+  return cdn ? "?bundle=cdn" : location.pathname;
 }
 
 const { mediaSlot, eventsSlot, pkgSlot } = renderDemoPage(
@@ -45,26 +28,14 @@ const { mediaSlot, eventsSlot, pkgSlot } = renderDemoPage(
 );
 
 pkgSlot.textContent = useCdn
-  ? bundle.cdnUrl.replace(/^https:\/\//, "")
+  ? SCRIPT_BUNDLE.cdnUrl.replace(/^https:\/\//, "")
   : `${SCRIPT_DIST} (local)`;
 
 const note = document.createElement("p");
 note.className = "dm-note";
-note.innerHTML = [
-  BUNDLE_VARIANTS.map(v =>
-    v === variant
-      ? `<strong>${SCRIPT_BUNDLES[v].name}</strong>`
-      : `<a href="${pageHref({ variant: v })}">${SCRIPT_BUNDLES[v].name}</a>`
-  ).join(" · "),
-  useCdn
-    ? `Published CDN file · <a href="${pageHref({
-        cdn: false,
-      })}">use the local build</a>`
-    : `Local build · <a href="${pageHref({ cdn: true })}">use the CDN file</a>`,
-  bundle.react ? `Host page provides React ${bundle.react} (UMD)` : "",
-]
-  .filter(Boolean)
-  .join("<br>");
+note.innerHTML = useCdn
+  ? `Published CDN file · <a href="${pageHref(false)}">use the local build</a>`
+  : `Local build · <a href="${pageHref(true)}">use the CDN file</a>`;
 attachEventLog(eventsSlot);
 eventsSlot.prepend(note);
 
@@ -89,25 +60,15 @@ function loadScript(src: string): Promise<void> {
 
 // The bundle defines <cc-webplayer>: no npm package is involved, exactly like
 // on a customer website. It is added after the listeners and the element, so
-// the event log catches composition-loading too. The React variants need the
-// React globals first, like on a site already using React.
-const scripts = [
-  ...(bundle.react ? reactUmdUrls(bundle.react) : []),
-  useCdn ? bundle.cdnUrl : bundle.localPath,
-];
-
-scripts
-  .reduce(
-    (previous, src) => previous.then(() => loadScript(src)),
-    Promise.resolve()
-  )
-  .catch((src: string) =>
+// the event log catches composition-loading too.
+loadScript(useCdn ? SCRIPT_BUNDLE.cdnUrl : SCRIPT_BUNDLE.localPath).catch(
+  (src: string) =>
     renderStageNote(
       mediaSlot,
-      src === bundle.localPath
-        ? localBundleMissingHtml(SCRIPT_PKG, pageHref({ cdn: true }))
+      src === SCRIPT_BUNDLE.localPath
+        ? localBundleMissingHtml(SCRIPT_PKG, pageHref(true))
         : `<code>${escapeHtml(
             src
           )}</code> couldn't be loaded. Check the network and reload.`
     )
-  );
+);

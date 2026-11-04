@@ -1,4 +1,4 @@
-import { BUNDLE_VARIANTS, SCRIPT_BUNDLES, SCRIPT_DIST } from "@car-cutter/demo";
+import { SCRIPT_BUNDLE, SCRIPT_DIST } from "@car-cutter/demo";
 
 import {
   expect,
@@ -9,34 +9,20 @@ import {
 } from "./fixtures";
 
 test.describe("Script demo", () => {
-  for (const variant of BUNDLE_VARIANTS) {
-    const bundle = SCRIPT_BUNDLES[variant];
+  test(`runs the local build of ${SCRIPT_BUNDLE.name}`, async ({
+    page,
+    consoleErrors,
+  }) => {
+    await page.goto(pageUrl("script"));
 
-    test(`runs the local build of ${bundle.name}`, async ({
-      page,
-      consoleErrors,
-    }) => {
-      await page.goto(
-        pageUrl("script", variant === "default" ? "" : `?variant=${variant}`)
-      );
-
-      await expect(page.locator(".dm-pill")).toHaveText(
-        `${SCRIPT_DIST} (local)`
-      );
-      await expectPlayerWithGallery(page);
-      await expectPlayerStarted(page);
-      // The React variants run on the React of the page
-      expect(
-        await page.evaluate(
-          () => (window as { React?: { version: string } }).React?.version
-        )
-      ).toBe(bundle.react);
-      expect(consoleErrors).toEqual([]);
-    });
-  }
+    await expect(page.locator(".dm-pill")).toHaveText(`${SCRIPT_DIST} (local)`);
+    await expectPlayerWithGallery(page);
+    await expectPlayerStarted(page);
+    expect(consoleErrors).toEqual([]);
+  });
 
   test("tells how to build a missing local bundle", async ({ page }) => {
-    await page.route(`**${SCRIPT_BUNDLES.default.localPath}`, route =>
+    await page.route(`**${SCRIPT_BUNDLE.localPath}`, route =>
       route.fulfill({ status: 404 })
     );
     await page.goto(pageUrl("script"));
@@ -49,18 +35,18 @@ test.describe("Script demo", () => {
   });
 
   test("names the file that couldn't be loaded", async ({ page }) => {
-    await page.route("**://unpkg.com/**", route => route.abort());
-    await page.goto(pageUrl("script", "?variant=react-18"));
+    await page.route(SCRIPT_BUNDLE.cdnUrl, route => route.abort());
+    await page.goto(pageUrl("script", "?bundle=cdn"));
 
     await expect(page.locator(".dm-stage__note")).toContainText(
-      "https://unpkg.com/react@18.3.1/umd/react.production.min.js couldn't be loaded"
+      `${SCRIPT_BUNDLE.cdnUrl} couldn't be loaded`
     );
   });
 });
 
 test.describe("iframe demo", () => {
   test("tells how to build a missing local bundle", async ({ page }) => {
-    await page.route(`**${SCRIPT_BUNDLES.default.localPath}`, route =>
+    await page.route(`**${SCRIPT_BUNDLE.localPath}`, route =>
       route.fulfill({ status: 404 })
     );
     await page.goto(pageUrl("iframe"));

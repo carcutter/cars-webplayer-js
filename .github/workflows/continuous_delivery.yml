@@ -79,8 +79,10 @@ jobs:
         run: |
           mkdir -p artifacts
           cp "artifacts/bundle-$VERSION.js" "artifacts/bundle.js"
-          cp "artifacts/bundle-react-16-17@$VERSION.js" "artifacts/bundle-react-16-17.js"
-          cp "artifacts/bundle-react-18@$VERSION.js" "artifacts/bundle-react-18.js"
+          # The bundles using the React of the page were dropped: their URLs
+          # serve bundle.js, which works with or without React on the page
+          cp "artifacts/bundle-$VERSION.js" "artifacts/bundle-react-16-17.js"
+          cp "artifacts/bundle-$VERSION.js" "artifacts/bundle-react-18.js"
           ls -la artifacts/
 
       # https://github.com/marketplace/actions/s3-sync

@@ -7,6 +7,4 @@ runs:
       run: |
         mkdir -p artifacts
         cp "packages/webplayer-script/dist/bundle-$VERSION.js" "artifacts/bundle-$VERSION.js"
-        cp "packages/webplayer-script/dist/bundle-react-16-17@$VERSION.js" "artifacts/bundle-react-16-17@$VERSION.js"
-        cp "packages/webplayer-script/dist/bundle-react-18@$VERSION.js" "artifacts/bundle-react-18@$VERSION.js"
         ls -la artifacts/
