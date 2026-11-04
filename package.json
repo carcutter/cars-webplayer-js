@@ -59,11 +59,11 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-tailwindcss": "^3.17.4",
     "eslint-plugin-unused-imports": "^3.2.0",
-    "prettier": "^3.3.3",
+    "prettier": "^3.9.10",
     "publint": "^0.3.25",
-    "syncpack": "^15.1.2",
+    "syncpack": "^15.3.3",
     "tailwindcss": "^3.4.11",
-    "turbo": "^2.9.14",
+    "turbo": "^2.11.10",
     "typescript": "^5"
   },
   "packageManager": "pnpm@10.34.7"

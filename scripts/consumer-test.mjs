@@ -53,7 +53,7 @@ const isPortFree = port =>
   });
 
 async function waitFor(url, timeout = 60_000) {
-  for (const start = Date.now(); Date.now() - start < timeout; ) {
+  for (const start = Date.now(); Date.now() - start < timeout;) {
     try {
       if ((await fetch(url)).ok) return;
     } catch {

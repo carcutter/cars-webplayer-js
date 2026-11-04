@@ -15,10 +15,10 @@
   "devDependencies": {
     "@car-cutter/typescript-config": "workspace:^",
     "@types/node": "^20",
-    "browserslist": "^4.28.7",
+    "browserslist": "^4.29.5",
     "browserslist-to-esbuild": "^2.1.1",
     "typescript": "^5",
-    "vite": "^6.4.4",
+    "vite": "^6.4.5",
     "vite-bundle-visualizer": "^1.2.1"
   },
   "browserslist": [
