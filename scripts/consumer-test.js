@@ -28,11 +28,20 @@ const PACKAGES = {
   "@car-cutter/react-webplayer": "webplayer-react",
   "@car-cutter/next-webplayer": "webplayer-next",
   "@car-cutter/vue-webplayer": "webplayer-vue",
+  "@car-cutter/angular-webplayer": "webplayer-angular",
   "@car-cutter/wc-webplayer": "webplayer-wc",
   "@car-cutter/vanilla-webplayer": "webplayer-vanilla",
 };
 
-/** Ports of the app previews, after the demo apps' ones (4170-4178) */
+/**
+ * attw rules not checked for some packages: Angular libraries are ESM only,
+ * like Angular itself (the apps are ESM), so `require` resolves to ESM
+ */
+const ATTW_IGNORED_RULES = {
+  "@car-cutter/angular-webplayer": ["cjs-resolves-to-esm"],
+};
+
+/** Ports of the app previews, after the demo apps' ones (4170-4179) */
 const FIRST_PORT = 4180;
 
 const run = (command, args, cwd, env = {}) =>
@@ -98,7 +107,7 @@ try {
   }
 
   step("Checking the tarballs (publint, attw)");
-  for (const tarball of Object.values(tarballs)) {
+  for (const [name, tarball] of Object.entries(tarballs)) {
     run("pnpm", ["exec", "publint", tarball, "--level", "error"], ROOT);
     // Bundlers and Node from ESM must resolve everything. Known gaps, not
     // checked: the .d.ts read as ESM from CommonJS (false-esm) and the
@@ -113,6 +122,7 @@ try {
         "node16",
         "--ignore-rules",
         "false-esm",
+        ...(ATTW_IGNORED_RULES[name] ?? []),
         "--format",
         "table-flipped",
       ],
@@ -126,7 +136,8 @@ try {
     const dir = join(work, app);
     cpSync(join(ROOT, "consumers", app), dir, {
       recursive: true,
-      filter: source => !/\/(node_modules|dist|\.next)(\/|$)/.test(source),
+      filter: source =>
+        !/\/(node_modules|dist|\.next|\.angular)(\/|$)/.test(source),
     });
 
     // The packages (and the ones they depend on) come from the tarballs

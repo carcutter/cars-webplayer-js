@@ -95,7 +95,10 @@ const events: Array<Event> = [
   },
 ];
 
-type Language = "jsx" | "vue" | "js" | "vanilla";
+/** Output of the Angular component, named like the Vue emit */
+const angularOutput = (event: Event) => `(${event.vueCallback.slice(1)})`;
+
+type Language = "jsx" | "vue" | "angular" | "js" | "vanilla";
 
 const WebPlayerEventsTable: React.FC = () => {
   const EventTable: React.FC<{ type: Language }> = ({ type }) => {
@@ -115,6 +118,7 @@ const WebPlayerEventsTable: React.FC = () => {
                 <code>
                   {type === "jsx" && event.callbackName}
                   {type === "vue" && event.vueCallback}
+                  {type === "angular" && angularOutput(event)}
                   {type === "js" && event.constant}
                   {type === "vanilla" && event.eventName}
                 </code>
@@ -159,6 +163,17 @@ const WebPlayerEventsTable: React.FC = () => {
         );
         break;
 
+      case "angular":
+        Code = (
+          <CodeBlock language="html">
+            {`<car-cutter-webplayer
+  ...
+  (compositionLoaded)="onCompositionLoaded($event)"
+/>`}
+          </CodeBlock>
+        );
+        break;
+
       case "js":
         Code = (
           <CodeBlock language="javascript">
@@ -199,6 +214,10 @@ document.addEventListener(DEFAULT_EVENT_PREFIX + EVENT_COMPOSITION_LOADING, (eve
       <TabItem value="vue" label="Vue">
         <EventTable type="vue" />
         <ExampleCode type="vue" />
+      </TabItem>
+      <TabItem value="angular" label="Angular">
+        <EventTable type="angular" />
+        <ExampleCode type="angular" />
       </TabItem>
       <TabItem value="js" label="JS">
         <EventTable type="js" />

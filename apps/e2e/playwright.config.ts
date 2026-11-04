@@ -14,6 +14,7 @@ const DEMO_APPS: Record<DemoKey, string> = {
   script: "demo-script",
   wc: "demo-wc",
   vue: "demo-vue",
+  angular: "demo-angular",
   iframe: "demo-iframe",
 };
 

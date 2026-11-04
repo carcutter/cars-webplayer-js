@@ -1,0 +1,7 @@
+{
+  // Tests (vitest.config.ts): the Angular plugin compiles the sources and the
+  // tests, through an emitting program
+  "extends": "./tsconfig.lib.json",
+  "include": ["src"],
+  "exclude": []
+}

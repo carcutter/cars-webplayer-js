@@ -11,6 +11,7 @@ export type ThemeKey =
   | "script"
   | "wc"
   | "vue"
+  | "angular"
   | "iframe";
 
 export const THEME_KEYS: ThemeKey[] = [
@@ -21,6 +22,7 @@ export const THEME_KEYS: ThemeKey[] = [
   "script",
   "wc",
   "vue",
+  "angular",
   "iframe",
 ];
 
@@ -119,6 +121,17 @@ export const THEMES: Record<ThemeKey, Theme> = {
     tileFg: "#35495E",
     playerPrimary: "153 47% 49%",
     playerPrimaryFg: "208 37% 20%",
+  },
+  angular: {
+    title: "Angular",
+    mono: "Ng",
+    pkg: "@car-cutter/angular-webplayer",
+    headerBg: "#0F0F11",
+    headerFg: "#FFFFFF",
+    tileBg: "#DD0031",
+    tileFg: "#FFFFFF",
+    playerPrimary: "346 100% 43%",
+    playerPrimaryFg: "0 0% 100%",
   },
   iframe: {
     title: "iframe",

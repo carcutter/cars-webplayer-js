@@ -25,6 +25,7 @@ CARS-WEBPLAYER/
 │   ├── core-wc/             # Wraps the WebPlayer in a WebComponent
 │   ├── webplayer-react/     # Adapt the WC WebPlayer for React
 │   ├── webplayer-next/      # Adapt the WC WebPlayer for Next.js
+│   ├── webplayer-angular/   # Adapt the WC WebPlayer for Angular (built with ng-packagr)
 │   ├── webplayer-wc/        # Expose the WC from core-wc and add React & ReactDOM
 │   .
 │   .
@@ -81,7 +82,7 @@ Run `pnpm test` to run the unit tests (vitest) of `core-wc`, `core-wc-react-*` a
 
 Run `pnpm e2e` to run the Playwright tests of `apps/e2e` over every demo app, on the local builds (run `pnpm build` first, then `pnpm --filter e2e exec playwright install chromium` once). They start the demo dev servers themselves, or reuse the ones already running. `pnpm e2e:cdn` checks the files published on the CDN instead, which CI also does every night.
 
-Run `pnpm test:consumers` (after `pnpm build`) to check the published packages the way customers get them: they're packed with `pnpm pack`, checked with publint and attw, then installed with npm in the apps of `consumers/` (React 19, 18 and 17, Next.js, Vue 3.3, vanilla, Web Component), type-checked, built and checked in the browser. `node scripts/consumer-test.js react-17 vue-3.3` runs only some of them.
+Run `pnpm test:consumers` (after `pnpm build`) to check the published packages the way customers get them: they're packed with `pnpm pack`, checked with publint and attw, then installed with npm in the apps of `consumers/` (React 19, 18 and 17, Next.js, Vue 3.3, Angular 19, vanilla, Web Component), type-checked, built and checked in the browser. `node scripts/consumer-test.js react-17 vue-3.3` runs only some of them.
 
 ### Run demos
 
@@ -99,9 +100,10 @@ Run `pnpm demo` to start all of them, then open the index at http://localhost:41
 | `pnpm demo:script`       | `<script>` bundle (`@car-cutter/script-webplayer`) | http://localhost:4174 |
 | `pnpm demo:wc`           | `@car-cutter/wc-webplayer`                         | http://localhost:4175 |
 | `pnpm demo:vue`          | `@car-cutter/vue-webplayer`                        | http://localhost:4176 |
+| `pnpm demo:angular`      | `@car-cutter/angular-webplayer`                    | http://localhost:4179 |
 | `pnpm demo:iframe`       | iframe integration (local copy or hosted page)     | http://localhost:4177 |
 
-The ports are listed in `packages/demo/src/ports.ts`: the vite apps read them from there, demo-next sets its port in its `dev` script.
+The ports are listed in `packages/demo/src/ports.ts`: the vite apps read them from there, demo-next and demo-angular set their port in their `dev` script.
 
 The script demo loads the bundle built locally from `packages/webplayer-script`, so changes can be checked before the bundle is released. Open http://localhost:4174/?bundle=cdn to load the published `v3/bundle.js` instead. The iframe demo works the same way: by default it embeds a local copy of the hosted iframe page (`apps/demo-iframe/public/player`) that loads the local bundle; open http://localhost:4177/?bundle=cdn to embed the hosted iframe instead.
 

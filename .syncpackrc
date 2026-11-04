@@ -13,6 +13,19 @@
       "isIgnored": true
     },
     {
+      "label": "angular-webplayer builds with the lowest Angular it supports (peer >=19), and the TypeScript of its compiler",
+      "packages": ["@car-cutter/angular-webplayer"],
+      "dependencies": ["@angular/**", "ng-packagr", "typescript"],
+      "dependencyTypes": ["dev"],
+      "isIgnored": true
+    },
+    {
+      "label": "demo-angular runs on Angular 21, the latest one supporting the Node 22.12 of the repo, and its TypeScript",
+      "packages": ["demo-angular"],
+      "dependencies": ["@angular/**", "typescript"],
+      "isIgnored": true
+    },
+    {
       "label": "demo-react-legacy runs on React 17, unlike the rest of the repo",
       "packages": ["demo-react-legacy"],
       "dependencies": [
@@ -25,7 +38,7 @@
     },
     {
       "label": "Framework peer ranges must stay wide (publishable wrappers omit them; internal pkgs keep wide ranges - never pin/unify to installed version)",
-      "dependencies": ["next", "react", "react-dom", "vue"],
+      "dependencies": ["@angular/core", "next", "react", "react-dom", "vue"],
       "dependencyTypes": ["peer"],
       "isIgnored": true
     }

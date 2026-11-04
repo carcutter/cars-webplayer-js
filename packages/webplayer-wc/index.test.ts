@@ -33,6 +33,11 @@ describe("@car-cutter/wc-webplayer", () => {
       WEB_PLAYER_CUSTOM_MEDIA_WC_TAG: "cc-webplayer-custom-media",
       WEB_PLAYER_ICON_WC_TAG: "cc-webplayer-icon",
       DEFAULT_EVENT_PREFIX: "cc-webplayer:",
+      DEFAULT_ANALYTICS_EVENT_PREFIX: "cc-analytics:",
+      ANALYTICS_EVENT_LOAD: "analytics-load",
+      ANALYTICS_EVENT_DISPLAY: "analytics-display",
+      ANALYTICS_EVENT_INTERACTION: "analytics-interaction",
+      ANALYTICS_EVENT_ERROR: "analytics-error",
     });
   });
 });

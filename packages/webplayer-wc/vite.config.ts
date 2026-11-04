@@ -18,6 +18,7 @@ export default defineConfig({
           "@car-cutter/core",
           "@car-cutter/core-wc",
           "@car-cutter/core-wc-react-18",
+          "@car-cutter/analytics",
         ],
       },
       // Keeps the package names in the declarations, for bundledPackages

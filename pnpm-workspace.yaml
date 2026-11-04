@@ -2,6 +2,13 @@ packages:
   - apps/*
   - packages/*
 
+# demo-angular gets a copy of angular-webplayer (injected in its package.json),
+# instead of a link to its folder, which has its own Angular (the lowest
+# version it supports): with the link, the demo would get two Angular cores.
+# The copy is updated once the package is built
+syncInjectedDepsAfterScripts:
+  - build
+
 overrides:
   # The patched majors of minimatch (GHSA-g3hv-75wg-m249) and glob
   # (GHSA-3g3m-2fjr-6pw4), checked by the builds, lint and tests using them.
@@ -26,9 +33,24 @@ packageExtensions:
       "@types/react-dom":
         optional: true
 
+  # It imports the Angular compiler and typescript without depending on them:
+  # they resolved to the hoisted ones (Angular 21 of demo-angular, TypeScript
+  # 6), instead of the ones of angular-webplayer (Angular 19 and TypeScript
+  # 5.8, the lowest versions it supports)
+  "@analogjs/vite-plugin-angular":
+    peerDependencies:
+      "@angular/compiler": "*"
+      "@angular/compiler-cli": "*"
+      typescript: "*"
+
 onlyBuiltDependencies:
   - esbuild
 
 ignoredBuiltDependencies:
   # Its postinstall only prints a funding banner
   - core-js
+  # Native helpers of the Angular CLI (file watcher, build cache), installed
+  # as prebuilt binaries: their scripts only build them when there's none
+  - "@parcel/watcher"
+  - lmdb
+  - msgpackr-extract

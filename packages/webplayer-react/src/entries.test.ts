@@ -22,13 +22,15 @@ const API = [
 ];
 
 describe("entry points", () => {
+  // The first import transforms the whole entry: 3s on CI, more when the
+  // other packages are tested at the same time
   it("the default entry defines the React 18+ elements", async () => {
     const entry = await import("../index");
 
     expect(define18).toHaveBeenCalledTimes(1);
     expect(define1617).not.toHaveBeenCalled();
     expect(Object.keys(entry)).toEqual(expect.arrayContaining(API));
-  });
+  }, 30_000);
 
   it("the legacy entry defines the React 16 / 17 elements", async () => {
     const entry = await import("./legacy");
