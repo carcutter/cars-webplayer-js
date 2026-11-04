@@ -1,6 +1,6 @@
 import { expect, test } from "./fixtures";
 
-/** Apps served by scripts/consumer-test.mjs */
+/** Apps served by scripts/consumer-test.js */
 const CONSUMERS: { name: string; url: string }[] = JSON.parse(
   process.env.CONSUMERS ?? "[]"
 );

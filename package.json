@@ -33,7 +33,7 @@
     "test": "turbo test --ui tui --continue",
     "e2e": "pnpm --filter e2e e2e",
     "e2e:cdn": "pnpm --filter e2e e2e:cdn",
-    "test:consumers": "node scripts/consumer-test.mjs",
+    "test:consumers": "node scripts/consumer-test.js",
     "syncpack:lint": "syncpack lint",
     "syncpack:fix": "syncpack fix",
     "ci": "pnpm install --frozen-lockfile && syncpack lint && turbo run build lint --ui tui",

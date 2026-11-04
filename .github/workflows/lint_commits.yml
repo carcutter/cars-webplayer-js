@@ -12,5 +12,5 @@ jobs:
 
       - uses: wagoid/commitlint-github-action@v6
         with:
-          configFile: ${{ github.workspace }}/commitlint.config.mjs
+          configFile: ${{ github.workspace }}/commitlint.config.js
           failOnWarnings: true

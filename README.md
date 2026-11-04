@@ -81,7 +81,7 @@ Run `pnpm test` to run the unit tests (vitest) of `core-wc`, `core-wc-react-*` a
 
 Run `pnpm e2e` to run the Playwright tests of `apps/e2e` over every demo app, on the local builds (run `pnpm build` first, then `pnpm --filter e2e exec playwright install chromium` once). They start the demo dev servers themselves, or reuse the ones already running. `pnpm e2e:cdn` checks the files published on the CDN instead, which CI also does every night.
 
-Run `pnpm test:consumers` (after `pnpm build`) to check the published packages the way customers get them: they're packed with `pnpm pack`, checked with publint and attw, then installed with npm in the apps of `consumers/` (React 19, 18 and 17, Next.js, Vue 3.3, vanilla, Web Component), type-checked, built and checked in the browser. `node scripts/consumer-test.mjs react-17 vue-3.3` runs only some of them.
+Run `pnpm test:consumers` (after `pnpm build`) to check the published packages the way customers get them: they're packed with `pnpm pack`, checked with publint and attw, then installed with npm in the apps of `consumers/` (React 19, 18 and 17, Next.js, Vue 3.3, vanilla, Web Component), type-checked, built and checked in the browser. `node scripts/consumer-test.js react-17 vue-3.3` runs only some of them.
 
 ### Run demos
 

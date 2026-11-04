@@ -4,7 +4,7 @@
 // consumers/ (outside the pnpm workspace), type-checked, built, served and
 // checked by the Playwright project "consumers".
 //
-// Usage: node scripts/consumer-test.mjs [app...]   (after `pnpm build`)
+// Usage: node scripts/consumer-test.js [app...]   (after `pnpm build`)
 // KEEP=1 keeps the temp folder.
 
 import { execFileSync, spawn } from "node:child_process";
