@@ -49,12 +49,13 @@ export default defineConfig({
           vue: [realpathSync(resolve(__dirname, "node_modules/vue-3.3"))],
         },
       },
-      rollupTypes: true,
-      bundledPackages: [
-        "@car-cutter/core",
-        "@car-cutter/core-wc",
-        "@car-cutter/analytics",
-      ],
+      bundleTypes: {
+        bundledPackages: [
+          "@car-cutter/core",
+          "@car-cutter/core-wc",
+          "@car-cutter/analytics",
+        ],
+      },
       // Keeps the package names in the declarations, for bundledPackages
       pathsToAliases: false,
     }),

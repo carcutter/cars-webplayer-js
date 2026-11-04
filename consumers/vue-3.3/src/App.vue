@@ -11,13 +11,19 @@ const COMPOSITION_URL =
 
 const events = ref<string[]>([]);
 const log = (name: string) => events.value.push(name);
+
+// Typed by the emits of the declarations: fails the type check if they lose
+// them (they did when built for the installed Vue instead of 3.3)
+const onCompositionLoading: NonNullable<
+  InstanceType<typeof WebPlayer>["$props"]["onCompositionLoading"]
+> = url => log(url.startsWith("http") ? "composition-loading" : url);
 </script>
 
 <template>
   <WebPlayer
     :compositionUrl="COMPOSITION_URL"
     :permanentGallery="true"
-    @compositionLoading="log('composition-loading')"
+    @compositionLoading="onCompositionLoading"
     @compositionLoaded="log('composition-loaded')"
     @itemChange="log('item-change')"
   >

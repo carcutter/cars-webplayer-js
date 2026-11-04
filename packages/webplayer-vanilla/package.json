@@ -41,15 +41,16 @@
   "devDependencies": {
     "@car-cutter/core": "workspace:^",
     "@car-cutter/typescript-config": "workspace:^",
+    "@microsoft/api-extractor": "~7.59.4",
     "@types/node": "^22",
     "@vitest/coverage-v8": "^5.1.0",
     "browserslist": "^4.29.5",
     "browserslist-to-esbuild": "^2.1.1",
     "happy-dom": "^21.0.4",
-    "typescript": "^5",
+    "typescript": "~6.0.3",
     "vite": "^6.4.5",
     "vite-bundle-visualizer": "^1.2.1",
-    "vite-plugin-dts": "^4.2.1",
+    "vite-plugin-dts": "^5.1.2",
     "vitest": "^5.1.0"
   },
   "browserslist": [

@@ -9,5 +9,8 @@
       "@car-cutter/core-wc": ["../core-wc/dist/types/index"],
       "@car-cutter/analytics": ["../analytics/dist/types/src/index"]
     }
-  }
+  },
+  // Generates the declarations for that lowest version: aimed at the
+  // installed one, they would use features 3.3 lacks (it dropped the emits)
+  "vueCompilerOptions": { "target": 3.3 }
 }
