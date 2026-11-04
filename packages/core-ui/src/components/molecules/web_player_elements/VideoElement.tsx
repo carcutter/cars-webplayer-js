@@ -15,6 +15,9 @@ type Timeout = ReturnType<typeof setTimeout>;
 
 const HIDE_CONTROLS_DELAY = 3000;
 
+// Farthest a finger can move (px) for a touch to be a tap, not a swipe
+const TAP_MAX_DISTANCE = 10;
+
 type Props = Extract<CustomizableItem, { type: "video" }> & {
   itemIndex: number;
 };
@@ -215,58 +218,99 @@ const VideoElement: React.FC<Props> = ({ src, poster, itemIndex }) => {
       setShowControls(false);
     };
 
-    // Click is used to pause the video but we do not want to consider a click if the user starts to move the carrousel
-    let isClicking = false;
-    const onMouseDown = () => {
-      isClicking = true;
+    // Pointer events tell touch and pens from the mouse: a tap is followed by
+    // emulated mouse events, which aren't listened to. A swipe of the
+    // carrousel over the video ends with pointercancel (native scroll).
+    const isMouse = (e: PointerEvent) => e.pointerType === "mouse";
+
+    // Hovering with the mouse shows the controls (pens are handled as
+    // fingers: some can't hover, and a tap toggles the controls)
+    const onPointerHover = (e: PointerEvent) => {
+      if (isMouse(e)) {
+        showControls();
+      }
     };
-    const onMouseUp = () => {
-      if (!isClicking) {
+    const onPointerLeave = (e: PointerEvent) => {
+      if (isMouse(e)) {
+        hideControls();
+      }
+    };
+
+    // A mouse click on the video pauses it, a tap (finger, pen) toggles the
+    // controls. Not when the pointer moved: the user moves the carrousel,
+    // which scrolls from the first pixel with the mouse (touch tolerates a
+    // few, as fingers do). Nor for a multi-touch gesture. Done on the click:
+    // hit-tested before the controls a tap shows, it doesn't press them.
+    let press: { x: number; y: number; mouse: boolean } | null = null;
+    let tap: { mouse: boolean } | null = null;
+    const hasMoved = (e: PointerEvent) => {
+      if (!press) {
+        return false;
+      }
+      const distance = Math.hypot(e.clientX - press.x, e.clientY - press.y);
+      return press.mouse ? distance > 0 : distance >= TAP_MAX_DISTANCE;
+    };
+
+    const onPointerDown = (e: PointerEvent) => {
+      tap = null;
+      // A second finger cancels the tap of the first one
+      press =
+        e.isPrimary && e.target === video && e.button === 0
+          ? { x: e.clientX, y: e.clientY, mouse: isMouse(e) }
+          : null;
+    };
+    const onPointerMove = (e: PointerEvent) => {
+      onPointerHover(e);
+      if (hasMoved(e)) {
+        press = null;
+      }
+    };
+    const onPointerUp = (e: PointerEvent) => {
+      tap =
+        press && e.isPrimary && e.target === video && !hasMoved(e)
+          ? { mouse: press.mouse }
+          : null;
+      press = null;
+    };
+    const onPointerCancel = () => {
+      press = null;
+      tap = null;
+    };
+    const onClick = () => {
+      if (!tap) {
         return;
       }
 
-      isClicking = false;
-
-      pause();
-    };
-
-    const onMouseMove = () => {
-      isClicking = false;
-      showControls();
-    };
-
-    // Touch is used to toggle controls
-    const onTouchStart = (e: TouchEvent) => {
-      e.preventDefault(); // Prevent the click event
-
-      const nbrTouches = e.touches.length;
-
-      if (nbrTouches !== 1) {
-        return;
+      if (tap.mouse) {
+        pause();
+      } else {
+        restartHideControlsTimeout();
+        setShowControls(state => !state);
       }
-
-      restartHideControlsTimeout();
-      setShowControls(state => !state);
+      tap = null;
     };
 
-    container.addEventListener("mousedown", onMouseDown);
-    container.addEventListener("mouseup", onMouseUp);
-
-    container.addEventListener("mouseenter", showControls);
-    container.addEventListener("mousemove", onMouseMove);
-    container.addEventListener("mouseleave", hideControls);
-
-    video.addEventListener("touchstart", onTouchStart, { passive: true });
+    container.addEventListener("pointerenter", onPointerHover);
+    container.addEventListener("pointermove", onPointerMove);
+    container.addEventListener("pointerleave", onPointerLeave);
+    container.addEventListener("pointerdown", onPointerDown);
+    container.addEventListener("pointerup", onPointerUp);
+    container.addEventListener("pointercancel", onPointerCancel);
+    video.addEventListener("click", onClick);
+    // Starting the video shows the controls for a while, also on touch
+    video.addEventListener("play", showControls);
 
     return () => {
-      container.removeEventListener("mousedown", onMouseDown);
-      container.removeEventListener("mouseup", onMouseUp);
+      container.removeEventListener("pointerenter", onPointerHover);
+      container.removeEventListener("pointermove", onPointerMove);
+      container.removeEventListener("pointerleave", onPointerLeave);
+      container.removeEventListener("pointerdown", onPointerDown);
+      container.removeEventListener("pointerup", onPointerUp);
+      container.removeEventListener("pointercancel", onPointerCancel);
+      video.removeEventListener("click", onClick);
+      video.removeEventListener("play", showControls);
 
-      container.removeEventListener("mouseenter", showControls);
-      container.removeEventListener("mousemove", showControls);
-      container.removeEventListener("mouseleave", hideControls);
-
-      video.removeEventListener("touchstart", onTouchStart);
+      clearHideControlsTimeout();
     };
   }, [clearHideControlsTimeout, pause, restartHideControlsTimeout]);
 
@@ -274,7 +318,9 @@ const VideoElement: React.FC<Props> = ({ src, poster, itemIndex }) => {
     <div ref={containerRef} className="relative aspect-[4/3] w-full">
       <video
         ref={videoRef}
-        className="size-full"
+        // No double-tap zoom (nor the click delay it brings) on pages without
+        // a mobile viewport: a tap toggles the controls
+        className="size-full touch-manipulation"
         src={src}
         poster={poster}
         disablePictureInPicture
