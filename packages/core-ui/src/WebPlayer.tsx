@@ -104,14 +104,25 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   const [playerWidth, setPlayerWidth] = useState(0);
   const [isFullScreen, setIsFullScreen] = useState(false);
 
-  const emitEvent = useCallback(
-    (eventId: string, detail?: unknown) => {
-      const eventName = eventPrefix + eventId;
-      const event = new CustomEvent(eventName, { detail });
-
-      document.dispatchEvent(event);
+  /**
+   * Dispatches an event of the player from its element, so that a listener on
+   * a web component only gets the events of its own player. Bubbling, and
+   * composed (out of the shadow root of the web component), it still reaches
+   * the listeners on `document`. From `document` before it's rendered
+   */
+  const dispatchPlayerEvent = useCallback(
+    (eventName: string, detail: unknown) => {
+      (wrapperRef.current ?? document).dispatchEvent(
+        new CustomEvent(eventName, { detail, bubbles: true, composed: true })
+      );
     },
-    [eventPrefix]
+    []
+  );
+
+  const emitEvent = useCallback(
+    (eventId: string, detail?: unknown) =>
+      dispatchPlayerEvent(eventPrefix + eventId, detail),
+    [eventPrefix, dispatchPlayerEvent]
   );
 
   // Analytics
@@ -142,11 +153,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
         }
 
         // Dispatch event
-        const analyticsEventName = analyticsEventPrefix + event.type;
-        const dispatchEvent = new CustomEvent(analyticsEventName, {
-          detail: payload,
-        });
-        document.dispatchEvent(dispatchEvent);
+        dispatchPlayerEvent(analyticsEventPrefix + event.type, payload);
 
         // Send event to analyticsUrl and/or monitoring service (best-effort, never throws)
         if (analyticsUrl || monitoring) {
@@ -203,6 +210,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
       analyticsSessionId,
       compositionUrl,
       monitoring,
+      dispatchPlayerEvent,
     ]
   );
 

@@ -116,3 +116,87 @@ test.describe("Customizations of the web component", () => {
     expect(consoleErrors).toEqual([]);
   });
 });
+
+test.describe("Events of the web component", () => {
+  test("are dispatched from its player, and reach document", async ({
+    page,
+    consoleErrors,
+  }) => {
+    await page.goto(pageUrl("wc"));
+    // Two players with the same prefix: the composition-loaded events heard
+    // on each element, and on document
+    await page.evaluate(compositionUrl => {
+      const heard: Record<string, number> = { a: 0, b: 0, document: 0 };
+      Object.assign(window, { heard });
+      document.addEventListener("same:composition-loaded", () => {
+        heard.document++;
+      });
+
+      for (const id of ["a", "b"]) {
+        const player = document.createElement("cc-webplayer");
+        player.setAttribute("composition-url", compositionUrl);
+        player.setAttribute("event-prefix", "same:");
+        player.setAttribute("monitoring", "false");
+        player.addEventListener("same:composition-loaded", () => {
+          heard[id]++;
+        });
+        document.body.append(player);
+      }
+    }, COMPOSITION_URL);
+
+    await expect
+      .poll(() =>
+        page.evaluate(() => (window as unknown as { heard: object }).heard)
+      )
+      .toEqual({ a: 1, b: 1, document: 2 });
+    // And not more: a player hearing the other's event would come later
+    await page.waitForTimeout(1000);
+    expect(
+      await page.evaluate(() => (window as unknown as { heard: object }).heard)
+    ).toEqual({ a: 1, b: 1, document: 2 });
+    expect(consoleErrors).toEqual([]);
+  });
+});
+
+test.describe("Custom media attributes", () => {
+  test("are read again when they change", async ({ page, consoleErrors }) => {
+    await page.goto(pageUrl("wc"));
+    // A custom media after the first item, then moved first
+    await page.evaluate(addPlayers, {
+      players: [
+        {
+          compositionUrl: COMPOSITION_URL,
+          eventPrefix: "m:",
+          withCustomMedia: true,
+        },
+      ],
+      customMedia: CUSTOM_MEDIA.replace('index="0"', 'index="3"'),
+    });
+    await expect
+      .poll(() => firstItemTypes(page))
+      .toEqual({
+        "m:": expect.any(String),
+      });
+    expect((await firstItemTypes(page))["m:"]).not.toBe("custom");
+
+    const shownTypes = await page.evaluateHandle(() => {
+      const types: string[] = [];
+      document.addEventListener("m:item-change", event =>
+        types.push((event as CustomEvent).detail.item.type)
+      );
+      return types;
+    });
+    await page.evaluate(() =>
+      document
+        .querySelector(
+          'cc-webplayer[event-prefix="m:"] cc-webplayer-custom-media'
+        )!
+        .setAttribute("index", "0")
+    );
+
+    await expect
+      .poll(() => shownTypes.evaluate(types => types.at(-1)))
+      .toBe("custom");
+    expect(consoleErrors).toEqual([]);
+  });
+});

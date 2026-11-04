@@ -53,6 +53,11 @@ export const useCustomizationContext = () => {
   return ctx;
 };
 
+const CUSTOMIZATION_TAGS: string[] = [
+  WEB_PLAYER_CUSTOM_MEDIA_WC_TAG,
+  WEB_PLAYER_ICON_WC_TAG,
+];
+
 const ICON_WRAPPER_CLASS = "*:size-full";
 const CUSTOM_MEDIA_WRAPPER_CLASS = "*:object-cover *:size-full"; // Make sure images are taking the whole space
 
@@ -112,7 +117,9 @@ const extractCustomMediasFromElement = (element: Element) => {
       continue;
     }
 
-    const index = Number(customMediaElement.getAttribute("index"));
+    // Not Number(null), which is 0
+    const indexAttribute = customMediaElement.getAttribute("index");
+    const index = indexAttribute ? Number(indexAttribute) : NaN;
     if (Number.isNaN(index)) {
       // eslint-disable-next-line no-console
       console.warn("Custom media element is missing the 'index' attribute");
@@ -157,7 +164,8 @@ const CustomizationContextProvider: React.FC<
     CustomMediaWithId[]
   >([]);
 
-  // Read the children of the web component, then when its DOM changes. Not
+  // Read the children of the web component, then when its DOM or their
+  // attributes change. Not
   // in a layout effect: its update would run the player's effects
   // synchronously, dispatching its first events before the host page's
   // effects listen to them
@@ -181,8 +189,23 @@ const CustomizationContextProvider: React.FC<
 
     read();
 
-    const observer = new MutationObserver(read);
-    observer.observe(webPlayerElement, { childList: true, subtree: true });
+    // Attributes of the customizations only, not of their content
+    const observer = new MutationObserver(records => {
+      if (
+        records.some(
+          record =>
+            record.type === "childList" ||
+            CUSTOMIZATION_TAGS.includes((record.target as Element).localName)
+        )
+      ) {
+        read();
+      }
+    });
+    observer.observe(webPlayerElement, {
+      childList: true,
+      subtree: true,
+      attributeFilter: ["index", "thumbnail-src", "name"],
+    });
 
     return () => observer.disconnect();
   }, [wrapperRef]);
