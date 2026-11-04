@@ -11,6 +11,8 @@ import Button from "../../ui/Button";
 import ProgressBar from "../../ui/ProgressBar";
 import Spinner from "../../ui/Spinner";
 
+type Timeout = ReturnType<typeof setTimeout>;
+
 const HIDE_CONTROLS_DELAY = 3000;
 
 type Props = Extract<CustomizableItem, { type: "video" }> & {
@@ -183,9 +185,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, itemIndex }) => {
   // -- Controls
   const [showControls, setShowControls] = useState(false);
 
-  const hideControlsTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(
-    undefined
-  );
+  const hideControlsTimeout = useRef<Timeout | undefined>(undefined);
   const clearHideControlsTimeout = useCallback(
     () => clearTimeout(hideControlsTimeout.current),
     []

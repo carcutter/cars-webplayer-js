@@ -34,9 +34,7 @@ const getCursorStyle = (
   hotspot: { x: number; y: number },
   fallback: string
 ): React.CSSProperties => {
-  return {
-    cursor: `url("${cursorUrl}") ${hotspot.x} ${hotspot.y}, ${fallback}`,
-  };
+  return { cursor: `url("${cursorUrl}") ${hotspot.x} ${hotspot.y}, ${fallback}` };
 };
 
 const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
