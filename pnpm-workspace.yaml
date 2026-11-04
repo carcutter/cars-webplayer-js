@@ -12,6 +12,20 @@ overrides:
   sockjs>uuid: ^11.1.1
   tinypool: ^2.1.2
 
+packageExtensions:
+  # next's declarations import React's types without depending on them: they
+  # resolved to whichever @types/react pnpm hoisted (it can be the React 17
+  # demo's), instead of the one of the package using next
+  next:
+    peerDependencies:
+      "@types/react": "*"
+      "@types/react-dom": "*"
+    peerDependenciesMeta:
+      "@types/react":
+        optional: true
+      "@types/react-dom":
+        optional: true
+
 onlyBuiltDependencies:
   - esbuild
 
