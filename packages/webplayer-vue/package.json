@@ -50,7 +50,7 @@
     "@car-cutter/analytics": "workspace:^",
     "@car-cutter/core": "workspace:^",
     "@car-cutter/typescript-config": "workspace:^",
-    "@types/node": "^20",
+    "@types/node": "^22",
     "@vitejs/plugin-vue": "^6.0.10",
     "@vitest/coverage-v8": "^4.1.12",
     "@vue/test-utils": "~2.5.1",

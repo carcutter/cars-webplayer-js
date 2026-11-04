@@ -51,7 +51,7 @@
   "devDependencies": {
     "@car-cutter/core": "workspace:^",
     "@car-cutter/typescript-config": "workspace:^",
-    "@types/node": "^20",
+    "@types/node": "^22",
     "@types/react": "^18.3.28",
     "@vitejs/plugin-react": "^5.0.0",
     "@vitest/coverage-v8": "^4.1.12",

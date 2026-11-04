@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@car-cutter/typescript-config": "workspace:^",
-    "@types/node": "^20",
+    "@types/node": "^22",
     "browserslist": "^4.29.5",
     "browserslist-to-esbuild": "^2.1.1",
     "typescript": "^5",

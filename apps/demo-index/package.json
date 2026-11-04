@@ -11,7 +11,7 @@
     "@car-cutter/demo": "workspace:^"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^22",
     "typescript": "^5",
     "vite": "^6.4.5"
   }
