@@ -70,7 +70,20 @@ The boolean properties can be set as bare attributes (`infiniteCarrousel`), or b
 
 ### Customization
 
-Custom medias and icons are given as content of the player, with the `WebPlayerCustomMedia` and `WebPlayerIcon` components:
+Custom medias and icons are given as content of the player, with the `WebPlayerCustomMedia` and `WebPlayerIcon` components, imported with `WebPlayer`:
+
+```typescript
+import {
+  WebPlayer,
+  WebPlayerCustomMedia,
+  WebPlayerIcon,
+} from "@car-cutter/angular-webplayer";
+
+@Component({
+  // ...
+  imports: [WebPlayer, WebPlayerCustomMedia, WebPlayerIcon],
+})
+```
 
 ```html
 <car-cutter-webplayer [compositionUrl]="url">
