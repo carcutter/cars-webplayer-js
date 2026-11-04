@@ -9,7 +9,7 @@
     "lint": {
       // Type-checks against the built declarations of the workspace packages
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/.eslintrc.cjs"]
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/eslint.config.js"]
     },
     "test": {
       "dependsOn": ["^build"],

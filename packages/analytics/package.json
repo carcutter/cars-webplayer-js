@@ -6,7 +6,7 @@
   "main": "./src/index.ts",
   "scripts": {
     "build": "tsc -p tsconfig.types.json",
-    "lint": "eslint . --ext ts --max-warnings 0"
+    "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
     "@car-cutter/core": "workspace:^"

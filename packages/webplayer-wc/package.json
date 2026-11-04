@@ -30,7 +30,7 @@
   ],
   "scripts": {
     "build": "tsc -b --force && vite build",
-    "lint": "eslint . --ext ts --max-warnings 0",
+    "lint": "eslint . --max-warnings 0",
     "analyze": "vite-bundle-visualizer",
     "test": "vitest run --coverage"
   },
