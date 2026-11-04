@@ -41,7 +41,7 @@
   "devDependencies": {
     "@car-cutter/core": "workspace:^",
     "@car-cutter/typescript-config": "workspace:^",
-    "@microsoft/api-extractor": "~7.59.4",
+    "@microsoft/api-extractor": "^7.60.1",
     "@types/node": "^22",
     "@vitest/coverage-v8": "^5.1.0",
     "browserslist": "^4.29.5",
