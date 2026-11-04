@@ -1,0 +1,110 @@
+---
+sidebar_position: 4
+sidebar_label: Angular
+
+description: "Use the WebPlayer with Angular"
+---
+
+# WebPlayer with Angular
+
+## Installation
+
+:::tip
+When you use the Web Player as a dependency in your application, you need to update it whenever the package is updated, as it evolves frequently. See [Updating to the Latest Version](#updating-to-the-latest-version).
+:::
+
+```bash npm2yarn
+npm install @car-cutter/angular-webplayer
+```
+
+## Usage
+
+The package provides standalone components: import them in the `imports` of your component.
+
+```typescript
+import { WebPlayer } from "@car-cutter/angular-webplayer";
+```
+
+Then, use the component as: `<car-cutter-webplayer [compositionUrl]="url" />`
+
+### Quick start
+
+```typescript title="/src/app/app.ts"
+import { Component } from "@angular/core";
+// highlight-next-line
+import { WebPlayer } from "@car-cutter/angular-webplayer";
+
+@Component({
+  selector: "app-root",
+  // highlight-next-line
+  imports: [WebPlayer],
+  template: `
+    <main>
+      <h1>Angular App</h1>
+      <div class="webplayer-wrapper">
+        <!-- highlight-start -->
+        <car-cutter-webplayer
+          compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
+          infiniteCarrousel
+          (compositionLoaded)="onCompositionLoaded()"
+        />
+        <!-- highlight-end -->
+      </div>
+    </main>
+  `,
+  styles: `
+    .webplayer-wrapper {
+      max-width: 800px;
+      margin-inline: auto;
+    }
+  `,
+})
+export class App {
+  onCompositionLoaded() {
+    console.log("Composition loaded");
+  }
+}
+```
+
+The boolean properties can be set as bare attributes (`infiniteCarrousel`), or bound (`[infiniteCarrousel]="true"`). A property that isn't set keeps the player's default.
+
+### Customization
+
+Custom medias and icons are given as content of the player, with the `WebPlayerCustomMedia` and `WebPlayerIcon` components:
+
+```html
+<car-cutter-webplayer [compositionUrl]="url">
+  <car-cutter-webplayer-custom-media [index]="4">
+    <img src="/custom-media.jpg" alt="Custom media" />
+  </car-cutter-webplayer-custom-media>
+  <car-cutter-webplayer-icon name="UI_GALLERY">
+    <svg viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" /></svg>
+  </car-cutter-webplayer-icon>
+</car-cutter-webplayer>
+```
+
+## Version Compatibility
+
+This package requires **Angular 19** or later. It works with and without zone.js.
+
+## Updating to the Latest Version
+
+To update `@car-cutter/angular-webplayer` to the latest version, run:
+
+```bash npm2yarn
+npm install @car-cutter/angular-webplayer@latest
+```
+
+You can check which version is currently installed with:
+
+```bash npm2yarn
+npm list @car-cutter/angular-webplayer
+```
+
+:::tip
+After updating, rebuild your application to ensure the new version is picked up correctly.
+:::
+
+## Next steps
+
+For more customization, take a look at available **props** in the **[Properties](../properties.mdx)** section
