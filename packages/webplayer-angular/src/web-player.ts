@@ -267,9 +267,10 @@ export class WebPlayer {
     // once it has its composition-url
     let listened: string[] = [];
     syncEarly(
+      // An empty prefix is unset for the element, which uses the default one
       () => [
-        this.eventPrefix() ?? DEFAULT_EVENT_PREFIX,
-        this.analyticsEventPrefix() ?? DEFAULT_ANALYTICS_EVENT_PREFIX,
+        this.eventPrefix() || DEFAULT_EVENT_PREFIX,
+        this.analyticsEventPrefix() || DEFAULT_ANALYTICS_EVENT_PREFIX,
       ],
       prefixes => {
         // The element dispatches its events with the new prefixes right away

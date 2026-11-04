@@ -46,7 +46,7 @@ class FakeWebPlayer extends HTMLElement {
   #dispatchLoading() {
     this.dispatchEvent(
       new CustomEvent(
-        (this.getAttribute("event-prefix") ?? DEFAULT_EVENT_PREFIX) +
+        (this.getAttribute("event-prefix") || DEFAULT_EVENT_PREFIX) +
           EVENT_COMPOSITION_LOADING,
         { bubbles: true, composed: true, detail: "loading.json" }
       )
@@ -327,6 +327,19 @@ describe("<car-cutter-webplayer> events", () => {
     other.remove();
 
     expect(host.emitted.itemChange).toBeUndefined();
+  });
+
+  it("listens with the default prefixes when they are empty", async () => {
+    const { host } = await mountPlayer({
+      eventPrefix: "",
+      analyticsEventPrefix: "",
+    });
+
+    dispatch(DEFAULT_EVENT_PREFIX + EVENT_ITEM_CHANGE, 1);
+    dispatch(DEFAULT_ANALYTICS_EVENT_PREFIX + ANALYTICS_EVENT_LOAD, 2);
+
+    expect(host.emitted.itemChange).toEqual([[1]]);
+    expect(host.emitted.analyticsLoad).toEqual([[2]]);
   });
 
   it("listens to the new prefixes when they change", async () => {
