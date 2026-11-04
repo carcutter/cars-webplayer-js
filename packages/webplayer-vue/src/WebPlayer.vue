@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onBeforeMount, onUnmounted, watch } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 
 import type {
   AnalyticsLoadEvent,
@@ -109,13 +109,19 @@ const analyticsEventListenerMap = {
     emit("analyticsError", event),
 };
 
-/** Document listeners for the current prefixes, keyed by event name */
+const player = ref<HTMLElement>();
+
+/**
+ * Listeners on the element for the current prefixes, keyed by event name: its
+ * events bubble from it, the ones of the other players don't reach it
+ */
 const eventCbMap = new Map<string, EventListener>();
 
 function addEventListeners() {
-  const eventPrefix = props.eventPrefix ?? DEFAULT_EVENT_PREFIX;
+  // An empty prefix is unset for the element, which uses the default one
+  const eventPrefix = props.eventPrefix || DEFAULT_EVENT_PREFIX;
   const analyticsEventPrefix =
-    props.analyticsEventPrefix ?? DEFAULT_ANALYTICS_EVENT_PREFIX;
+    props.analyticsEventPrefix || DEFAULT_ANALYTICS_EVENT_PREFIX;
 
   const listen = (
     prefix: string,
@@ -126,7 +132,7 @@ function addEventListeners() {
         listener((e as CustomEvent).detail as never);
 
       eventCbMap.set(`${prefix}${event}`, eventListener);
-      document.addEventListener(`${prefix}${event}`, eventListener);
+      player.value!.addEventListener(`${prefix}${event}`, eventListener);
     });
   };
 
@@ -136,29 +142,39 @@ function addEventListeners() {
 
 function removeEventListeners() {
   eventCbMap.forEach((eventListener, eventName) => {
-    document.removeEventListener(eventName, eventListener);
+    player.value!.removeEventListener(eventName, eventListener);
   });
   eventCbMap.clear();
 }
 
-// Before mount, so that events dispatched as soon as <cc-webplayer> is
-// connected (e.g. composition-loading) are not missed
-onBeforeMount(addEventListeners);
+// Right after <cc-webplayer> is connected: it renders on a microtask, and
+// dispatches its events (e.g. composition-loading) from then on
+onMounted(addEventListeners);
 
-// The element dispatches its events with the new prefixes right away
+// The element dispatches its events with the new prefixes right away. Two
+// sources: compared one by one, not as a new array each time
 watch(
-  () => [props.eventPrefix, props.analyticsEventPrefix],
+  [
+    () => props.eventPrefix || DEFAULT_EVENT_PREFIX,
+    () => props.analyticsEventPrefix || DEFAULT_ANALYTICS_EVENT_PREFIX,
+  ],
   () => {
     removeEventListeners();
     addEventListeners();
   }
 );
 
-onUnmounted(removeEventListeners);
+// While the element is still referenced
+onBeforeUnmount(removeEventListeners);
 </script>
 
 <template>
-  <cc-webplayer v-bind="attributes" :class="props.class" :style="style_">
+  <cc-webplayer
+    ref="player"
+    v-bind="attributes"
+    :class="props.class"
+    :style="style_"
+  >
     <slot></slot>
   </cc-webplayer>
 </template>

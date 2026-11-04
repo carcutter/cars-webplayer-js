@@ -1,6 +1,7 @@
 import {
   useMemo,
   useEffect,
+  useRef,
   type FC as ReactFC,
   type PropsWithChildren as ReactPropsWithChildren,
 } from "react";
@@ -82,10 +83,16 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
     return wcAttributes;
   }, [className, props]);
 
+  const playerRef = useRef<HTMLElement>(null);
+
+  // Listeners on the element: its events bubble from it, the ones of the
+  // other players don't reach it
   useEffect(() => {
-    const eventPrefix = props.eventPrefix ?? DEFAULT_EVENT_PREFIX;
+    const player = playerRef.current!;
+    // An empty prefix is unset for the element, which uses the default one
+    const eventPrefix = props.eventPrefix || DEFAULT_EVENT_PREFIX;
     const analyticsEventPrefix =
-      props.analyticsEventPrefix ?? DEFAULT_ANALYTICS_EVENT_PREFIX;
+      props.analyticsEventPrefix || DEFAULT_ANALYTICS_EVENT_PREFIX;
 
     const generateEventName = (event: string) => `${eventPrefix}${event}`;
     const generateAnalyticsEventName = (event: string) =>
@@ -124,7 +131,7 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
 
       eventCbMap.set(eventName, eventListener);
 
-      document.addEventListener(eventName, eventListener);
+      player.addEventListener(eventName, eventListener);
     });
 
     Object.entries(analyticsEventListenerMap).forEach(([event, listener]) => {
@@ -138,15 +145,15 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
 
       analyticsEventCbMap.set(eventName, eventListener);
 
-      document.addEventListener(eventName, eventListener);
+      player.addEventListener(eventName, eventListener);
     });
 
     return () => {
       eventCbMap.forEach((eventListener, eventName) => {
-        document.removeEventListener(eventName, eventListener);
+        player.removeEventListener(eventName, eventListener);
       });
       analyticsEventCbMap.forEach((eventListener, eventName) => {
-        document.removeEventListener(eventName, eventListener);
+        player.removeEventListener(eventName, eventListener);
       });
     };
   }, [
@@ -170,7 +177,11 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
 
   // NOTE: Custom element are "display: inline" by default + Style is there so that React can do its thing
   return (
-    <cc-webplayer style={{ display: "block", ...style }} {...attributes}>
+    <cc-webplayer
+      ref={playerRef}
+      style={{ display: "block", ...style }}
+      {...attributes}
+    >
       {children}
     </cc-webplayer>
   );

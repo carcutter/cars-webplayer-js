@@ -31,16 +31,20 @@ vi.mock("@car-cutter/wc-webplayer", async importOriginal => ({
 const URL = "https://x/c.json";
 
 // A <cc-webplayer> with an `integration` property, like the real element, and
-// which dispatches composition-loading as soon as it's connected
+// which dispatches composition-loading once connected, on a microtask (when
+// the real element renders)
 const integrationSetter = vi.fn();
 class FakeWebPlayer extends HTMLElement {
   set integration(value: unknown) {
     integrationSetter(value);
   }
   connectedCallback() {
+    queueMicrotask(() => this.#dispatchLoading());
+  }
+  #dispatchLoading() {
     this.dispatchEvent(
       new CustomEvent(
-        (this.getAttribute("event-prefix") ?? DEFAULT_EVENT_PREFIX) +
+        (this.getAttribute("event-prefix") || DEFAULT_EVENT_PREFIX) +
           EVENT_COMPOSITION_LOADING,
         { bubbles: true, composed: true, detail: "loading.json" }
       )
@@ -64,8 +68,12 @@ function mountPlayer(props: Record<string, unknown> = {}) {
   return { wrapper, el: wrapper.element as HTMLElement };
 }
 
-const dispatch = (name: string, detail?: unknown) =>
-  document.dispatchEvent(new CustomEvent(name, { detail }));
+/** An event of the player, dispatched from its element like the real one */
+const dispatch = (
+  name: string,
+  detail?: unknown,
+  player = document.querySelector("cc-webplayer")!
+) => player.dispatchEvent(new CustomEvent(name, { detail, bubbles: true }));
 
 describe("<WebPlayer> attributes", () => {
   it("defines the custom elements when set up", () => {
@@ -123,8 +131,9 @@ describe("<WebPlayer> attributes", () => {
 });
 
 describe("<WebPlayer> events", () => {
-  it("catches composition-loading dispatched as soon as the element connects", () => {
+  it("catches composition-loading dispatched on the first render", async () => {
     const { wrapper } = mountPlayer();
+    await Promise.resolve();
 
     expect(wrapper.emitted("compositionLoading")).toEqual([["loading.json"]]);
   });
@@ -184,12 +193,44 @@ describe("<WebPlayer> events", () => {
     expect(wrapper.emitted("analyticsLoad")).toEqual([["analytics"]]);
   });
 
+  it("ignores the events of the other players, with the same prefix", () => {
+    const first = mountPlayer();
+    const second = mountPlayer();
+
+    dispatch(DEFAULT_EVENT_PREFIX + EVENT_ITEM_CHANGE, 2, second.el);
+
+    expect(first.wrapper.emitted("itemChange")).toBeUndefined();
+    expect(second.wrapper.emitted("itemChange")).toEqual([[2]]);
+  });
+
+  it("keeps its listeners when a prefix goes from unset to empty", async () => {
+    const { wrapper, el } = mountPlayer();
+    const removeEventListener = vi.spyOn(el, "removeEventListener");
+
+    await wrapper.setProps({ eventPrefix: "" });
+
+    expect(removeEventListener).not.toHaveBeenCalled();
+  });
+
+  it("listens with the default prefixes when they are empty", () => {
+    const { wrapper } = mountPlayer({
+      eventPrefix: "",
+      analyticsEventPrefix: "",
+    });
+
+    dispatch(DEFAULT_EVENT_PREFIX + EVENT_ITEM_CHANGE, 1);
+    dispatch(DEFAULT_ANALYTICS_EVENT_PREFIX + ANALYTICS_EVENT_LOAD, 2);
+
+    expect(wrapper.emitted("itemChange")).toEqual([[1]]);
+    expect(wrapper.emitted("analyticsLoad")).toEqual([[2]]);
+  });
+
   it("stops listening once unmounted", () => {
-    const { wrapper } = mountPlayer();
+    const { wrapper, el } = mountPlayer();
     wrapper.unmount();
     wrappers.splice(wrappers.indexOf(wrapper), 1);
 
-    dispatch(DEFAULT_EVENT_PREFIX + EVENT_ITEM_CHANGE);
+    dispatch(DEFAULT_EVENT_PREFIX + EVENT_ITEM_CHANGE, undefined, el);
 
     expect(wrapper.emitted("itemChange")).toBeUndefined();
   });
