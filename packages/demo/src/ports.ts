@@ -7,7 +7,8 @@ export type DemoKey = "index" | ThemeKey;
 /**
  * Dev-server port of each demo app, away from vite's default 5173 so that
  * they don't take the port of other apps. The vite apps read it through the
- * `demoPort()` plugin; demo-next sets it in its `dev` script.
+ * `demoPort()` plugin; demo-next and demo-angular set it in their `dev`
+ * script.
  */
 export const DEMO_PORTS: Record<DemoKey, number> = {
   index: 4170,
@@ -19,4 +20,5 @@ export const DEMO_PORTS: Record<DemoKey, number> = {
   vue: 4176,
   iframe: 4177,
   "react-legacy": 4178,
+  angular: 4179,
 };
