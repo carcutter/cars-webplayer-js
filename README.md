@@ -122,7 +122,7 @@ The playground renders the player from its sources, so a change in core-ui shows
 - where it's rendered: in the page, or in a shadow root with its inlined styles (as the web component renders it; the customizations stay React children)
 - the width of its container. The breakpoints (`max-small`, `small`, `large`, shown in the header) follow the viewport: use the browser's device mode for them
 
-The settings are kept in the URL, and the events the player dispatches are listed below it. Monitoring is off by default: from localhost, the service refuses its events.
+The settings are kept in the URL, and the events the player dispatches are listed below it. The playground turns the `monitoring` prop off by default (the player's default is on): from localhost, the service refuses its events.
 
 > **Local composition.** Vite serves the `/public` directory at `/` during development: `/public/composition_mock.json` is served at `/composition_mock.json`. Use that URL as the `compositionUrl`.
 
@@ -231,7 +231,7 @@ cars-webplayer-js/
 | `demoSpin`                    | `boolean`                          | `true`            | Run a spin once the 360 images has been loaded                                                                                                   |
 | `reverse360`                  | `boolean`                          | `false`           | Reverse the 360-degree rotation                                                                                                                  |
 | `spinCursor`                  | `string`                           | `"ew-resize"`     | CSS cursor value used while interacting with 360 and NextGen 360 media                                                                           |
-| `themeConfig`                 | `"theme"`                          | ``                | Apply a built-in theme configuration                                                                                                             |
+| `themeConfig`                 | `"autonation"`                     | ``                | Apply a built-in theme configuration                                                                                                             |
 | `integration`                 | `boolean`                          | `false`           | Allows to use maxItemsShown and disables permanentGallery with infiniteCarrousel, enables hideCategoriesNav                                      |
 | `maxItemsShown`               | `number`                           | `1`               | Maximum number of items to display in the gallery                                                                                                |
 | `analyticsEventPrefix`        | `string`                           | `"cc-analytics:"` | Prefix of cc-analytics events                                                                                                                    |
