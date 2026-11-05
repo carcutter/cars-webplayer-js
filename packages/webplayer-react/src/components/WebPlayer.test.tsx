@@ -26,8 +26,12 @@ const URL = "https://x/c.json";
 
 afterEach(cleanup);
 
-const dispatch = (name: string, detail?: unknown) =>
-  document.dispatchEvent(new CustomEvent(name, { detail }));
+/** An event of a player, dispatched from its element like the real one */
+const dispatch = (
+  name: string,
+  detail?: unknown,
+  player = document.querySelector("cc-webplayer")!
+) => player.dispatchEvent(new CustomEvent(name, { detail, bubbles: true }));
 
 const element = (container: HTMLElement) =>
   container.querySelector("cc-webplayer") as HTMLElement;
@@ -148,12 +152,50 @@ describe("<WebPlayer> events", () => {
     );
 
     rerender(<WebPlayer compositionUrl={URL} onGalleryOpen={second} />);
+    const player = document.querySelector("cc-webplayer")!;
     dispatch(DEFAULT_EVENT_PREFIX + EVENT_GALLERY_OPEN);
     unmount();
-    dispatch(DEFAULT_EVENT_PREFIX + EVENT_GALLERY_OPEN);
+    dispatch(DEFAULT_EVENT_PREFIX + EVENT_GALLERY_OPEN, undefined, player);
 
     expect(first).not.toHaveBeenCalled();
     expect(second).toHaveBeenCalledTimes(1);
+  });
+
+  it("ignores the events of the other players, with the same prefix", () => {
+    const first = vi.fn();
+    const second = vi.fn();
+    render(
+      <>
+        <WebPlayer compositionUrl={URL} onItemChange={first} />
+        <WebPlayer compositionUrl={URL} onItemChange={second} />
+      </>
+    );
+
+    const [, secondPlayer] = document.querySelectorAll("cc-webplayer");
+    dispatch(DEFAULT_EVENT_PREFIX + EVENT_ITEM_CHANGE, 2, secondPlayer);
+
+    expect(first).not.toHaveBeenCalled();
+    expect(second).toHaveBeenCalledExactlyOnceWith(2);
+  });
+
+  it("listens with the default prefixes when they are empty", () => {
+    const onItemChange = vi.fn();
+    const onAnalyticsLoad = vi.fn();
+    render(
+      <WebPlayer
+        compositionUrl={URL}
+        eventPrefix=""
+        analyticsEventPrefix=""
+        onItemChange={onItemChange}
+        onAnalyticsLoad={onAnalyticsLoad}
+      />
+    );
+
+    dispatch(DEFAULT_EVENT_PREFIX + EVENT_ITEM_CHANGE, 1);
+    dispatch(DEFAULT_ANALYTICS_EVENT_PREFIX + ANALYTICS_EVENT_LOAD, 2);
+
+    expect(onItemChange).toHaveBeenCalledExactlyOnceWith(1);
+    expect(onAnalyticsLoad).toHaveBeenCalledExactlyOnceWith(2);
   });
 
   it("ignores events without a handler", () => {
