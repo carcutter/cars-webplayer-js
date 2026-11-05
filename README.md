@@ -1,4 +1,4 @@
-[![Lint Commit Messages](https://github.com/carcutter/cars-webplayer-js/actions/workflows/lint_commits.yml/badge.svg)](https://github.com/carcutter/cars-webplayer-js/actions/workflows/lint_commits.yml) [![Continuous Delivery](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_delivery.yml/badge.svg)](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_delivery.yml) [![Continuous Deployment](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_deployment.yml/badge.svg)](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_deployment.yml) [![Continuous Integration](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_integration.yml/badge.svg)](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_integration.yml)
+[![PR Title](https://github.com/carcutter/cars-webplayer-js/actions/workflows/pr-title.yml/badge.svg)](https://github.com/carcutter/cars-webplayer-js/actions/workflows/pr-title.yml) [![Continuous Delivery](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_delivery.yml/badge.svg)](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_delivery.yml) [![Continuous Deployment](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_deployment.yml/badge.svg)](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_deployment.yml) [![Continuous Integration](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_integration.yml/badge.svg)](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_integration.yml)
 
 # Car-Cutter WebPlayer Monorepo
 
@@ -204,15 +204,3 @@ You can customize the WebPlayer CSS with CSS Variables
 ### More customization
 
 For more customization, take a look at the **[Online Documentation](https://carcutter.github.io/cars-webplayer-js/)**
-
-## Useful scripts
-
-Scripts are available in the `scripts` directory
-
-### Generate JSON schema
-
-Use the command `pnpm migrate_composition <COMPOSITION_V1_PATH>`. It will create a new file with the new type
-
-### Convert composition from V2 to V3
-
-Use the command `pnpm generate_json_schema`. It will create a file within the _schemas_ folder
