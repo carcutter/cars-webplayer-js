@@ -1,5 +1,78 @@
 import { useEffect, useState } from "react";
 
+type Subscriber = {
+  targetUrl: string;
+  onStart: () => void;
+  onProgress: (percent: number) => void;
+  onEnd: () => void;
+};
+
+/** The hooks mounted, tracking the requests of their URL */
+const subscribers = new Set<Subscriber>();
+
+/** URL of each request opened while XMLHttpRequest is patched */
+const requestUrls = new WeakMap<XMLHttpRequest, string>();
+
+/**
+ * Patches XMLHttpRequest for the subscribers, once for all of them: one patch
+ * per hook would restore the wrong methods when the hooks don't unmount in
+ * the reverse order of their mount (several 360s mounted, cleanups deferred)
+ */
+function patchXhr(): () => void {
+  const prototype = XMLHttpRequest.prototype;
+  const { open, send } = prototype;
+
+  prototype.open = function (
+    this: XMLHttpRequest,
+    method: string,
+    url: string | URL,
+    async: boolean = true,
+    username?: string | null,
+    password?: string | null
+  ) {
+    const urlString = url.toString();
+    requestUrls.set(this, urlString);
+    subscribers.forEach(subscriber => {
+      if (urlString.includes(subscriber.targetUrl)) {
+        subscriber.onStart();
+      }
+    });
+    return open.call(
+      this,
+      method,
+      url,
+      async,
+      username || null,
+      password || null
+    );
+  };
+
+  prototype.send = function (
+    this: XMLHttpRequest,
+    body?: Document | XMLHttpRequestBodyInit | null
+  ) {
+    const url = requestUrls.get(this);
+    subscribers.forEach(subscriber => {
+      if (url?.includes(subscriber.targetUrl)) {
+        this.addEventListener("progress", (e: ProgressEvent) => {
+          if (e.lengthComputable) {
+            subscriber.onProgress(Math.round((e.loaded / e.total) * 100));
+          }
+        });
+        this.addEventListener("loadend", subscriber.onEnd);
+      }
+    });
+    return send.call(this, body);
+  };
+
+  return () => {
+    prototype.open = open;
+    prototype.send = send;
+  };
+}
+
+let restoreXhr: (() => void) | undefined;
+
 /**
  * Hook to track the loading progress of a resource via XMLHttpRequest
  * @param targetUrl URL to monitor for loading progress
@@ -10,56 +83,25 @@ export const useLoadingProgress = (targetUrl: string): [number, boolean] => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const originalXhrOpen = XMLHttpRequest.prototype.open;
-    const originalXhrSend = XMLHttpRequest.prototype.send;
-
-    let isMonitoringResource = false;
-
-    XMLHttpRequest.prototype.open = function (
-      method: string,
-      url: string | URL,
-      async: boolean = true,
-      username?: string | null,
-      password?: string | null
-    ) {
-      const urlString = url.toString();
-      if (urlString.includes(targetUrl)) {
-        isMonitoringResource = true;
-        setIsLoading(true);
-      }
-      return originalXhrOpen.call(
-        this,
-        method,
-        url,
-        async,
-        username || null,
-        password || null
-      );
+    const subscriber: Subscriber = {
+      targetUrl,
+      onStart: () => setIsLoading(true),
+      onProgress: setProgress,
+      onEnd: () => {
+        setProgress(100);
+        setIsLoading(false);
+      },
     };
 
-    XMLHttpRequest.prototype.send = function (
-      body?: Document | XMLHttpRequestBodyInit | null
-    ) {
-      if (isMonitoringResource) {
-        this.addEventListener("progress", (e: ProgressEvent) => {
-          if (e.lengthComputable) {
-            const percent = Math.round((e.loaded / e.total) * 100);
-            setProgress(percent);
-          }
-        });
-
-        this.addEventListener("loadend", () => {
-          isMonitoringResource = false;
-          setProgress(100);
-          setIsLoading(false);
-        });
-      }
-      return originalXhrSend.call(this, body);
-    };
+    subscribers.add(subscriber);
+    restoreXhr ??= patchXhr();
 
     return () => {
-      XMLHttpRequest.prototype.open = originalXhrOpen;
-      XMLHttpRequest.prototype.send = originalXhrSend;
+      subscribers.delete(subscriber);
+      if (subscribers.size === 0) {
+        restoreXhr?.();
+        restoreXhr = undefined;
+      }
     };
   }, [targetUrl]);
 

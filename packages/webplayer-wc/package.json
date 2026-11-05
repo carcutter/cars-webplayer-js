@@ -48,7 +48,7 @@
     "browserslist": "^4.29.5",
     "browserslist-to-esbuild": "^2.1.1",
     "happy-dom": "^21.0.4",
-    "preact": "^10.27.3",
+    "preact": "^11.1.1",
     "typescript": "~6.0.3",
     "vite": "^8.3.6",
     "vite-bundle-visualizer": "^1.2.1",
