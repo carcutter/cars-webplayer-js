@@ -9,6 +9,14 @@ packages:
 syncInjectedDepsAfterScripts:
   - build
 
+# Keeps React's types out of the hidden hoisted folder: a package importing
+# them without depending on them resolved to whichever version pnpm hoisted
+# (it can be the React 17 demo's), instead of failing
+hoistPattern:
+  - "*"
+  - "!@types/react"
+  - "!@types/react-dom"
+
 overrides:
   # The patched majors of minimatch (GHSA-g3hv-75wg-m249) and glob
   # (GHSA-3g3m-2fjr-6pw4), checked by the builds, lint and tests using them.
@@ -21,8 +29,8 @@ overrides:
 
 packageExtensions:
   # next's declarations import React's types without depending on them: they
-  # resolved to whichever @types/react pnpm hoisted (it can be the React 17
-  # demo's), instead of the one of the package using next
+  # resolve to the ones of the package using next (React's types aren't
+  # hoisted, see hoistPattern)
   next:
     peerDependencies:
       "@types/react": "*"
