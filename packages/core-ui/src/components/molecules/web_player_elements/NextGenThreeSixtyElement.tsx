@@ -629,15 +629,15 @@ const NextGenThreeSixtyElementInteractive: React.FC<
       )}
       {/* Touch-event target for drag-to-spin (mouse drag is handled on the container). */}
       <div ref={scrollerRef}>
-        <div className="sticky left-0 top-0">
+        <div className="sticky top-0 left-0">
           {/* Single flipbook image: src is swapped imperatively during spin (no React re-render).
               Uses the resolved currentSrc URLs that match the browser's srcSet cache. */}
           <img
             ref={flipbookImgRef}
             src={resolvedFrameUrls.current[0] || images[0].src}
             className={cn(
-              "pointer-events-none !absolute left-0 top-0 size-full object-cover",
-              isSpinActive ? "z-[2]" : "-z-10"
+              "pointer-events-none absolute! top-0 left-0 size-full object-cover",
+              isSpinActive ? "z-2" : "-z-10"
             )}
             alt=""
           />
@@ -658,7 +658,7 @@ const NextGenThreeSixtyElementInteractive: React.FC<
           {currentItemHotspotsVisible && !isZooming && (
             <div
               className={cn(
-                "absolute inset-0 z-[3]",
+                "absolute inset-0 z-3",
                 isSpinActive ? "pointer-events-none" : "pointer-events-auto"
               )}
               // Establish a container-query context so the hotspots' responsive
@@ -763,7 +763,7 @@ const NextGenThreeSixtyElementPlaceholder: React.FC<
   }, [autoLoad360, fetchSpinImages]);
 
   return (
-    <div className="relative aspect-[4/3] w-full">
+    <div className="relative aspect-4/3 w-full">
       <CdnImage
         className="size-full"
         src={images[0].src}

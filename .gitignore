@@ -26,3 +26,7 @@ pnpm-debug.log*
 
 # Test coverage reports
 coverage
+
+# Playwright results (apps/e2e)
+test-results
+playwright-report

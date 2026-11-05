@@ -143,7 +143,7 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
           ref={wrapperRef}
           className={cn(
             extendMode &&
-              "mx-auto flex min-h-0 w-full max-w-[1600px] justify-center"
+              "mx-auto flex min-h-0 w-full max-w-400 justify-center"
           )}
           style={!integration ? aspectRatioStyle : {}}
         >
@@ -156,7 +156,7 @@ const WebPlayerContent: React.FC<React.PropsWithChildren> = () => {
 
       {extendMode && (
         <CloseButton
-          className="absolute right-2 top-2 small:right-4 small:top-4"
+          className="absolute top-2 right-2 small:top-4 small:right-4"
           onClick={disableExtendMode}
         />
       )}
@@ -217,7 +217,7 @@ const WebPlayerContainer: React.FC = () => {
   if (error) {
     return (
       <ErrorTemplate
-        className="aspect-[4/3] text-foreground/70"
+        className="aspect-4/3 text-foreground/70"
         text="Player could not be loaded"
       />
     );
@@ -225,7 +225,7 @@ const WebPlayerContainer: React.FC = () => {
 
   if (!isSuccess) {
     return (
-      <div className="flex aspect-[4/3] size-full flex-col items-center justify-center gap-y-4">
+      <div className="flex aspect-4/3 size-full flex-col items-center justify-center gap-y-4">
         <div className="animate-pulse text-xl">Loading Player</div>
         <Spinner color="foreground" />
       </div>

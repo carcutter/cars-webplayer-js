@@ -1,5 +1,0 @@
-/* Styles of the WebPlayer, built into dist/style.css (the package's
-   "./style.css" export): the Tailwind styles, then pannellum's */
-@import "./index.css";
-@import "pannellum-react/es/pannellum/css/pannellum.css";
-@import "pannellum-react/es/pannellum/css/style-textInfo.css";

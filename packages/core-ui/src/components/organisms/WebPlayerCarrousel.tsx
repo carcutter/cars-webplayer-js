@@ -551,7 +551,7 @@ const WebPlayerCarrousel: React.FC<Props> = ({ className = "" }) => {
     >
       <div
         ref={sliderRef}
-        className={`flex size-full ${slidable ? "overflow-x-auto no-scrollbar *:snap-start *:snap-always" : "justify-center"}`}
+        className={`flex size-full ${slidable ? "no-scrollbar overflow-x-auto *:snap-start *:snap-always" : "justify-center"}`}
       >
         {items.map((item, index) => {
           const isShown = index === carrouselItemIndex;

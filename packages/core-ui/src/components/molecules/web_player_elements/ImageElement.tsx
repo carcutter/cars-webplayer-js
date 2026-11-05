@@ -65,10 +65,10 @@ const ImageElement: React.FC<Props> = ({
           <div
             // `pointer-events-none` so this full-size overlay does not swallow
             // the wheel/mouse/touch events that ZoomableCdnImage (painted
-            // underneath) needs for zoom & pan; `[&>*]:pointer-events-auto`
+            // underneath) needs for zoom & pan; `*:pointer-events-auto`
             // re-enables input on the hotspots themselves so they stay
             // interactive.
-            className="pointer-events-none absolute inset-0 [&>*]:pointer-events-auto"
+            className="pointer-events-none absolute inset-0 *:pointer-events-auto"
             style={{ containerType: "inline-size" }}
           >
             {hotspots.map((hotspot, index) => (

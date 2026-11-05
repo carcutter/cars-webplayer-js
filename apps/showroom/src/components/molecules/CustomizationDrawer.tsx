@@ -196,7 +196,7 @@ const CustomizationDrawer: React.FC<Props> = ({
         <div
           className={cn(
             "fixed inset-0 z-50 overscroll-none bg-foreground/40",
-            isClosing && "animate-out fade-out fill-mode-forwards"
+            isClosing && "animate-out fill-mode-forwards fade-out"
           )}
           onClick={closeDrawer}
         >
@@ -205,10 +205,10 @@ const CustomizationDrawer: React.FC<Props> = ({
             aria-modal="true"
             aria-label="Customization drawer"
             className={cn(
-              "fixed inset-y-0 right-0 overflow-y-auto overscroll-y-none border-l border-border bg-background p-3 text-foreground shadow-2xl outline-none",
+              "fixed inset-y-0 right-0 overflow-y-auto overscroll-y-none border-l border-border bg-background p-3 text-foreground shadow-2xl outline-hidden",
               "w-full max-w-[min(100vw,32rem)]",
               isClosing
-                ? "animate-out slide-out-to-right fill-mode-forwards"
+                ? "animate-out fill-mode-forwards slide-out-to-right"
                 : "animate-in slide-in-from-right"
             )}
             onClick={event => event.stopPropagation()}
@@ -288,7 +288,7 @@ const CustomizationDrawer: React.FC<Props> = ({
 
                 <div className="grid gap-3 sm:grid-cols-2 sm:items-start">
                   <div className="space-y-2">
-                    <div className="grid grid-cols-[auto,1fr] items-center gap-2">
+                    <div className="grid grid-cols-[auto_1fr] items-center gap-2">
                       <Checkbox
                         id="permanentGallery"
                         checked={permanentGallery}
@@ -458,7 +458,7 @@ const CustomizationDrawer: React.FC<Props> = ({
 
                     <div className="space-y-1.5 pt-1.5">
                       <h5 className="text-sm font-semibold">Extras</h5>
-                      <div className="grid grid-cols-[auto,1fr] items-center gap-2">
+                      <div className="grid grid-cols-[auto_1fr] items-center gap-2">
                         <Checkbox
                           id="withCustomMedias"
                           checked={withCustomMedias}

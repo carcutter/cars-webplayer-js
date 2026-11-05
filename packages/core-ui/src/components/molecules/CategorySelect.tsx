@@ -107,7 +107,7 @@ const ForcedTopNav: React.FC<ForcedTopNavProps> = ({
       className={cn(
         sharedClassName,
         positionToClassName("top-center"),
-        "w-max max-w-full overflow-x-auto overscroll-x-contain rounded-ui-md bg-background shadow no-scrollbar"
+        "no-scrollbar w-max max-w-full overflow-x-auto overscroll-x-contain rounded-ui-md bg-background shadow-sm"
       )}
       data-hotspot-top-inset
     >
@@ -115,7 +115,7 @@ const ForcedTopNav: React.FC<ForcedTopNavProps> = ({
         {categories.map(({ id, title }) => (
           <Button
             key={id}
-            className="shrink-0 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-foreground"
+            className="shrink-0 whitespace-nowrap focus-visible:ring-2 focus-visible:ring-foreground focus-visible:outline-hidden focus-visible:ring-inset"
             variant={id === displayedCategoryId ? "fill" : "ghost"}
             aria-current={id === displayedCategoryId ? "true" : undefined}
             onClick={() => changeCategory(id)}
@@ -228,7 +228,7 @@ const ResponsiveCategorySelect: React.FC<Props> = ({ sharedClassName }) => {
         )}
       >
         <div
-          className="mx-auto flex w-fit gap-x-1 rounded-ui-md bg-background p-1 shadow"
+          className="mx-auto flex w-fit gap-x-1 rounded-ui-md bg-background p-1 shadow-sm"
           data-hotspot-top-inset
         >
           {categories.map(({ id, title }) => (

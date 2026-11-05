@@ -10,7 +10,7 @@ import { createPortal } from "react-dom";
 import { WEB_PLAYER_WC_TAG } from "@car-cutter/core";
 
 // Processed by Tailwind and updated while editing
-import styles from "../src/style.css?inline";
+import styles from "../src/index.css?inline";
 
 type Props = {
   shadowDom: boolean;

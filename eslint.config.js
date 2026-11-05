@@ -27,7 +27,7 @@ const REACT = [
   "packages/webplayer-react/**",
 ];
 
-/** Packages and apps styled with Tailwind (with a tailwind.config.ts) */
+/** Packages and apps styled with Tailwind (from their src/index.css) */
 const TAILWIND = ["apps/showroom", "packages/core-ui"];
 
 /** Applies configs to the given files only */
@@ -126,7 +126,7 @@ export default [
     [{ settings: { react: { version: "17.0" } } }]
   ),
   {
-    // The player's styles are built from core-ui's src/style.css: a CSS
+    // The player's styles are built from core-ui's src/index.css: a CSS
     // import in the code bundled by the wrappers would be emitted as a
     // separate, unprocessed CSS file (`?inline` imports are strings)
     files: ["packages/**"],
@@ -139,7 +139,7 @@ export default [
           patterns: [
             {
               group: ["*.css"],
-              message: "Import it in packages/core-ui/src/style.css",
+              message: "Import it in packages/core-ui/src/index.css",
             },
           ],
         },
@@ -150,17 +150,35 @@ export default [
     scoped(
       [dir],
       [
-        ...tailwind.configs["flat/recommended"],
+        tailwind.configs.recommended,
         {
           settings: {
             tailwindcss: {
-              config: path.join(import.meta.dirname, dir, "tailwind.config.ts"),
-              callees: ["cn"],
+              cssConfigPath: path.join(
+                import.meta.dirname,
+                dir,
+                "src/index.css"
+              ),
+              functions: ["cn"],
             },
           },
         },
       ]
     )
+  ),
+  ...scoped(
+    ["packages/core-ui"],
+    [
+      {
+        rules: {
+          // The playground (dev/) has its own stylesheet
+          "tailwindcss/no-custom-classname": [
+            "warn",
+            { whitelist: ["pg(-[\\w-]+)?"] },
+          ],
+        },
+      },
+    ]
   ),
 
   prettier,

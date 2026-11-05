@@ -196,7 +196,7 @@ const AppContent: React.FC = () => {
           )}
         </WebPlayer>
       </main>
-      <footer className="flex-[2] self-center">
+      <footer className="flex-2 self-center">
         <div className="flex gap-x-2">
           <span className={cn("text-sm opacity-70", "sm:text-base")}>
             Powered by

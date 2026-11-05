@@ -140,7 +140,7 @@ const WebPlayerOverlay: React.FC = () => {
           sharedClassName={cn(
             sharedClassName,
             "transition-opacity",
-            !isZooming ? "opacity-100" : "!pointer-events-none opacity-0"
+            !isZooming ? "opacity-100" : "pointer-events-none! opacity-0"
           )}
           indicatorElement={indexIndicatorElement}
         />
@@ -172,7 +172,7 @@ const WebPlayerOverlay: React.FC = () => {
             className={cn(
               sharedClassName,
               positionToClassName("middle-left"),
-              !isZooming ? "opacity-100" : "!pointer-events-none opacity-0"
+              !isZooming ? "opacity-100" : "pointer-events-none! opacity-0"
             )}
             onClick={prevItem}
             disabled={!infiniteCarrousel && masterItemIndex <= 0}
@@ -187,7 +187,7 @@ const WebPlayerOverlay: React.FC = () => {
             className={cn(
               sharedClassName,
               positionToClassName("middle-right"),
-              !isZooming ? "opacity-100" : "!pointer-events-none opacity-0"
+              !isZooming ? "opacity-100" : "pointer-events-none! opacity-0"
             )}
             onClick={nextItem}
             disabled={
@@ -206,7 +206,7 @@ const WebPlayerOverlay: React.FC = () => {
         className={cn(
           sharedClassName,
           positionToClassName("bottom-fullW"),
-          "pointer-events-none grid grid-cols-[auto,1fr,auto] items-end *:pointer-events-auto small:gap-x-2"
+          "pointer-events-none grid grid-cols-[auto_1fr_auto] items-end *:pointer-events-auto small:gap-x-2"
         )}
       >
         {/* Gallery's toogle button & Gallery */}
@@ -216,7 +216,7 @@ const WebPlayerOverlay: React.FC = () => {
               className={
                 showGalleryControls && !isZooming
                   ? "opacity-100"
-                  : "!pointer-events-none opacity-0"
+                  : "pointer-events-none! opacity-0"
               }
               variant="fill"
               color={showGallery ? "primary" : "neutral"}
@@ -232,9 +232,9 @@ const WebPlayerOverlay: React.FC = () => {
                   "transition-opacity",
                   showGalleryControls && !isZooming
                     ? "opacity-100"
-                    : "!pointer-events-none opacity-0",
+                    : "pointer-events-none! opacity-0",
                   // Left & Right gradient mask to fade the gallery
-                  "[mask-image:linear-gradient(to_left,transparent_0px,black_4px,black_calc(100%-4px),transparent_100%)]"
+                  "mask-[linear-gradient(to_left,transparent_0px,black_4px,black_calc(100%-4px),transparent_100%)]"
                 )}
                 containerClassName="mx-1"
               />
@@ -247,7 +247,7 @@ const WebPlayerOverlay: React.FC = () => {
             <Switch
               className={cn(
                 "transition-opacity",
-                !isZooming ? "opacity-100" : "!pointer-events-none opacity-0"
+                !isZooming ? "opacity-100" : "pointer-events-none! opacity-0"
               )}
               enabled={currentItemHotspotsVisible}
               onToggle={toggleHotspots}
@@ -307,7 +307,7 @@ const WebPlayerOverlay: React.FC = () => {
       >
         {/* Button that closes the overlay */}
         <CloseButton
-          className="absolute right-2 top-2 z-10"
+          className="absolute top-2 right-2 z-10"
           onClick={resetShownDetails}
         />
       </DetailsOverlay>
