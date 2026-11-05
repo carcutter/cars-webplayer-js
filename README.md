@@ -266,3 +266,9 @@ For events, custom medias, icons and more, see the **[online documentation](http
 ## Contributing
 
 Commit format, browser support and contribution rules are in [`CONTRIBUTING.md`](./CONTRIBUTING.md); guidance for AI agents is in [`AGENTS.md`](./AGENTS.md).
+
+---
+
+<div align="center">
+<sub>🇦🇹 Built by the CarCutter team. 🇫🇷</sub>
+</div>

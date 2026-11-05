@@ -58,7 +58,7 @@ pnpm run ci                    # frozen install + syncpack lint + build + lint, 
 - Keep every `@car-cutter/*` dependency `workspace:^` and the versions consistent: `pnpm syncpack:lint`.
 - Leave alone: `dist/`, `coverage/`, the package versions (bumped by hand in release commits), `apps/demo-next/AGENTS.md` (Next's), `pnpm-lock.yaml` except through pnpm.
 - Start dev servers on 4190 or another free port above the consumer previews: 5173 is vite's default (other apps of the team run there), 4170-4179 are the demos', 4180 and up the consumer previews' (one per `consumers/*` app).
-- Format the source files you change with Prettier (`pnpm exec prettier --write <files>`), not `pnpm-lock.yaml`; some existing files aren't formatted, leave them.
+- Format the source files you change with Prettier (`pnpm exec prettier --write <files>`); some existing files aren't formatted, leave them.
 - Commits and PR titles are Conventional Commits; PRs are squashed into `develop`, so the PR title is the commit (checked by `.github/workflows/pr-title.yml`).
 - Write a PR's body with every section of `.github/PULL_REQUEST_TEMPLATE.md`, filled or deleted as it says (`gh pr create --body` doesn't apply the template), and link its GitHub issue, if there is one, with `Closes #<n>`.
 

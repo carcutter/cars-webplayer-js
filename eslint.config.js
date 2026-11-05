@@ -5,62 +5,45 @@ import path from "node:path";
 
 import react from "@eslint-react/eslint-plugin";
 import js from "@eslint/js";
-import tsPlugin from "@typescript-eslint/eslint-plugin";
-import tsParser from "@typescript-eslint/parser";
-import prettier from "eslint-config-prettier";
+import { defineConfig, globalIgnores } from "eslint/config";
+import prettier from "eslint-config-prettier/flat";
 import perfectionist from "eslint-plugin-perfectionist";
 import reactHooks from "eslint-plugin-react-hooks";
 import tailwind from "eslint-plugin-tailwindcss";
 import unusedImports from "eslint-plugin-unused-imports";
 import globals from "globals";
+import tseslint from "typescript-eslint";
 
 /** The linted files (the other ones, JS configs and scripts, aren't) */
 const FILES = ["**/*.ts", "**/*.tsx"];
 
 /** Packages and apps written with React (JSX, hooks) */
 const REACT = [
-  "apps/showroom/**",
-  "packages/core-ui/**",
-  "packages/core-wc/**",
-  "packages/core-wc-react-*/**",
-  "packages/webplayer-next/**",
-  "packages/webplayer-react/**",
+  "apps/showroom",
+  "packages/core-ui",
+  "packages/core-wc",
+  "packages/core-wc-react-*",
+  "packages/webplayer-next",
+  "packages/webplayer-react",
 ];
 
 /** Packages and apps styled with Tailwind (from their src/index.css) */
 const TAILWIND = ["apps/showroom", "packages/core-ui"];
 
-/** Applies configs to the given files only */
-const only = (files, configs) => configs.map(config => ({ ...config, files }));
+/** The linted files of some folders */
+const filesOf = dirs =>
+  dirs.flatMap(dir => FILES.map(file => `${dir}/${file}`));
 
-/** Applies configs to the linted files of some folders only */
-const scoped = (dirs, configs) =>
-  only(
-    dirs.flatMap(dir => FILES.map(file => `${dir}/${file}`)),
-    configs
-  );
+export default defineConfig([
+  globalIgnores(["**/dist/", "**/coverage/", "**/*.{js,mjs,cjs,jsx}"]),
 
-export default [
-  {
-    ignores: [
-      "**/node_modules/",
-      "**/dist/",
-      "**/coverage/",
-      "**/*.{js,mjs,cjs,jsx}",
-    ],
-  },
-
-  ...only(FILES, [
-    js.configs.recommended,
-    ...tsPlugin.configs["flat/recommended"],
-  ]),
   {
     files: FILES,
+    extends: [js.configs.recommended, tseslint.configs.recommended],
 
-    languageOptions: {
-      parser: tsParser,
-      globals: { ...globals.browser, ...globals.node },
-    },
+    // For no-global-assign (TypeScript allows `origin = ...`), not no-undef:
+    // off in TypeScript files, which the compiler checks
+    languageOptions: { globals: { ...globals.browser, ...globals.node } },
     plugins: { perfectionist, "unused-imports": unusedImports },
     rules: {
       "no-console": "error",
@@ -83,9 +66,12 @@ export default [
           newlinesBetween: 1,
         },
       ],
-      "unused-imports/no-unused-imports": "error",
 
-      "@typescript-eslint/no-unused-vars": [
+      // typescript-eslint's no-unused-vars, minus the unused imports: reported
+      // (and removed by --fix) by no-unused-imports
+      "@typescript-eslint/no-unused-vars": "off",
+      "unused-imports/no-unused-imports": "error",
+      "unused-imports/no-unused-vars": [
         "error",
         {
           argsIgnorePattern: "^_",
@@ -95,47 +81,48 @@ export default [
     },
   },
 
-  ...scoped(REACT, [
-    {
-      plugins: {
-        "@eslint-react": react,
-        "react-hooks": reactHooks,
-      },
-      rules: {
-        // The rules of eslint-plugin-react's recommended config (replaced as
-        // it doesn't support ESLint 10), not the React 19 and React Compiler
-        // ones of @eslint-react's: the player supports React 16.8. TypeScript
-        // covers undefined names and duplicate props; no longer checked:
-        // unescaped entities in JSX text, string refs, isMounted, the other
-        // deprecated APIs (unmountComponentAtNode...), and target="_blank"
-        // links with a dynamic href
-        "@eslint-react/no-missing-key": "error",
-        "@eslint-react/jsx-no-comment-textnodes": "error",
-        "@eslint-react/jsx-no-children-prop": "error",
-        "@eslint-react/no-direct-mutation-state": "error",
-        "@eslint-react/no-component-will-mount": "error",
-        "@eslint-react/no-component-will-receive-props": "error",
-        "@eslint-react/no-component-will-update": "error",
-        "@eslint-react/dom-no-dangerously-set-innerhtml-with-children": "error",
-        "@eslint-react/dom-no-find-dom-node": "error",
-        "@eslint-react/dom-no-hydrate": "error",
-        "@eslint-react/dom-no-render": "error",
-        "@eslint-react/dom-no-render-return-value": "error",
-        "@eslint-react/dom-no-unknown-property": "error",
-        "@eslint-react/dom-no-unsafe-target-blank": "error",
+  {
+    files: filesOf(REACT),
 
-        // The rules of hooks: not the React Compiler ones of
-        // eslint-plugin-react-hooks 7, which the code isn't written for
-        "react-hooks/rules-of-hooks": "error",
-        "react-hooks/exhaustive-deps": "warn",
-      },
+    plugins: {
+      "@eslint-react": react,
+      "react-hooks": reactHooks,
     },
-  ]),
-  ...scoped(
+    rules: {
+      // The rules of eslint-plugin-react's recommended config (replaced as
+      // it doesn't support ESLint 10), not the React 19 and React Compiler
+      // ones of @eslint-react's: the player supports React 16.8. TypeScript
+      // covers undefined names and duplicate props; no longer checked:
+      // unescaped entities in JSX text, string refs, isMounted, the other
+      // deprecated APIs (unmountComponentAtNode...), and target="_blank"
+      // links with a dynamic href
+      "@eslint-react/no-missing-key": "error",
+      "@eslint-react/jsx-no-comment-textnodes": "error",
+      "@eslint-react/jsx-no-children-prop": "error",
+      "@eslint-react/no-direct-mutation-state": "error",
+      "@eslint-react/no-component-will-mount": "error",
+      "@eslint-react/no-component-will-receive-props": "error",
+      "@eslint-react/no-component-will-update": "error",
+      "@eslint-react/dom-no-dangerously-set-innerhtml-with-children": "error",
+      "@eslint-react/dom-no-find-dom-node": "error",
+      "@eslint-react/dom-no-hydrate": "error",
+      "@eslint-react/dom-no-render": "error",
+      "@eslint-react/dom-no-render-return-value": "error",
+      "@eslint-react/dom-no-unknown-property": "error",
+      "@eslint-react/dom-no-unsafe-target-blank": "error",
+
+      // The rules of hooks: not the React Compiler ones of
+      // eslint-plugin-react-hooks 7, which the code isn't written for
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
+    },
+  },
+  {
     // Renders with React 16.8 / 17, whose ReactDOM.render isn't deprecated
-    ["packages/core-wc-react-16-17"],
-    [{ settings: { "react-x": { version: "17.0.0" } } }]
-  ),
+    files: filesOf(["packages/core-wc-react-16-17"]),
+    settings: { "react-x": { version: "17.0.0" } },
+  },
+
   {
     // The player's styles are built from core-ui's src/index.css: a CSS
     // import in the code bundled by the wrappers would be emitted as a
@@ -157,40 +144,29 @@ export default [
       ],
     },
   },
-  ...TAILWIND.flatMap(dir =>
-    scoped(
-      [dir],
-      [
-        tailwind.configs.recommended,
-        {
-          settings: {
-            tailwindcss: {
-              cssConfigPath: path.join(
-                import.meta.dirname,
-                dir,
-                "src/index.css"
-              ),
-              functions: ["cn"],
-            },
-          },
-        },
-      ]
-    )
-  ),
-  ...scoped(
-    ["packages/core-ui"],
-    [
-      {
-        rules: {
-          // The playground (dev/) has its own stylesheet
-          "tailwindcss/no-custom-classname": [
-            "warn",
-            { whitelist: ["pg(-[\\w-]+)?"] },
-          ],
-        },
+
+  ...TAILWIND.map(dir => ({
+    files: filesOf([dir]),
+    extends: [tailwind.configs.recommended],
+
+    settings: {
+      tailwindcss: {
+        cssConfigPath: path.join(import.meta.dirname, dir, "src/index.css"),
+        functions: ["cn"],
       },
-    ]
-  ),
+    },
+  })),
+  {
+    files: filesOf(["packages/core-ui"]),
+
+    rules: {
+      // The playground (dev/) has its own stylesheet
+      "tailwindcss/no-custom-classname": [
+        "warn",
+        { whitelist: ["pg(-[\\w-]+)?"] },
+      ],
+    },
+  },
 
   prettier,
-];
+]);

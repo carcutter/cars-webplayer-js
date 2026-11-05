@@ -1,0 +1,10 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      // Docusaurus builds the site in build/, not dist/
+      "outputs": ["build/**"]
+    }
+  }
+}

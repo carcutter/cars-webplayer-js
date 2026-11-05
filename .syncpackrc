@@ -7,7 +7,7 @@
       "pinVersion": "workspace:^"
     },
     {
-      "label": "vue-webplayer builds its declarations against the lowest Vue it supports (peer ^3.3)",
+      "label": "vue-webplayer builds its declarations against the lowest Vue it supports (peer ^3.3): keeps syncpack update from raising the alias",
       "packages": ["@car-cutter/vue-webplayer"],
       "dependencies": ["vue-3.3"],
       "isIgnored": true
@@ -20,7 +20,7 @@
       "isIgnored": true
     },
     {
-      "label": "demo-angular runs on Angular 21, the latest one supporting the Node 22.12 of the repo, and its TypeScript",
+      "label": "demo-angular runs on Angular 21, the latest one supporting the minimum Node of the repo (22.12, README), and its TypeScript",
       "packages": ["demo-angular"],
       "dependencies": ["@angular/**", "typescript"],
       "isIgnored": true
@@ -37,7 +37,7 @@
       "isIgnored": true
     },
     {
-      "label": "Framework peer ranges must stay wide (publishable wrappers omit them; internal pkgs keep wide ranges - never pin/unify to installed version)",
+      "label": "Framework peer ranges stay wide, never the installed version (react-webplayer and next-webplayer omit them)",
       "dependencies": ["@angular/core", "next", "react", "react-dom", "vue"],
       "dependencyTypes": ["peer"],
       "isIgnored": true

@@ -1,32 +1,60 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs (Docusaurus' build/ only: a build/ folder elsewhere may be source)
+dist/
+/apps/docs/build/
+*.tgz
+
 # TypeScript incremental state (tsc -b, Next's tsc --noEmit), next to each tsconfig
 *.tsbuildinfo
 
-# Production
-build
-dist
-node_modules
+# Tool caches
+.angular/
+.cache-loader/
+.docusaurus/
+.eslintcache
+.next/
+.turbo/
+vite.config.*.timestamp-*
 
-# Cache
-.angular
-.cache-loader
-.docusaurus
-.next
-.turbo
+# Tests: coverage reports, Playwright results (apps/e2e)
+coverage/
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
 
-# Misc
-.DS_Store
-
+# Logs
+*.log
+npm-debug.log*
 pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Secrets
+# Secrets and local environment
 .secrets
+.env
+.env.*
+!.env.example
+*.local
 
-# GitHub actions
-!.github/**
+# Editors
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*~
 
-# Test coverage reports
-coverage
+# Claude Code: personal settings, agents' worktrees
+.claude/settings.local.json
+.claude/worktrees/
+CLAUDE.local.md
 
-# Playwright results (apps/e2e)
-test-results
-playwright-report
+# OS
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
