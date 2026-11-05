@@ -1,51 +1,121 @@
-[![PR Title](https://github.com/carcutter/cars-webplayer-js/actions/workflows/pr-title.yml/badge.svg)](https://github.com/carcutter/cars-webplayer-js/actions/workflows/pr-title.yml) [![Continuous Delivery](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_delivery.yml/badge.svg)](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_delivery.yml) [![Continuous Deployment](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_deployment.yml/badge.svg)](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_deployment.yml) [![Continuous Integration](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_integration.yml/badge.svg)](https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_integration.yml)
+<div align="center">
 
-# Car-Cutter WebPlayer Monorepo
+<img src="./.github/assets/logo.svg" alt="CarCutter WebPlayer" width="72" height="72" />
 
-This monorepo hosts the WebPlayer project, which includes multiple demo applications and several packages for different web technologies. The project is structured to support various frameworks and libraries, enabling reusable components and configurations.
+# CarCutter WebPlayer
 
-## Contributing
+**One player for every vehicle's medias, in every web stack.**
 
-### Structure
+Photos, 360° spins, videos and hotspots of a car, loaded from a single composition URL — and shipped for React, Next.js, Vue, Angular, Web Components, vanilla JS and a CDN script.
 
-The structure of this monorepo is organized as follows:
+<p>
+  <a href="https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_integration.yml"><img alt="Continuous Integration" src="https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_integration.yml/badge.svg" /></a>
+  <a href="https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_delivery.yml"><img alt="Continuous Delivery" src="https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_delivery.yml/badge.svg" /></a>
+  <a href="https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_deployment.yml"><img alt="Continuous Deployment" src="https://github.com/carcutter/cars-webplayer-js/actions/workflows/continuous_deployment.yml/badge.svg" /></a>
+  <a href="https://github.com/carcutter/cars-webplayer-js/actions/workflows/pr-title.yml"><img alt="PR Title" src="https://github.com/carcutter/cars-webplayer-js/actions/workflows/pr-title.yml/badge.svg" /></a>
+</p>
+
+<p>
+  <a href="https://www.npmjs.com/package/@car-cutter/react-webplayer"><img alt="npm" src="https://img.shields.io/npm/v/@car-cutter/react-webplayer?label=npm&color=1B5DF5&logo=npm" /></a>
+  <img alt="React" src="https://img.shields.io/badge/React-16.8%2B-149ECA?logo=react&logoColor=white" />
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white" />
+  <img alt="Vite" src="https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white" />
+  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind-4-38BDF8?logo=tailwindcss&logoColor=white" />
+  <img alt="pnpm" src="https://img.shields.io/badge/pnpm-workspace-F69220?logo=pnpm&logoColor=white" />
+</p>
+
+**[📖 Documentation](https://carcutter.github.io/cars-webplayer-js/)**
+
+</div>
+
+---
+
+## Overview
+
+The WebPlayer is one React app (`packages/core-ui`) rendered by a web component, `<cc-webplayer>`, in a closed shadow root, so the host page's styles never leak in. Thin wrappers publish that element for each framework, and a CDN bundle serves pages without a build step.
+
+## Features
+
+- **🖼️ Carrousel & gallery** — Swipe through every media, with an optional permanent gallery and infinite navigation.
+- **🔄 360° spins** — Exterior, NextGen and interior 360s, with a demo spin, reversible rotation and lazy loading.
+- **📍 Hotspots** — Damage and feature hotspots placed on the medias.
+- **🗂️ Categories** — Category navigation (top bar or burger menu), filterable per integration.
+- **⚡ Load strategies** — `quality`, `balanced` or `speed`, with configurable preload range and media widths.
+- **🎨 Themable** — CSS variables and built-in themes, isolated in a shadow root.
+- **📡 Events & analytics** — Prefixed DOM events for every interaction, plus optional analytics and monitoring.
+
+## Packages
+
+| Package                                                                                        | For                                                                      |
+| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| [`@car-cutter/react-webplayer`](https://www.npmjs.com/package/@car-cutter/react-webplayer)     | React 18+ (`/legacy` for React 16.8 – 17)                                |
+| [`@car-cutter/next-webplayer`](https://www.npmjs.com/package/@car-cutter/next-webplayer)       | Next.js                                                                  |
+| [`@car-cutter/vue-webplayer`](https://www.npmjs.com/package/@car-cutter/vue-webplayer)         | Vue 3.3+                                                                 |
+| [`@car-cutter/angular-webplayer`](https://www.npmjs.com/package/@car-cutter/angular-webplayer) | Angular 19+                                                              |
+| [`@car-cutter/wc-webplayer`](https://www.npmjs.com/package/@car-cutter/wc-webplayer)           | Web Component, framework-agnostic                                        |
+| [`@car-cutter/vanilla-webplayer`](https://www.npmjs.com/package/@car-cutter/vanilla-webplayer) | Vanilla JS                                                               |
+| CDN script                                                                                     | `<script src="https://cdn.car-cutter.com/libs/web-player/v3/bundle.js">` |
+
+## Quick Start
 
 ```bash
-CARS-WEBPLAYER/
-├── apps/                    # Demo applications for different frameworks
-│   ├── demo-index/          # Index linking to every demo
-│   ├── demo-next/           # Demo app using Next.js
-│   ├── demo-vanilla/        # Demo app using Vanilla JS
-│   .
-│   .
-├── packages/                # Shared packages for different frameworks
-│   ├── demo/                # Layout, themes & helpers shared by the demo apps
-│   ├── core/                # Core logic for the web player (Composition typing, utils functions, ...)
-│   ├── core-ui/             # WebPlayer implementation (carrousel, 360, hotspots, ...)
-│   ├── core-wc/             # Wraps the WebPlayer in a WebComponent
-│   ├── webplayer-react/     # Adapt the WC WebPlayer for React
-│   ├── webplayer-next/      # Adapt the WC WebPlayer for Next.js
-│   ├── webplayer-angular/   # Adapt the WC WebPlayer for Angular (built with ng-packagr)
-│   ├── webplayer-wc/        # Expose the WC from core-wc and add React & ReactDOM
-│   .
-│   .
+npm install @car-cutter/react-webplayer
 ```
 
-- **apps/**: Contains demo applications showcasing the usage of the web player in various frameworks. Each demo is isolated, allowing you to see how the web player can be integrated into different environments.
+```jsx
+import { WebPlayer } from "@car-cutter/react-webplayer";
 
-- **packages/**: This directory all NPM packages
+export const App = () => (
+  <WebPlayer compositionUrl="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json" />
+);
+```
 
-## Development
+Without a bundler:
 
-### Setup
+```html
+<script src="https://cdn.car-cutter.com/libs/web-player/v3/bundle.js"></script>
 
-1. Install Node v22.12 or later (the CI runs 22.14). Tutorial for macOS [here](https://sukiphan.medium.com/how-to-install-nvm-node-version-manager-on-macos-d9fe432cc7db)
-2. Enable pnpm, at the version of the `packageManager` field of `package.json`: `corepack enable` (from Node 25, corepack isn't bundled with Node anymore: install it first with `npm install -g corepack`).
-3. Install the node modules with the command `pnpm install`.
+<cc-webplayer
+  composition-url="https://cdn.car-cutter.com/libs/web-player/v3/demos/composition.json"
+></cc-webplayer>
+```
 
-### Developing the WebPlayer Core
+Every integration is described in the **[installation guides](https://carcutter.github.io/cars-webplayer-js/)**.
 
-Run `pnpm dev` from the workspace root to start the playground of `packages/core-ui` (at the URL Vite prints, `pnpm dev:core-preact` to run it on Preact like the web component). It renders the player from its sources, so a change in core-ui shows up as soon as it's saved, and lets you change:
+## Tech Stack
+
+| Area     | Choice                                                                                                                                 |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Player   | [React](https://react.dev), rendered with `createRoot` (18+), `render` (16/17) or [Preact](https://preactjs.com) (Web Component build) |
+| Language | [TypeScript](https://www.typescriptlang.org) ~6, strict                                                                                |
+| Build    | [Vite 8](https://vite.dev) (Rolldown) for the libraries, [ng-packagr](https://github.com/ng-packagr/ng-packagr) for Angular            |
+| Styles   | [Tailwind CSS 4](https://tailwindcss.com), configured in `packages/core-ui/src/index.css`                                              |
+| Monorepo | [pnpm](https://pnpm.io) workspace + [Turborepo](https://turborepo.com), [syncpack](https://github.com/JamieMason/syncpack)             |
+| Tests    | [Vitest](https://vitest.dev) + happy-dom (unit), [Playwright](https://playwright.dev) (e2e, consumer apps)                             |
+| Docs     | [Docusaurus](https://docusaurus.io), on GitHub Pages                                                                                   |
+| Release  | [Changesets](https://github.com/changesets/changesets)                                                                                 |
+
+## Getting Started
+
+### Prerequisites
+
+- **Node.js** 22.12+ (CI runs 22.14). Tutorial for macOS [here](https://sukiphan.medium.com/how-to-install-nvm-node-version-manager-on-macos-d9fe432cc7db).
+- **[pnpm](https://pnpm.io)** at the version of the `packageManager` field of `package.json`: `corepack enable` (from Node 25, corepack isn't bundled with Node anymore: install it first with `npm install -g corepack`).
+
+### Installation
+
+```bash
+pnpm install
+```
+
+### Developing the WebPlayer
+
+```bash
+pnpm dev               # playground of packages/core-ui
+pnpm dev:core-preact   # the same, on Preact like the web component
+```
+
+The playground renders the player from its sources, so a change in core-ui shows up as soon as it's saved, and lets you change:
 
 - the props of the player (but the media widths and the deprecated analytics ones), and its children (custom medias, custom icon)
 - the CSS variables
@@ -54,41 +124,42 @@ Run `pnpm dev` from the workspace root to start the playground of `packages/core
 
 The settings are kept in the URL, and the events the player dispatches are listed below it. Monitoring is off by default: from localhost, the service refuses its events.
 
-#### Using Local Composition
+> **Local composition.** Vite serves the `/public` directory at `/` during development: `/public/composition_mock.json` is served at `/composition_mock.json`. Use that URL as the `compositionUrl`.
 
-Vite serves all assets in the `/public` directory at the root path `/` during development. For instance, `/public/composition_mock.json` can be accessed at `/composition_mock.json`. Use that URL as the `compositionUrl`.
+### Developing the documentation
 
-### Developing the Documentation
+```bash
+pnpm dev:docs
+```
 
-Simply run `pnpm dev:docs` from the workspace root to start the documentation in development mode.
+## Scripts
 
-### Building
+| Command                       | Description                                                                 |
+| ----------------------------- | --------------------------------------------------------------------------- |
+| `pnpm dev`                    | Start the core-ui playground                                                |
+| `pnpm dev:docs`               | Start the documentation                                                     |
+| `pnpm demo` / `pnpm demo:XX`  | Start every demo app, or one of them (see [Demos](#demos))                  |
+| `pnpm build`                  | Build every package                                                         |
+| `pnpm lint`                   | ESLint and/or type-check, per package                                       |
+| `pnpm test`                   | Unit tests (Vitest), 100% coverage per package                              |
+| `pnpm e2e` / `pnpm e2e:cdn`   | Playwright tests over the demo apps, or over the files published on the CDN |
+| `pnpm test:consumers`         | Pack the npm packages and test them in the `consumers/` apps                |
+| `pnpm run ci`                 | Frozen install + syncpack lint + build + lint, as CI                        |
+| `pnpm analyze` (in a package) | Analyze the bundle size                                                     |
 
-Run `pnpm build` to build all packages
+> **Bundle analysis.** The sourcemap seems to interfere with size calculation ([GitHub issue](https://github.com/KusStar/vite-bundle-visualizer/issues/8)). More info [here](https://www.npmjs.com/package/vite-bundle-visualizer).
 
-#### Analyze Bundle Size
+## Testing
 
-Go in any package and run `pnpm analyze` to analyze the bundle.
+**Unit tests** — `pnpm test` runs the Vitest tests of `core-wc`, `core-wc-react-*` and the `webplayer-*` wrappers. Each package requires 100% coverage, and its report is written to its `coverage` folder. In a package, `pnpm vitest` runs them in watch mode.
 
-NOTE : the sourcemap seems to interfere with size calculation [GitHub issue](https://github.com/KusStar/vite-bundle-visualizer/issues/8). More info [here](https://www.npmjs.com/package/vite-bundle-visualizer).
+**End-to-end** — `pnpm e2e` runs the Playwright tests of `apps/e2e` over every demo app, on the local builds (run `pnpm build` first, then `pnpm --filter e2e exec playwright install chromium` once). They start the demo dev servers themselves, or reuse the ones already running. `pnpm e2e:cdn` checks the files published on the CDN instead, which CI also does every night.
 
-### Linting
+**Consumers** — `pnpm test:consumers` (after `pnpm build`) checks the published packages the way customers get them: they're packed with `pnpm pack`, checked with publint and attw, then installed with npm in the apps of `consumers/` (React 19, 18 and 17, Next.js, Vue 3.3, Angular 19, vanilla, Web Component), type-checked, built and checked in the browser. `node scripts/consumer-test.js react-17 vue-3.3` runs only some of them.
 
-Run `pnpm lint`
+## Demos
 
-### Testing
-
-Run `pnpm test` to run the unit tests (vitest) of `core-wc`, `core-wc-react-*` and the `webplayer-*` wrappers. Each package requires 100% coverage, and its report is written to its `coverage` folder. In a package, `pnpm vitest` runs them in watch mode.
-
-Run `pnpm e2e` to run the Playwright tests of `apps/e2e` over every demo app, on the local builds (run `pnpm build` first, then `pnpm --filter e2e exec playwright install chromium` once). They start the demo dev servers themselves, or reuse the ones already running. `pnpm e2e:cdn` checks the files published on the CDN instead, which CI also does every night.
-
-Run `pnpm test:consumers` (after `pnpm build`) to check the published packages the way customers get them: they're packed with `pnpm pack`, checked with publint and attw, then installed with npm in the apps of `consumers/` (React 19, 18 and 17, Next.js, Vue 3.3, Angular 19, vanilla, Web Component), type-checked, built and checked in the browser. `node scripts/consumer-test.js react-17 vue-3.3` runs only some of them.
-
-### Run demos
-
-Every demo renders the same listing page (from `packages/demo`) with a real WebPlayer loading the demo composition, and logs the player events.
-
-Run `pnpm demo` to start all of them, then open the index at http://localhost:4170. Run `pnpm demo:XX` to start a single one:
+Every demo renders the same listing page (from `packages/demo`) with a real WebPlayer loading the demo composition, and logs the player events. Run `pnpm demo` to start all of them, then open the index at http://localhost:4170.
 
 | Command                  | Integration                                        | URL                   |
 | ------------------------ | -------------------------------------------------- | --------------------- |
@@ -109,41 +180,35 @@ The script demo loads the bundle built locally from `packages/webplayer-script`,
 
 ## Publication
 
-This repository uses the Changesets CLI to handle versioning and publication to NPM registry. Follow the steps below to publish new versions of your packages:
+Versioning and publication to npm are handled by the [Changesets](https://github.com/changesets/changesets) CLI, in five steps:
 
-### 1. Create a Changeset
+1. **Create a changeset** — `pnpm version:commit`, then select the affected packages and the type of change (patch, minor or major). It writes a changeset file that describes the changes.
+2. **Version the packages** — once the changesets are merged into the base branch, `pnpm version:apply` updates the versions in the `package.json` files, generates the changelogs and prepares the packages for publishing.
+3. **Check everything** — `pnpm run ci` runs `build` and `lint` after `pnpm install --frozen-lockfile`, to be sure the dependencies are correct. If the install fails because `pnpm-lock.yaml` is outdated, some versions have not been properly updated: run `pnpm install` and commit the updated lockfile.
+4. **Publish to npm** — `pnpm publish:packages` publishes every package changed since the last release. Make sure you are logged in to npm with the correct credentials; the packages are published with the access level of the changesets configuration (`config.json`).
+5. **Publish the documentation** — `pnpm publish:docs`.
 
-To propose a new version for one or more packages, you need to create a changeset. Run the command `pnpm version:commit` and follow the prompts.
+## Project Structure
 
-You will be prompted to select the packages that should be affected and to specify the type of change (patch, minor, or major). This will create a changeset file that describes the changes.
+```
+cars-webplayer-js/
+├── apps/
+│   ├── demo-*/            # One demo per integration, on the built packages
+│   ├── docs/              # User documentation (Docusaurus, GitHub Pages)
+│   ├── e2e/               # Playwright tests of the demos, the CDN files and the consumer apps
+│   └── showroom/          # Internal showroom app
+├── packages/
+│   ├── core/              # Props, events, defaults and types shared by everything
+│   ├── analytics/         # Analytics ids and event subscription
+│   ├── core-ui/           # The player: carrousel, 360, hotspots… and its stylesheet
+│   ├── core-wc/           # The custom elements, their attributes, the shadow root
+│   ├── core-wc-react-*/   # The React 18+ and React 16/17 renderers of the elements
+│   ├── demo/              # Layout, themes and helpers shared by the demo apps
+│   └── webplayer-*/       # Published wrappers: react, next, vue, angular, wc, vanilla, script (CDN)
+└── consumers/             # Minimal client apps, installed from packed tarballs by test:consumers
+```
 
-### 2. Version Packages
-
-Once changesets have been added and merged into your base branch (e.g., `main`), you can version the packages. This step updates the version numbers in your `package.json` files and generates changelogs based on your changesets: `pnpm version:apply`
-
-This command will:
-
-- Update the version numbers in the affected `package.json` files.
-- Generate or update changelog files.
-- Prepare the packages for publishing.
-
-### 3. Ensure every thing is working as expected
-
-Run `pnpm run ci` to run both `build` and `lint` commands. It will also run `pnpm install --frozen-lockfile` to be sure dependencies are correct.
-
-_NOTE: if the install fails because `pnpm-lock.yaml` is outdated, some versions have not been properly updated: run `pnpm install` and commit the updated lockfile._
-
-### 4. Publish to npm
-
-After versioning the packages, you can publish them to npm. This command will publish all packages that have changed since the last release: `pnpm publish:packages`
-
-Make sure you are logged in to npm with the correct credentials before running this command. The packages will be published according to the access level specified in your `changesets` configuration (`config.json`).
-
-### 5. Publish documentation
-
-Run `pnpm publish:docs`
-
-## Use the WebPlayer on your App
+## Using the WebPlayer
 
 ### Properties
 
@@ -151,7 +216,7 @@ Run `pnpm publish:docs`
 | ----------------------------- | ---------------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `compositionUrl`              | `string`                           | ❌ Required       | URL to the composition data                                                                                                                      |
 | `hideCategoriesNav`           | `boolean`                          | `false`           | Hide the category-based navigation. Categories include `360`, `next360` (NextGen 360), `interior-360`, and custom ids.                           |
-| `forceTopNav`                 | `boolean`                          | `false`           | Always show the top category navigation (never the burger menu), scrolling horizontally when it doesn't fit.                                    |
+| `forceTopNav`                 | `boolean`                          | `false`           | Always show the top category navigation (never the burger menu), scrolling horizontally when it doesn't fit.                                     |
 | `infiniteCarrousel`           | `boolean`                          | `false`           | Allow to navigate from 1st to last media (and vice versa)                                                                                        |
 | `permanentGallery`            | `boolean`                          | `false`           | Display gallery under the carrousel                                                                                                              |
 | `mediaLoadStrategy`           | `"quality"`/`"balanced"`/`"speed"` | `"quality"`       | Strategy for loading medias.                                                                                                                     |
@@ -166,25 +231,20 @@ Run `pnpm publish:docs`
 | `demoSpin`                    | `boolean`                          | `true`            | Run a spin once the 360 images has been loaded                                                                                                   |
 | `reverse360`                  | `boolean`                          | `false`           | Reverse the 360-degree rotation                                                                                                                  |
 | `spinCursor`                  | `string`                           | `"ew-resize"`     | CSS cursor value used while interacting with 360 and NextGen 360 media                                                                           |
-| `themeConfig`                 | `"theme"`                          | ``               | Apply a built-in theme configuration                                                                                                             |
+| `themeConfig`                 | `"theme"`                          | ``                | Apply a built-in theme configuration                                                                                                             |
 | `integration`                 | `boolean`                          | `false`           | Allows to use maxItemsShown and disables permanentGallery with infiniteCarrousel, enables hideCategoriesNav                                      |
 | `maxItemsShown`               | `number`                           | `1`               | Maximum number of items to display in the gallery                                                                                                |
 | `analyticsEventPrefix`        | `string`                           | `"cc-analytics:"` | Prefix of cc-analytics events                                                                                                                    |
 | `analyticsUrl`                | `string`                           | ``                | A URL to send simple tracking / analytic events                                                                                                  |
-| `analyticsBearer`             | `string`                           | ``                | A Bearer token to authenticate when sending requests to `analyticsUrl`                                                                            |
+| `analyticsBearer`             | `string`                           | ``                | A Bearer token to authenticate when sending requests to `analyticsUrl`                                                                           |
 | `analyticsSimpleRequestsOnly` | `boolean`                          | `false`           | A flag if only Simple-Requests should be sent. Will disable `analyticsBearer`. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS |
 | `analyticsDryRun`             | `boolean`                          | `false`           | A flag if the tracking / analytic events should be just output to the console instead of actually send to the `analyticsUrl`                     |
 | `analyticsDebug`              | `boolean`                          | `false`           | A flag if the tracking / analytic events should output debug information to the console                                                          |
-| `monitoring`                  | `boolean`                          | `true`            | Enable monitoring mode to send activity events to the monitoring service instead of the analytics URL                                             |
+| `monitoring`                  | `boolean`                          | `true`            | Enable monitoring mode to send activity events to the monitoring service instead of the analytics URL                                            |
 
-_NOTE: If you are using the WebComponent directly, you need to transform the props to HTML attributes
-(which are in dashed-case and take `string` as value type). Example: `themeConfig` becomes `theme-config`._
+> **Web Component attributes.** Used directly, the Web Component takes the props as HTML attributes, in dashed-case and with `string` values: `themeConfig` becomes `theme-config`.
 
-### Customization
-
-#### CSS
-
-You can customize the WebPlayer CSS with CSS Variables
+### CSS Variables
 
 | CSS Variable                           | Description                        | Default Value               |
 | -------------------------------------- | ---------------------------------- | --------------------------- |
@@ -201,6 +261,8 @@ You can customize the WebPlayer CSS with CSS Variables
 | `--cc-webplayer-radius-carrousel`      | Carrousel border radius            | `0`                         |
 | `--cc-webplayer-radius-gallery`        | Gallery medias border radius       | `0`                         |
 
-### More customization
+For events, custom medias, icons and more, see the **[online documentation](https://carcutter.github.io/cars-webplayer-js/)**.
 
-For more customization, take a look at the **[Online Documentation](https://carcutter.github.io/cars-webplayer-js/)**
+## Contributing
+
+Commit format, browser support and contribution rules are in [`CONTRIBUTING.md`](./CONTRIBUTING.md); guidance for AI agents is in [`AGENTS.md`](./AGENTS.md).
