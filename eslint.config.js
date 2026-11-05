@@ -39,11 +39,20 @@ export default defineConfig([
 
   {
     files: FILES,
-    extends: [js.configs.recommended, tseslint.configs.recommended],
+    // The type-checked rules (floating promises, unsafe any...), not the
+    // strict ones: each file is linted with the types of the nearest
+    // tsconfig.json (and its references), which must include it
+    extends: [js.configs.recommended, tseslint.configs.recommendedTypeChecked],
 
-    // For no-global-assign (TypeScript allows `origin = ...`), not no-undef:
-    // off in TypeScript files, which the compiler checks
-    languageOptions: { globals: { ...globals.browser, ...globals.node } },
+    languageOptions: {
+      // For no-global-assign (TypeScript allows `origin = ...`), not
+      // no-undef: off in TypeScript files, which the compiler checks
+      globals: { ...globals.browser, ...globals.node },
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
     plugins: { perfectionist, "unused-imports": unusedImports },
     rules: {
       "no-console": "error",
@@ -78,6 +87,16 @@ export default defineConfig([
           varsIgnorePattern: "^_",
         },
       ],
+    },
+  },
+
+  {
+    // `await act(async () => ...)` waits for the microtasks (the elements
+    // render in one)
+    files: ["packages/core-wc-react-*/src/*.test.tsx"],
+
+    rules: {
+      "@typescript-eslint/require-await": "off",
     },
   },
 

@@ -126,7 +126,7 @@ describe("<WebPlayer> attributes", () => {
     });
     wrappers.push(wrapper);
 
-    expect(wrapper.element.querySelector("#child")).not.toBeNull();
+    expect(wrapper.find("#child").exists()).toBe(true);
   });
 });
 

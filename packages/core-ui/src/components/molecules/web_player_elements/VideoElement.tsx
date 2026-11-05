@@ -48,7 +48,18 @@ const VideoElement: React.FC<Props> = ({ src, poster, itemIndex }) => {
   // -- Play/Pause/Loading
 
   const play = useCallback(() => {
-    getVideoElementOrThrow().play();
+    // The play/pause events update the state: a blocked or interrupted play
+    // (autoplay policy, pause during the load) isn't an error of the page
+    getVideoElementOrThrow()
+      .play()
+      .catch((error: unknown) => {
+        if (
+          !(error instanceof DOMException) ||
+          (error.name !== "NotAllowedError" && error.name !== "AbortError")
+        ) {
+          throw error;
+        }
+      });
   }, [getVideoElementOrThrow]);
   const pause = useCallback(() => {
     getVideoElementOrThrow().pause();

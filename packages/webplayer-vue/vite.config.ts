@@ -8,9 +8,13 @@ import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
 const dtsTsconfigPath = resolve(import.meta.dirname, "./tsconfig.dts.json");
-const dtsTsconfig = ts.readConfigFile(dtsTsconfigPath, ts.sys.readFile);
-const dtsPaths: Record<string, string[]> | undefined =
-  dtsTsconfig.config?.compilerOptions?.paths;
+const dtsTsconfig = ts.readConfigFile(dtsTsconfigPath, path =>
+  ts.sys.readFile(path)
+);
+const dtsPaths = (
+  dtsTsconfig.config as
+    { compilerOptions?: { paths?: Record<string, string[]> } } | undefined
+)?.compilerOptions?.paths;
 if (!dtsPaths) {
   throw new Error(
     `${dtsTsconfigPath} must set compilerOptions.paths` +

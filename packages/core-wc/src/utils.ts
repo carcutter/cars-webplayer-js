@@ -1,7 +1,7 @@
 export type CamelToDashed<S extends string> = S extends `${infer T}${infer U}`
   ? `${T extends Lowercase<T> ? "" : "-"}${Lowercase<T>}${CamelToDashed<U>}`
   : S;
-export type ToStringOrOptional<T> = T extends undefined
+export type ToStringOrOptional<T> = T extends undefined | null
   ? string | undefined
   : string;
 export type PropsToAttributes<T> = {
@@ -13,7 +13,7 @@ export function camelToDashedCase<T extends string>(
 ): CamelToDashed<T> {
   return camelCase.replace(
     /([a-z0-9])([A-Z])/g,
-    (_, a, b) => `${a}-${b.toLowerCase()}`
+    (_, a: string, b: string) => `${a}-${b.toLowerCase()}`
   ) as CamelToDashed<T>;
 }
 
@@ -25,9 +25,10 @@ export function propsToAttributes<T extends object>(
   props: T
 ): PropsToAttributes<T> {
   return Object.entries(props).reduce((acc, [key, value]) => {
-    if (value !== undefined) {
+    // Unset, like the element's properties set to null or undefined
+    if (value !== null && value !== undefined) {
       const dashedKey = camelToDashedCase(key) as keyof PropsToAttributes<T>;
-      acc[dashedKey] = value.toString();
+      acc[dashedKey] = String(value) as PropsToAttributes<T>[typeof dashedKey];
     }
     return acc;
   }, {} as PropsToAttributes<T>);

@@ -26,7 +26,7 @@ const CopyLinkButton: React.FC<Props> = ({ className, onClick, ...props }) => {
   const handleCopyLink = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    navigator.clipboard.writeText(window.location.href);
+    void navigator.clipboard.writeText(window.location.href);
 
     setJustCopied(true);
 

@@ -8,8 +8,9 @@ type Element = HTMLElement & Record<keyof Props, unknown>;
 const Component = () => null;
 
 const renderer = {
-  render: vi.fn(),
-  unmount: vi.fn(),
+  render:
+    vi.fn<(root: ShadowRoot, component: unknown, props: object) => void>(),
+  unmount: vi.fn<Renderer["unmount"]>(),
 } satisfies Renderer;
 
 const ELEMENT_PROPS = {

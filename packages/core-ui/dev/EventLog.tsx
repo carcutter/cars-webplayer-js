@@ -67,7 +67,7 @@ function stringifyDetail(detail: unknown): string {
       ) ?? "—"
     );
   } catch (error) {
-    return `Not serializable: ${error}`;
+    return `Not serializable: ${String(error)}`;
   }
 }
 

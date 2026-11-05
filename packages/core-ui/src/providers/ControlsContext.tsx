@@ -651,7 +651,7 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
   const [fakeFullScreen, setFakeFullScreen] = useState(false);
 
   const changeExtendMode = useCallback(
-    async (newValue: boolean) => {
+    (newValue: boolean) => {
       resetView();
       setExtendMode(newValue);
       emitEvent(newValue ? EVENT_EXTEND_MODE_ON : EVENT_EXTEND_MODE_OFF);
@@ -747,23 +747,23 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     carrouselItemIndex,
   ]);
 
-  const enableExtendMode = useCallback(async () => {
+  const enableExtendMode = useCallback(() => {
     triggerExtendTransition();
 
-    if (extendBehavior === "full_screen") {
-      const requestSucceed = await requestFullscreen();
-
-      setFakeFullScreen(!requestSucceed);
-
-      if (requestSucceed) {
-        return;
-      }
+    if (extendBehavior !== "full_screen") {
+      changeExtendMode(true);
+      return;
     }
 
-    // We reach this point:
-    // - If user disabled fullscreen through props
-    // - if fullscreen request failed (mainly Safari iOS)
-    changeExtendMode(true);
+    // Falls back to the extend mode if the fullscreen request fails (mainly
+    // Safari iOS)
+    void requestFullscreen().then(requestSucceed => {
+      setFakeFullScreen(!requestSucceed);
+
+      if (!requestSucceed) {
+        changeExtendMode(true);
+      }
+    });
   }, [
     extendBehavior,
     changeExtendMode,
@@ -771,23 +771,23 @@ const ControlsContextProvider: React.FC<React.PropsWithChildren> = ({
     triggerExtendTransition,
   ]);
 
-  const disableExtendMode = useCallback(async () => {
+  const disableExtendMode = useCallback(() => {
     triggerExtendTransition();
 
-    if (extendBehavior === "full_screen") {
-      setFakeFullScreen(false);
-
-      const exitSucceed = await exitFullscreen();
-
-      if (exitSucceed) {
-        return;
-      }
+    if (extendBehavior !== "full_screen") {
+      changeExtendMode(false);
+      return;
     }
 
-    // We reach this point:
-    // - If user disabled fullscreen through props
-    // - If fullscreen exit request failed (mainly Safari iOS)
-    changeExtendMode(false);
+    setFakeFullScreen(false);
+
+    // Falls back to leaving the extend mode if the fullscreen exit fails
+    // (mainly Safari iOS)
+    void exitFullscreen().then(exitSucceed => {
+      if (!exitSucceed) {
+        changeExtendMode(false);
+      }
+    });
   }, [
     extendBehavior,
     changeExtendMode,
