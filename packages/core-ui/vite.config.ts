@@ -7,6 +7,8 @@ import browserslistToEsbuild from "browserslist-to-esbuild";
 import type { AtRule, Plugin as PostcssPlugin } from "postcss";
 import { defineConfig, type Plugin } from "vite";
 
+import { CSS_TARGET } from "./css-target";
+
 // The build of core-ui is only for its CSS (the wrappers bundle its sources):
 // drops everything else from the output
 const cssOnly = (): Plugin => ({
@@ -97,13 +99,14 @@ export default defineConfig(({ command, mode }) => {
     },
     build: {
       outDir: "dist",
-      rollupOptions: {
-        input: resolve(__dirname, "src/index.css"),
+      rolldownOptions: {
+        input: resolve(import.meta.dirname, "src/index.css"),
         output: {
           assetFileNames: "style.[ext]",
         },
       },
       target: browserslistToEsbuild(),
+      cssTarget: CSS_TARGET,
       copyPublicDir: false,
     },
 

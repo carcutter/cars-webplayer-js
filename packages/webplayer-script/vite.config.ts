@@ -17,10 +17,14 @@ export default defineConfig({
     lib: {
       name: "CarCutterWebplayerScript",
       fileName: () => `bundle-${version}.js`,
-      entry: resolve(__dirname, "index.ts"),
+      entry: resolve(import.meta.dirname, "index.ts"),
       formats: ["umd"],
     },
     target: browserslistToEsbuild(),
+    rolldownOptions: {
+      // "use strict" in the bundle, as Rollup did
+      output: { strict: true },
+    },
     // Only the bundle of the current version stays in dist
     emptyOutDir: true,
 

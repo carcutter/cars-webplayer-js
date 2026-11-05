@@ -45,7 +45,7 @@
     "@angular/core": ">=19"
   },
   "devDependencies": {
-    "@analogjs/vite-plugin-angular": "^2.9.5",
+    "@analogjs/vite-plugin-angular": "^2.9.6",
     "@angular/build": "~19.2.27",
     "@angular/common": "~19.2.25",
     "@angular/compiler": "~19.2.25",
@@ -60,7 +60,7 @@
     "ng-packagr": "~19.2.2",
     "rxjs": "^7.8.2",
     "typescript": "~5.8.3",
-    "vite": "^6.4.5",
+    "vite": "^8.3.6",
     "vitest": "^5.1.0",
     "zone.js": "~0.15.1"
   },
