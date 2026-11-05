@@ -11,8 +11,9 @@ syncInjectedDepsAfterScripts:
 
 overrides:
   # The patched majors of minimatch (GHSA-g3hv-75wg-m249) and glob
-  # (GHSA-3g3m-2fjr-6pw4), checked by the builds, lint and tests using them.
-  # Not minimatch 3 (ESLint and its plugins): no 3.x fixes that advisory
+  # (GHSA-3g3m-2fjr-6pw4), checked by the builds, lint and tests using them
+  # (ESLint 10 included, which asks for minimatch 10). Not minimatch 3: no 3.x
+  # fixes that advisory
   "minimatch@>=9 <11.0.1": ^11.0.1
   "glob@>=9 <14.0.2": ^14.0.2
   serialize-javascript: ^7.1.3

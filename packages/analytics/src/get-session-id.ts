@@ -9,7 +9,7 @@ import { generateUUID } from "./cryptography/generate-uuid";
 export function getSessionId(): string {
   const STORAGE_KEY = "car-cutter-webplayer-session-id";
 
-  let currentId: string | null = null;
+  let currentId: string | null;
   try {
     currentId =
       typeof window !== "undefined"

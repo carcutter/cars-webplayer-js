@@ -1,3 +1,5 @@
+/* eslint-disable perfectionist/sort-imports -- Angular's compiler and zone.js
+   first, before the code they patch */
 import "@angular/compiler";
 import "zone.js";
 import "zone.js/testing";
