@@ -1,2 +1,9 @@
-node_modules
-dist
+# The Prettier CLI also reads .gitignore, editor integrations only this file
+
+# Generated
+dist/
+/apps/docs/build/
+coverage/
+
+# Written by pnpm
+pnpm-lock.yaml

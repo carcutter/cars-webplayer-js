@@ -1,7 +1,5 @@
 {
-  "singleQuote": false,
+  "$schema": "https://json.schemastore.org/prettierrc",
   "arrowParens": "avoid",
-  "tabWidth": 2,
-  "trailingComma": "es5",
-  "useTabs": false
+  "trailingComma": "es5"
 }

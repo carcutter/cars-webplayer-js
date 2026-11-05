@@ -6,7 +6,7 @@
 - `lint` differs per package: ESLint and `tsc` in `core-ui` and `webplayer-angular`, ESLint only in the other packages and `apps/showroom`, `tsc --noEmit` (`vue-tsc` in `demo-vue`) only in `packages/demo`, the demo apps and `apps/e2e`, nothing in `apps/docs` and `packages/config-typescript`. `pnpm build` type-checks the rest.
 - `lint`, `test` and `dev` depend on `^build` (turbo). The private packages resolve to their TypeScript sources, but core-ui's `style.css` and the published wrappers resolve to their `dist`, and the wrappers' declarations are built: a direct `pnpm --filter <pkg> exec ...`, `pnpm e2e` or `pnpm test:consumers` doesn't build, and a stale `dist` gives results from the old code.
 - The `test` scripts run with `--coverage` and 100% thresholds: a single file run through them fails on coverage. Use `exec vitest run <file>` ([`testing.md`](testing.md)).
-- There is no format script, and some existing files aren't Prettier-formatted (`pnpm-lock.yaml` among them, which only pnpm writes): `prettier --write .` would rewrite unrelated files. Format the files you change only.
+- There is no format script, and some existing files aren't Prettier-formatted: `prettier --write .` would rewrite unrelated files. Format the files you change only (`pnpm-lock.yaml` is in `.prettierignore`).
 
 ## Ports
 
@@ -22,7 +22,7 @@
 - `core-wc-react-16-17` uses the legacy `ReactDOM.render` (an ESLint exemption allows its deprecation), has no build, and is bundled by `react-webplayer/legacy`.
 - `webplayer-angular` builds with its own Angular ~19.2 and TypeScript ~5.8: [`packages/webplayer-angular/AGENTS.md`](../../packages/webplayer-angular/AGENTS.md).
 - `webplayer-vue` builds its declarations against Vue 3.3 (`vue-3.3` alias, `npm:vue@~3.3`), the lowest it supports.
-- `react-webplayer` and `next-webplayer` declare no `peerDependencies` though they build with React external: intended (`.syncpackrc`, "publishable wrappers omit them"), keep it so. `vue-webplayer` and `angular-webplayer` do declare their framework as a peer.
+- `react-webplayer` and `next-webplayer` declare no `peerDependencies` though they build with React external: intended (`.syncpackrc`, "react-webplayer and next-webplayer omit them"), keep it so. `vue-webplayer` and `angular-webplayer` do declare their framework as a peer.
 - The CDN bundle's file name comes from the version: `packages/webplayer-script/dist/bundle-<version>.js`; the script demo serves the newest one.
 
 ## Dependencies
