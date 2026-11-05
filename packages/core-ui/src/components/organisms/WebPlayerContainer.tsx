@@ -193,6 +193,8 @@ const WebPlayerContainer: React.FC = () => {
                   try {
                     return JSON.stringify(error);
                   } catch {
+                    // Not JSON (BigInt, cycle): its own string, if any
+                    // eslint-disable-next-line @typescript-eslint/no-base-to-string
                     return String(error);
                   }
                 })(),

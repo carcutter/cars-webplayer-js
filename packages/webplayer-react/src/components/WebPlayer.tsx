@@ -126,8 +126,9 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
       }
 
       const eventName = generateEventName(event);
+      // The listener of the event: the map pairs it with its detail
       const eventListener = (event: Event) =>
-        listener((event as CustomEvent).detail);
+        (listener as (detail: unknown) => void)((event as CustomEvent).detail);
 
       eventCbMap.set(eventName, eventListener);
 
@@ -140,8 +141,9 @@ const WebPlayer: ReactFC<WebPlayerProps> = ({
       }
 
       const eventName = generateAnalyticsEventName(event);
+      // The listener of the event: the map pairs it with its detail
       const eventListener = (event: Event) =>
-        listener((event as CustomEvent).detail);
+        (listener as (detail: unknown) => void)((event as CustomEvent).detail);
 
       analyticsEventCbMap.set(eventName, eventListener);
 

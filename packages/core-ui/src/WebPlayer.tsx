@@ -129,7 +129,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
   const analyticsBrowserId = useAnalyticsBrowserId();
   const analyticsSessionId = useAnalyticsSessionId();
   const analyticsInstanceId = useAnalyticsInstanceId();
-  const emitAnalyticsEvent = useCallback(
+  const sendAnalyticsEvent = useCallback(
     async (event: AnalyticsEventProps) => {
       try {
         // Build enriched event with instance + timestamp
@@ -143,7 +143,7 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
           ...event,
           timestamp: new Date().toISOString(),
           instance,
-        } as AnalyticsEvent;
+        };
 
         // Dry run
         if (analyticsDryRun) {
@@ -212,6 +212,10 @@ const WebPlayer: ReactFC<ReactPropsWithChildren<WebPlayerProps>> = ({
       monitoring,
       dispatchPlayerEvent,
     ]
+  );
+  const emitAnalyticsEvent = useCallback(
+    (event: AnalyticsEventProps) => void sendAnalyticsEvent(event),
+    [sendAnalyticsEvent]
   );
 
   // Analytics - Load

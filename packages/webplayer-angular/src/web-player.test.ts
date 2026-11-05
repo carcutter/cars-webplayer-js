@@ -113,7 +113,9 @@ async function mountPlayer(inputs: Partial<Record<keyof Host, unknown>> = {}) {
   fixture.detectChanges();
   await Promise.resolve();
 
-  const el = fixture.nativeElement.querySelector("cc-webplayer") as HTMLElement;
+  const el = (fixture.nativeElement as HTMLElement).querySelector(
+    "cc-webplayer"
+  ) as HTMLElement;
   return { fixture, host, el };
 }
 
@@ -190,7 +192,9 @@ describe("<car-cutter-webplayer> boolean inputs", () => {
   it("reads bare and static attributes like booleanAttribute", () => {
     const fixture = TestBed.createComponent(StaticHost);
     fixture.detectChanges();
-    const el = fixture.nativeElement.querySelector("cc-webplayer");
+    const el = (fixture.nativeElement as HTMLElement).querySelector(
+      "cc-webplayer"
+    )!;
 
     expect(el.getAttribute("permanent-gallery")).toBe("true");
     expect(el.getAttribute("demo-spin")).toBe("false");
@@ -202,7 +206,9 @@ describe("<car-cutter-webplayer> created outside of a change detection", () => {
   // microtask, before the next change detection
   function createPlayer() {
     const fixture = TestBed.createComponent(WebPlayer);
-    const el = fixture.nativeElement.querySelector("cc-webplayer");
+    const el = (fixture.nativeElement as HTMLElement).querySelector(
+      "cc-webplayer"
+    )!;
     const loading: string[] = [];
     fixture.componentInstance.compositionLoading.subscribe(url =>
       loading.push(url)

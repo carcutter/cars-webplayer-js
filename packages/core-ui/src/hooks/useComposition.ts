@@ -80,8 +80,8 @@ export const useComposition = (url: string) => {
       isSuccess: false,
     });
 
-    // Run the query
-    (async function () {
+    // Run the query: it catches its errors into the state
+    void (async function () {
       try {
         let data: Composition;
 

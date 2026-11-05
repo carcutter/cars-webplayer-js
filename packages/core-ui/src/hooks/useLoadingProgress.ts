@@ -20,6 +20,8 @@ const requestUrls = new WeakMap<XMLHttpRequest, string>();
  */
 function patchXhr(): () => void {
   const prototype = XMLHttpRequest.prototype;
+  // Called on the request (`.call(this, ...)`), not unbound
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   const { open, send } = prototype;
 
   prototype.open = function (

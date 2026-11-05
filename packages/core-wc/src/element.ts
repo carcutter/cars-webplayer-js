@@ -134,8 +134,13 @@ export function createElementClass<P extends object>(
       set(this: HTMLElement, value: unknown) {
         if (value === null || value === undefined) {
           this.removeAttribute(attributes[index]);
-        } else if (this.getAttribute(attributes[index]) !== String(value)) {
-          this.setAttribute(attributes[index], String(value));
+          return;
+        }
+        // Whatever JS sets, stringified as setAttribute does
+        // eslint-disable-next-line @typescript-eslint/no-base-to-string
+        const attribute = String(value);
+        if (this.getAttribute(attributes[index]) !== attribute) {
+          this.setAttribute(attributes[index], attribute);
         }
       },
     });

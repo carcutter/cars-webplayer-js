@@ -28,7 +28,8 @@ type ProviderProps = Required<
   themeConfig?: WebPlayerProps["themeConfig"];
   maxItemsShown: number;
   emitEvent: (name: string, detail?: unknown) => void;
-  emitAnalyticsEvent: (event: AnalyticsEventProps) => Promise<void>;
+  /** Sends the event in the background: never rejects, so isn't awaited */
+  emitAnalyticsEvent: (event: AnalyticsEventProps) => void;
   playerInViewportWidthRatio: number;
   playerWidth: number;
   isFullScreen: boolean;

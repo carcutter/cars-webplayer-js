@@ -12,21 +12,23 @@ describe("<WebPlayerCustomMedia> and <WebPlayerIcon>", () => {
       props: { index: 4, thumbnailSrc: "t.jpg" },
       slots: { default: '<img alt="custom" />' },
     });
-    expect(media.element.getAttribute("index")).toBe("4");
-    expect(media.element.getAttribute("thumbnail-src")).toBe("t.jpg");
-    expect(media.element.querySelector("img")).not.toBeNull();
+    expect(media.attributes("index")).toBe("4");
+    expect(media.attributes("thumbnail-src")).toBe("t.jpg");
+    expect(media.find("img").exists()).toBe(true);
 
     const icon = mount(WebPlayerIcon, {
       props: { name: "UI_IMAGE" },
       slots: { default: "<svg />" },
     });
-    expect(icon.element.getAttribute("name")).toBe("UI_IMAGE");
-    expect(icon.element.querySelector("svg")).not.toBeNull();
+    expect(icon.attributes("name")).toBe("UI_IMAGE");
+    expect(icon.find("svg").exists()).toBe(true);
   });
 });
 
 describe("entry", () => {
   it("exposes the components and the core constants", () => {
+    // expect.any() is typed any
+    /* eslint-disable @typescript-eslint/no-unsafe-assignment */
     expect(entry).toMatchObject({
       WebPlayer: expect.any(Object),
       WebPlayerCustomMedia: expect.any(Object),
@@ -34,5 +36,6 @@ describe("entry", () => {
       WEB_PLAYER_WC_TAG: "cc-webplayer",
       DEFAULT_EVENT_PREFIX: "cc-webplayer:",
     });
+    /* eslint-enable @typescript-eslint/no-unsafe-assignment */
   });
 });

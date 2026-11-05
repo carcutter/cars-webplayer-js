@@ -45,7 +45,7 @@ describe("<car-cutter-webplayer-custom-media> and <car-cutter-webplayer-icon>", 
   it("follow input updates", () => {
     const fixture = TestBed.createComponent(Host);
     fixture.detectChanges();
-    const media = fixture.nativeElement.querySelector(
+    const media = (fixture.nativeElement as HTMLElement).querySelector(
       "cc-webplayer-custom-media"
     ) as HTMLElement;
 
@@ -60,6 +60,8 @@ describe("<car-cutter-webplayer-custom-media> and <car-cutter-webplayer-icon>", 
 
 describe("entry", () => {
   it("exposes the components and the core constants", () => {
+    // expect.any() is typed any
+    /* eslint-disable @typescript-eslint/no-unsafe-assignment */
     expect(entry).toMatchObject({
       WebPlayer: expect.any(Function),
       WebPlayerCustomMedia: expect.any(Function),
@@ -68,5 +70,6 @@ describe("entry", () => {
       DEFAULT_EVENT_PREFIX: "cc-webplayer:",
       DEFAULT_ANALYTICS_EVENT_PREFIX: "cc-analytics:",
     });
+    /* eslint-enable @typescript-eslint/no-unsafe-assignment */
   });
 });

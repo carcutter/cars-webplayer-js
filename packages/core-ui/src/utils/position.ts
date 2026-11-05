@@ -17,7 +17,7 @@ export function extractPositions(
   position: Position
 ): [PositionY, PositionX] | [PositionY, undefined] | [undefined, PositionX] {
   if (!isPosition(position)) {
-    throw new Error(`Invalid position: ${position}`);
+    throw new Error(`Invalid position: ${String(position)}`);
   }
 
   if (isPositionY(position)) {
