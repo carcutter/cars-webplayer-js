@@ -37,8 +37,15 @@
       "isIgnored": true
     },
     {
-      "label": "Framework peer ranges stay wide, never the installed version (react-webplayer and next-webplayer omit them)",
-      "dependencies": ["@angular/core", "next", "react", "react-dom", "vue"],
+      "label": "Framework peer ranges stay wide, never the installed version",
+      "dependencies": [
+        "@angular/core",
+        "@types/react",
+        "next",
+        "react",
+        "react-dom",
+        "vue"
+      ],
       "dependencyTypes": ["peer"],
       "isIgnored": true
     }

@@ -46,6 +46,16 @@
     "analyze": "vite-bundle-visualizer",
     "test": "vitest run --coverage"
   },
+  "peerDependencies": {
+    "@types/react": "*",
+    "react": ">=16.8",
+    "react-dom": ">=16.8"
+  },
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@car-cutter/analytics": "workspace:^",
     "@car-cutter/core": "workspace:^",
