@@ -31,7 +31,7 @@ overrides:
   # Angular of angular-webplayer, whose 19.x gets no more fixes): piscina,
   # vite (and its launch-editor), esbuild, @babel/core
   "@angular/build@19>piscina": ^4.9.4
-  "@angular/build@19>vite": ^6.4.4
+  "@angular/build@19>vite": ^6.4.5
   "@angular/build@19>esbuild": ^0.28.1
   "@angular/build@19>@babel/core": ^7.29.6
   "@angular/compiler-cli@19>@babel/core": ^7.29.6
