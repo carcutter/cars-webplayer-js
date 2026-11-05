@@ -3,12 +3,12 @@
 
 import path from "node:path";
 
+import react from "@eslint-react/eslint-plugin";
 import js from "@eslint/js";
 import tsPlugin from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 import prettier from "eslint-config-prettier";
-import importPlugin from "eslint-plugin-import";
-import react from "eslint-plugin-react";
+import perfectionist from "eslint-plugin-perfectionist";
 import reactHooks from "eslint-plugin-react-hooks";
 import tailwind from "eslint-plugin-tailwindcss";
 import unusedImports from "eslint-plugin-unused-imports";
@@ -61,22 +61,16 @@ export default [
       parser: tsParser,
       globals: { ...globals.browser, ...globals.node },
     },
-    plugins: { import: importPlugin, "unused-imports": unusedImports },
-    settings: {
-      "import/internal-regex": "^(@/|@car-cutter/)",
-    },
-
+    plugins: { perfectionist, "unused-imports": unusedImports },
     rules: {
       "no-console": "error",
 
-      "import/order": [
+      // The groups of eslint-plugin-import's import/order, which doesn't
+      // support ESLint 10. Unlike it, the fix moves imports across side-effect
+      // imports: disable it in the files where their order matters
+      "perfectionist/sort-imports": [
         "error",
         {
-          "newlines-between": "always",
-          alphabetize: {
-            order: "asc",
-            caseInsensitive: true,
-          },
           groups: [
             "builtin",
             "external",
@@ -85,6 +79,8 @@ export default [
             "sibling",
             "index",
           ],
+          internalPattern: ["^@/", "^@car-cutter/"],
+          newlinesBetween: 1,
         },
       ],
       "unused-imports/no-unused-imports": "error",
@@ -100,30 +96,45 @@ export default [
   },
 
   ...scoped(REACT, [
-    react.configs.flat.recommended,
     {
-      plugins: { "react-hooks": reactHooks },
-      settings: {
-        react: {
-          version: "detect",
-        },
+      plugins: {
+        "@eslint-react": react,
+        "react-hooks": reactHooks,
       },
       rules: {
+        // The rules of eslint-plugin-react's recommended config (replaced as
+        // it doesn't support ESLint 10), not the React 19 and React Compiler
+        // ones of @eslint-react's: the player supports React 16.8. TypeScript
+        // covers undefined names and duplicate props; no longer checked:
+        // unescaped entities in JSX text, string refs, isMounted, the other
+        // deprecated APIs (unmountComponentAtNode...), and target="_blank"
+        // links with a dynamic href
+        "@eslint-react/no-missing-key": "error",
+        "@eslint-react/jsx-no-comment-textnodes": "error",
+        "@eslint-react/jsx-no-children-prop": "error",
+        "@eslint-react/no-direct-mutation-state": "error",
+        "@eslint-react/no-component-will-mount": "error",
+        "@eslint-react/no-component-will-receive-props": "error",
+        "@eslint-react/no-component-will-update": "error",
+        "@eslint-react/dom-no-dangerously-set-innerhtml-with-children": "error",
+        "@eslint-react/dom-no-find-dom-node": "error",
+        "@eslint-react/dom-no-hydrate": "error",
+        "@eslint-react/dom-no-render": "error",
+        "@eslint-react/dom-no-render-return-value": "error",
+        "@eslint-react/dom-no-unknown-property": "error",
+        "@eslint-react/dom-no-unsafe-target-blank": "error",
+
         // The rules of hooks: not the React Compiler ones of
         // eslint-plugin-react-hooks 7, which the code isn't written for
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
-
-        "react/react-in-jsx-scope": "off",
-        "react/display-name": "off",
-        "react/prop-types": "off",
       },
     },
   ]),
   ...scoped(
     // Renders with React 16.8 / 17, whose ReactDOM.render isn't deprecated
     ["packages/core-wc-react-16-17"],
-    [{ settings: { react: { version: "17.0" } } }]
+    [{ settings: { "react-x": { version: "17.0.0" } } }]
   ),
   {
     // The player's styles are built from core-ui's src/index.css: a CSS
