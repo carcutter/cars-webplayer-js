@@ -7,7 +7,7 @@ Humans' rules (commit format, browser support) are in [`CONTRIBUTING.md`](CONTRI
 ## Stack
 
 - pnpm workspace (`apps/*`, `packages/*`) driven by turbo; Node 22.14 in CI, pnpm from `packageManager`.
-- TypeScript ~6 (strict), Vite 6 (library builds), ng-packagr for Angular.
+- TypeScript ~6 (strict), Vite 8 with Rolldown (library builds), ng-packagr for Angular.
 - React for the player, rendered with React 18+ (`createRoot`), React 16/17 (`render`), or preact through `preact/compat` aliases (web component build).
 - Tailwind CSS 4, configured in CSS (`packages/core-ui/src/index.css`).
 - Vitest + happy-dom (unit), Playwright (e2e, consumer apps).

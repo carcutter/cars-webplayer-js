@@ -5,6 +5,9 @@ import browserslistToEsbuild from "browserslist-to-esbuild";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
+// The player's CSS, inlined by this build
+import { CSS_TARGET } from "../core-ui/css-target";
+
 export default defineConfig({
   plugins: [
     preact(),
@@ -12,7 +15,7 @@ export default defineConfig({
       // Resolves the private workspace packages it uses (not dependencies of
       // the published package) to their built declarations, which are rolled
       // up into its own .d.ts
-      tsconfigPath: resolve(__dirname, "./tsconfig.dts.json"),
+      tsconfigPath: resolve(import.meta.dirname, "./tsconfig.dts.json"),
       bundleTypes: {
         bundledPackages: [
           "@car-cutter/core",
@@ -35,9 +38,14 @@ export default defineConfig({
     lib: {
       name: "CarCutterWebplayerWC",
       fileName: "index",
-      entry: resolve(__dirname, "./index.ts"),
+      entry: resolve(import.meta.dirname, "./index.ts"),
     },
     target: browserslistToEsbuild(),
+    cssTarget: CSS_TARGET,
+    rolldownOptions: {
+      // "use strict" in the UMD file too, as Rollup did
+      output: { strict: true },
+    },
 
     chunkSizeWarningLimit: 350,
   },

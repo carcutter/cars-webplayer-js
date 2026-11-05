@@ -59,7 +59,7 @@
     "@testing-library/react": "^16.3.3",
     "@types/node": "^22",
     "@types/react": "^18.3.28",
-    "@vitejs/plugin-react": "^5.0.0",
+    "@vitejs/plugin-react": "^6.2.1",
     "@vitest/coverage-v8": "^5.1.0",
     "browserslist": "^4.29.5",
     "browserslist-to-esbuild": "^2.1.1",
@@ -67,7 +67,7 @@
     "react": ">=18",
     "react-dom": ">=18",
     "typescript": "~6.0.3",
-    "vite": "^6.4.5",
+    "vite": "^8.3.6",
     "vite-bundle-visualizer": "^1.2.1",
     "vite-plugin-dts": "^5.1.2",
     "vitest": "^5.1.0"

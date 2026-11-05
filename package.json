@@ -61,7 +61,6 @@
     "eslint-plugin-tailwindcss": "^4.4.0",
     "eslint-plugin-unused-imports": "^4.4.1",
     "globals": "^17.14.0",
-    "jiti": "^2.6.1",
     "prettier": "^3.9.10",
     "publint": "^0.3.25",
     "syncpack": "^15.3.3",

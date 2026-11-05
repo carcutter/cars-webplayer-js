@@ -7,7 +7,7 @@ import ts from "typescript";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
-const dtsTsconfigPath = resolve(__dirname, "./tsconfig.dts.json");
+const dtsTsconfigPath = resolve(import.meta.dirname, "./tsconfig.dts.json");
 const dtsTsconfig = ts.readConfigFile(dtsTsconfigPath, ts.sys.readFile);
 const dtsPaths: Record<string, string[]> | undefined =
   dtsTsconfig.config?.compilerOptions?.paths;
@@ -46,7 +46,9 @@ export default defineConfig({
           // declarations work with it. Through the real folder of vue-3.3:
           // through its pnpm symlink, they would import "vue-3.3/dist/vue.js"
           // instead of "vue"
-          vue: [realpathSync(resolve(__dirname, "node_modules/vue-3.3"))],
+          vue: [
+            realpathSync(resolve(import.meta.dirname, "node_modules/vue-3.3")),
+          ],
         },
       },
       bundleTypes: {
@@ -70,7 +72,7 @@ export default defineConfig({
     lib: {
       name: "CarCutterWebplayerVue",
       entry: {
-        index: resolve(__dirname, "src/index.ts"),
+        index: resolve(import.meta.dirname, "src/index.ts"),
       },
       // With a single entry, vite would build "es" + "umd" (index.umd.cjs),
       // while package.json points CommonJS at index.cjs
@@ -81,9 +83,11 @@ export default defineConfig({
     chunkSizeWarningLimit: 5,
 
     // Vue is an external dependency, it should be provided by the consumer
-    rollupOptions: {
+    rolldownOptions: {
       external: ["vue", "@car-cutter/wc-webplayer"],
       output: {
+        // "use strict" in the CommonJS / UMD files too, as Rollup did
+        strict: true,
         globals: {
           vue: "Vue",
 
