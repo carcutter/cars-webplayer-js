@@ -328,7 +328,7 @@ const Gallery: React.FC<Props> = ({
     <div
       ref={sliderRef}
       className={cn(
-        "relative w-full overflow-x-auto no-scrollbar",
+        "relative no-scrollbar w-full overflow-x-auto",
         isDragging ? "cursor-grab" : "cursor-grabbing",
         className
       )}

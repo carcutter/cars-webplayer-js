@@ -1,6 +1,37 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Inline: the variables are set by the elements (.ui-blue, .ui-radius-xl...),
+   not once on :root */
+@theme inline {
+  --color-*: initial;
+  --color-current: currentColor;
+  --color-transparent: transparent;
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground, var(--background)));
+  --color-primary-contrast: hsl(var(--primary-foreground, var(--primary)));
+
+  --color-border: hsl(var(--border));
+
+  --radius-ui: var(--ui-radius);
+  --radius-ui-sm: calc(var(--ui-radius) - 2px);
+  --radius-ui-md: calc(var(--ui-radius) + 2px);
+  --radius-ui-lg: calc(var(--ui-radius) + 4px);
+}
+
+/* hover: on touch screens too, as in Tailwind 3 */
+@custom-variant hover (&:hover);
+
+/* Buttons have a pointer cursor, as in Tailwind 3 */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
 
 /* COLORS */
 @layer base {

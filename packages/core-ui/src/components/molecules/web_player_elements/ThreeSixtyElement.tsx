@@ -455,13 +455,13 @@ const ThreeSixtyElementInteractive: React.FC<ThreeSixtyElementProps> = ({
     <div ref={containerRef} style={cursorStyle}>
       {/* Touch-event target for drag-to-spin (mouse drag is handled on the container). */}
       <div ref={scrollerRef}>
-        <div className="sticky left-0 top-0">
+        <div className="sticky top-0 left-0">
           {/* Flip book (Ensures image are already in the DOM) */}
           {images.map(image => (
             <CdnImage
               key={image.src}
               src={image.src}
-              className="pointer-events-none !absolute left-0 top-0 -z-10"
+              className="pointer-events-none absolute! top-0 left-0 -z-10"
             />
           ))}
           <ImageElement
@@ -569,7 +569,7 @@ const ThreeSixtyElementPlaceholder: React.FC<
   }, [loadingProgress, onSpinImagesLoaded]);
 
   return (
-    <div className="relative aspect-[4/3] w-full">
+    <div className="relative aspect-4/3 w-full">
       {loadingProgress !== null && loadingProgress !== 100 && (
         // Add images to DOM to preload them
         <div className="hidden">

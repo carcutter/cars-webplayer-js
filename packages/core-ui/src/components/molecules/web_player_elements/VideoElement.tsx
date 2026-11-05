@@ -315,7 +315,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, itemIndex }) => {
   }, [clearHideControlsTimeout, pause, restartHideControlsTimeout]);
 
   return (
-    <div ref={containerRef} className="relative aspect-[4/3] w-full">
+    <div ref={containerRef} className="relative aspect-4/3 w-full">
       <video
         ref={videoRef}
         // No double-tap zoom (nor the click delay it brings) on pages without
@@ -343,7 +343,7 @@ const VideoElement: React.FC<Props> = ({ src, poster, itemIndex }) => {
           <div
             // Controls
             className={cn(
-              "absolute inset-x-0 bottom-0 cursor-auto space-y-2 bg-gradient-to-t from-foreground to-transparent p-4 pr-12 pt-8 transition-opacity duration-300",
+              "absolute inset-x-0 bottom-0 cursor-auto space-y-2 bg-linear-to-t from-foreground to-transparent p-4 pt-8 pr-12 transition-opacity duration-300",
               !showControls
                 ? "pointer-events-none opacity-0"
                 : "pointer-events-auto opacity-100"

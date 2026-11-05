@@ -208,7 +208,7 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
                   {title && (
                     <h3
                       className={cn(
-                        "break-words pr-10 text-[clamp(0.875rem,0.6rem+1.6cqw,1.125rem)] font-semibold text-white small:font-bold",
+                        "pr-10 text-[clamp(0.875rem,0.6rem+1.6cqw,1.125rem)] font-semibold wrap-break-word text-white small:font-bold",
                         extendMode && "large:text-lg"
                       )}
                     >
@@ -276,8 +276,8 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
                 {title && (
                   <span
                     className={cn(
-                      "block text-[clamp(0.75rem,0.45rem+1.8cqw,1.125rem)] font-semibold leading-tight small:font-bold",
-                      extendMode && "large:text-lg"
+                      "block text-[clamp(0.75rem,0.45rem+1.8cqw,1.125rem)] leading-tight font-semibold small:font-bold",
+                      extendMode && "large:text-lg/7"
                     )}
                   >
                     {title}
@@ -289,7 +289,7 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
                   <p
                     className={cn(
                       "text-[clamp(0.625rem,0.4rem+1.5cqw,0.875rem)] leading-tight text-foreground/65",
-                      extendMode && "large:text-sm"
+                      extendMode && "large:text-sm/5"
                     )}
                   >
                     {description}
@@ -314,7 +314,7 @@ const DetailsOverlay: React.FC<DetailsOverlayProps> = ({
     >
       <div
         className={cn(
-          "relative flex aspect-[4/3] flex-col bg-background transition-transform duration-details",
+          "relative flex aspect-4/3 flex-col bg-background transition-transform duration-details",
           isVisible ? "translate-y-0" : "translate-y-full"
         )}
         style={{

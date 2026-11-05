@@ -60,6 +60,12 @@ revert: Resolved a null pointer causing crash during image load.
 Refs: e4231f6e
 ```
 
+## Browser support
+
+The player's styles are built with Tailwind CSS 4, made for Safari 16.4, Chrome 111 and Firefox 128: its CSS relies on cascade layers, `@property`, `color-mix()` and `oklab` gradients. Older browsers still use the player, about 0.8% of its loads in late 2026 (mostly Chrome 109 on Windows 7 / 8, Safari on iOS 15 and Firefox ESR 115). `tailwindCompat` in `packages/core-ui/vite.config.ts` keeps most styles working for those with cascade layers (Safari 15.4, Chrome 99, Firefox 97), and in the shadow root of the web component. A few are still lost there (the `translate` and `scale` utilities need Chrome 104), and older browsers get no styles, but most of them can't run the player's JavaScript either.
+
+So, when a change brings CSS newer than these browsers (a Tailwind class or variant not used yet, or CSS written by hand: container queries, `:has()`, nesting, `@starting-style`...), check the player on an old device or browser too (an iPhone on iOS 15.4 to 16.3, Chrome 109, in a simulator or a service like BrowserStack), and in the web component, not only in a page.
+
 ## Contributions
 
 To contribute, fork this repository and create a [pull request](https://docs.github.com/en/github/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request).

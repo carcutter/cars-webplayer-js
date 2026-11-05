@@ -727,7 +727,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
   const titleRowExpanded = panelMounted && !imageInlineExpandable;
 
   const sharedClassName = cn(
-    "group absolute z-hotspot -translate-x-1/2 -translate-y-1/2 hover:z-hotspot-hover",
+    "group absolute z-hotspot -translate-1/2 hover:z-hotspot-hover",
     clickable ? "cursor-pointer" : "cursor-default",
     panelMounted && "z-hotspot-hover"
   );
@@ -765,7 +765,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
         {/* Use the icon from the config if available. Else, replace it if needed */}
         {(withDetail || hotspotConfig?.Icon) && (
           <div
-            className="[&_*]:size-full"
+            className="**:size-full"
             style={{
               width: `calc(${hotspotSize} * 0.57)`,
               height: `calc(${hotspotSize} * 0.57)`,
@@ -788,7 +788,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                 // width/padding when toggling so the transform doesn't slide the
                 // panel on collapse.
                 "transition-opacity duration-200"
-              : "-translate-y-1/2 transition-[opacity,transform] duration-200",
+              : "-translate-y-1/2 transition-[opacity,translate] duration-200",
             panelMounted
               ? // Expanded: grow to a comfortable reading width, bounded by the media
                 "w-72 max-w-[70vw] small:w-80 large:w-96"
@@ -844,7 +844,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                       // grows; the far side keeps its fixed padding.
                       // Match top padding to the far-side padding; keep the bottom tight so the
                       // description butts directly against the title to read as one panel.
-                      "px-6 pb-1.5 pt-6 small:px-7 small:pt-7",
+                      "px-6 pt-6 pb-1.5 small:px-7 small:pt-7",
                       shouldFlipTitle
                         ? "rounded-tl-[16px]"
                         : "rounded-tr-[16px]"
@@ -869,7 +869,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
               className={cn(
                 "font-normal",
                 titleRowExpanded
-                  ? "min-w-0 flex-1 break-words font-medium"
+                  ? "min-w-0 flex-1 font-medium wrap-break-word"
                   : "truncate"
               )}
               style={{
@@ -927,7 +927,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
               >
                 <div
                   ref={cardScrollRef}
-                  className="overflow-y-auto overscroll-y-none rounded-[16px] border-[0.5px] border-[#64748B] bg-foreground text-background no-scrollbar"
+                  className="no-scrollbar overflow-y-auto overscroll-y-none rounded-[16px] border-[0.5px] border-[#64748B] bg-foreground text-background"
                   style={{
                     ...cardCornerRadiusStyle,
                     // Cap to the room measured beside the dot so the card stays
@@ -978,9 +978,9 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                       )}
                     </div>
                   )}
-                  <div className="px-6 pb-6 pt-3 small:px-7 small:pb-7">
+                  <div className="px-6 pt-3 pb-6 small:px-7 small:pb-7">
                     <div
-                      className="break-words font-medium"
+                      className="font-medium wrap-break-word"
                       style={{ fontSize: `calc(${hotspotSize} * 0.46)` }}
                     >
                       {title}
@@ -988,7 +988,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                     {!!description && (
                       <div
                         id={descriptionId}
-                        className="mt-1.5 whitespace-normal break-words font-normal leading-relaxed text-hotspot-description"
+                        className="mt-1.5 leading-relaxed font-normal wrap-break-word whitespace-normal text-hotspot-description"
                         style={{ fontSize: `calc(${hotspotSize} * 0.39)` }}
                       >
                         {description}
@@ -997,7 +997,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                   </div>
                 </div>
                 {/* Bottom fade — hints the content continues beyond the visible area */}
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-8 rounded-b-[16px] bg-gradient-to-t from-foreground to-transparent" />
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-8 rounded-b-[16px] bg-linear-to-t from-foreground to-transparent" />
               </div>
             </div>
           )}
@@ -1023,7 +1023,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                 <div
                   id={descriptionId}
                   className={cn(
-                    "max-h-[clamp(4rem,40vh,16rem)] overflow-y-auto overscroll-y-none whitespace-normal break-words rounded-b-[16px] border-x-[0.5px] border-b-[0.5px] border-[#64748B] bg-foreground pb-6 pt-1.5 font-normal leading-relaxed text-hotspot-description no-scrollbar small:pb-7",
+                    "no-scrollbar max-h-[clamp(4rem,40vh,16rem)] overflow-y-auto overscroll-y-none rounded-b-[16px] border-x-[0.5px] border-b-[0.5px] border-[#64748B] bg-foreground pt-1.5 pb-6 leading-relaxed font-normal wrap-break-word whitespace-normal text-hotspot-description small:pb-7",
                     // Far-side padding is fixed; the dot-side padding comes from
                     // dotSidePaddingStyle so the text aligns with the expanded title.
                     "px-6 small:px-7"
@@ -1044,7 +1044,7 @@ const IconHotspot: React.FC<IconHotspotProps> = ({
                   {description}
                 </div>
                 {/* Bottom fade — hints the text continues beyond the visible area */}
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-8 rounded-b-[16px] bg-gradient-to-t from-foreground to-transparent" />
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-8 rounded-b-[16px] bg-linear-to-t from-foreground to-transparent" />
               </div>
             </div>
           )}

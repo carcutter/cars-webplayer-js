@@ -257,7 +257,7 @@ const InteriorThreeSixtyElementInteractive: React.FC<
   return (
     <div
       className={cn(
-        "relative aspect-[4/3] w-full overflow-hidden bg-transparent"
+        "relative aspect-4/3 w-full overflow-hidden bg-transparent"
       )}
     >
       <div

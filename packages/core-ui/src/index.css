@@ -1,8 +1,170 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Styles of the WebPlayer, built into dist/style.css (the package's
+   "./style.css" export): Tailwind, generating the classes used in this folder
+   only (whatever the working directory of the build), and pannellum's styles.
+   Tailwind's CSS is newer than some browsers using the player: see "Browser
+   support" in CONTRIBUTING.md */
+@import "tailwindcss" source(".");
+@import "pannellum-react/es/pannellum/css/pannellum.css";
+@import "pannellum-react/es/pannellum/css/style-textInfo.css";
 
-/* Hide pannellum controls and about message */
+/* Unused, but found in the code (`!container`) */
+@source not inline("{!,}container");
+
+/* The theme of the player, replacing Tailwind's colors, font sizes, spacing,
+   radii and breakpoints. Inline and for reference only: the utilities use the
+   values, whose variables (--primary, --radius-ui...) are set on the player by
+   WebPlayer.tsx, not on :root. Output, --radius-ui: var(--radius-ui) would
+   be a cycle */
+@theme inline reference {
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-navy: hsl(var(--details-background));
+  --color-white: hsl(var(--details-text));
+  --color-background: hsl(var(--background));
+  --color-hotspot-description: hsl(var(--hotspot-description-text));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-light: hsl(var(--primary-light));
+  --color-neutral: hsl(var(--neutral));
+  --color-neutral-foreground: hsl(var(--neutral-foreground));
+
+  --text-*: initial;
+  --text-xxs: 11px;
+  --text-xxs--line-height: 15px;
+  --text-xs: 12px;
+  --text-xs--line-height: 16px;
+  --text-sm: 14px;
+  --text-sm--line-height: 20px;
+  --text-base: 16px;
+  --text-base--line-height: 24px;
+  --text-lg: 18px;
+  --text-lg--line-height: 28px;
+  --text-xl: 20px;
+  --text-xl--line-height: 28px;
+  --text-2xl: 24px;
+  --text-2xl--line-height: 32px;
+  --text-3xl: 30px;
+  --text-3xl--line-height: 36px;
+
+  /* In px, whatever the font size of the page */
+  --spacing: 4px;
+
+  --radius-*: initial;
+  --radius-none: 0;
+  --radius-full: 9999px;
+  --radius-ui-sm: calc(var(--radius-ui) - 2px);
+  --radius-ui: var(--radius-ui);
+  --radius-ui-md: calc(var(--radius-ui) + 2px);
+  --radius-ui-lg: calc(var(--radius-ui) + 4px);
+  --radius-carrousel: var(--radius-carrousel);
+  --radius-gallery: var(--radius-gallery);
+
+  /* The breakpoints are the variants below */
+  --breakpoint-*: initial;
+
+  --animate-hotspot-ping: hotspot-ping 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+  --animate-rotation: rotation 1s linear infinite;
+
+  @keyframes pulse {
+    from,
+    to {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  @keyframes hotspot-ping {
+    from {
+      transform: scale(0);
+    }
+    25% {
+      opacity: 1;
+    }
+    75%,
+    to {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+  @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+/* Breakpoints, from the values of src/const/browser.ts (its media queries
+   used by the JS): small and max-small depend on the orientation. In this
+   order, so that large: overrides small: */
+@custom-variant max-small {
+  @media (orientation: portrait) and (max-width: 767px),
+    (orientation: landscape) and (max-width: 1023px) {
+    @slot;
+  }
+}
+@custom-variant small {
+  @media (orientation: portrait) and (min-width: 768px),
+    (orientation: landscape) and (min-width: 1024px) {
+    @slot;
+  }
+}
+@custom-variant max-large (@media (max-width: 1279px));
+@custom-variant large (@media (min-width: 1280px));
+
+@utility z-hotspot {
+  z-index: 10;
+}
+@utility z-hotspot-hover {
+  z-index: 11;
+}
+@utility z-zoomed-image {
+  z-index: 20;
+}
+@utility z-overlay {
+  z-index: 30;
+}
+
+@utility transition-radius {
+  transition-property: border-radius;
+  transition-timing-function: var(
+    --tw-ease,
+    var(--default-transition-timing-function)
+  );
+  transition-duration: var(--tw-duration, var(--default-transition-duration));
+}
+@utility duration-details {
+  --tw-duration: 350ms;
+  transition-duration: 350ms;
+}
+
+/* hover: (and group-hover:) on touch screens too, as in Tailwind 3: tapping a
+   hotspot shows its title */
+@custom-variant hover (&:hover);
+
+/* Buttons have a pointer cursor, as in Tailwind 3 */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+
+  /* Webkit (Chrome, Safari and Opera) */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Hide pannellum controls and about message (after its styles) */
 
 .pnlm-load-button {
   display: none !important;
@@ -27,7 +189,3 @@
   display: none;
   visibility: hidden;
 }
-
-/* Variants (hover:, small:, …) here, before pannellum's styles imported after
-   this file by style.css */
-@tailwind variants;
