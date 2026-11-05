@@ -6,6 +6,8 @@ Git commit messages are used for changelog generation. Because of this, it is im
 
 As a standard, we make use of [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
+Pull requests are squashed into `develop`: their title becomes the commit, so it follows the same format, and CI checks it (`.github/workflows/pr-title.yml`).
+
 Therefore, any Git commit message should adhere to the following format:
 
 ```
@@ -28,11 +30,13 @@ Where `<type>` is the type of contribution, which can be one of:
 - `ci` A change related to CI.
 - `build` A change related to building this project (dependencies, fixes, etc.).
 - `docs` Documentation change.
-- `refactor` None of the above.
+- `refactor` A change that neither fixes a bug nor adds a feature.
+- `chore` Other changes, not to the sources or the tests.
+- `revert` Reverts a previous commit.
 
 Where `[optional scope]` is the scope of the change, such as `App`, `Lib`, as these can vary over time, coordination and adherence to previously used scopes is important.
 
-Where `<description>` is the short description of the change. **It is important that the description starts with a capital and ends with a full stop.** The short description will directly show up in the changelog, therefore the description must make sense within that context.
+Where `<description>` is the short description of the change. **It is important that the description starts with a capital, without a full stop at the end.** The short description will directly show up in the changelog, therefore the description must make sense within that context.
 
 Where `[optional body]` is a long description of the change.
 
@@ -41,7 +45,7 @@ Where `[optional footer(s)]` is a place for optional information, such as linkin
 An example of a commit message:
 
 ```
-fix(Lib): Resolved a null pointer causing crash during image load.
+fix(Lib): Resolved a null pointer causing crash during image load
 
 Fixed a null pointer in the PNG loader that caused PNG image loading to crash whenever a 16-bit image would be loaded.
 
@@ -50,12 +54,12 @@ Resolves #14.
 
 ### Reverting
 
-For reverting, the `revert` scope should be used, followed by the description of the commit that is reverted.
+For reverting, the `revert` type should be used, followed by the description of the commit that is reverted.
 
 For example:
 
 ```
-revert: Resolved a null pointer causing crash during image load.
+revert: Resolved a null pointer causing crash during image load
 
 Refs: e4231f6e
 ```
