@@ -12,5 +12,11 @@
     // The player sources it compiles import .svg files and use NodeJS types
     "types": ["vite/client", "node"]
   },
-  "exclude": ["dist", "node_modules", "**/*.test.ts", "**/*.test.tsx"]
+  "exclude": [
+    "dist",
+    "node_modules",
+    "vitest.config.ts",
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ]
 }

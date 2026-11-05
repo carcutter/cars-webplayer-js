@@ -1,6 +1,16 @@
 {
   "extends": "@car-cutter/typescript-config/react.json",
+  "compilerOptions": {
+    // jsx-custom-elements.d.ts imports the package by name, as the wrappers
+    // that reference it resolve it
+    "paths": { "@car-cutter/core-wc": ["./index.ts"] }
+  },
 
-  "include": ["index.ts", "src", "jsx-custom-elements.d.ts"],
+  "include": [
+    "index.ts",
+    "src",
+    "jsx-custom-elements.d.ts",
+    "vitest.config.ts"
+  ],
   "exclude": ["dist", "node_modules"]
 }
