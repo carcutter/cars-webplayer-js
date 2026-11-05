@@ -8,7 +8,6 @@ on:
       - "turbo.json"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
-      - "scripts/**"
       - "consumers/**"
       - ".syncpackrc"
       - "eslint.config.js"

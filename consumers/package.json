@@ -1,0 +1,5 @@
+{
+  "name": "consumers",
+  "private": true,
+  "description": "Root of the consumer apps' workspace (pnpm-workspace.yaml)"
+}

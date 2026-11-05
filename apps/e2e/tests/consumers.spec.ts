@@ -1,18 +1,14 @@
+import { CONSUMER_APPS } from "../consumers";
+
 import { expect, test } from "./fixtures";
 
-/** Apps served by scripts/consumer-test.js */
-const CONSUMERS: { name: string; url: string }[] = JSON.parse(
-  process.env.CONSUMERS ?? "[]"
-);
-
-test.skip(!CONSUMERS.length, "Run through `pnpm test:consumers`");
-
-for (const { name, url } of CONSUMERS) {
+// Previewed by playwright.consumers.config.ts
+for (const { name, port } of CONSUMER_APPS) {
   test(`${name} renders the player from the packed packages`, async ({
     page,
     consoleErrors,
   }) => {
-    await page.goto(url);
+    await page.goto(`http://localhost:${port}/`);
 
     await expect(page.locator("cc-webplayer")).toBeVisible();
     await expect

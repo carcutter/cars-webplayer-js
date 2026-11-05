@@ -42,6 +42,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b --force && vite build",
+    "pack:check": "pnpm pack --out package.tgz && publint package.tgz --level error && attw package.tgz --profile node16 --ignore-rules false-esm --format table-flipped",
     "lint": "eslint . --max-warnings 0",
     "analyze": "vite-bundle-visualizer",
     "test": "vitest run --coverage"

@@ -34,6 +34,7 @@
   ],
   "scripts": {
     "build": "ng-packagr -p ng-package.json -c tsconfig.lib.json && api-extractor run --local && find dist -name '*.d.ts' ! -name index.d.ts -delete && rm dist/package.json",
+    "pack:check": "pnpm pack --out package.tgz && publint package.tgz --level error && attw package.tgz --profile node16 --ignore-rules false-esm cjs-resolves-to-esm --format table-flipped",
     "lint": "eslint . --max-warnings 0 && tsc --noEmit -p tsconfig.json",
     "test": "vitest run --coverage"
   },

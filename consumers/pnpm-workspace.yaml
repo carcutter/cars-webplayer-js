@@ -1,0 +1,56 @@
+# The consumer apps, a workspace of their own (outside the repo's one): they
+# install the packed packages (package.tgz, written by `turbo run pack:check`),
+# instead of their workspace folders. An app, or a package, importing a
+# framework it doesn't declare fails here (see hoistPattern).
+# Installed without a lockfile (`pnpm test:consumers`): the tarballs change
+# with each build
+packages:
+  - "*"
+
+# The frameworks out of the hidden hoisted folder: a package importing one it
+# doesn't declare (in its peerDependencies) would resolve whichever version
+# pnpm hoisted, instead of failing. The rest stays hoisted, as pnpm's default:
+# @angular/build and @vue/compiler-core use tslib and @babel/types without
+# declaring them
+hoistPattern:
+  - "*"
+  - "!@angular/*"
+  - "!@types/react"
+  - "!@types/react-dom"
+  - "!next"
+  - "!react"
+  - "!react-dom"
+  - "!vue"
+
+packageExtensions:
+  # next's declarations import React's types without depending on them: they
+  # resolve to the ones of the app (React's types aren't hoisted, see above),
+  # as in the repo's pnpm-workspace.yaml
+  next:
+    peerDependencies:
+      "@types/react": "*"
+      "@types/react-dom": "*"
+    peerDependenciesMeta:
+      "@types/react":
+        optional: true
+      "@types/react-dom":
+        optional: true
+
+# The @car-cutter/* versions of the apps, and the ones the packages depend on
+overrides:
+  "@car-cutter/angular-webplayer": file:../packages/webplayer-angular/package.tgz
+  "@car-cutter/next-webplayer": file:../packages/webplayer-next/package.tgz
+  "@car-cutter/react-webplayer": file:../packages/webplayer-react/package.tgz
+  "@car-cutter/vanilla-webplayer": file:../packages/webplayer-vanilla/package.tgz
+  "@car-cutter/vue-webplayer": file:../packages/webplayer-vue/package.tgz
+  "@car-cutter/wc-webplayer": file:../packages/webplayer-wc/package.tgz
+
+onlyBuiltDependencies:
+  - esbuild
+
+ignoredBuiltDependencies:
+  # Native helpers of the Angular CLI, installed as prebuilt binaries (see the
+  # repo's pnpm-workspace.yaml)
+  - "@parcel/watcher"
+  - lmdb
+  - msgpackr-extract

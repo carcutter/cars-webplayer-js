@@ -12,5 +12,10 @@
     "noUnusedParameters": true,
     "types": ["node"]
   },
-  "include": ["playwright.config.ts", "tests"]
+  "include": [
+    "consumers.ts",
+    "playwright.config.ts",
+    "playwright.consumers.config.ts",
+    "tests"
+  ]
 }

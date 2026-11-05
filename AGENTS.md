@@ -30,7 +30,7 @@ pnpm test:consumers            # packs the npm packages, installs them in consum
 pnpm run ci                    # frozen install + syncpack lint + build + lint, as CI
 ```
 
-`lint` and `test` build the workspace packages they read first (turbo `^build`). Run `pnpm build` yourself before `pnpm e2e`, `pnpm test:consumers` or a direct `exec vitest`: they read the existing `dist`.
+`lint` and `test` build the workspace packages they read first (turbo `^build`). Run `pnpm build` yourself before `pnpm e2e` or a direct `exec vitest`: they read the existing `dist`.
 
 ## Repository map
 
@@ -48,7 +48,7 @@ pnpm run ci                    # frozen install + syncpack lint + build + lint, 
 | `apps/e2e`                                         | Playwright tests of the demos, the CDN files and the consumer apps                                                                       |
 | `apps/showroom`                                    | Internal showroom app (React wrapper, its own Tailwind)                                                                                  |
 | `apps/docs`                                        | User documentation (Docusaurus, GitHub Pages)                                                                                            |
-| `consumers/`                                       | Minimal client apps (outside the workspace), installed from packed tarballs by `scripts/consumer-test.js`                                |
+| `consumers/`                                       | Minimal client apps, a pnpm workspace of their own installing the packed tarballs (`pnpm test:consumers`)                                |
 
 ## Rules
 

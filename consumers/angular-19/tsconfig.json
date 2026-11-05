@@ -6,6 +6,9 @@
     "moduleResolution": "bundler",
     "strict": true,
     "experimentalDecorators": true,
+    // No global types, as in an Angular CLI app: the @types of the folders
+    // above consumers/ (the repo's) would be included otherwise
+    "types": [],
     // Type-checks the published .d.ts too
     "skipLibCheck": false
   },

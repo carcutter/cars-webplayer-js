@@ -11,8 +11,5 @@
     "skipLibCheck": false,
     "types": []
   },
-  "files": [
-    "node_modules/@car-cutter/next-webplayer/dist/index.d.ts",
-    "node_modules/@car-cutter/next-webplayer/dist/legacy.d.ts"
-  ]
+  "files": ["package-types.ts"]
 }

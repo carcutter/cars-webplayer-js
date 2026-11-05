@@ -3,10 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "Playwright tests over the demo apps",
+  "description": "Playwright tests over the demo apps and the consumer apps",
   "scripts": {
     "e2e": "playwright test --project=demos",
     "e2e:cdn": "playwright test --project=cdn",
+    "e2e:consumers": "playwright test -c playwright.consumers.config.ts",
     "lint": "tsc --noEmit -p ."
   },
   "dependencies": {
