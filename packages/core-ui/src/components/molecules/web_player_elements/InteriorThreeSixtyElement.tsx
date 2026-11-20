@@ -4,6 +4,7 @@ import { MAX_HFOV, MIN_HFOV } from "../../../const/pannellum";
 import { MAX_ZOOM, ZOOM_STEP } from "../../../const/zoom";
 import { useLoadingProgress } from "../../../hooks/useLoadingProgress";
 import { usePannellumViewer } from "../../../hooks/usePannellumViewer";
+import { useCompositionContext } from "../../../providers/CompositionContext";
 import { useControlsContext } from "../../../providers/ControlsContext";
 import { useGlobalContext } from "../../../providers/GlobalContext";
 import { getThemeConfig } from "../../../theme-config";
@@ -142,6 +143,7 @@ const InteriorThreeSixtyElementInteractive: React.FC<
   const { itemIndex, src, poster, onLoaded, onError, onlyPreload } = props;
   const { autoLoadInterior360 } = useGlobalContext();
   const { isShowingDetails, zoom, setZoom } = useControlsContext();
+  const { aspectRatioStyle } = useCompositionContext();
   const [progress, isLoading] = useLoadingProgress(src);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -256,9 +258,8 @@ const InteriorThreeSixtyElementInteractive: React.FC<
 
   return (
     <div
-      className={cn(
-        "relative aspect-4/3 w-full overflow-hidden bg-transparent"
-      )}
+      className="relative w-full overflow-hidden bg-transparent"
+      style={aspectRatioStyle}
     >
       <div
         className={cn(
