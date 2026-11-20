@@ -61,9 +61,10 @@ const CompositionContextProvider: React.FC<
     [usedCategories]
   );
 
-  const aspectRatioStyle: React.CSSProperties = {
-    aspectRatio: aspectRatio.replace(":", " / "),
-  };
+  const aspectRatioStyle: React.CSSProperties = useMemo(
+    () => ({ aspectRatio: aspectRatio.replace(":", " / ") }),
+    [aspectRatio]
+  );
 
   const usedMediaWidths = useMemo(() => {
     const allWidths = mediaSubWidths.concat(mediaHdWidth);

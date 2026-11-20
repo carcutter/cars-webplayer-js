@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { useCompositionContext } from "../../../providers/CompositionContext";
 import { useControlsContext } from "../../../providers/ControlsContext";
 import { CustomizableItem } from "../../../types/customizable_item";
 import { cn } from "../../../utils/style";
@@ -29,6 +30,7 @@ type Props = Extract<CustomizableItem, { type: "video" }> & {
  */
 const VideoElement: React.FC<Props> = ({ src, poster, itemIndex }) => {
   const { carrouselItemIndex, setItemInteraction } = useControlsContext();
+  const { aspectRatioStyle } = useCompositionContext();
 
   // - Ref
   const containerRef = useRef<HTMLDivElement>(null);
@@ -326,7 +328,11 @@ const VideoElement: React.FC<Props> = ({ src, poster, itemIndex }) => {
   }, [clearHideControlsTimeout, pause, restartHideControlsTimeout]);
 
   return (
-    <div ref={containerRef} className="relative aspect-4/3 w-full">
+    <div
+      ref={containerRef}
+      className="relative w-full"
+      style={aspectRatioStyle}
+    >
       <video
         ref={videoRef}
         // No double-tap zoom (nor the click delay it brings) on pages without

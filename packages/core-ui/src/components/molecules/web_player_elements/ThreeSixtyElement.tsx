@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DEFAULT_SPIN_CURSOR, type ImageWithHotspots } from "@car-cutter/core";
 
 import spinCursorDefault from "../../../assets/cursors/spin-360-default.svg";
+import { useCompositionContext } from "../../../providers/CompositionContext";
 import { useControlsContext } from "../../../providers/ControlsContext";
 import { useGlobalContext } from "../../../providers/GlobalContext";
 import { getThemeConfig } from "../../../theme-config";
@@ -493,6 +494,7 @@ const ThreeSixtyElementPlaceholder: React.FC<
   onError,
 }) => {
   const { autoLoad360, emitAnalyticsEvent, themeConfig } = useGlobalContext();
+  const { aspectRatioStyle } = useCompositionContext();
   const { displayedCategoryId, displayedCategoryName } = useControlsContext();
   const theme = useMemo(() => getThemeConfig(themeConfig), [themeConfig]);
 
@@ -569,7 +571,7 @@ const ThreeSixtyElementPlaceholder: React.FC<
   }, [loadingProgress, onSpinImagesLoaded]);
 
   return (
-    <div className="relative aspect-4/3 w-full">
+    <div className="relative w-full" style={aspectRatioStyle}>
       {loadingProgress !== null && loadingProgress !== 100 && (
         // Add images to DOM to preload them
         <div className="hidden">
@@ -585,7 +587,7 @@ const ThreeSixtyElementPlaceholder: React.FC<
       )}
 
       <CdnImage
-        className="size-full"
+        className="size-full object-cover"
         src={imagesSrc[0]}
         onLoad={onPlaceholderImageLoaded}
       />
